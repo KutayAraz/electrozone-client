@@ -1,7 +1,7 @@
 function App() {
   return (
     <>
-      <p>electrozone app</p>
+      <p className="text-2xl">electrozone app</p>
       <p>electrozone</p>
     </>
   );
