@@ -18,14 +18,14 @@ interface Product {
 const ProductList = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
-  useEffect(() => {
-    async function fetchProducts() {
-      const response = await fetch("http://localhost:3000/products");
-      const productsData = await response.json();
-      setProducts(productsData);
-    }
-    fetchProducts();
-  }, []);
+  // useEffect(() => {
+  //   async function fetchProducts() {
+  //     const response = await fetch("http://localhost:3000/products");
+  //     const productsData = await response.json();
+  //     setProducts(productsData);
+  //   }
+  //   fetchProducts();
+  // }, []);
 
   return (
     <div>

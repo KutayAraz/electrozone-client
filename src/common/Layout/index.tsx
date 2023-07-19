@@ -6,13 +6,15 @@ import Header from "./Header";
 
 const Layout = () => {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
       <NavStrip />
       <Sidebar user={{ name: "userName", city: "CA" }} />
-      <Outlet />
+      <div className="flex-grow">
+        <Outlet />
+      </div>
       <Footer />
-    </>
+    </div>
   );
 };
 
