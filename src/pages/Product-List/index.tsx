@@ -1,4 +1,7 @@
+import { UserState } from "@/setup/slices/models";
+import { RootState } from "@/setup/store";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 interface Product {
   id: number;

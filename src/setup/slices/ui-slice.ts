@@ -1,19 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-interface UIState {
-  sideNavOpen: boolean;
-}
+import { UIState } from "./models";
 
 const initialState: UIState = {
-  sideNavOpen: false,
+  isSideNavOpen: false,
+  isTVSectionOpen: false,
+  isPCsSectionOpen: false,
+  isPrintersSectionOpen: false,
+  isPhonesSectionOpen: false,
 };
 
 const uiSlice = createSlice({
   name: "ui",
   initialState,
   reducers: {
-    toggle(state) {
-      state.sideNavOpen = !state.sideNavOpen;
+    toggleSections(state, action) {
+      const section = action.payload;
+      switch (section) {
+        case "TVSection":
+          state.isTVSectionOpen = !state.isTVSectionOpen;
+          break;
+        case "PCsSection":
+          state.isPCsSectionOpen = !state.isPCsSectionOpen;
+          break;
+        case "PrintersSection":
+          state.isPrintersSectionOpen = !state.isPrintersSectionOpen;
+          break;
+        case "PhonesSection":
+          state.isPhonesSectionOpen = !state.isPhonesSectionOpen;
+          break;
+        default:
+          break;
+      }
+    },
+    toggleSideNav(state) {
+      state.isSideNavOpen = !state.isSideNavOpen;
+      if (!state.isSideNavOpen) {
+        state.isTVSectionOpen = false;
+        state.isPCsSectionOpen = false;
+        state.isPrintersSectionOpen = false;
+      }
     },
   },
 });

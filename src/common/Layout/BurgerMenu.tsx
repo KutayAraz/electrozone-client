@@ -10,7 +10,7 @@ interface BurgerMenuProps {
 const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
   const dispatch = useDispatch();
   const handleSideNav = () => {
-    dispatch(uiActions.toggle());
+    dispatch(uiActions.toggleSideNav());
   };
   return (
     <button className={`items-center ${className}`} onClick={handleSideNav}>

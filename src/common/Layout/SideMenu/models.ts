@@ -9,7 +9,7 @@ export interface ModalOverlayProps {
 
 export interface State {
   ui: {
-    sideNavOpen: boolean;
+    isSideNavOpen: boolean;
   };
 }
 
@@ -19,10 +19,10 @@ export interface ModalProps {
 }
 
 export interface User {
-    name?: string;
-    city: string;
-  }
-  
-  export interface SidebarProps {
-    user?: User;
-  }
+  name?: string;
+  city: string;
+}
+
+export interface SidebarProps {
+  user?: User;
+}

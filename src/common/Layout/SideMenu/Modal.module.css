@@ -43,6 +43,22 @@
   transition: transform 300ms ease-out, opacity 300ms ease-out;
 }
 
+.submodal-enter-active {
+  transform: translateX(-10rem);
+}
+
+.submodal-enter {
+  transform: translateX(0);
+}
+
+.submodal-exit {
+  transform: translateX(-10rem);
+}
+
+.submodal-exit-active {
+  transform: translateX(0);
+}
+
 .close-button {
   position: absolute;
   top: 10px;

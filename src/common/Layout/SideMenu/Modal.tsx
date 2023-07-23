@@ -9,7 +9,7 @@ function Backdrop({ onClose }: BackdropProps) {
   return <div className={styles.backdrop} onClick={onClose} />;
 }
 
-function ModalOverlay({ children, isOpen }: ModalOverlayProps) {
+export function ModalOverlay({ children, isOpen }: ModalOverlayProps) {
   return (
     <CSSTransition
       in={isOpen}
@@ -29,7 +29,7 @@ function ModalOverlay({ children, isOpen }: ModalOverlayProps) {
 
 function Modal({ onClose, children }: ModalProps) {
   const sideNavOpen = useSelector<State, boolean>(
-    (state) => state.ui.sideNavOpen
+    (state) => state.ui.isSideNavOpen
   );
   return (
     <>
