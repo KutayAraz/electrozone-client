@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="flex flex-col max-w-xs mx-auto text-center pb-4">
         <p>Cookies Notice</p>
         <p>Privacy Notice</p>
-        <p>© {new Date().getFullYear()}, electrozon.com</p>
+        <p>© {new Date().getFullYear()}, electrozone.com</p>
       </div>
     </footer>
   );

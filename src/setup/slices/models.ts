@@ -1,11 +1,13 @@
 export interface UserState {
+  user: {
+    userId: number | null;
+    email: string | null;
+    firstName: string | null;
+    lastName: string | null;
+    address: string | null;
+    city: string | null;
+  };
   isSignedIn: boolean;
-  userId: number | null;
-  email: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  address: string | null;
-  city: string | null;
   accessToken: string | null;
   refreshToken: string | null;
 }

@@ -40,6 +40,9 @@ const uiSlice = createSlice({
         state.isPrintersSectionOpen = false;
       }
     },
+    closeSideNav(state){
+      state.isSideNavOpen = false;
+    }
   },
 });
 

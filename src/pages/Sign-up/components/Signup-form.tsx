@@ -133,7 +133,7 @@ const SignUpForm = () => {
   return (
     <form action="POST" onSubmit={submitHandler}>
       <div className="flex flex-col max-w-sm text-center mx-auto">
-        <label htmlFor="email">Your e-mail*</label>
+        <label htmlFor="email">Email*</label>
         <input
           type="email"
           id="email"
@@ -164,7 +164,7 @@ const SignUpForm = () => {
         />
         <p>Passwords must be at least 6 characters.</p>
         {emailHasError && errorText}
-        <label htmlFor="firstName">Your name</label>
+        <label htmlFor="firstName">First name*</label>
         <input
           type="text"
           id="firstName"
@@ -176,7 +176,7 @@ const SignUpForm = () => {
           className={firstNameClasses}
         />
         {firstNameHasError && errorText}
-        <label htmlFor="lastName">Your last name*</label>
+        <label htmlFor="lastName">Last name*</label>
         <input
           type="text"
           id="lastName"
@@ -188,7 +188,7 @@ const SignUpForm = () => {
         />
         {lastNameHasError && errorText}
 
-        <label htmlFor="address">Your address*</label>
+        <label htmlFor="address">Address*</label>
         <input
           type="text"
           id="address"
@@ -198,7 +198,7 @@ const SignUpForm = () => {
           onBlur={topicBlurHandler}
         />
         {addressHasError && errorText}
-        <label htmlFor="city">Your city*</label>
+        <label htmlFor="city">City/State*</label>
         <input
           type="city"
           id="city"

@@ -3,11 +3,15 @@ import Modal from "./Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "@/setup/slices/ui-slice";
 import { State } from "./models";
+import { Link, useLocation } from "react-router-dom";
+import { RootState } from "@/setup/store";
+import { useEffect } from "react";
 
 const Sidebar = ({
   user: { city } = { city: "Select your location" },
 }: SidebarProps) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const handleSections = (section: string) => {
     dispatch(uiActions.toggleSections(section));
   };
@@ -15,6 +19,12 @@ const Sidebar = ({
   const handleSideNav = () => {
     dispatch(uiActions.toggleSideNav());
   };
+
+  useEffect(() => {
+    dispatch(uiActions.closeSideNav())
+}, [location]);
+
+  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   return (
     <Modal onClose={handleSideNav}>
@@ -28,27 +38,35 @@ const Sidebar = ({
         <ul className="flex flex-col">
           <h3>Shop by Department</h3>
           <h4 className="text-lg font-bold">TVs & Soundbars</h4>
-          <p>TVs</p>
-          <p>Soundbars</p>
+          <Link to={"/tvs-and-sounbars/tvs"}>TVs</Link>
+          <Link to={"/tvs-and-sounbars/soundbars"}>Soundbars</Link>
           <h4 className="text-lg font-bold">PCs & Laptops</h4>
-          <p>PCs</p>
-          <p>Laptops</p>
-          <p>Monitors</p>
-          <p>Computer Accessories</p>
+          <Link to={"/pcs-and-laptops/pcs"}>PCs</Link>
+          <Link to={"/pcs-and-laptops/laptops"}>Laptops</Link>
+          <Link to={"/pcs-and-laptops/monitors"}>Monitors</Link>
+          <Link to={"/pcs-and-laptops/computer-accessories"}>
+            Computer Accessories
+          </Link>
           <h4 className="text-lg font-bold">Printers & Ink</h4>
-          <p>Laser Printers</p>
-          <p>Inkjet Printers</p>
-          <p>Ink</p>
+          <Link to={"/printers-and-ink/laser-printers"}>Laser Printers</Link>
+          <Link to={"/printers-and-ink/inkjet-printers"}>Inkjet Printers</Link>
+          <Link to={"/printers-and-ink/ink"}>Ink</Link>
           <h4 className="text-lg font-bold">Phones & Accessories</h4>
-          <p>Smartphones</p>
-          <p>Phone Accessories</p>
+          <Link to={"/phones-and-accessories/smartphones"}>Smartphones</Link>
+          <Link to={"/phones-and-accessories/smartphone-accessories"}>
+            Phone Accessories
+          </Link>
         </ul>
         <div>
           <h4 className="text-lg font-bold">Help & Settings</h4>
-          <p>Your Account</p>
-          <p>{city}</p>
+          {isSignedIn ? (
+            <Link to={"/your-profile"}>Your Account</Link>
+          ) : (
+            <Link to={"/sign-in"}>Sign In</Link>
+          )}
+          {isSignedIn && <p>{city}</p>}
           <p>Customer Service</p>
-          <p>Sign out</p>
+          {isSignedIn && <Link to={"/sign-out"}>Sign Out</Link>}
         </div>
       </div>
     </Modal>

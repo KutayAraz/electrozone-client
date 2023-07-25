@@ -7,13 +7,14 @@ import { ReactComponent as Basket } from "@assets/svg/basket.svg";
 import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
 import { ReactComponent as LocationPin } from "@assets/svg/location-pin.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
-import { UserState } from "@/setup/slices/models";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RootState } from "@/setup/store";
 
 const Header = () => {
-  const firstName = useSelector((state: RootState) => state.user.firstName);
-  const city = useSelector((state: RootState) => state.user.city);
+  const firstName = useSelector(
+    (state: RootState) => state.user.user.firstName
+  );
+  const city = useSelector((state: RootState) => state.user.user.city);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   return (
@@ -21,27 +22,46 @@ const Header = () => {
       <div className="flex justify-between w-full bg text-white items-center">
         <div className="flex">
           <BurgerMenu className="block xs:hidden"></BurgerMenu>
-          <Brand className="block xs:hidden" />
-          <BrandLogo className="hidden xs:block " />
-          <div className="hidden xs:flex items-center px-6">
+          <Link to={"/"}>
+            <Brand className="block xs:hidden" />
+          </Link>
+          <Link to={"/"}>
+            <BrandLogo className="hidden xs:block " />
+          </Link>
+          <div className="hidden md:flex items-center px-6">
             <div className="flex-col whitespace-nowrap pr-2">
-              <p>Deliver To</p>
-              <p>{city}</p>
+              {isSignedIn ? (
+                <div className="text-center">
+                  <p>Deliver To</p>
+                  <p>{city}</p>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <p>Hello, </p>
+                  <p>Select your location</p>
+                </div>
+              )}
             </div>
             <LocationPin width={28} height={28} />
           </div>
         </div>
-        <SearchBar className="hidden xs:block text-black border-2 h-10 w-[50%]" />
+        <SearchBar className="hidden xs:block text-black border-2 h-10 w-[40%]" />
         <div className="flex items-center xs:pr-2 whitespace-nowrap">
           {isSignedIn ? (
-            <p>{firstName}</p>
+            <div className="text-center">
+              <p>{firstName}</p>
+              <Link to="/sign-out">Sign Out</Link>
+            </div>
           ) : (
             <Link to="/sign-in" className="pl-4">
               Sign in
             </Link>
           )}
           <Arrow width={20} height={20} />
-          <UserIcon width={32} height={32} />
+          <Link to={"/your-profile"}>
+            <UserIcon width={32} height={32} />
+          </Link>
+
           <Basket width={40} height={40} className="ml-2" />
         </div>
       </div>

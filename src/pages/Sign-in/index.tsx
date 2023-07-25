@@ -89,13 +89,9 @@ const SignInForm = () => {
     <p className="text-red-700 text-sm">This area is required.</p>
   );
 
-  const firstName = useSelector((state: any) => state.user.firstName);
-
   return (
     <form action="POST" onSubmit={submitHandler}>
       <div className="flex flex-col max-w-sm text-center mx-auto">
-        <p>first {username}</p>
-        <p>{firstName}</p>
         <label htmlFor="email">Your e-mail</label>
         <input
           type="email"
