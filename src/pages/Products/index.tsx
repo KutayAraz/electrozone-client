@@ -8,7 +8,7 @@ const Products = () => {
   return (
     <div>
       <h1>Products</h1>
-      <Suspense fallback={<p>Loading Producs..</p>}>
+      <Suspense fallback={<p>Loading Products..</p>}>
         <Await resolve={products}>
           {(loadedProducts) => <ProductList products={loadedProducts} />}
         </Await>
@@ -20,7 +20,7 @@ const Products = () => {
 export default Products;
 
 async function loadProducts(subcategory: string) {
-  const response = await fetch("http://localhost:3000/products/" + subcategory);
+  const response = await fetch("http://localhost:3000/subcategories/" + subcategory);
   if (!response.ok) {
     throw json(
       { message: "Could not fetch events." },

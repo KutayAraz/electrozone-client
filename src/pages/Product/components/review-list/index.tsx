@@ -1,14 +1,16 @@
-import { Reviews } from "@Product/models";
+import { ReviewType } from "@Product/models";
 import Review from "./Review";
+import { useLoaderData } from "react-router-dom";
 
-const Reviews = ({ reviews }: Reviews) => {
+const Reviews = () => {
+  const { reviews } = useLoaderData() as { reviews: ReviewType[] };
   return (
     <>
-      {reviews.map((review) => (
+      {reviews.map((review: ReviewType) => (
         <Review
-          review={review.review}
           date={review.date}
           rating={review.rating}
+          comment={review.comment}
         />
       ))}
     </>

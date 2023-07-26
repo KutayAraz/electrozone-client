@@ -1,11 +1,11 @@
-import { Review } from "@Product/models";
+import { ReviewType } from "@Product/models";
 
-const Review = ({ rating, review, date }: Review) => {
+const Review = ({ rating, comment, date }: ReviewType) => {
   return (
     <div className="flex flex-col">
       <p>{date.toLocaleDateString()}</p>
       <p>{rating}</p>
-      <p>{review}</p>
+      <p>{comment}</p>
     </div>
   );
 };
