@@ -7,7 +7,7 @@ import { ReactComponent as Basket } from "@assets/svg/basket.svg";
 import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
 import { ReactComponent as LocationPin } from "@assets/svg/location-pin.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { RootState } from "@/setup/store";
 
 const Header = () => {

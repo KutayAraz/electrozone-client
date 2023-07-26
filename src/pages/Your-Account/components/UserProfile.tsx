@@ -1,6 +1,6 @@
 import { RootState } from "@/setup/store";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ const UserProfile = () => {
   function handleSubmit() {}
   return (
     <>
-      <form
+      <Form
         onSubmit={handleSubmit}
         className="max-w-xs mx-auto flex flex-col text-center"
       >
@@ -33,7 +33,7 @@ const UserProfile = () => {
           placeholder={city || ""}
           className="border-2 border-[#13193F] rounded-lg"
         ></input>
-      </form>
+      </Form>
       <div className="max-w-xs flex flex-col mx-auto">
         <button>Update Profile</button>
         <button onClick={() => navigate("/your-profile/update-password")}>

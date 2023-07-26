@@ -33,7 +33,7 @@ async function loadProducts(subcategory: string) {
   }
 }
 
-export function loader({ request, params }: any) {
+export function loader({  params }: any) {
   const subcategories = params.subcategories.split("/");
   const subcategory = subcategories[subcategories.length - 1];
   return defer({

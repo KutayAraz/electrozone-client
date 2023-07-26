@@ -1,13 +1,11 @@
-import { useReducer, ChangeEvent, FocusEvent } from "react";
+import { useReducer, ChangeEvent } from "react";
 
 interface InputState {
   value: string;
   isTouched: boolean;
 }
 
-type InputAction =
-  | { type: "INPUT"; value: string }
-  | { type: "BLUR" };
+type InputAction = { type: "INPUT"; value: string } | { type: "BLUR" };
 
 const initialInputState: InputState = {
   value: "",
@@ -39,9 +37,7 @@ const useInput = (validateValue: (value: string) => boolean) => {
     dispatch({ type: "INPUT", value: event.target.value });
   };
 
-  const inputBlurHandler = (
-    event: FocusEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const inputBlurHandler = () => {
     dispatch({ type: "BLUR" });
   };
 

@@ -1,9 +1,8 @@
 import useInput from "@/common/Hooks/use-input";
-import { UserState } from "@/setup/slices/models";
 import { userActions } from "@/setup/slices/user-slice";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const isEmail = (value: string) => value.includes("@");
 const isPassword = (value: string) => value.length > 5;
@@ -34,7 +33,6 @@ const SignInForm = () => {
   if (emailIsValid && passwordIsValid) {
     formIsValid = true;
   }
-  const [username, setUsername] = useState("");
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -59,7 +57,6 @@ const SignInForm = () => {
 
     if (response.status === 201) {
       const result = await response.json();
-      setUsername(result.firstName);
       dispatch(
         userActions.setUserInfo({
           userId: result.userId,

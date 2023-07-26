@@ -2,7 +2,7 @@ import { SidebarProps } from "@common/Layout/models";
 import Modal from "./Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "@/setup/slices/ui-slice";
-import { State } from "./models";
+// import { State } from "./models";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "@/setup/store";
 import { useEffect } from "react";
@@ -12,9 +12,9 @@ const Sidebar = ({
 }: SidebarProps) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const handleSections = (section: string) => {
-    dispatch(uiActions.toggleSections(section));
-  };
+  // const handleSections = (section: string) => {
+  //   dispatch(uiActions.toggleSections(section));
+  // };
 
   const handleSideNav = () => {
     dispatch(uiActions.toggleSideNav());
