@@ -20,10 +20,12 @@ const Products = () => {
 export default Products;
 
 async function loadProducts(subcategory: string) {
-  const response = await fetch("http://localhost:3000/subcategories/" + subcategory);
+  const response = await fetch(
+    "http://localhost:3000/subcategories/" + subcategory
+  );
   if (!response.ok) {
     throw json(
-      { message: "Could not fetch events." },
+      { message: "Could not fetch products." },
       {
         status: 500,
       }
@@ -33,9 +35,8 @@ async function loadProducts(subcategory: string) {
   }
 }
 
-export function loader({  params }: any) {
-  const subcategories = params.subcategories.split("/");
-  const subcategory = subcategories[subcategories.length - 1];
+export function loader({ params }: any) {
+  const subcategory = params.subcategories;
   return defer({
     products: loadProducts(subcategory),
   });

@@ -5,7 +5,7 @@ export interface Product {
     thumbnail: string;
     description: string;
     price: number;
-    avgRating: number;
+    averageRating: number;
     subcategory: {
       id: number;
       name: string;

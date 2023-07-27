@@ -5,12 +5,28 @@ export interface ReviewType {
 }
 
 export interface ProductPageProps {
-  name: string;
+  productName: string;
   brand: string;
   description: string;
+  averageRating: number;
   thumbnail: string;
   price: number;
   stock: number;
   avgRating: number;
-  images: string[];
+  // images: string[];
+}
+
+export interface ProductProps {
+  product: {
+    id: string;
+    productName: string;
+    brand: string;
+    description: string;
+    averageRating: number;
+    thumbnail: string;
+    price: number;
+    stock: number;
+    avgRating: number;
+    // images: string[];
+  };
 }

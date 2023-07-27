@@ -1,34 +1,41 @@
-import { useLoaderData } from "react-router-dom";
-import Reviews from "./components/review-list";
-import { ProductPageProps } from "./models";
+import { Await, defer, json, useLoaderData } from "react-router-dom";
+import { ProductProps } from "./models";
+import { Suspense } from "react";
+import Product from "./components/review-list/Product";
 
-const Product = () => {
-  const {
-    product: { name, brand, images, description, avgRating, price, stock },
-  } = useLoaderData() as { product: ProductPageProps };
+const ProductPage = () => {
+  const { product } = useLoaderData() as { product: ProductProps };
+  console.log(product);
   return (
-    <div className="flex">
-      {images.map((image: string, index: number) => (
-        <img key={index} src={image} alt={`${description} image`} />
-      ))}
-      <h2>{name}</h2>
-      <p>{brand}</p>
-      <p>{avgRating}</p>
-      <p>{description}</p>
-      <p>{price}</p>
-      {stock > 0 ? (
-        <div className="flex flex-col">
-          <button>Add to basket</button>
-          <button>Buy now</button>
-        </div>
-      ) : (
-        <p>This product is currently out of stock</p>
-      )}
-      <button>Add to Wishlist</button>
-      <button>Write a review</button>
-      <Reviews />
-    </div>
+    <Suspense fallback={<p>Loading..</p>}>
+      <Await resolve={product}>
+        {(loadedProduct) => <Product product={loadedProduct} />}
+      </Await>
+    </Suspense>
   );
 };
 
-export default Product;
+export default ProductPage;
+
+async function loadProduct(productId: string) {
+  const response = await fetch("http://localhost:3000/products/" + productId);
+
+  if (!response.ok) {
+    throw json(
+      { message: "Could not fetch the product." },
+      {
+        status: 500,
+      }
+    );
+  } else {
+    return await response.json();
+  }
+}
+
+export function loader({ params }: any) {
+  const productId = params.productId;
+  console.log(productId);
+  return defer({
+    product: loadProduct(productId),
+  });
+}

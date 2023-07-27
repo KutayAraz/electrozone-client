@@ -8,7 +8,9 @@ import HomePage from "./pages/Home";
 import UserProfile from "./pages/Your-Account/components/UserProfile";
 import UpdatePassword from "./pages/Your-Account/components/UpdatePassword";
 import Products, { loader as productsLoader } from "./pages/Products/index.tsx";
-import Product from "./pages/Product/index.tsx";
+import ProductPage, {
+  loader as productLoader,
+} from "./pages/Product/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -41,21 +43,20 @@ const router = createBrowserRouter([
         element: <UpdatePassword />,
       },
       {
-        path: ":categories",
+        path: ":subcategories",
         children: [
           {
-            path: ":subcategories",
+            index: true,
             element: <Products />,
             loader: productsLoader,
-            children: [
-              {
-                path: ":product",
-                element: <Product />,
-              },
-            ],
+          },
+          {
+            path: ":productId",
+            element: <ProductPage />,
+            loader: productLoader,
           },
         ],
-      }
+      },
     ],
   },
 ]);

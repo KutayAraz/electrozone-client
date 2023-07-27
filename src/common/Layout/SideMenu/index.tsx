@@ -21,8 +21,8 @@ const Sidebar = ({
   };
 
   useEffect(() => {
-    dispatch(uiActions.closeSideNav())
-}, [location]);
+    dispatch(uiActions.closeSideNav());
+  }, [location]);
 
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
@@ -38,24 +38,20 @@ const Sidebar = ({
         <ul className="flex flex-col">
           <h3>Shop by Department</h3>
           <h4 className="text-lg font-bold">TVs & Soundbars</h4>
-          <Link to={"/tvs-and-sounbars/tvs"}>TVs</Link>
-          <Link to={"/tvs-and-sounbars/soundbars"}>Soundbars</Link>
+          <Link to={"/tvs"}>TVs</Link>
+          <Link to={"/soundbars"}>Soundbars</Link>
           <h4 className="text-lg font-bold">PCs & Laptops</h4>
-          <Link to={"/pcs-and-laptops/pcs"}>PCs</Link>
-          <Link to={"/pcs-and-laptops/laptops"}>Laptops</Link>
-          <Link to={"/pcs-and-laptops/monitors"}>Monitors</Link>
-          <Link to={"/pcs-and-laptops/computer-accessories"}>
-            Computer Accessories
-          </Link>
+          <Link to={"/pcs"}>PCs</Link>
+          <Link to={"/laptops"}>Laptops</Link>
+          <Link to={"/monitors"}>Monitors</Link>
+          <Link to={"/computer-accessories"}>Computer Accessories</Link>
           <h4 className="text-lg font-bold">Printers & Ink</h4>
-          <Link to={"/printers-and-ink/laser-printers"}>Laser Printers</Link>
-          <Link to={"/printers-and-ink/inkjet-printers"}>Inkjet Printers</Link>
-          <Link to={"/printers-and-ink/ink"}>Ink</Link>
+          <Link to={"/laser-printers"}>Laser Printers</Link>
+          <Link to={"/inkjet-printers"}>Inkjet Printers</Link>
+          <Link to={"/ink"}>Ink</Link>
           <h4 className="text-lg font-bold">Phones & Accessories</h4>
-          <Link to={"/phones-and-accessories/smartphones"}>Smartphones</Link>
-          <Link to={"/phones-and-accessories/smartphone-accessories"}>
-            Phone Accessories
-          </Link>
+          <Link to={"/smartphones"}>Smartphones</Link>
+          <Link to={"/smartphone-accessories"}>Phone Accessories</Link>
         </ul>
         <div>
           <h4 className="text-lg font-bold">Help & Settings</h4>

@@ -3,7 +3,7 @@ import { Product, ProductListProps } from "./models";
 
 const ProductList = ({ products }: ProductListProps) => {
   return (
-    <div className="flex max-w-screen-lg mx-auto">
+    <div className="flex max-w-[80%] mx-auto">
       {products.map((product: Product) => (
         <div
           className="flex flex-col border-2 border-black rounded-xl max-w-xs"
@@ -16,7 +16,7 @@ const ProductList = ({ products }: ProductListProps) => {
             />
             <p>{product.productName}</p>
             <p>{product.brand}</p>
-            <p>{product.avgRating}</p>
+            <p>{product.averageRating}</p>
             <p>$ {product.price}</p>
           </Link>
         </div>
