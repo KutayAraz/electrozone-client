@@ -2,14 +2,14 @@ import { Await, defer, json, useLoaderData } from "react-router-dom";
 import ProductList from "./components/ProductList";
 import { Suspense } from "react";
 
-const Products = () => {
-  const { products }: any = useLoaderData();
+const SubcategoryPage = () => {
+  const { subcategory }: any = useLoaderData();
 
   return (
-    <div>
+    <div> 
       <h1>Products</h1>
       <Suspense fallback={<p>Loading Products..</p>}>
-        <Await resolve={products}>
+        <Await resolve={subcategory}>
           {(loadedProducts) => <ProductList products={loadedProducts} />}
         </Await>
       </Suspense>
@@ -17,9 +17,9 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default SubcategoryPage;
 
-async function loadProducts(subcategory: string) {
+async function loadSubcategory(subcategory: string) {
   const response = await fetch(
     "http://localhost:3000/subcategories/" + subcategory
   );
@@ -31,13 +31,15 @@ async function loadProducts(subcategory: string) {
       }
     );
   } else {
-    return await response.json();
+    const resp = await response.json();
+    console.log(resp)
+    return resp
   }
 }
 
 export function loader({ params }: any) {
-  const subcategory = params.subcategories;
+  const subcategory = params.subcategory;
   return defer({
-    products: loadProducts(subcategory),
+    subcategory: loadSubcategory(subcategory),
   });
 }

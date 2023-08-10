@@ -1,11 +1,10 @@
 import { Await, defer, json, useLoaderData } from "react-router-dom";
 import { ProductProps } from "./models";
 import { Suspense } from "react";
-import Product from "./components/review-list/Product";
+import Product from "./components/Product";
 
 const ProductPage = () => {
   const { product } = useLoaderData() as { product: ProductProps };
-  console.log(product);
   return (
     <Suspense fallback={<p>Loading..</p>}>
       <Await resolve={product}>

@@ -1,16 +1,24 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./common/Layout/index";
-import Error from "./pages/Error/index";
-import SignIn from "./pages/Sign-in";
-import SignUp from "./pages/Sign-up";
-import SignOut from "./pages/Sign-out";
-import HomePage from "./pages/Home";
-import UserProfile from "./pages/Your-Account/components/UserProfile";
-import UpdatePassword from "./pages/Your-Account/components/UpdatePassword";
-import Products, { loader as productsLoader } from "./pages/Products/index.tsx";
+import Error from "./pages/error/index";
+import SignIn from "./pages/sign-in";
+import SignUp from "./pages/sign-up";
+import SignOut from "./pages/sign-out";
+import HomePage from "./pages/home";
+import UserProfile from "./pages/your-account/components/UserProfile";
+import UpdatePassword from "./pages/your-account/components/UpdatePassword";
+import SubcategoryPage, {
+  loader as subcategoryLoader,
+} from "./pages/subcategory/index.tsx";
 import ProductPage, {
   loader as productLoader,
-} from "./pages/Product/index.tsx";
+} from "./pages/product/index.tsx";
+import CategoryPage, {
+  loader as categoryLoader,
+} from "./pages/category/index.tsx";
+import UserCart from "./pages/user-cart/index.tsx";
+import OrderStatus from "./pages/order-status/index.tsx";
+import ConfirmOrder from "./pages/confirm-order/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -36,24 +44,56 @@ const router = createBrowserRouter([
       },
       {
         path: "/your-profile",
-        element: <UserProfile />,
-      },
-      {
-        path: "/your-profile/update-password",
-        element: <UpdatePassword />,
-      },
-      {
-        path: ":subcategories",
         children: [
           {
             index: true,
-            element: <Products />,
-            loader: productsLoader,
+            element: <UserProfile />,
           },
           {
-            path: ":productId",
-            element: <ProductPage />,
-            loader: productLoader,
+            path: "/update-password",
+            element: <UpdatePassword />,
+          },
+        ],
+      },
+      {
+        path: "/your-cart",
+        children: [
+          {
+            index: true,
+            element: <UserCart />,
+          },
+          {
+            path: "/confirm-order",
+            element: <ConfirmOrder />,
+          },
+        ],
+      },
+      {
+        path: "/order-status",
+        element: <OrderStatus />,
+      },
+      {
+        path: ":category",
+        children: [
+          {
+            index: true,
+            element: <CategoryPage />,
+            loader: categoryLoader,
+          },
+          {
+            path: ":subcategory",
+            children: [
+              {
+                index: true,
+                element: <SubcategoryPage />,
+                loader: subcategoryLoader,
+              },
+              {
+                path: ":productId",
+                element: <ProductPage />,
+                loader: productLoader,
+              },
+            ],
           },
         ],
       },

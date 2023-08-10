@@ -1,5 +1,5 @@
 import { ReviewType } from "@Product/models";
-import Review from "./Review";
+import Review from "./review-list/Review";
 import { useLoaderData } from "react-router-dom";
 
 const Reviews = () => {
