@@ -1,4 +1,4 @@
-import { ReviewType } from "@Product/models";
+import { ReviewType } from "@pages/product/models";
 
 const Review = ({ rating, comment, date }: ReviewType) => {
   return (

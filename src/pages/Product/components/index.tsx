@@ -1,4 +1,4 @@
-import { ReviewType } from "@Product/models";
+import { ReviewType } from "@pages/product/models";
 import Review from "./review-list/Review";
 import { useLoaderData } from "react-router-dom";
 

@@ -58,11 +58,12 @@ const Header = () => {
             </Link>
           )}
           <Arrow width={20} height={20} />
-          <Link to={"/your-profile"}>
+          <Link to={"/my-profile"}>
             <UserIcon width={32} height={32} />
           </Link>
-
-          <Basket width={40} height={40} className="ml-2" />
+          <Link to={"/my-cart"}>
+            <Basket width={40} height={40} className="ml-2" />
+          </Link>
         </div>
       </div>
       <div className="px-1">

@@ -43,27 +43,27 @@ const router = createBrowserRouter([
         element: <SignOut />,
       },
       {
-        path: "/your-profile",
+        path: "/my-profile",
         children: [
           {
             index: true,
             element: <UserProfile />,
           },
           {
-            path: "/update-password",
+            path: "update-password",
             element: <UpdatePassword />,
           },
         ],
       },
       {
-        path: "/your-cart",
+        path: "/my-cart",
         children: [
           {
             index: true,
             element: <UserCart />,
           },
           {
-            path: "/confirm-order",
+            path: "confirm-order",
             element: <ConfirmOrder />,
           },
         ],

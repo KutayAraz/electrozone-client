@@ -1,5 +1,12 @@
+import { useSelector } from "react-redux";
+
 const ConfirmOrder = () => {
-  return <></>;
+  const cart: any = useSelector<any>((state) => state.cart);
+  return (
+    <>
+      <p>{cart.items[0]}</p>
+    </>
+  );
 };
 
 export default ConfirmOrder;

@@ -30,6 +30,7 @@ const Product = ({ product }: ProductProps) => {
                   cartSlice.actions.addItemToCart({
                     id: product.id,
                     price: product.price,
+                    thumbnail: product.thumbnail,
                     quantity,
                     totalPrice: product.price * quantity,
                     name: product.productName,

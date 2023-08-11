@@ -22,10 +22,11 @@ export interface UIState {
 
 export interface CartItem {
   id: string;
+  name: string;
+  thumbnail: string;
   price: number;
   quantity: number;
   totalPrice: number;
-  name: string;
 }
 
 export interface CartState {
