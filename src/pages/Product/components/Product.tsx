@@ -4,36 +4,60 @@ import Rating from "@mui/material/Rating";
 import { useDispatch } from "react-redux";
 import cartSlice from "@/setup/slices/cart-slice";
 import { useState } from "react";
+import Reviews from ".";
 
-const Product = ({ product }: ProductProps) => {
+const Product = ({ id, productName, brand, thumbnail, description, averageRating, price, stock }: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const dispatch = useDispatch();
+
+  const incrementQuantity = () => {
+    setQuantity((prev) => (prev < 10 ? ++prev : prev));
+  };
+
+  const decrementQuantity = () => {
+    setQuantity((prev) => (prev > 1 ? --prev : prev));
+  };
+
+  const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10);
+    if (!isNaN(value)) {
+      setQuantity(value > 10 ? 10 : value);
+    }
+  };
+
   return (
-    <div className="flex max-w-screen-xs mx-auto">
-      <img src={product.thumbnail} alt="" />
+    <div className="flex max-w-screen-md mx-auto text-center w-full justify-between">
+      <img src={thumbnail} alt="" className="object-contain w-[50%]" />
       <div className="flex flex-col">
-        <h2>{product.productName}</h2>
-        <p>{product.brand}</p>
-        <p>{product.description}</p>
-        <p>{product.price}</p>
+        <h2>{productName}</h2>
+        <p>{brand}</p>
+        <p>{description}</p>
+        <p>{price}</p>
         <div className="flex">
-          <button onClick={() => setQuantity((prev) => ++prev)}>+</button>
-          <p>{quantity}</p>
-          <button onClick={() => setQuantity((prev) => --prev)}>-</button>
+          <button onClick={decrementQuantity}>-</button>
+          <input
+            type="text"
+            value={quantity}
+            onChange={handleQuantityChange}
+            min={1}
+            max={10}
+            className="text-center"
+          />
+          <button onClick={incrementQuantity}>+</button>
         </div>
 
-        {product.stock > 0 ? (
+        {stock > 0 ? (
           <div className="flex flex-col">
             <button
               onClick={() =>
                 dispatch(
                   cartSlice.actions.addItemToCart({
-                    id: product.id,
-                    price: product.price,
-                    thumbnail: product.thumbnail,
+                    id,
+                    price,
+                    thumbnail,
                     quantity,
-                    totalPrice: product.price * quantity,
-                    name: product.productName,
+                    totalPrice: price * quantity,
+                    name: productName,
                   })
                 )
               }
@@ -45,20 +69,17 @@ const Product = ({ product }: ProductProps) => {
         ) : (
           <p>This product is currently out of stock</p>
         )}
+        <Link to={""}>
+          <Rating
+            name="half-rating-read"
+            value={parseFloat(averageRating)}
+            precision={0.1}
+            readOnly
+          />
+        </Link>
+
+        <button>Add to Wishlist</button>
       </div>
-
-      <Link to={""}>
-        <Rating
-          name="half-rating-read"
-          value={product.averageRating}
-          precision={0.1}
-          readOnly
-        />
-      </Link>
-
-      <button>Add to Wishlist</button>
-      <button>Write a review</button>
-      {/* <Reviews /> */}
     </div>
   );
 };

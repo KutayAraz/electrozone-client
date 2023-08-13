@@ -4,6 +4,7 @@ import { CartItem, CartState } from "./models";
 const initialState: CartState = {
   items: [],
   totalQuantity: 0,
+  totalPrice: 0,
   changed: false,
 };
 
@@ -22,7 +23,7 @@ const cartSlice = createSlice({
       const newItem = action.payload;
       const existingItem = state.items.find((item) => item.id === newItem.id);
 
-      state.totalQuantity++;
+      state.totalQuantity += newItem.quantity;
       state.changed = true;
 
       if (!existingItem) {
@@ -30,32 +31,33 @@ const cartSlice = createSlice({
           id: newItem.id,
           thumbnail: newItem.thumbnail,
           price: newItem.price,
-          quantity: 1,
+          quantity: newItem.quantity,
           totalPrice: newItem.price,
           name: newItem.name,
         });
       } else {
-        existingItem.quantity++;
-        existingItem.totalPrice = existingItem.totalPrice + newItem.price;
+        existingItem.quantity += newItem.quantity;
+        existingItem.totalPrice = existingItem.totalPrice + (newItem.price * newItem.quantity);
+      }
+      state.totalPrice += action.payload.price * action.payload.quantity;
+    },
+    changeItemQuantity(
+      state,
+      action: PayloadAction<{ id: string; quantity: number }>
+    ) {
+      const { id, quantity } = action.payload;
+      const item = state.items.find((item) => item.id === id);
+
+      if (item) {
+        state.totalQuantity = state.totalQuantity - item.quantity + quantity;
+        item.quantity = quantity;
+        item.totalPrice = item.price * quantity;
+        state.changed = true;
+        const priceChange = action.payload.quantity - item.quantity;
+        state.totalPrice += priceChange * item.price;
       }
     },
-
     removeItemFromCart(state, action: PayloadAction<string>) {
-      const id = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-
-      state.totalQuantity--;
-      state.changed = true;
-
-      if (existingItem?.quantity === 1) {
-        state.items = state.items.filter((item) => item.id !== id);
-      } else {
-        existingItem!.quantity--;
-        existingItem!.totalPrice =
-          existingItem!.totalPrice - existingItem!.price;
-      }
-    },
-    removeItemCompletelyFromCart(state, action: PayloadAction<string>) {
       const id = action.payload;
 
       state.totalQuantity -= state.items.find(

@@ -1,5 +1,5 @@
 export interface ReviewType {
-  date: Date;
+  reviewDate: string;
   rating: number;
   comment: string;
 }
@@ -17,16 +17,17 @@ export interface ProductPageProps {
 }
 
 export interface ProductProps {
-  product: {
-    id: string;
-    productName: string;
-    brand: string;
-    description: string;
-    averageRating: number;
-    thumbnail: string;
-    price: number;
-    stock: number;
-    avgRating: number;
-    // images: string[];
-  };
+  id: string;
+  productName: string;
+  brand: string;
+  description: string;
+  averageRating: string;
+  thumbnail: string;
+  price: number;
+  stock: number;
+  // images: string[];
+}
+
+export interface ReviewsProps {
+  reviews: ReviewType[];
 }

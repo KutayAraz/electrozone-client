@@ -1,11 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./common/Layout/index";
-import Error from "./pages/error/index";
-import SignIn from "./pages/sign-in";
-import SignUp from "./pages/sign-up";
-import SignOut from "./pages/sign-out";
-import HomePage from "./pages/home";
-import UserProfile from "./pages/your-account/components/UserProfile";
 import UpdatePassword from "./pages/your-account/components/UpdatePassword";
 import SubcategoryPage, {
   loader as subcategoryLoader,
@@ -19,6 +13,11 @@ import CategoryPage, {
 import UserCart from "./pages/user-cart/index.tsx";
 import OrderStatus from "./pages/order-status/index.tsx";
 import ConfirmOrder from "./pages/confirm-order/index.tsx";
+import HomePage from "./pages/home/index.tsx";
+import SignIn from "./pages/sign-in/index.tsx";
+import SignOut from "./pages/sign-out/index.tsx";
+import SignUp from "./pages/sign-up/index.tsx";
+import UserProfile from "./pages/your-account/components/UserProfile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,7 +27,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
-        errorElement: <Error />,
       },
       {
         path: "/sign-up",

@@ -32,5 +32,6 @@ export interface CartItem {
 export interface CartState {
   items: CartItem[];
   totalQuantity: number;
+  totalPrice: number;
   changed: boolean;
 }
