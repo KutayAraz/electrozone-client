@@ -12,7 +12,6 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "./src/assets"),
       "@setup": path.resolve(__dirname, "./src/setup"),
       "@common": path.resolve(__dirname, "./src/common"),
-      "@Product": path.resolve(__dirname, "./src/pages/Product"),
     },
   },
 });

@@ -1,15 +1,13 @@
-export interface UserState {
-  user: {
-    userId: number | null;
-    email: string | null;
-    firstName: string | null;
-    lastName: string | null;
-    address: string | null;
-    city: string | null;
-  };
-  isSignedIn: boolean;
-  accessToken: string | null;
-  refreshToken: string | null;
+export interface User {
+  firstName: string | null;
+  city: string | null;
+}
+
+export interface UserProtected {
+  id: string | null;
+  email: string | null;
+  lastName: string | null;
+  address: string | null;
 }
 
 export interface UIState {

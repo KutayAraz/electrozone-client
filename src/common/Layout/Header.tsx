@@ -8,14 +8,14 @@ import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
 import { ReactComponent as LocationPin } from "@assets/svg/location-pin.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
 import { Link } from "react-router-dom";
-import { RootState } from "@/setup/store";
+import { useEffect } from "react";
 
 const Header = () => {
-  const firstName = useSelector(
-    (state: RootState) => state.user.user.firstName
-  );
-  const city = useSelector((state: RootState) => state.user.user.city);
-  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
+  const firstName = useSelector((state: any) => state.user.firstName);
+  const city = useSelector((state: any) => state.user.city);
+  const isSignedIn = firstName && city;
+
+  useEffect(() => {}, [city]);
 
   return (
     <div className="bg-[#13193F]">

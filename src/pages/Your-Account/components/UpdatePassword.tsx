@@ -1,8 +1,15 @@
+import { selectAccessToken } from "@/setup/slices/auth-slice";
+import { useSelector } from "react-redux";
 import { Form } from "react-router-dom";
 
 const UpdatePassword = () => {
+  const handlePasswordChange = () => {};
+
   return (
-    <Form className="max-w-xs flex flex-col mx-auto text-center justify-items-center mt-2">
+    <Form
+      className="max-w-xs flex flex-col mx-auto text-center justify-items-center mt-2"
+      onSubmit={handlePasswordChange}
+    >
       <label htmlFor="currentPassword">Current Password:</label>
       <input
         id="currentPassword"

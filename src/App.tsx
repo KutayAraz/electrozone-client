@@ -17,7 +17,8 @@ import HomePage from "./pages/home/index.tsx";
 import SignIn from "./pages/sign-in/index.tsx";
 import SignOut from "./pages/sign-out/index.tsx";
 import SignUp from "./pages/sign-up/index.tsx";
-import UserProfile from "./pages/your-account/components/UserProfile.tsx";
+import UserProfile from "./pages/your-account/index.tsx";
+import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
   {
@@ -41,14 +42,15 @@ const router = createBrowserRouter([
         element: <SignOut />,
       },
       {
-        path: "/my-profile",
+        element: <ProtectedRoute />,
         children: [
           {
             index: true,
+            path: "/my-profile",
             element: <UserProfile />,
           },
           {
-            path: "update-password",
+            path: "/my-profile/update-password",
             element: <UpdatePassword />,
           },
         ],
@@ -70,31 +72,31 @@ const router = createBrowserRouter([
         path: "/order-status",
         element: <OrderStatus />,
       },
-      {
-        path: ":category",
-        children: [
-          {
-            index: true,
-            element: <CategoryPage />,
-            loader: categoryLoader,
-          },
-          {
-            path: ":subcategory",
-            children: [
-              {
-                index: true,
-                element: <SubcategoryPage />,
-                loader: subcategoryLoader,
-              },
-              {
-                path: ":productId",
-                element: <ProductPage />,
-                loader: productLoader,
-              },
-            ],
-          },
-        ],
-      },
+      // {
+      //   path: ":category",
+      //   children: [
+      //     {
+      //       index: true,
+      //       element: <CategoryPage />,
+      //       loader: categoryLoader,
+      //     },
+      //     {
+      //       path: ":subcategory",
+      //       children: [
+      //         {
+      //           index: true,
+      //           element: <SubcategoryPage />,
+      //           loader: subcategoryLoader,
+      //         },
+      //         {
+      //           path: ":productId",
+      //           element: <ProductPage />,
+      //           loader: productLoader,
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
     ],
   },
 ]);

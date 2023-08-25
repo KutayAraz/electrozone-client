@@ -5,6 +5,7 @@ import userSlice from "./slices/user-slice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
+import authSlice from "./slices/auth-slice";
 
 const persistConfig = {
   key: "root",
@@ -17,10 +18,12 @@ const persistedCartReducer = persistReducer(persistConfig, cartSlice.reducer);
 export const store = configureStore({
   reducer: {
     ui: uiSlice.reducer,
+    auth: authSlice.reducer,
     cart: persistedCartReducer,
     user: persistedUserReducer,
   },
-  middleware: [thunk]
+  middleware: [thunk],
+  devTools: true,
 });
 
 export const persistor = persistStore(store);

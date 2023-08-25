@@ -1,5 +1,8 @@
 import useInput from "@/common/Hooks/use-input";
+import { setCredentials } from "@/setup/slices/user-slice";
+import Cookies from "js-cookie";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const isNotEmpty = (value: string) => value.trim() !== "";
@@ -8,6 +11,7 @@ const isPassword = (value: string) => value.length > 5;
 
 const SignUpForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isSending, setIsSending] = useState(false);
   const [formStatus, setFormStatus] = useState("");
   const {
@@ -87,9 +91,9 @@ const SignUpForm = () => {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/auth/signup", {
+    const response = await fetch("http://localhost:3000/auth/local/signup", {
       method: "POST",
-      mode: 'cors',
+      mode: "cors",
       headers: {
         "Content-Type": "application/json",
       },
@@ -104,6 +108,28 @@ const SignUpForm = () => {
       }),
     });
     if (response.status === 201) {
+      const result = await response.json();
+      const { access_token, refresh_token } = result;
+
+      Cookies.set("accessToken", access_token, {
+        expires: 1 / 24 / 60,
+        // httpOnly: true,
+        secure: true,
+      });
+
+      Cookies.set("refreshToken", refresh_token, {
+        expires: 3,
+        // httpOnly: true,
+        secure: true,
+      });
+
+      console.log(Cookies.get("refreshToken"));
+
+      dispatch(
+        setCredentials({
+          ...result,
+        })
+      );
       navigate("/");
     } else {
       setFormStatus("Please provide valid information.");

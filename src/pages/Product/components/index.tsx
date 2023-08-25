@@ -1,4 +1,4 @@
-import { ReviewType, ReviewsProps } from "@pages/product/models";
+import { ReviewsProps, ReviewType } from "../models";
 import Review from "./review-list/Review";
 
 const Reviews = ({ reviews }: ReviewsProps) => {

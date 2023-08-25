@@ -38,8 +38,8 @@ const Sidebar = ({
         <ul className="flex flex-col">
           <h3>Shop by Department</h3>
           <h4 className="text-lg font-bold">TVs & Soundbars</h4>
-          <Link to={"/tvs"}>TVs</Link>
-          <Link to={"/soundbars"}>Soundbars</Link>
+          <Link to={"tvs_and_soundbars/tvs"}>TVs</Link>
+          <Link to={"tvs_and_soundbars/soundbars"}>Soundbars</Link>
           <h4 className="text-lg font-bold">PCs & Laptops</h4>
           <Link to={"/pcs"}>PCs</Link>
           <Link to={"/laptops"}>Laptops</Link>

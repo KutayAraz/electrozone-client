@@ -1,45 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { UserState } from "./models";
+import { User } from "./models";
 
-const initialState: UserState = {
-  user: {
-    userId: null,
-    email: null,
-    firstName: null,
-    lastName: null,
-    address: null,
-    city: null,
-  },
-  isSignedIn: false,
-  accessToken: null,
-  refreshToken: null,
+const initialState: User = {
+  firstName: null,
+  city: null,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUserInfo(state, action) {
-      const userInfo = action.payload;
-      state.isSignedIn = true;
-      state.user = { ...state.user, ...userInfo };
+    setCredentials(state, action) {
+      state.firstName = action.payload.firstName;
+      state.city = action.payload.city;
     },
-    updateUserInfo(state, action) {
-      const userInfo = action.payload;
-      state.user = { ...state.user, ...userInfo };
-    },
-    signOut(state) {
+    clearCredentials(state) {
       Object.assign(state, initialState);
     },
-    handleAccessToken(state, action) {
-      state.accessToken = action.payload.accessToken;
-    },
-    handleRefreshToken(state, action) {
-      state.refreshToken = action.payload.refreshToken;
+    updateUserInfo(state, action) {
+      state.city = action.payload.city;
     },
   },
 });
 
-export const userActions = userSlice.actions;
+export const { setCredentials, clearCredentials, updateUserInfo } = userSlice.actions;
 
 export default userSlice;
