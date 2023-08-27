@@ -1,6 +1,7 @@
 export interface User {
   firstName: string | null;
   city: string | null;
+  isSignedIn: boolean
 }
 
 export interface UserProtected {
@@ -19,17 +20,16 @@ export interface UIState {
 }
 
 export interface CartItem {
-  id: string;
-  name: string;
-  thumbnail: string;
-  price: number;
+  id: number;
   quantity: number;
-  totalPrice: number;
 }
 
-export interface CartState {
+export interface LocalCartState {
   items: CartItem[];
   totalQuantity: number;
-  totalPrice: number;
-  changed: boolean;
+}
+
+export interface BuyNowCartState {
+  productId: number | null;
+  quantity: number;
 }

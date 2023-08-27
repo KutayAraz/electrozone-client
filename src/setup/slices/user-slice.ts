@@ -4,6 +4,7 @@ import { User } from "./models";
 const initialState: User = {
   firstName: null,
   city: null,
+  isSignedIn: false,
 };
 
 const userSlice = createSlice({
@@ -13,6 +14,7 @@ const userSlice = createSlice({
     setCredentials(state, action) {
       state.firstName = action.payload.firstName;
       state.city = action.payload.city;
+      state.isSignedIn = true;
     },
     clearCredentials(state) {
       Object.assign(state, initialState);

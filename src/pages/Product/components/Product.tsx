@@ -1,14 +1,26 @@
 import { Link } from "react-router-dom";
 import { ProductProps } from "../models";
 import Rating from "@mui/material/Rating";
-import { useDispatch } from "react-redux";
-import cartSlice from "@/setup/slices/cart-slice";
+import { useDispatch, useSelector } from "react-redux";
+import cartSlice, { addItemToCart } from "@/setup/slices/localCart-slice";
 import { useState } from "react";
 import Reviews from ".";
+import fetchNewAccessToken from "@/utils/fetch-access-token";
 
-const Product = ({ id, productName, brand, thumbnail, description, averageRating, price, stock }: ProductProps) => {
+const Product = ({
+  id,
+  productName,
+  brand,
+  thumbnail,
+  description,
+  averageRating,
+  price,
+  stock,
+}: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const dispatch = useDispatch();
+  const isSignedIn = useSelector((state: any) => state.user.isSignedIn);
+  const accessToken = useSelector((state: any) => state.auth.accessToken);
 
   const incrementQuantity = () => {
     setQuantity((prev) => (prev < 10 ? ++prev : prev));
@@ -22,6 +34,37 @@ const Product = ({ id, productName, brand, thumbnail, description, averageRating
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value)) {
       setQuantity(value > 10 ? 10 : value);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (isSignedIn) {
+      const response = await fetch("http://localhost:3000/carts/user-cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({ productId: id, quantity }),
+      });
+
+      if (response.status === 401) {
+        await fetchNewAccessToken(dispatch);
+        const response = await fetch("http://localhost:3000/carts/user-cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify({ productId: id, quantity }),
+        });
+
+        console.log(response.status);
+      }
+    } else {
+      dispatch(addItemToCart({ id, quantity }));
     }
   };
 
@@ -49,18 +92,15 @@ const Product = ({ id, productName, brand, thumbnail, description, averageRating
         {stock > 0 ? (
           <div className="flex flex-col">
             <button
-              onClick={() =>
+              onClick={() => {
                 dispatch(
                   cartSlice.actions.addItemToCart({
                     id,
-                    price,
-                    thumbnail,
                     quantity,
-                    totalPrice: price * quantity,
-                    name: productName,
                   })
-                )
-              }
+                );
+                handleAddToCart();
+              }}
             >
               Add to Cart
             </button>

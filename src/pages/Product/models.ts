@@ -17,7 +17,7 @@ export interface ProductPageProps {
 }
 
 export interface ProductProps {
-  id: string;
+  id: number;
   productName: string;
   brand: string;
   description: string;

@@ -6,7 +6,7 @@ const SubcategoryPage = () => {
   const { subcategory }: any = useLoaderData();
 
   return (
-    <div> 
+    <div>
       <h1>Products</h1>
       <Suspense fallback={<p>Loading Products..</p>}>
         <Await resolve={subcategory}>
@@ -21,19 +21,20 @@ export default SubcategoryPage;
 
 async function loadSubcategory(subcategory: string) {
   const response = await fetch(
-    "http://localhost:3000/subcategories/" + subcategory
+    `http://localhost:3000/subcategories/${subcategory}/featured`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
   );
-  if (!response.ok) {
-    throw json(
-      { message: "Could not fetch products." },
-      {
-        status: 500,
-      }
-    );
-  } else {
+  console.log(response);
+  if (response.status === 200) {
     const resp = await response.json();
-    console.log(resp)
-    return resp
+    console.log(resp[0]);
+    return resp;
   }
 }
 

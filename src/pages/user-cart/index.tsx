@@ -1,62 +1,92 @@
-import cartSlice from "@/setup/slices/cart-slice";
-
-import { ChangeEvent } from "react";
+import { RootState, store } from "@/setup/store";
+import { ChangeEvent, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Await, Link, defer, useLoaderData } from "react-router-dom";
+import CartItemCard from "./components/CartItemCard";
 
 const UserCart = () => {
-  const cart: any = useSelector<any>((state) => state.cart);
+  const cart: any = useSelector<any>((state) => state.localCart.quantity);
   const dispatch: any = useDispatch();
+  const { cartItems }: any = useLoaderData();
 
-  const handleQuantityChange = (
-    id: string,
-    event: ChangeEvent<HTMLSelectElement>
-  ) => {
-    dispatch(
-      cartSlice.actions.changeItemQuantity({
-        id,
-        quantity: parseInt(event.target.value),
-      })
-    );
-  };
   return (
     <div className="max-w-screen-lg mx-auto">
       <h2>Your Shopping Cart</h2>
-      {cart.items.map((product: any) => {
-        return (
-          <div key={product.id} className="flex w-full justify-between">
-            <img src={product.thumbnail} alt="" />
-            <div className="flex flex-col">
-              <p>{product.name}</p>
-              <p>{product.price}</p>
-              <select
-                value={product.quantity}
-                onChange={(event) => handleQuantityChange(product.id, event)}
-              >
-                {Array.from({ length: 10 }, (_, index) => (
-                  <option key={index + 1} value={index + 1}>
-                    {index + 1}
-                  </option>
-                ))}
-              </select>
-              <button
-                onClick={() =>
-                  dispatch(
-                    cartSlice.actions.removeItemFromCart(product.id)
-                  )
-                }
-              >
-                Remove item from cart
-              </button>
-              <p>{product.totalPrice}</p>
-            </div>
-          </div>
-        );
-      })}
-      <p>{cart.totalQuantity} hello</p>
-      <button>Proceed to Checkout</button>
+
+      <Suspense fallback={<p>Loading...</p>}>
+        <Await
+          resolve={cartItems}
+          children={(cartItems) => (
+            <>
+              {cartItems.localCartProducts.map((product: any) => (
+                <CartItemCard
+                  key={product.id}
+                  id={product.id}
+                  productName={product.productName}
+                  thumbnail={product.thumbnail}
+                  price={product.price}
+                  quantity={product.quantity}
+                  totalPrice={product.totalPrice}
+                />
+              ))}
+              <p>{cartItems.cartTotal}</p>
+              <button>Proceed to Checkout</button>
+            </>
+          )}
+        />
+      </Suspense>
     </div>
   );
 };
 
 export default UserCart;
+
+async function loadCart() {
+  const state = store.getState();
+  const isSignedIn = state.user.firstName;
+
+  console.log("isSignedIn", isSignedIn);
+
+  if (!isSignedIn) {
+    const localCartItems = state.localCart.items;
+    const items = localCartItems.map((item: any) => item);
+    console.log(items);
+    const response = await fetch("http://localhost:3000/carts/local-cart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(items),
+    });
+
+    if (response.status === 201) {
+      return await response.json();
+    } else {
+      throw new Error("Failed to fetch local cart");
+    }
+  }
+
+  const accessToken = state.auth.accessToken;
+
+  const response = await fetch("http://localhost:3000/carts/user-cart", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (response.status === 200) {
+    return await response.json();
+  } else {
+    throw new Error("Failed to fetch user cart");
+  }
+}
+
+export function loader() {
+  return defer({
+    cartItems: loadCart(),
+  });
+}

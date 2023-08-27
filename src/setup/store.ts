@@ -1,11 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import uiSlice from "./slices/ui-slice";
-import cartSlice from "./slices/cart-slice";
 import userSlice from "./slices/user-slice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
 import authSlice from "./slices/auth-slice";
+import localCartSlice from "./slices/localCart-slice";
+import buyNowCartSlice from "./slices/buyNowCart-slice";
 
 const persistConfig = {
   key: "root",
@@ -13,14 +14,22 @@ const persistConfig = {
 };
 
 const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
-const persistedCartReducer = persistReducer(persistConfig, cartSlice.reducer);
+const persistedLocalCartReducer = persistReducer(
+  persistConfig,
+  localCartSlice.reducer
+);
+const persistedBuyNowCartReducer = persistReducer(
+  persistConfig,
+  buyNowCartSlice.reducer
+);
 
 export const store = configureStore({
   reducer: {
     ui: uiSlice.reducer,
     auth: authSlice.reducer,
-    cart: persistedCartReducer,
     user: persistedUserReducer,
+    localCart: persistedLocalCartReducer,
+    buyNowCart: persistedBuyNowCartReducer,
   },
   middleware: [thunk],
   devTools: true,

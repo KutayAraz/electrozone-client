@@ -1,8 +1,7 @@
 import authSlice from "@/setup/slices/auth-slice";
 import { updateUserInfo } from "@/setup/slices/user-slice";
 import { RootState } from "@/setup/store";
-import { fetchNewAccessToken } from "@/utils/ProtectedRoute";
-import refreshtoken from "@/utils/refresh-token";
+import refreshtoken, { fetchNewAccessToken } from "@/utils/fetch-access-token";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {

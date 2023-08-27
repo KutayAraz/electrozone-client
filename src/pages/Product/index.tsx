@@ -51,7 +51,7 @@ async function loadProduct(productId: string) {
 
 async function loadReviews(productId: string) {
   const response = await fetch(
-    `http://localhost:3000/products/${productId}/reviews`
+    `http://localhost:3000/reviews/${productId}/reviews`
   );
 
   if (!response.ok) {
