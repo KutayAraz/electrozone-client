@@ -78,7 +78,7 @@ const UserProfile = () => {
     });
 
     if (response.status === 401) {
-      await fetchNewAccessToken(dispatch);
+      await fetchNewAccessToken();
       navigate("/sign-in");
     } else if (response?.status === 200) {
       const result = await response.json();

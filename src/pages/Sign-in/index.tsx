@@ -1,9 +1,10 @@
 import useInput from "@/common/Hooks/use-input";
 import { selectAccessToken, setAccessToken } from "@/setup/slices/auth-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
+import { store } from "@/setup/store";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const isEmail = (value: string) => value.includes("@");
 const isPassword = (value: string) => value.length > 5;
@@ -11,6 +12,9 @@ const isPassword = (value: string) => value.length > 5;
 const SignInForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
+  const from = state?.from || "/";
 
   const errRef = useRef<any>();
   const [formStatus, setFormStatus] = useState("");
@@ -68,7 +72,31 @@ const SignInForm = () => {
           accessToken: result.access_token,
         })
       );
-      navigate("/");
+      if (store.getState().localCart.items.length > 0) {
+        const localCartItems = store.getState().localCart.items;
+        const productsToAdd = localCartItems.map((item: any) => ({
+          productId: item.product.id,
+          quantity: item.quantity,
+        }));
+        const response = await fetch(
+          "http://localhost:3000/carts/buynow-cart",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${result.access_token}`,
+            },
+            body: JSON.stringify(productsToAdd),
+          }
+        );
+
+        if (response.status === 200) {
+          navigate(from);
+        }
+      } else {
+        navigate(from);
+      }
     } else {
       setFormStatus("Invalid credentials");
     }

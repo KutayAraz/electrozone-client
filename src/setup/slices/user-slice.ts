@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User } from "./models";
+import { CheckoutIntent, User } from "./models";
 
 const initialState: User = {
   firstName: null,
   city: null,
   isSignedIn: false,
+  userIntent: CheckoutIntent.Normal,
 };
 
 const userSlice = createSlice({
@@ -22,9 +23,17 @@ const userSlice = createSlice({
     updateUserInfo(state, action) {
       state.city = action.payload.city;
     },
+    setUserIntent(state, action) {
+      state.userIntent = action.payload;
+    },
   },
 });
 
-export const { setCredentials, clearCredentials, updateUserInfo } = userSlice.actions;
+export const {
+  setCredentials,
+  clearCredentials,
+  updateUserInfo,
+  setUserIntent,
+} = userSlice.actions;
 
 export default userSlice;

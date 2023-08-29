@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ProductProps } from "../models";
 import Rating from "@mui/material/Rating";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,9 @@ import cartSlice, { addItemToCart } from "@/setup/slices/localCart-slice";
 import { useState } from "react";
 import Reviews from ".";
 import fetchNewAccessToken from "@/utils/fetch-access-token";
+import { addtoBuyNowCart } from "@/setup/slices/buyNowCart-slice";
+import { setUserIntent } from "@/setup/slices/user-slice";
+import { CheckoutIntent } from "@/setup/slices/models";
 
 const Product = ({
   id,
@@ -16,9 +19,11 @@ const Product = ({
   averageRating,
   price,
   stock,
+  isWishlisted
 }: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isSignedIn = useSelector((state: any) => state.user.isSignedIn);
   const accessToken = useSelector((state: any) => state.auth.accessToken);
 
@@ -50,7 +55,7 @@ const Product = ({
       });
 
       if (response.status === 401) {
-        await fetchNewAccessToken(dispatch);
+        await fetchNewAccessToken();
         const response = await fetch("http://localhost:3000/carts/user-cart", {
           method: "POST",
           headers: {
@@ -66,6 +71,29 @@ const Product = ({
     } else {
       dispatch(addItemToCart({ id, quantity }));
     }
+  };
+
+  const handleBuyNow = async () => {
+    if (!isSignedIn) {
+      navigate("/sign-in");
+    }
+    if (!accessToken || !isSignedIn) {
+      await fetchNewAccessToken();
+    }
+    dispatch(addtoBuyNowCart({ id, quantity }));
+    dispatch(setUserIntent(CheckoutIntent.Instant));
+    navigate("/checkout");
+  };
+
+  const toggleWishlist = async () => {
+    if (!isSignedIn) {
+      navigate("/sign-in");
+    }
+    if (!accessToken || !isSignedIn) {
+      await fetchNewAccessToken();
+    }
+
+    const response = await fetch("http://localhost:3000/wi");
   };
 
   return (
@@ -104,7 +132,7 @@ const Product = ({
             >
               Add to Cart
             </button>
-            <button>Buy now</button>
+            <button onClick={handleBuyNow}>Buy now</button>
           </div>
         ) : (
           <p>This product is currently out of stock</p>
@@ -118,7 +146,11 @@ const Product = ({
           />
         </Link>
 
-        <button>Add to Wishlist</button>
+        {!isWishlisted ? (
+          <button onClick={toggleWishlist}>Add to Wishlist</button>
+        ) : (
+          <button onClick={toggleWishlist}>Remove From Wishlist</button>
+        )}
       </div>
     </div>
   );

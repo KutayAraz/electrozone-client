@@ -3,7 +3,7 @@ import {
   setAccessToken,
   clearAccessToken,
 } from "@/setup/slices/auth-slice";
-import { AppDispatch } from "@/setup/store";
+import { AppDispatch, RootState } from "@/setup/store";
 import { ReactNode, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, Route, redirect, useNavigate } from "react-router-dom";
@@ -16,13 +16,16 @@ const ProtectedRoute = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
+  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn)
 
   useEffect(() => {
+    if(!isSignedIn){
+      navigate("/sign-in")
+    }
     if (!accessToken) {
-      fetchNewAccessToken(dispatch)
+      fetchNewAccessToken()
         .then((newToken) => {
           setLoading(false);
-          // If you want to keep the user in the current location and not redirect them to sign-in after fetching the new token, you can check the token here again and navigate accordingly
           if (!newToken) {
             navigate("/sign-in");
           }

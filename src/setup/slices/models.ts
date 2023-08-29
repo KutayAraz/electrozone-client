@@ -1,7 +1,8 @@
 export interface User {
   firstName: string | null;
   city: string | null;
-  isSignedIn: boolean
+  isSignedIn: boolean;
+  userIntent: CheckoutIntent;
 }
 
 export interface UserProtected {
@@ -32,4 +33,10 @@ export interface LocalCartState {
 export interface BuyNowCartState {
   productId: number | null;
   quantity: number;
+}
+
+export enum CheckoutIntent {
+  Normal = "normalCheckout",
+  Local = "localCheckout",
+  Instant = "instantCheckout",
 }

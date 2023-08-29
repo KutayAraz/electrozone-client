@@ -26,6 +26,7 @@ export interface ProductProps {
   price: number;
   stock: number;
   // images: string[];
+  isWishlisted: boolean
 }
 
 export interface ReviewsProps {

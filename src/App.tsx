@@ -10,7 +10,7 @@ import ProductPage, {
 import CategoryPage, {
   loader as categoryLoader,
 } from "./pages/category/index.tsx";
-import UserCart, {loader as cartLoader} from "./pages/user-cart/index.tsx";
+import UserCart, { loader as cartLoader } from "./pages/user-cart/index.tsx";
 import OrderStatus from "./pages/order-status/index.tsx";
 import ConfirmOrder from "./pages/confirm-order/index.tsx";
 import HomePage from "./pages/home/index.tsx";
@@ -19,6 +19,7 @@ import SignOut from "./pages/sign-out/index.tsx";
 import SignUp from "./pages/sign-up/index.tsx";
 import UserProfile from "./pages/your-account/index.tsx";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
+import Checkout, { loader as checkoutLoader } from "./pages/checkout/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -56,12 +57,23 @@ const router = createBrowserRouter([
         ],
       },
       {
+        element: <ProtectedRoute />,
+        children: [
+          {
+            index: true,
+            path: "/checkout",
+            element: <Checkout />,
+            loader: checkoutLoader,
+          },
+        ],
+      },
+      {
         path: "/my-cart",
         children: [
           {
             index: true,
             element: <UserCart />,
-            loader: cartLoader
+            loader: cartLoader,
           },
           {
             path: "confirm-order",

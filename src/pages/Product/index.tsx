@@ -3,24 +3,26 @@ import { ProductProps, ReviewsProps } from "./models";
 import { Suspense } from "react";
 import Product from "./components/Product";
 import Reviews from "./components";
+import { store } from "@/setup/store";
 
 const ProductPage = () => {
-  const { product, reviews }: any = useLoaderData();
+  const { product, reviews, wishlisted }: any = useLoaderData();
 
   return (
     <Suspense fallback={<p>Loading...</p>}>
-      <Await
-        resolve={product}
-        children={(product) => (
+       <Await
+        resolve={Promise.all([product, wishlisted])}
+        children={([productData, wishlistedData]) => (
           <Product
-            id={product.id}
-            productName={product.productName}
-            thumbnail={product.thumbnail}
-            brand={product.brand}
-            description={product.description}
-            price={product.price}
-            stock={product.stock}
-            averageRating={product.averageRating}
+            id={productData.id}
+            productName={productData.productName}
+            thumbnail={productData.thumbnail}
+            brand={productData.brand}
+            description={productData.description}
+            price={productData.price}
+            stock={productData.stock}
+            averageRating={productData.averageRating}
+            isWishlisted={wishlistedData}
           />
         )}
       />
@@ -49,6 +51,29 @@ async function loadProduct(productId: string) {
   }
 }
 
+async function checkWishlist(productId: string) {
+  const isSignedIn = store.getState().user.isSignedIn;
+  if (!isSignedIn) {
+    return false;
+  }
+  const response = await fetch(
+    `http://localhost:3000/products/${productId}/wishlist`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+
+  if(response.status === 200){
+    return await response.json()
+  }
+
+  console.log()
+}
+
 async function loadReviews(productId: string) {
   const response = await fetch(
     `http://localhost:3000/reviews/${productId}/reviews`
@@ -62,9 +87,7 @@ async function loadReviews(productId: string) {
       }
     );
   } else {
-    const resp = await response.json()
-    console.log(resp)
-    return resp;
+    return await response.json();
   }
 }
 
@@ -73,5 +96,6 @@ export function loader({ params }: any) {
   return defer({
     product: loadProduct(productId),
     reviews: loadReviews(productId),
+    wishlisted: checkWishlist(productId),
   });
 }

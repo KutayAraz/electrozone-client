@@ -1,13 +1,27 @@
 import { RootState, store } from "@/setup/store";
 import { ChangeEvent, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Await, Link, defer, useLoaderData } from "react-router-dom";
+import {
+  Await,
+  Link,
+  defer,
+  useLoaderData,
+  useNavigate,
+} from "react-router-dom";
 import CartItemCard from "./components/CartItemCard";
+import { checkHydration } from "@/utils/check-hydration";
+import fetchNewAccessToken from "@/utils/fetch-access-token";
 
 const UserCart = () => {
   const cart: any = useSelector<any>((state) => state.localCart.quantity);
+  const navigate = useNavigate();
   const dispatch: any = useDispatch();
+  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const { cartItems }: any = useLoaderData();
+
+  const handleCheckoutButton = () => {
+    if (!isSignedIn) navigate("/checkout");
+  };
 
   return (
     <div className="max-w-screen-lg mx-auto">
@@ -18,7 +32,7 @@ const UserCart = () => {
           resolve={cartItems}
           children={(cartItems) => (
             <>
-              {cartItems.localCartProducts.map((product: any) => (
+              {cartItems.products.map((product: any) => (
                 <CartItemCard
                   key={product.id}
                   id={product.id}
@@ -30,7 +44,9 @@ const UserCart = () => {
                 />
               ))}
               <p>{cartItems.cartTotal}</p>
-              <button>Proceed to Checkout</button>
+              <button onClick={handleCheckoutButton}>
+                Proceed to Checkout
+              </button>
             </>
           )}
         />
@@ -42,15 +58,13 @@ const UserCart = () => {
 export default UserCart;
 
 async function loadCart() {
+  await checkHydration(store);
   const state = store.getState();
   const isSignedIn = state.user.firstName;
-
-  console.log("isSignedIn", isSignedIn);
 
   if (!isSignedIn) {
     const localCartItems = state.localCart.items;
     const items = localCartItems.map((item: any) => item);
-    console.log(items);
     const response = await fetch("http://localhost:3000/carts/local-cart", {
       method: "POST",
       headers: {
@@ -67,9 +81,25 @@ async function loadCart() {
     }
   }
 
-  const accessToken = state.auth.accessToken;
+  let accessToken = state.auth.accessToken;
 
-  const response = await fetch("http://localhost:3000/carts/user-cart", {
+  const response = await fetchUserCart(accessToken);
+
+  if (response.status === 200) {
+    return await response.json();
+  } else if (response.status === 401) {
+    const newToken = await fetchNewAccessToken();
+    if (newToken) {
+      const resp = await fetchUserCart(newToken);
+      return await resp.json();
+    }
+  } else {
+    throw new Error("Failed to fetch user cart");
+  }
+}
+
+async function fetchUserCart(accessToken: any) {
+  return await fetch("http://localhost:3000/carts/user-cart", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -77,12 +107,6 @@ async function loadCart() {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
-  if (response.status === 200) {
-    return await response.json();
-  } else {
-    throw new Error("Failed to fetch user cart");
-  }
 }
 
 export function loader() {
