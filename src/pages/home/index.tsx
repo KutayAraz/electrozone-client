@@ -1,8 +1,7 @@
-import userSlice, { selectCurrentUser } from "@/setup/slices/user-slice";
 import { useSelector } from "react-redux";
 
 const HomePage = () => {
-  const user = useSelector((state:any) => state.user.firstName)
+  const user = useSelector((state: any) => state.user.firstName);
   return (
     <>
       <div className="flex flex-col max-w-screen-lg mx-auto text-center">

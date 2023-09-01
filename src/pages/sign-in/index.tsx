@@ -1,5 +1,6 @@
 import useInput from "@/common/Hooks/use-input";
 import { selectAccessToken, setAccessToken } from "@/setup/slices/auth-slice";
+import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
 import { store } from "@/setup/store";
 import { useRef, useState } from "react";
@@ -75,13 +76,14 @@ const SignInForm = () => {
       if (store.getState().localCart.items.length > 0) {
         const localCartItems = store.getState().localCart.items;
         const productsToAdd = localCartItems.map((item: any) => ({
-          productId: item.product.id,
+          productId: item.id,
           quantity: item.quantity,
         }));
+
         const response = await fetch(
-          "http://localhost:3000/carts/buynow-cart",
+          "http://localhost:3000/carts/merge-carts",
           {
-            method: "POST",
+            method: "PATCH",
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
@@ -92,6 +94,7 @@ const SignInForm = () => {
         );
 
         if (response.status === 200) {
+          dispatch(clearLocalcart());
           navigate(from);
         }
       } else {

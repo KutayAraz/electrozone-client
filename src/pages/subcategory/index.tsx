@@ -32,9 +32,7 @@ async function loadSubcategory(subcategory: string) {
   );
   console.log(response);
   if (response.status === 200) {
-    const resp = await response.json();
-    console.log(resp[0]);
-    return resp;
+    return await response.json();
   }
 }
 

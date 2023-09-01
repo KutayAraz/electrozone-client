@@ -10,21 +10,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
 
 const Checkout = () => {
-  const { cartItems: cartItemsPromise, user }: any = useLoaderData();
-  const [cartItems, setCartItems] = useState<any>(null);
+  const { cartItems, user }: any = useLoaderData();
 
+  const [checkoutItems, setCheckoutItems] = useState<any>(cartItems);
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log("hello")
 
   const handleOrderPlacement = async () => {
     if (!accessToken) {
       await fetchNewAccessToken();
     }
 
-    const productsToOrder = cartItems?.products.map((item: any) => ({
-      productId: item.product.id,
+    console.log(checkoutItems);
+
+    const productsToOrder = checkoutItems.products.map((item: any) => ({
+      productId: item.id,
       quantity: item.quantity,
     }));
 
@@ -44,13 +47,16 @@ const Checkout = () => {
   };
 
   const handleBackToHome = async () => {
-    if (userIntent === CheckoutIntent.Normal) {
-      navigate("/");
-    } else if (CheckoutIntent.Instant) {
-      const productsToOrder = cartItems?.products.map((item: any) => ({
-        productId: item.product.id,
+    if (
+      userIntent === CheckoutIntent.Instant ||
+      userIntent === CheckoutIntent.Local
+    ) {
+      const productsToOrder = checkoutItems.products.map((item: any) => ({
+        productId: item.id,
         quantity: item.quantity,
       }));
+
+      console.log(productsToOrder);
       const response = await fetch("http://localhost:3000/orders", {
         method: "POST",
         headers: {
@@ -61,12 +67,13 @@ const Checkout = () => {
         body: JSON.stringify({ cartItems: productsToOrder }),
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         console.log("merged");
         dispatch(clearbuyNowCart());
         navigate("/");
       }
     } else {
+      navigate("/");
     }
   };
 
@@ -85,31 +92,21 @@ const Checkout = () => {
             />
           )}
         />
-        <Await
-          resolve={cartItemsPromise}
-          children={(resolvedCartItems) => {
-            useEffect(() => {
-              setCartItems(resolvedCartItems);
-            }, [resolvedCartItems]);
+        <>
+          {checkoutItems.products.map((productItem: any) => {
+            const productDetails = productItem.product;
             return (
-              <>
-                {resolvedCartItems.products.map((productItem: any) => {
-                  const productDetails = productItem.product;
-                  return (
-                    <CheckoutProductCard
-                      key={productDetails.id}
-                      productName={productDetails.productName}
-                      brand={productDetails.brand}
-                      thumbnail={productDetails.thumbnail}
-                      price={productDetails.price}
-                      quantity={productItem.quantity}
-                    />
-                  );
-                })}
-              </>
+              <CheckoutProductCard
+                key={productDetails.id}
+                productName={productDetails.productName}
+                brand={productDetails.brand}
+                thumbnail={productDetails.thumbnail}
+                price={productDetails.price}
+                quantity={productItem.quantity}
+              />
             );
-          }}
-        />
+          })}
+        </>
       </Suspense>
       <button onClick={handleOrderPlacement}>Confirm Order</button>
     </>
@@ -122,6 +119,7 @@ async function getCartInfo() {
   await checkHydration(store);
   const state = store.getState();
   const userIntent = state.user.userIntent;
+  console.log(userIntent);
   let accessToken = state.auth.accessToken;
   if (!accessToken) {
     accessToken = await fetchNewAccessToken();
@@ -146,7 +144,6 @@ async function getCartInfo() {
     }
   } else if (userIntent === CheckoutIntent.Instant) {
     const buyNowCart = state.buyNowCart;
-
     const response = await fetch("http://localhost:3000/carts/buynow-cart", {
       method: "POST",
       headers: {
@@ -160,9 +157,10 @@ async function getCartInfo() {
       }),
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       const data = await response.json();
-      return [data];
+      console.log(data);
+      return data;
     }
   } else {
     const localCart = state.localCart.items;
@@ -212,9 +210,9 @@ async function getUserInfo() {
   }
 }
 
-export function loader() {
-  return defer({
-    cartItems: getCartInfo(),
-    user: getUserInfo(),
+export async function loader() {
+  return defer ({
+    cartItems: await getCartInfo(),
+    user: await getUserInfo(),
   });
 }

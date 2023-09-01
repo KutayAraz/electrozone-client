@@ -20,6 +20,9 @@ import SignUp from "./pages/sign-up/index.tsx";
 import UserProfile from "./pages/your-account/index.tsx";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 import Checkout, { loader as checkoutLoader } from "./pages/checkout/index.tsx";
+import UserWishlist, {
+  loader as wishlistLoader,
+} from "./pages/user-wishlist/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -57,15 +60,9 @@ const router = createBrowserRouter([
         ],
       },
       {
-        element: <ProtectedRoute />,
-        children: [
-          {
-            index: true,
-            path: "/checkout",
-            element: <Checkout />,
-            loader: checkoutLoader,
-          },
-        ],
+        path: "/my-wishlist",
+        element: <UserWishlist />,
+        loader: wishlistLoader,
       },
       {
         path: "/my-cart",
@@ -109,6 +106,17 @@ const router = createBrowserRouter([
             ],
           },
         ],
+      },
+    ],
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
+      {
+        index: true,
+        path: "/checkout",
+        element: <Checkout />,
+        loader: checkoutLoader,
       },
     ],
   },

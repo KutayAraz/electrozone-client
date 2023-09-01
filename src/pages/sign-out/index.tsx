@@ -9,7 +9,7 @@ const SignOut = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(clearCredentials());
-    dispatch(clearAccessToken())
+    dispatch(clearAccessToken());
     navigate("/");
   }, []);
 

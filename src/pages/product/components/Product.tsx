@@ -9,6 +9,7 @@ import fetchNewAccessToken from "@/utils/fetch-access-token";
 import { addtoBuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
+import { store } from "@/setup/store";
 
 const Product = ({
   id,
@@ -19,7 +20,7 @@ const Product = ({
   averageRating,
   price,
   stock,
-  isWishlisted
+  isWishlisted,
 }: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const dispatch = useDispatch();
@@ -54,22 +55,12 @@ const Product = ({
         body: JSON.stringify({ productId: id, quantity }),
       });
 
-      if (response.status === 401) {
-        await fetchNewAccessToken();
-        const response = await fetch("http://localhost:3000/carts/user-cart", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({ productId: id, quantity }),
-        });
-
-        console.log(response.status);
+      if (response.status === 201) {
+        window.alert("added to cart");
       }
     } else {
       dispatch(addItemToCart({ id, quantity }));
+      window.alert("added to cart");
     }
   };
 
@@ -119,19 +110,7 @@ const Product = ({
 
         {stock > 0 ? (
           <div className="flex flex-col">
-            <button
-              onClick={() => {
-                dispatch(
-                  cartSlice.actions.addItemToCart({
-                    id,
-                    quantity,
-                  })
-                );
-                handleAddToCart();
-              }}
-            >
-              Add to Cart
-            </button>
+            <button onClick={handleAddToCart}>Add to Cart</button>
             <button onClick={handleBuyNow}>Buy now</button>
           </div>
         ) : (

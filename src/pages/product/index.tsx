@@ -70,8 +70,6 @@ async function checkWishlist(productId: string) {
   if(response.status === 200){
     return await response.json()
   }
-
-  console.log()
 }
 
 async function loadReviews(productId: string) {

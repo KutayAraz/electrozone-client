@@ -1,5 +1,6 @@
 import cartSlice from "@/setup/slices/localCart-slice";
-import { ChangeEvent } from "react";
+import { store } from "@/setup/store";
+import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const CartItemCard = ({
@@ -9,8 +10,12 @@ const CartItemCard = ({
   thumbnail,
   quantity,
   totalPrice,
+  onRemoveItem,
+  onQuantityChange
 }: CartItemCardProps) => {
   const dispatch = useDispatch();
+  const [selectedQuantity, setSelectedQuantity] = useState(quantity);
+
   const handleQuantityChange = (
     id: number,
     event: ChangeEvent<HTMLSelectElement>
@@ -21,6 +26,13 @@ const CartItemCard = ({
         quantity: parseInt(event.target.value),
       })
     );
+    setSelectedQuantity(parseInt(event.target.value));
+    onQuantityChange()
+  };
+
+  const handleRemoveProduct = () => {
+    dispatch(cartSlice.actions.removeItemFromCart(id));
+    onRemoveItem();
   };
 
   return (
@@ -31,7 +43,7 @@ const CartItemCard = ({
       </div>
       <p>{price}</p>
       <select
-        value={quantity}
+        value={selectedQuantity}
         onChange={(event) => handleQuantityChange(id, event)}
       >
         {Array.from({ length: 10 }, (_, index) => (
@@ -40,14 +52,10 @@ const CartItemCard = ({
           </option>
         ))}
       </select>
-      <button
-        onClick={() => dispatch(cartSlice.actions.removeItemFromCart(id))}
-      >
-        Remove item from cart
-      </button>
+      <button onClick={handleRemoveProduct}>Remove item from cart</button>
       <p>{totalPrice}</p>
     </div>
   );
 };
 
-export default CartItemCard
+export default CartItemCard;
