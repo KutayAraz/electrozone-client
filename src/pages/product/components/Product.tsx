@@ -2,14 +2,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { ProductProps } from "../models";
 import Rating from "@mui/material/Rating";
 import { useDispatch, useSelector } from "react-redux";
-import cartSlice, { addItemToCart } from "@/setup/slices/localCart-slice";
+import { addItemToCart } from "@/setup/slices/localCart-slice";
 import { useState } from "react";
-import Reviews from ".";
 import fetchNewAccessToken from "@/utils/fetch-access-token";
 import { addtoBuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
-import { store } from "@/setup/store";
+import WishlistButton from "./WishlistButton";
 
 const Product = ({
   id,
@@ -21,12 +20,13 @@ const Product = ({
   price,
   stock,
   isWishlisted,
+  updateWishlistStatus,
 }: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSignedIn = useSelector((state: any) => state.user.isSignedIn);
-  const accessToken = useSelector((state: any) => state.auth.accessToken);
+  let accessToken = useSelector((state: any) => state.auth.accessToken);
 
   const incrementQuantity = () => {
     setQuantity((prev) => (prev < 10 ? ++prev : prev));
@@ -80,11 +80,31 @@ const Product = ({
     if (!isSignedIn) {
       navigate("/sign-in");
     }
-    if (!accessToken || !isSignedIn) {
-      await fetchNewAccessToken();
+    if (!accessToken) {
+      accessToken = await fetchNewAccessToken();
     }
 
-    const response = await fetch("http://localhost:3000/wi");
+    const response = await fetch(
+      `http://localhost:3000/products/${id}/wishlist`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    if (response.status === 200 || response.status === 201) {
+      const data = await response.json(); // Parse the JSON from the response
+  
+      if (data.action === 'added') {
+        updateWishlistStatus(true);
+      } else if (data.action === 'removed') {
+        updateWishlistStatus(false);
+      }
+    }
   };
 
   return (
@@ -125,11 +145,7 @@ const Product = ({
           />
         </Link>
 
-        {!isWishlisted ? (
-          <button onClick={toggleWishlist}>Add to Wishlist</button>
-        ) : (
-          <button onClick={toggleWishlist}>Remove From Wishlist</button>
-        )}
+        <WishlistButton isWishlisted={isWishlisted} toggleWishlist={toggleWishlist} />
       </div>
     </div>
   );

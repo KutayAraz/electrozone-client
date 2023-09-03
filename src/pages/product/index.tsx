@@ -1,16 +1,23 @@
 import { Await, defer, json, useLoaderData } from "react-router-dom";
 import { ProductProps, ReviewsProps } from "./models";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import Product from "./components/Product";
 import Reviews from "./components";
 import { store } from "@/setup/store";
+import fetchNewAccessToken from "@/utils/fetch-access-token";
 
 const ProductPage = () => {
   const { product, reviews, wishlisted }: any = useLoaderData();
 
+  const [productWishlist, setProductWishlist] = useState<boolean>(wishlisted);
+
+  const updateWishlistStatus = (isWishlisted: boolean) => {
+    setProductWishlist(isWishlisted);
+  };
+
   return (
     <Suspense fallback={<p>Loading...</p>}>
-       <Await
+      <Await
         resolve={Promise.all([product, wishlisted])}
         children={([productData, wishlistedData]) => (
           <Product
@@ -22,7 +29,8 @@ const ProductPage = () => {
             price={productData.price}
             stock={productData.stock}
             averageRating={productData.averageRating}
-            isWishlisted={wishlistedData}
+            isWishlisted={productWishlist}
+            updateWishlistStatus={updateWishlistStatus}
           />
         )}
       />
@@ -56,6 +64,12 @@ async function checkWishlist(productId: string) {
   if (!isSignedIn) {
     return false;
   }
+
+  let accessToken = store.getState().auth.accessToken;
+
+  if (!accessToken) {
+    accessToken = await fetchNewAccessToken();
+  }
   const response = await fetch(
     `http://localhost:3000/products/${productId}/wishlist`,
     {
@@ -63,12 +77,17 @@ async function checkWishlist(productId: string) {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
     }
   );
 
-  if(response.status === 200){
-    return await response.json()
+  console.log(response.status);
+
+  if (response.status === 200) {
+    const resp = await response.json();
+    console.log(resp);
+    return resp;
   }
 }
 
@@ -89,11 +108,11 @@ async function loadReviews(productId: string) {
   }
 }
 
-export function loader({ params }: any) {
+export async function loader({ params }: any) {
   const productId = params.productId;
   return defer({
     product: loadProduct(productId),
     reviews: loadReviews(productId),
-    wishlisted: checkWishlist(productId),
+    wishlisted: await checkWishlist(productId),
   });
 }

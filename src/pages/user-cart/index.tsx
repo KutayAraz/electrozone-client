@@ -11,7 +11,7 @@ import fetchNewAccessToken from "@/utils/fetch-access-token";
 const UserCart = () => {
   const navigate = useNavigate();
   const dispatch: any = useDispatch();
-  const {cart}: any = useLoaderData();
+  const { cart }: any = useLoaderData();
   const [cartData, setCartData] = useState<any>(cart);
   const [refetchTrigger, setRefetchTrigger] = useState(false);
 
@@ -25,6 +25,10 @@ const UserCart = () => {
       navigate("/checkout");
     }
   };
+
+  const handleClearCartButton = async() => {
+    
+  }
 
   useEffect(() => {
     async function refetchCart() {
@@ -49,6 +53,27 @@ const UserCart = () => {
           setCartData(fetchedCartData);
         } catch (error) {
           console.error("Failed to fetch cart:", error);
+        }
+      } else {
+        let accessToken = store.getState().auth.accessToken;
+
+        if (!accessToken) {
+          accessToken = await fetchNewAccessToken();
+        }
+
+        try {
+          const data = await fetch("http://localhost:3000/carts/user-cart", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          const fetchedCartData = await data.json();
+          setCartData(fetchedCartData);
+        } catch (error) {
+          console.error("Failed to fetch  usercart:", error);
         }
       }
     }
@@ -83,6 +108,7 @@ const UserCart = () => {
             })}
             <p>{cartData.cartTotal}</p>
             <button onClick={handleCheckoutButton}>Proceed to Checkout</button>
+            <button onClick={handleClearCartButton}>Clear Cart</button>
           </>
         </div>
       </Suspense>

@@ -23,6 +23,7 @@ import Checkout, { loader as checkoutLoader } from "./pages/checkout/index.tsx";
 import UserWishlist, {
   loader as wishlistLoader,
 } from "./pages/user-wishlist/index.tsx";
+import SearchResultsPage from "./pages/search/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
             element: <UpdatePassword />,
           },
         ],
+      },
+      {
+        path: "/search",
+        element: <SearchResultsPage />
       },
       {
         path: "/my-wishlist",

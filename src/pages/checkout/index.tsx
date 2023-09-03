@@ -17,15 +17,12 @@ const Checkout = () => {
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log("hello")
 
   const handleOrderPlacement = async () => {
     if (!accessToken) {
       await fetchNewAccessToken();
     }
-
-    console.log(checkoutItems);
-
+    
     const productsToOrder = checkoutItems.products.map((item: any) => ({
       productId: item.id,
       quantity: item.quantity,
