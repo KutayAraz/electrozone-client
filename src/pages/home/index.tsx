@@ -79,7 +79,7 @@ const HomePage = () => {
 
 export default HomePage;
 const fetchProducts = async (url: string) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/${url}`);
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${url}`);
   if (response.status === 200) {
     return response.json();
   }
