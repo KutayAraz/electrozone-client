@@ -1,4 +1,5 @@
 import useInput from "@/common/Hooks/use-input";
+import { setAccessToken } from "@/setup/slices/auth-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
 import Cookies from "js-cookie";
 import { useState } from "react";
@@ -91,39 +92,29 @@ const SignUpForm = () => {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/auth/local/signup", {
-      method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: emailValue,
-        password: passwordValue,
-        retypedPassword: retypedPasswordValue,
-        firstName: firstNameValue,
-        lastName: lastNameValue,
-        address: addressValue,
-        city: cityValue,
-      }),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/auth/local/signup`,
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: emailValue,
+          password: passwordValue,
+          retypedPassword: retypedPasswordValue,
+          firstName: firstNameValue,
+          lastName: lastNameValue,
+          address: addressValue,
+          city: cityValue,
+        }),
+      }
+    );
     if (response.status === 201) {
       const result = await response.json();
-      const { access_token, refresh_token } = result;
-
-      Cookies.set("accessToken", access_token, {
-        expires: 1 / 24 / 60,
-        // httpOnly: true,
-        secure: true,
-      });
-
-      Cookies.set("refreshToken", refresh_token, {
-        expires: 3,
-        // httpOnly: true,
-        secure: true,
-      });
-
-      console.log(Cookies.get("refreshToken"));
+      const { access_token } = result;
+      dispatch(setAccessToken(access_token));
 
       dispatch(
         setCredentials({

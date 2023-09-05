@@ -31,7 +31,7 @@ export default CategoryPage;
 async function loadSubcategory(categoryName: string) {
   console.log(categoryName);
   const response = await fetch(
-    "http://localhost:3000/categories/" + categoryName
+    `${import.meta.env.VITE_API_URL}/categories/` + categoryName
   );
 
   if (!response.ok) {

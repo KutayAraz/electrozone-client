@@ -28,7 +28,7 @@ const Checkout = () => {
       quantity: item.quantity,
     }));
 
-    const response = await fetch("http://localhost:3000/orders", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ const Checkout = () => {
       }));
 
       console.log(productsToOrder);
-      const response = await fetch("http://localhost:3000/orders", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -123,7 +123,7 @@ async function getCartInfo() {
   }
 
   if (userIntent === CheckoutIntent.Normal) {
-    const response = await fetch("http://localhost:3000/carts/user-cart", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/carts/user-cart`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -141,7 +141,7 @@ async function getCartInfo() {
     }
   } else if (userIntent === CheckoutIntent.Instant) {
     const buyNowCart = state.buyNowCart;
-    const response = await fetch("http://localhost:3000/carts/buynow-cart", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/carts/buynow-cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -165,7 +165,7 @@ async function getCartInfo() {
       productId: item.product.id,
       quantity: item.quantity,
     }));
-    const response = await fetch("http://localhost:3000/carts/buynow-cart", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/carts/buynow-cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -190,7 +190,7 @@ async function getUserInfo() {
     accessToken = await fetchNewAccessToken();
   }
 
-  const response = await fetch("http://localhost:3000/user/profile", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -11,7 +11,7 @@ const SearchResultsPage = () => {
     const fetchData = async () => {
       const encodedQuery = encodeURIComponent(query || "");
       const response = await fetch(
-        `http://localhost:3000/products?search=${encodedQuery}`
+        `${import.meta.env.VITE_API_URL}/products?search=${encodedQuery}`
       );
       if (response.ok) {
         const data = await response.json();

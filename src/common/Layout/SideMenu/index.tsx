@@ -2,7 +2,6 @@ import { SidebarProps } from "@common/Layout/models";
 import Modal from "./Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "@/setup/slices/ui-slice";
-// import { State } from "./models";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "@/setup/store";
 import { useEffect } from "react";
@@ -12,9 +11,6 @@ const Sidebar = ({
 }: SidebarProps) => {
   const dispatch = useDispatch();
   const location = useLocation();
-  // const handleSections = (section: string) => {
-  //   dispatch(uiActions.toggleSections(section));
-  // };
 
   const handleSideNav = () => {
     dispatch(uiActions.toggleSideNav());
@@ -42,16 +38,22 @@ const Sidebar = ({
           <Link to={"tvs_and_soundbars/soundbars"}>Soundbars</Link>
           <h4 className="text-lg font-bold">PCs & Laptops</h4>
           <Link to={"/pcs"}>PCs</Link>
-          <Link to={"/laptops"}>Laptops</Link>
-          <Link to={"/monitors"}>Monitors</Link>
-          <Link to={"/computer-accessories"}>Computer Accessories</Link>
+          <Link to={"computers_and_accessories/laptops"}>Laptops</Link>
+          <Link to={"computers_and_accessories/monitors"}>Monitors</Link>
+          <Link to={"computers_and_accessories/computer-accessories"}>
+            Computer Accessories
+          </Link>
           <h4 className="text-lg font-bold">Printers & Ink</h4>
-          <Link to={"/laser-printers"}>Laser Printers</Link>
-          <Link to={"/inkjet-printers"}>Inkjet Printers</Link>
-          <Link to={"/ink"}>Ink</Link>
+          <Link to={"printers_and_ink/laser-printers"}>Laser Printers</Link>
+          <Link to={"printers_and_ink/inkjet-printers"}>Inkjet Printers</Link>
+          <Link to={"printers_and_ink/ink"}>Ink</Link>
           <h4 className="text-lg font-bold">Phones & Accessories</h4>
-          <Link to={"/smartphones"}>Smartphones</Link>
-          <Link to={"/smartphone-accessories"}>Phone Accessories</Link>
+          <Link to={"smartphones_and_accessories/smartphones"}>
+            Smartphones
+          </Link>
+          <Link to={"smartphones_and_accessories/smartphone-accessories"}>
+            Phone Accessories
+          </Link>
         </ul>
         <div>
           <h4 className="text-lg font-bold">Help & Settings</h4>

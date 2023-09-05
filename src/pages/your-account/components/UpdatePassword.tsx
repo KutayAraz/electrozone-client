@@ -40,7 +40,7 @@ const UpdatePassword: React.FC = () => {
   console.log(accessToken + "access");
 
   const handlePasswordChange = async (data: FormInputs) => {
-    const response = await fetch("http://localhost:3000/auth/update-password", {
+    const response = await fetch(`${import.meta.env.API_URL}/auth/update-password`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

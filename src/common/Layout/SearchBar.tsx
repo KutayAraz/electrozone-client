@@ -11,15 +11,15 @@ const SearchBar = ({ className }: { className?: string }) => {
     }
   };
   return (
-    <div>
+    <div className="flex">
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search Electrozone"
-        className={`${className} rounded-md`}
+        className={`${className} rounded-md w-full`}
       />
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch} className="">Search</button>
     </div>
   );
 };

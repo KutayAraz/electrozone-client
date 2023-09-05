@@ -29,7 +29,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/user/profile", {
+        const response = await fetch(`${import.meta.env.API_URL}/user/profile`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
@@ -67,7 +67,7 @@ const UserProfile = () => {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/user/profile", {
+    const response = await fetch(`${import.meta.env.API_URL}/user/profile`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",

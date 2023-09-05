@@ -45,7 +45,9 @@ const ProductPage = () => {
 export default ProductPage;
 
 async function loadProduct(productId: string) {
-  const response = await fetch("http://localhost:3000/products/" + productId);
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/products/${productId}`
+  );
 
   if (!response.ok) {
     throw json(
@@ -71,7 +73,7 @@ async function checkWishlist(productId: string) {
     accessToken = await fetchNewAccessToken();
   }
   const response = await fetch(
-    `http://localhost:3000/products/${productId}/wishlist`,
+    `${import.meta.env.VITE_API_URL}/${productId}/wishlist`,
     {
       method: "GET",
       headers: {
@@ -93,7 +95,7 @@ async function checkWishlist(productId: string) {
 
 async function loadReviews(productId: string) {
   const response = await fetch(
-    `http://localhost:3000/reviews/${productId}/reviews`
+    `${import.meta.env.VITE_API_URL}/reviews/${productId}/reviews`
   );
 
   if (!response.ok) {

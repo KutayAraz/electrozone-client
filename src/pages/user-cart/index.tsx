@@ -41,7 +41,7 @@ const UserCart = () => {
           }));
         console.log(productsInLocalCart);
         try {
-          const data = await fetch("http://localhost:3000/carts/local-cart", {
+          const data = await fetch(`${import.meta.env.API_URL}/carts/local-cart`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const UserCart = () => {
         }
 
         try {
-          const data = await fetch("http://localhost:3000/carts/user-cart", {
+          const data = await fetch(`${import.meta.env.API_URL}/carts/user-cart`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -132,7 +132,7 @@ async function loadCart() {
       };
     });
 
-    const response = await fetch("http://localhost:3000/carts/local-cart", {
+    const response = await fetch(`${import.meta.env.API_URL}/carts/local-cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -158,7 +158,7 @@ async function loadCart() {
 }
 
 async function fetchUserCart(accessToken: any): Promise<any> {
-  const response = await fetch("http://localhost:3000/carts/user-cart", {
+  const response = await fetch(`${import.meta.env.API_URL}/carts/user-cart`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

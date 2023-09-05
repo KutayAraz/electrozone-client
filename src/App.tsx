@@ -13,7 +13,7 @@ import CategoryPage, {
 import UserCart, { loader as cartLoader } from "./pages/user-cart/index.tsx";
 import OrderStatus from "./pages/order-status/index.tsx";
 import ConfirmOrder from "./pages/confirm-order/index.tsx";
-import HomePage from "./pages/home/index.tsx";
+import HomePage, { loader as homePageLoader } from "./pages/home/index.tsx";
 import SignIn from "./pages/sign-in/index.tsx";
 import SignOut from "./pages/sign-out/index.tsx";
 import SignUp from "./pages/sign-up/index.tsx";
@@ -33,6 +33,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+        loader: homePageLoader,
       },
       {
         path: "/sign-up",
@@ -62,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/search",
-        element: <SearchResultsPage />
+        element: <SearchResultsPage />,
       },
       {
         path: "/my-wishlist",

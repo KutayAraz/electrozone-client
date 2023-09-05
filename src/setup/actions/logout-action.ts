@@ -5,7 +5,7 @@ import { store } from "../store";
 export const logout = () => async (dispatch: any) => {
   try {
     const accessToken = store.getState().auth.accessToken;
-    await fetch("http://localhost:3000/auth/logout", {
+    await fetch(`${import.meta.env.API_URL}/auth/logout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

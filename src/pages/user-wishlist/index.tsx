@@ -19,7 +19,7 @@ const UserWishlist = () => {
     }
 
     const response = await fetch(
-      `http://localhost:3000/products/${id}/wishlist`,
+      `${import.meta.env.API_URL}/products/${id}/wishlist`,
       {
         method: "PATCH",
         headers: {
@@ -69,7 +69,7 @@ async function loadWishlist() {
     accessToken = await fetchNewAccessToken();
   }
 
-  const response = await fetch("http://localhost:3000/user/wishlist", {
+  const response = await fetch(`${import.meta.env.API_URL}/user/wishlist`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -4,7 +4,7 @@ import { store } from "../store";
 
 export const signin = () => async (dispatch: any) => {
   try {
-    const response = await fetch("http://localhost:3000/auth/signin", {
+    const response = await fetch(`${import.meta.env.API_URL}/auth/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

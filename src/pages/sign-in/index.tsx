@@ -47,7 +47,7 @@ const SignInForm = () => {
       return;
     }
 
-    const response = await fetch("http://localhost:3000/auth/signin", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const SignInForm = () => {
         }));
 
         const response = await fetch(
-          "http://localhost:3000/carts/merge-carts",
+          `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
           {
             method: "PATCH",
             headers: {

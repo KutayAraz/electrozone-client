@@ -9,47 +9,15 @@ import {
 import ProductList from "./components/ProductList";
 import { Suspense, useEffect, useState } from "react";
 
-export async function fetchFeaturedProducts(subcategory: string) {
+const fetchProducts = async (subcategory: string, sort: string) => {
   const response = await fetch(
-    `http://localhost:3000/subcategories/${subcategory}/featured`
+    `${import.meta.env.API_URL}/subcategories/${subcategory}/${sort}`
   );
   if (response.ok) {
     return response.json();
   }
   throw new Error("Failed to fetch data");
-}
-
-export async function fetchProductsSortedByRating(subcategory: string) {
-  const response = await fetch(
-    `http://localhost:3000/subcategories/${subcategory}/rating`
-  );
-  if (response.ok) {
-    return response.json();
-  }
-  throw new Error("Failed to fetch data");
-}
-
-export async function fetchProductsSortedByAscendingPrice(subcategory: string) {
-  const response = await fetch(
-    `http://localhost:3000/subcategories/${subcategory}/price_ascending`
-  );
-  if (response.status === 200) {
-    return response.json();
-  }
-  throw new Error("Failed to fetch data");
-}
-
-export async function fetchProductsSortedByDescendingPrice(
-  subcategory: string
-) {
-  const response = await fetch(
-    `http://localhost:3000/subcategories/${subcategory}/price_descending`
-  );
-  if (response.status === 200) {
-    return response.json();
-  }
-  throw new Error("Failed to fetch data");
-}
+};
 
 const SubcategoryPage = () => {
   const { subcategoryData }: any = useLoaderData();
@@ -57,32 +25,11 @@ const SubcategoryPage = () => {
   const { subcategory }: any = useParams();
   const [productsData, setProducts] = useState(subcategoryData);
 
-  console.log(subcategory)
-
   useEffect(() => {
-    const sortMethod = searchParams.get("sort");
-
-    const fetchData = async () => {
-      let data;
-      switch (sortMethod) {
-        case "rating":
-          console.log("subcate", subcategory)
-          data = await fetchProductsSortedByRating(subcategory);
-          break;
-        case "price_ascending":
-          data = await fetchProductsSortedByAscendingPrice(subcategory);
-          break;
-        case "price_descending":
-          data = await fetchProductsSortedByDescendingPrice(subcategory);
-          break;
-        default:
-          data = await fetchFeaturedProducts(subcategory);
-      }
-
-      setProducts(data);
-    };
-
-    fetchData().catch((error) => console.error(error));
+    const sortMethod = searchParams.get("sort") || "featured";
+    fetchProducts(subcategory, sortMethod)
+      .then((data) => setProducts(data))
+      .catch((error) => console.error(error));
   }, [subcategory, searchParams]);
 
   const handleSortChange = (e: any) => {
@@ -102,7 +49,9 @@ const SubcategoryPage = () => {
         <option value="price_descending">Price Descending</option>
       </select>
       <Suspense fallback={<p>Loading Products..</p>}>
-        <><ProductList products={productsData} /></>
+        <>
+          <ProductList products={productsData} />
+        </>
       </Suspense>
     </div>
   );
@@ -110,22 +59,9 @@ const SubcategoryPage = () => {
 
 export default SubcategoryPage;
 
-async function loadSubcategory(subcategory: string) {
-  const response = await fetch(
-    `http://localhost:3000/subcategories/${subcategory}/featured`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    }
-  );
-  console.log(response);
-  if (response.status === 200) {
-    return await response.json();
-  }
-}
+const loadSubcategory = async (subcategory: string) => {
+  return fetchProducts(subcategory, "featured");
+};
 
 export async function loader({ params }: any) {
   const subcategory = params.subcategory;
