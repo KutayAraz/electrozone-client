@@ -15,14 +15,18 @@ const Product = ({
   productName,
   brand,
   thumbnail,
+  images,
   description,
   averageRating,
   price,
   stock,
+  category,
+  subcategory,
   isWishlisted,
   updateWishlistStatus,
 }: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
+  const [selectedImage, setSelectedImage] = useState(thumbnail);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isSignedIn = useSelector((state: any) => state.user.isSignedIn);
@@ -65,15 +69,16 @@ const Product = ({
   };
 
   const handleBuyNow = async () => {
-    if (!isSignedIn) {
-      navigate("/sign-in");
-    }
-    if (!accessToken || !isSignedIn) {
-      await fetchNewAccessToken();
-    }
     dispatch(addtoBuyNowCart({ id, quantity }));
     dispatch(setUserIntent(CheckoutIntent.Instant));
-    navigate("/checkout");
+    if (!isSignedIn) {
+      navigate("/sign-in", { state: { from: { pathname: "/checkout" } } });
+    } else if (!accessToken || isSignedIn()) {
+      await fetchNewAccessToken();
+      navigate("/checkout");
+    } else {
+      navigate("/checkout");
+    }
   };
 
   const toggleWishlist = async () => {
@@ -98,10 +103,10 @@ const Product = ({
 
     if (response.status === 200 || response.status === 201) {
       const data = await response.json(); // Parse the JSON from the response
-  
-      if (data.action === 'added') {
+
+      if (data.action === "added") {
         updateWishlistStatus(true);
-      } else if (data.action === 'removed') {
+      } else if (data.action === "removed") {
         updateWishlistStatus(false);
       }
     }
@@ -109,7 +114,43 @@ const Product = ({
 
   return (
     <div className="flex max-w-screen-md mx-auto text-center w-full justify-between">
-      <img src={thumbnail} alt="" className="object-contain w-[50%]" />
+      <div className="flex">
+        <Link to={`/${category.replace(/-/g, "_")}`}>{category}&gt;</Link>
+        <Link
+          to={`/${category.replace(/-/g, "_")}/${subcategory.replace(
+            /-/g,
+            "_"
+          )}`}
+        >
+          {subcategory}&gt;
+        </Link>
+        <Link
+          to={`/${category.replace(/-/g, "_")}/${subcategory.replace(
+            /-/g,
+            "_"
+          )}/${id}`}
+        >
+          {productName.slice(0, 15)}
+        </Link>
+      </div>
+      <div className="flex flex-col-reverse w-[20%]">
+        <img
+          src={thumbnail}
+          alt=""
+          className="object-contain w-full mb-2 cursor-pointer"
+          onClick={() => setSelectedImage(thumbnail)}
+        />
+        {images?.map((image: any, index: number) => (
+          <img
+            key={index}
+            src={image.productImage}
+            alt=""
+            className="object-contain w-full mb-2 cursor-pointer"
+            onClick={() => setSelectedImage(image.productImage)}
+          />
+        ))}
+      </div>
+      <img src={selectedImage} alt="" className="object-contain w-[50%]" />
       <div className="flex flex-col">
         <h2>{productName}</h2>
         <p>{brand}</p>
@@ -145,7 +186,10 @@ const Product = ({
           />
         </Link>
 
-        <WishlistButton isWishlisted={isWishlisted} toggleWishlist={toggleWishlist} />
+        <WishlistButton
+          isWishlisted={isWishlisted}
+          toggleWishlist={toggleWishlist}
+        />
       </div>
     </div>
   );

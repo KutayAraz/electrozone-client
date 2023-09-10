@@ -29,7 +29,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.API_URL}/user/profile`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

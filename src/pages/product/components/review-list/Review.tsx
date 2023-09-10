@@ -1,12 +1,12 @@
 import { ReviewType } from "../../models";
 
-const Review = ({ rating, comment, reviewDate }: ReviewType) => {
+const Review = ({ id, rating, comment, reviewDate }: ReviewType) => {
   const date = new Date(reviewDate).toLocaleDateString();
-  console.log(date)
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mx-auto text-center mt-6">
       <p>{date}</p>
-      <p>{rating}</p> 
+      <p>Rating: {rating}</p>
       <p>{comment}</p>
     </div>
   );

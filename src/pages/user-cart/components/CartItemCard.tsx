@@ -3,6 +3,7 @@ import { store } from "@/setup/store";
 import fetchNewAccessToken from "@/utils/fetch-access-token";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const CartItemCard = ({
   id,
@@ -11,20 +12,22 @@ const CartItemCard = ({
   thumbnail,
   quantity,
   totalPrice,
+  subcategory,
+  category,
   onRemoveItem,
   onQuantityChange,
 }: CartItemCardProps) => {
   const dispatch = useDispatch();
   const [selectedQuantity, setSelectedQuantity] = useState(quantity);
   const isSignedIn = store.getState().user.isSignedIn;
-  
+
   const handleQuantityChange = async (
     event: ChangeEvent<HTMLSelectElement>
   ) => {
     if (isSignedIn) {
       let accessToken = store.getState().auth.accessToken;
 
-      const newQuantity = parseInt(event.target.value)
+      const newQuantity = parseInt(event.target.value);
 
       if (!accessToken) {
         accessToken = await fetchNewAccessToken();
@@ -84,10 +87,13 @@ const CartItemCard = ({
 
   return (
     <div className="flex flex-col" key={id}>
-      <p>{productName}</p>
-      <div className="flex w-full justify-between">
-        <img src={thumbnail} alt="" />
-      </div>
+      <Link to={`/${category}/${subcategory}/${id}`}>
+        <p>{productName}</p>
+        <div className="flex w-full justify-between">
+          <img src={thumbnail} alt="" />
+        </div>
+      </Link>
+
       <p>{price}</p>
       <select
         value={selectedQuantity}

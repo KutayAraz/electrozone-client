@@ -11,7 +11,7 @@ import { Suspense, useEffect, useState } from "react";
 
 const fetchProducts = async (subcategory: string, sort: string) => {
   const response = await fetch(
-    `${import.meta.env.API_URL}/subcategories/${subcategory}/${sort}`
+    `${import.meta.env.VITE_API_URL}/subcategories/${subcategory}/${sort}`
   );
   if (response.ok) {
     return response.json();

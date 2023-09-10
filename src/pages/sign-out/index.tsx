@@ -1,4 +1,5 @@
 import { clearAccessToken } from "@/setup/slices/auth-slice";
+import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { clearCredentials } from "@/setup/slices/user-slice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -9,6 +10,7 @@ const SignOut = () => {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(clearCredentials());
+    dispatch(clearLocalcart());
     dispatch(clearAccessToken());
     navigate("/");
   }, []);

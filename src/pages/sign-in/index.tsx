@@ -1,6 +1,7 @@
 import useInput from "@/common/Hooks/use-input";
 import { selectAccessToken, setAccessToken } from "@/setup/slices/auth-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
+import { CheckoutIntent } from "@/setup/slices/models";
 import { setCredentials } from "@/setup/slices/user-slice";
 import { store } from "@/setup/store";
 import { useRef, useState } from "react";
@@ -14,8 +15,7 @@ const SignInForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { state } = location;
-  const from = state?.from || "/";
+  const { from } = location.state || { from: { pathname: "/" } };
 
   const errRef = useRef<any>();
   const [formStatus, setFormStatus] = useState("");
@@ -47,18 +47,21 @@ const SignInForm = () => {
       return;
     }
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/signin`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        email: emailValue,
-        password: passwordValue,
-      }),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/auth/signin`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: emailValue,
+          password: passwordValue,
+        }),
+      }
+    );
 
     if (response.status === 200) {
       const result = await response.json();
@@ -73,7 +76,10 @@ const SignInForm = () => {
           accessToken: result.access_token,
         })
       );
-      if (store.getState().localCart.items.length > 0) {
+      if (
+        store.getState().user.userIntent === CheckoutIntent.Normal &&
+        store.getState().localCart.items.length > 0
+      ) {
         const localCartItems = store.getState().localCart.items;
         const productsToAdd = localCartItems.map((item: any) => ({
           productId: item.id,
@@ -93,12 +99,17 @@ const SignInForm = () => {
           }
         );
 
-        if (response.status === 200) {
+        if (response.ok) {
           dispatch(clearLocalcart());
-          navigate(from);
+          
+          console.log(from.pathname)
+          navigate(from.pathname);
         }
       } else {
-        navigate(from);
+        console.log("checkoutintent local")
+        console.log(from)
+        console.log(store.getState().localCart.items)
+        navigate(from.pathname);
       }
     } else {
       setFormStatus("Invalid credentials");

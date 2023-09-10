@@ -1,4 +1,5 @@
 const CheckoutProductCard = ({
+  id,
   productName,
   thumbnail,
   brand,

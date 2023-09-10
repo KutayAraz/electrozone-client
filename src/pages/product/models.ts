@@ -1,21 +1,3 @@
-export interface ReviewType {
-  reviewDate: string;
-  rating: number;
-  comment: string;
-}
-
-export interface ProductPageProps {
-  productName: string;
-  brand: string;
-  description: string;
-  averageRating: number;
-  thumbnail: string;
-  price: number;
-  stock: number;
-  avgRating: number;
-  // images: string[];
-}
-
 export interface ProductProps {
   id: number;
   productName: string;
@@ -25,11 +7,20 @@ export interface ProductProps {
   thumbnail: string;
   price: number;
   stock: number;
-  // images: string[];
+  images: string[] | null;
+  category:string;
+  subcategory: string;
   isWishlisted: boolean;
   updateWishlistStatus: (status: boolean) => void;
 }
 
 export interface ReviewsProps {
   reviews: ReviewType[];
+}
+
+export interface ReviewType {
+  id: string;
+  reviewDate: string;
+  rating: number;
+  comment: string;
 }

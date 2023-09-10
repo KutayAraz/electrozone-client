@@ -1,12 +1,18 @@
 import { RootState, store } from "@/setup/store";
 import { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { defer, useLoaderData, useNavigate } from "react-router-dom";
+import {
+  defer,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import CartItemCard from "./components/CartItemCard";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
 import { checkHydration } from "@/utils/check-hydration";
 import fetchNewAccessToken from "@/utils/fetch-access-token";
+import { clearLocalcart } from "@/setup/slices/localCart-slice";
 
 const UserCart = () => {
   const navigate = useNavigate();
@@ -14,21 +20,48 @@ const UserCart = () => {
   const { cart }: any = useLoaderData();
   const [cartData, setCartData] = useState<any>(cart);
   const [refetchTrigger, setRefetchTrigger] = useState(false);
-
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   const handleCheckoutButton = () => {
     if (!isSignedIn) {
       dispatch(setUserIntent(CheckoutIntent.Local));
-      navigate("/sign-in");
+      navigate("/sign-in", { state: { from: { pathname: "/checkout" } } });
+    } else if (cartData.products.length === 0) {
+      window.alert("your cart is empty");
+      return null;
     } else {
       navigate("/checkout");
     }
   };
 
-  const handleClearCartButton = async() => {
-    
-  }
+  const handleClearCartButton = async () => {
+    if (!isSignedIn) {
+      dispatch(clearLocalcart());
+      setCartData([]);
+    } else {
+      let accessToken = store.getState().auth.accessToken;
+
+      if (!accessToken) {
+        accessToken = await fetchNewAccessToken();
+      }
+
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/carts/clear-cart`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        setCartData([]);
+      }
+    }
+  };
 
   useEffect(() => {
     async function refetchCart() {
@@ -39,18 +72,23 @@ const UserCart = () => {
             productId: item.id,
             quantity: item.quantity,
           }));
-        console.log(productsInLocalCart);
         try {
-          const data = await fetch(`${import.meta.env.API_URL}/carts/local-cart`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify(productsInLocalCart),
-          });
-          const fetchedCartData = await data.json();
-          setCartData(fetchedCartData);
+          const data = await fetch(
+            `${import.meta.env.VITE_API_URL}/carts/local-cart`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify(productsInLocalCart),
+            }
+          );
+
+          if (data.ok) {
+            const fetchedCartData = await data.json();
+            setCartData(fetchedCartData);
+          }
         } catch (error) {
           console.error("Failed to fetch cart:", error);
         }
@@ -62,16 +100,22 @@ const UserCart = () => {
         }
 
         try {
-          const data = await fetch(`${import.meta.env.API_URL}/carts/user-cart`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-          const fetchedCartData = await data.json();
-          setCartData(fetchedCartData);
+          const data = await fetch(
+            `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+
+          if (data.ok) {
+            const fetchedCartData = await data.json();
+            setCartData(fetchedCartData);
+          }
         } catch (error) {
           console.error("Failed to fetch  usercart:", error);
         }
@@ -89,27 +133,34 @@ const UserCart = () => {
       <h2>Your Shopping Cart</h2>
       <Suspense fallback={<p>Loading..</p>}>
         <div>
-          <>
-            {cartData.products.map((product: any) => {
-              const productDetails = product.product;
-              return (
-                <CartItemCard
-                  key={productDetails.id}
-                  id={productDetails.id}
-                  productName={productDetails.productName}
-                  thumbnail={productDetails.thumbnail}
-                  price={productDetails.price}
-                  quantity={product.quantity}
-                  totalPrice={product.totalPrice}
-                  onQuantityChange={triggerRefetch}
-                  onRemoveItem={triggerRefetch}
-                />
-              );
-            })}
-            <p>{cartData.cartTotal}</p>
-            <button onClick={handleCheckoutButton}>Proceed to Checkout</button>
-            <button onClick={handleClearCartButton}>Clear Cart</button>
-          </>
+          {cartData.length === 0 ? (
+            <p>There's nothing in your cart</p>
+          ) : (
+            <>
+              {cartData.products.map((product: any) => {
+                return (
+                  <CartItemCard
+                    key={product.id}
+                    id={product.id}
+                    productName={product.productName}
+                    thumbnail={product.thumbnail}
+                    price={product.price}
+                    quantity={product.quantity}
+                    totalPrice={product.totalPrice}
+                    subcategory={product.subcategory}
+                    category={product.category}
+                    onQuantityChange={triggerRefetch}
+                    onRemoveItem={triggerRefetch}
+                  />
+                );
+              })}
+              <p>{cartData.cartTotal}</p>
+              <button onClick={handleCheckoutButton}>
+                Proceed to Checkout
+              </button>
+              <button onClick={handleClearCartButton}>Clear Cart</button>
+            </>
+          )}
         </div>
       </Suspense>
     </div>
@@ -132,14 +183,17 @@ async function loadCart() {
       };
     });
 
-    const response = await fetch(`${import.meta.env.API_URL}/carts/local-cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(productsToOrder),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/carts/local-cart`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(productsToOrder),
+      }
+    );
 
     if (response.status === 201) {
       return await response.json();
@@ -158,14 +212,17 @@ async function loadCart() {
 }
 
 async function fetchUserCart(accessToken: any): Promise<any> {
-  const response = await fetch(`${import.meta.env.API_URL}/carts/user-cart`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
   if (response.status === 200) {
     return await response.json();
   }

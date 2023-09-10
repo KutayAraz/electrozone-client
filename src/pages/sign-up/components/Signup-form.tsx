@@ -93,7 +93,7 @@ const SignUpForm = () => {
     }
 
     const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/auth/local/signup`,
+      `${import.meta.env.VITE_API_URL}/auth/signup`,
       {
         method: "POST",
         mode: "cors",

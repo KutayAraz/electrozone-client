@@ -2,27 +2,93 @@ import { CheckoutIntent } from "@/setup/slices/models";
 import { RootState, store } from "@/setup/store";
 import { checkHydration } from "@/utils/check-hydration";
 import fetchNewAccessToken from "@/utils/fetch-access-token";
-import { Suspense, useEffect, useState } from "react";
-import { useLoaderData, Await, defer, useNavigate } from "react-router-dom";
+import { Suspense, useEffect, useRef, useState } from "react";
+import {
+  useLoaderData,
+  Await,
+  defer,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import CheckoutProductCard from "./components/CheckoutProductCard";
 import UserCard from "./components/UserCard";
 import { useDispatch, useSelector } from "react-redux";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
+import { clearLocalcart } from "@/setup/slices/localCart-slice";
+import { setUserIntent } from "@/setup/slices/user-slice";
 
 const Checkout = () => {
   const { cartItems, user }: any = useLoaderData();
-
+  const [showModal, setShowModal] = useState(false);
   const [checkoutItems, setCheckoutItems] = useState<any>(cartItems);
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const location = useLocation();
+  const previousLocation = useRef(location).current; // remember the previous location
+
+  // useEffect(() => {
+  //   // Check if user navigated back to the CheckoutPage from another page
+  //   if (previousLocation.pathname !== location.pathname) {
+  //     // Check if the user was redirected from the sign-in page
+  //     if (previousLocation.pathname === "/sign-in") {
+  //       // Redirect them to the my-cart route
+  //       navigate("/my-cart");
+  //     }
+  //   }
+  // }, [location, navigate, previousLocation]);
+
+  function YourComponent() {
+    useEffect(() => {
+      return () => {
+        window.addEventListener("beforeunload", () => console.log("hello"));
+      };
+    }, []);
+  }
+
+  const addToCartAndNavigate = async () => {
+    const productsToOrder = checkoutItems.products.map((item: any) => ({
+      productId: item.id,
+      quantity: item.quantity,
+    }));
+
+    console.log("addToCartAndNavigate function is running");
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(productsToOrder),
+      }
+    );
+
+    if (response.ok) {
+      console.log("merged");
+      dispatch(clearbuyNowCart());
+      dispatch(clearLocalcart());
+      dispatch(setUserIntent(CheckoutIntent.Normal));
+    }
+
+    setShowModal(false);
+  };
+
+  const justNavigate = () => {
+    navigate("/my-cart");
+    setShowModal(false);
+  };
+
   const handleOrderPlacement = async () => {
     if (!accessToken) {
       await fetchNewAccessToken();
     }
-    
+
     const productsToOrder = checkoutItems.products.map((item: any) => ({
       productId: item.id,
       quantity: item.quantity,
@@ -39,44 +105,53 @@ const Checkout = () => {
     });
 
     if (response.status === 201) {
-      console.log("order has been placed");
-    }
-  };
+      const orderId = await response.json();
+      let accessToken = store.getState().auth.accessToken;
 
-  const handleBackToHome = async () => {
-    if (
-      userIntent === CheckoutIntent.Instant ||
-      userIntent === CheckoutIntent.Local
-    ) {
-      const productsToOrder = checkoutItems.products.map((item: any) => ({
-        productId: item.id,
-        quantity: item.quantity,
-      }));
+      if (!accessToken) {
+        accessToken = await fetchNewAccessToken();
+      }
 
-      console.log(productsToOrder);
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
-        method: "POST",
+      await fetch(`${import.meta.env.VITE_API_URL}/carts/clear-cart`, {
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
-        body: JSON.stringify({ cartItems: productsToOrder }),
       });
-
-      if (response.status === 201) {
-        console.log("merged");
-        dispatch(clearbuyNowCart());
-        navigate("/");
+      window.alert("order has been placed with ID:" + orderId);
+      // dont forget to reset checkout intent
+      if (userIntent !== CheckoutIntent.Normal) {
+        dispatch(setUserIntent(CheckoutIntent.Normal));
       }
+
+      navigate("/order-success", { state: { orderId } });
+    }
+  };
+
+  const handleBackToHome = async () => {
+    if (userIntent === CheckoutIntent.Local) {
+      dispatch(setUserIntent(CheckoutIntent.Normal));
+      addToCartAndNavigate();
+    } else if (userIntent === CheckoutIntent.Instant) {
+      dispatch(setUserIntent(CheckoutIntent.Normal));
+      setShowModal(true);
     } else {
-      navigate("/");
+      navigate("my-cart");
     }
   };
 
   return (
     <>
-      <button onClick={handleBackToHome}>Go Back to Home Page</button>
+      <button onClick={handleBackToHome}>Go Back to Your Cart</button>
+      {showModal && (
+        <div className="modal">
+          <p>Do you want to add these items to your cart?</p>
+          <button onClick={addToCartAndNavigate}>Yes, Add to Cart</button>
+          <button onClick={justNavigate}>No, Thanks</button>
+        </div>
+      )}
       <Suspense fallback={<p>Loading...</p>}>
         <Await
           resolve={user}
@@ -90,16 +165,16 @@ const Checkout = () => {
           )}
         />
         <>
-          {checkoutItems.products.map((productItem: any) => {
-            const productDetails = productItem.product;
+          {checkoutItems.products.map((product: any) => {
             return (
               <CheckoutProductCard
-                key={productDetails.id}
-                productName={productDetails.productName}
-                brand={productDetails.brand}
-                thumbnail={productDetails.thumbnail}
-                price={productDetails.price}
-                quantity={productItem.quantity}
+                key={product.id}
+                id={product.id}
+                productName={product.productName}
+                brand={product.brand}
+                thumbnail={product.thumbnail}
+                price={product.price}
+                quantity={product.quantity}
               />
             );
           })}
@@ -123,61 +198,66 @@ async function getCartInfo() {
   }
 
   if (userIntent === CheckoutIntent.Normal) {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/carts/user-cart`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
 
-    if (response.status === 200) {
-      const data = await response.json();
-      console.log(data);
-      return data;
+    if (response.ok) {
+      return await response.json();
     } else if (response.status === 401) {
       await fetchNewAccessToken();
     }
   } else if (userIntent === CheckoutIntent.Instant) {
     const buyNowCart = state.buyNowCart;
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/carts/buynow-cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        productId: buyNowCart.productId,
-        quantity: buyNowCart.quantity,
-      }),
-    });
+    console.log(buyNowCart);
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/carts/buynow-cart`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          productId: buyNowCart.productId,
+          quantity: buyNowCart.quantity,
+        }),
+      }
+    );
 
-    if (response.status === 201) {
-      const data = await response.json();
-      console.log(data);
-      return data;
+    if (response.ok) {
+      return await response.json();
     }
   } else {
     const localCart = state.localCart.items;
     const productsToOrder = localCart.map((item: any) => ({
-      productId: item.product.id,
+      productId: item.id,
       quantity: item.quantity,
     }));
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/carts/buynow-cart`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(productsToOrder),
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/carts/local-cart`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify(productsToOrder),
+      }
+    );
 
-    if (response.status === 200) {
-      const data = await response.json();
-      return [data];
+    if (response.ok) {
+      return await response.json();
     }
   }
 }
@@ -199,16 +279,14 @@ async function getUserInfo() {
     },
   });
   if (response.status === 200) {
-    const data = await response.json();
-    console.log(data);
-    return data;
+    return await response.json();
   } else {
     throw new Error("Failed to fetch user info");
   }
 }
 
 export async function loader() {
-  return defer ({
+  return defer({
     cartItems: await getCartInfo(),
     user: await getUserInfo(),
   });

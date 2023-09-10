@@ -24,6 +24,8 @@ import UserWishlist, {
   loader as wishlistLoader,
 } from "./pages/user-wishlist/index.tsx";
 import SearchResultsPage from "./pages/search/index.tsx";
+import MyOrders, { loader as ordersLoader } from "./pages/my-orders/index.tsx";
+import OrderSuccess from "./pages/order-success/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +61,11 @@ const router = createBrowserRouter([
             path: "/my-profile/update-password",
             element: <UpdatePassword />,
           },
+          {
+            path: "my-orders",
+            element: <MyOrders />,
+            loader: ordersLoader,
+          },
         ],
       },
       {
@@ -85,8 +92,8 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/order-status",
-        element: <OrderStatus />,
+        path: "/order-success",
+        element: <OrderSuccess />,
       },
       {
         path: ":category",

@@ -1,4 +1,5 @@
 interface CheckoutProductCardProps {
+  id: number;
   productName: string;
   brand: string;
   thumbnail: string;
