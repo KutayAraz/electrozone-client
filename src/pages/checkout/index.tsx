@@ -9,6 +9,8 @@ import {
   defer,
   useNavigate,
   useLocation,
+  useNavigationType,
+  NavigationType,
 } from "react-router-dom";
 import CheckoutProductCard from "./components/CheckoutProductCard";
 import UserCard from "./components/UserCard";
@@ -16,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
+import { Action } from "history";
 
 const Checkout = () => {
   const { cartItems, user }: any = useLoaderData();
@@ -26,132 +29,107 @@ const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const location = useLocation();
-  const previousLocation = useRef(location).current; // remember the previous location
+  // const addToCartAndNavigate = async () => {
+  //   const productsToOrder = checkoutItems.products.map((item: any) => ({
+  //     productId: item.id,
+  //     quantity: item.quantity,
+  //   }));
 
-  // useEffect(() => {
-  //   // Check if user navigated back to the CheckoutPage from another page
-  //   if (previousLocation.pathname !== location.pathname) {
-  //     // Check if the user was redirected from the sign-in page
-  //     if (previousLocation.pathname === "/sign-in") {
-  //       // Redirect them to the my-cart route
-  //       navigate("/my-cart");
+  //   const response = await fetch(
+  //     `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
+  //     {
+  //       method: "PATCH",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Accept: "application/json",
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //       body: JSON.stringify(productsToOrder),
   //     }
+  //   );
+
+  //   if (response.ok) {
+  //     dispatch(clearbuyNowCart());
+  //     dispatch(clearLocalcart());
+  //     dispatch(setUserIntent(CheckoutIntent.Normal));
   //   }
-  // }, [location, navigate, previousLocation]);
 
-  function YourComponent() {
-    useEffect(() => {
-      return () => {
-        window.addEventListener("beforeunload", () => console.log("hello"));
-      };
-    }, []);
-  }
-
-  const addToCartAndNavigate = async () => {
-    const productsToOrder = checkoutItems.products.map((item: any) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-
-    console.log("addToCartAndNavigate function is running");
-
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(productsToOrder),
-      }
-    );
-
-    if (response.ok) {
-      console.log("merged");
-      dispatch(clearbuyNowCart());
-      dispatch(clearLocalcart());
-      dispatch(setUserIntent(CheckoutIntent.Normal));
-    }
-
-    setShowModal(false);
-  };
+  //   setShowModal(false);
+  // };
 
   const justNavigate = () => {
     navigate("/my-cart");
     setShowModal(false);
   };
 
-  const handleOrderPlacement = async () => {
-    if (!accessToken) {
-      await fetchNewAccessToken();
-    }
+  // const handleOrderPlacement = async () => {
+  //   if (!accessToken) {
+  //     await fetchNewAccessToken();
+  //   }
 
-    const productsToOrder = checkoutItems.products.map((item: any) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
+  //   const productsToOrder = checkoutItems.products.map((item: any) => ({
+  //     productId: item.id,
+  //     quantity: item.quantity,
+  //   }));
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ orderItems: productsToOrder }),
-    });
+  //   const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //       Authorization: `Bearer ${accessToken}`,
+  //     },
+  //     body: JSON.stringify({ orderItems: productsToOrder }),
+  //   });
 
-    if (response.status === 201) {
-      const orderId = await response.json();
-      let accessToken = store.getState().auth.accessToken;
+  //   if (response.status === 201) {
+  //     const orderId = await response.json();
+  //     let accessToken = store.getState().auth.accessToken;
 
-      if (!accessToken) {
-        accessToken = await fetchNewAccessToken();
-      }
+  //     if (!accessToken) {
+  //       accessToken = await fetchNewAccessToken();
+  //     }
 
-      await fetch(`${import.meta.env.VITE_API_URL}/carts/clear-cart`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      window.alert("order has been placed with ID:" + orderId);
-      // dont forget to reset checkout intent
-      if (userIntent !== CheckoutIntent.Normal) {
-        dispatch(setUserIntent(CheckoutIntent.Normal));
-      }
+  //     await fetch(`${import.meta.env.VITE_API_URL}/carts/clear-cart`, {
+  //       method: "DELETE",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Accept: "application/json",
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
+  //     window.alert("order has been placed with ID:" + orderId);
+  //     // dont forget to reset checkout intent
+  //     if (userIntent !== CheckoutIntent.Normal) {
+  //       dispatch(setUserIntent(CheckoutIntent.Normal));
+  //     }
 
-      navigate("/order-success", { state: { orderId } });
-    }
-  };
+  //     navigate("/order-success", { state: { orderId } });
+  //   }
+  // };
 
-  const handleBackToHome = async () => {
-    if (userIntent === CheckoutIntent.Local) {
-      dispatch(setUserIntent(CheckoutIntent.Normal));
-      addToCartAndNavigate();
-    } else if (userIntent === CheckoutIntent.Instant) {
-      dispatch(setUserIntent(CheckoutIntent.Normal));
-      setShowModal(true);
-    } else {
-      navigate("my-cart");
-    }
-  };
+  // const handleBackToHome = async () => {
+  //   if (userIntent === CheckoutIntent.Local) {
+  //     dispatch(setUserIntent(CheckoutIntent.Normal));
+  //     addToCartAndNavigate();
+  //   } else if (userIntent === CheckoutIntent.Instant) {
+  //     dispatch(setUserIntent(CheckoutIntent.Normal));
+  //     setShowModal(true);
+  //   } else {
+  //     navigate("my-cart");
+  //   }
+  // };
 
   return (
     <>
-      <button onClick={handleBackToHome}>Go Back to Your Cart</button>
+      {/* <button onClick={handleBackToHome}>Go Back to Your Cart</button>
       {showModal && (
         <div className="modal">
           <p>Do you want to add these items to your cart?</p>
           <button onClick={addToCartAndNavigate}>Yes, Add to Cart</button>
           <button onClick={justNavigate}>No, Thanks</button>
         </div>
-      )}
+      )} */}
       <Suspense fallback={<p>Loading...</p>}>
         <Await
           resolve={user}
@@ -180,7 +158,7 @@ const Checkout = () => {
           })}
         </>
       </Suspense>
-      <button onClick={handleOrderPlacement}>Confirm Order</button>
+      <button onClick={justNavigate}>Confirm Order</button>
     </>
   );
 };

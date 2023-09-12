@@ -30,7 +30,7 @@ const UserCart = () => {
       window.alert("your cart is empty");
       return null;
     } else {
-      navigate("/checkout");
+      navigate("/checkout", { replace: true });
     }
   };
 

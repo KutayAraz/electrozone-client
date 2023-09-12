@@ -86,6 +86,8 @@ const SignInForm = () => {
           quantity: item.quantity,
         }));
 
+        console.log("merging carts in sign-in page");
+
         const response = await fetch(
           `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
           {
@@ -101,14 +103,9 @@ const SignInForm = () => {
 
         if (response.ok) {
           dispatch(clearLocalcart());
-          
-          console.log(from.pathname)
           navigate(from.pathname);
         }
       } else {
-        console.log("checkoutintent local")
-        console.log(from)
-        console.log(store.getState().localCart.items)
         navigate(from.pathname);
       }
     } else {

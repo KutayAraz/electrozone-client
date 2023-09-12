@@ -1,4 +1,7 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import Layout from "./common/Layout/index";
 import UpdatePassword from "./pages/your-account/components/UpdatePassword";
 import SubcategoryPage, {
@@ -11,7 +14,6 @@ import CategoryPage, {
   loader as categoryLoader,
 } from "./pages/category/index.tsx";
 import UserCart, { loader as cartLoader } from "./pages/user-cart/index.tsx";
-import OrderStatus from "./pages/order-status/index.tsx";
 import ConfirmOrder from "./pages/confirm-order/index.tsx";
 import HomePage, { loader as homePageLoader } from "./pages/home/index.tsx";
 import SignIn from "./pages/sign-in/index.tsx";

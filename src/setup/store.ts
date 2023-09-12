@@ -8,26 +8,33 @@ import authSlice from "./slices/auth-slice";
 import localCartSlice from "./slices/localCart-slice";
 import buyNowCartSlice from "./slices/buyNowCart-slice";
 import hydrationSlice, { hydrationCompleted } from "./slices/hydration-slice";
-import lastVisitedURLSlice from "./slices/lastVisited-slice";
 
-const persistConfig = {
-  key: "root",
+const userPersistConfig = {
+  key: "user",
   storage,
 };
 
-const persistedUserReducer = persistReducer(persistConfig, userSlice.reducer);
+const localCartPersistConfig = {
+  key: "localCart",
+  storage,
+};
+
+const buyNowCartPersistConfig = {
+  key: "buyNowCart",
+  storage,
+};
+
+const persistedUserReducer = persistReducer(
+  userPersistConfig,
+  userSlice.reducer
+);
 const persistedLocalCartReducer = persistReducer(
-  persistConfig,
+  localCartPersistConfig,
   localCartSlice.reducer
 );
 const persistedBuyNowCartReducer = persistReducer(
-  persistConfig,
+  buyNowCartPersistConfig,
   buyNowCartSlice.reducer
-);
-
-const persistedLastVisitedURLReducer = persistReducer(
-  persistConfig,
-  lastVisitedURLSlice.reducer
 );
 
 export const store = configureStore({
@@ -38,7 +45,6 @@ export const store = configureStore({
     user: persistedUserReducer,
     localCart: persistedLocalCartReducer,
     buyNowCart: persistedBuyNowCartReducer,
-    lastVisitedURL: persistedLastVisitedURLReducer,
   },
   middleware: [thunk],
   devTools: true,

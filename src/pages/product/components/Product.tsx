@@ -73,7 +73,7 @@ const Product = ({
     dispatch(setUserIntent(CheckoutIntent.Instant));
     if (!isSignedIn) {
       navigate("/sign-in", { state: { from: { pathname: "/checkout" } } });
-    } else if (!accessToken || isSignedIn()) {
+    } else if (!accessToken || isSignedIn) {
       await fetchNewAccessToken();
       navigate("/checkout");
     } else {
