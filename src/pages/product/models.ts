@@ -2,7 +2,7 @@ export interface ProductProps {
   id: number;
   productName: string;
   brand: string;
-  description: string;
+  description: string[];
   averageRating: string;
   thumbnail: string;
   price: number;

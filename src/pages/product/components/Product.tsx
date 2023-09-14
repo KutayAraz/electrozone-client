@@ -113,83 +113,84 @@ const Product = ({
   };
 
   return (
-    <div className="flex max-w-screen-md mx-auto text-center w-full justify-between">
-      <div className="flex">
-        <Link to={`/${category.replace(/-/g, "_")}`}>{category}&gt;</Link>
-        <Link
-          to={`/${category.replace(/-/g, "_")}/${subcategory.replace(
-            /-/g,
-            "_"
-          )}`}
-        >
-          {subcategory}&gt;
-        </Link>
-        <Link
-          to={`/${category.replace(/-/g, "_")}/${subcategory.replace(
-            /-/g,
-            "_"
-          )}/${id}`}
-        >
-          {productName.slice(0, 15)}
-        </Link>
-      </div>
-      <div className="flex flex-col-reverse w-[20%]">
-        <img
-          src={thumbnail}
-          alt=""
-          className="object-contain w-full mb-2 cursor-pointer"
-          onClick={() => setSelectedImage(thumbnail)}
-        />
-        {images?.map((image: any, index: number) => (
+    <div className="mt-4">
+      <div className="flex max-w-screen-md mx-auto text-center w-full justify-between">
+        <div className="flex">
+          <Link to={`/${category.replace(/-/g, "_")}`}>{category}&gt;</Link>
+          <Link
+            to={`/${category.replace(/-/g, "_")}/${subcategory.replace(
+              /-/g,
+              "_"
+            )}`}
+          >
+            {subcategory}
+          </Link>
+        </div>
+        <div className="flex flex-col-reverse w-[20%]">
           <img
-            key={index}
-            src={image.productImage}
+            src={thumbnail}
             alt=""
             className="object-contain w-full mb-2 cursor-pointer"
-            onClick={() => setSelectedImage(image.productImage)}
+            onClick={() => setSelectedImage(thumbnail)}
           />
-        ))}
-      </div>
-      <img src={selectedImage} alt="" className="object-contain w-[50%]" />
-      <div className="flex flex-col">
-        <h2>{productName}</h2>
-        <p>{brand}</p>
-        <p>{description}</p>
-        <p>{price}</p>
-        <div className="flex">
-          <button onClick={decrementQuantity}>-</button>
-          <input
-            type="text"
-            value={quantity}
-            onChange={handleQuantityChange}
-            min={1}
-            max={10}
-            className="text-center"
-          />
-          <button onClick={incrementQuantity}>+</button>
+          {images?.map((image: any, index: number) => (
+            <img
+              key={index}
+              src={image.productImage}
+              alt=""
+              className="object-contain w-full mb-2 cursor-pointer"
+              onClick={() => setSelectedImage(image.productImage)}
+            />
+          ))}
         </div>
+        <img src={selectedImage} alt="" className="object-contain w-[50%]" />
+        <div className="flex flex-col">
+          <h2>{productName}</h2>
+          <p>{brand}</p>
 
-        {stock > 0 ? (
-          <div className="flex flex-col">
-            <button onClick={handleAddToCart}>Add to Cart</button>
-            <button onClick={handleBuyNow}>Buy now</button>
+          <p>{price}</p>
+          <div className="flex">
+            <button onClick={decrementQuantity}>-</button>
+            <input
+              type="text"
+              value={quantity}
+              onChange={handleQuantityChange}
+              min={1}
+              max={10}
+              className="text-center"
+            />
+            <button onClick={incrementQuantity}>+</button>
           </div>
-        ) : (
-          <p>This product is currently out of stock</p>
-        )}
-        <Link to={""}>
-          <Rating
-            name="half-rating-read"
-            value={parseFloat(averageRating)}
-            precision={0.1}
-            readOnly
-          />
-        </Link>
 
-        <WishlistButton
-          isWishlisted={isWishlisted}
-          toggleWishlist={toggleWishlist}
-        />
+          {stock > 0 ? (
+            <div className="flex flex-col">
+              <button onClick={handleAddToCart}>Add to Cart</button>
+              <button onClick={handleBuyNow}>Buy now</button>
+            </div>
+          ) : (
+            <p>This product is currently out of stock</p>
+          )}
+          <Link to={""}>
+            <Rating
+              name="half-rating-read"
+              value={parseFloat(averageRating)}
+              precision={0.1}
+              readOnly
+            />
+          </Link>
+
+          <WishlistButton
+            isWishlisted={isWishlisted}
+            toggleWishlist={toggleWishlist}
+          />
+        </div>
+      </div>
+      <div className="max-w-xs mx-auto text-center">
+        {description.map((bulletPoint: string, index: number) => (
+          <p className="list-disc" key={index}>
+            {bulletPoint}
+          </p>
+        ))}
       </div>
     </div>
   );
