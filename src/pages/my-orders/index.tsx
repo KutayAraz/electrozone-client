@@ -14,8 +14,10 @@ const MyOrders = () => {
         children={(resolvedOrders) =>
           resolvedOrders.map((order: any) => (
             <OrderCard
-              id={order.id}
+              orderId={order.orderId}
               orderTotal={order.orderTotal}
+              user={order.user}
+              orderQuantity={order.orderQuantity}
               orderDate={order.orderDate}
               orderItems={order.orderItems}
             />

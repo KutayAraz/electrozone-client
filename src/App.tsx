@@ -1,7 +1,4 @@
-import {
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./common/Layout/index";
 import UpdatePassword from "./pages/your-account/components/UpdatePassword";
 import SubcategoryPage, {
@@ -28,6 +25,9 @@ import UserWishlist, {
 import SearchResultsPage from "./pages/search/index.tsx";
 import MyOrders, { loader as ordersLoader } from "./pages/my-orders/index.tsx";
 import OrderSuccess from "./pages/order-success/index.tsx";
+import OrderStatus, {
+  loader as orderDetailLoader,
+} from "./pages/order-status/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -64,9 +64,19 @@ const router = createBrowserRouter([
             element: <UpdatePassword />,
           },
           {
-            path: "my-orders",
-            element: <MyOrders />,
-            loader: ordersLoader,
+            path: "/my-orders",
+            children: [
+              {
+                index: true,
+                element: <MyOrders />,
+                loader: ordersLoader,
+              },
+              {
+                path: ":orderId",
+                element: <OrderStatus />,
+                loader: orderDetailLoader,
+              },
+            ],
           },
         ],
       },
