@@ -38,6 +38,8 @@ const SearchResultsPage = () => {
             thumbnail={product.thumbnail}
             price={product.price}
             avgRating={product.avgRating}
+            subcategory={product.subcategory}
+            category={product.category}
           />
         ))}
       </>

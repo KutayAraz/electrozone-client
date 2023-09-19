@@ -13,6 +13,7 @@ import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { selectAccessToken } from "@/setup/slices/auth-slice";
 import fetchNewAccessToken from "@/utils/fetch-access-token";
 import { checkHydration } from "@/utils/check-hydration";
+import UserLocation from "./UserLocation";
 
 const Layout = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const Layout = () => {
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const accessToken = useSelector(selectAccessToken); 
   const buyNowCartItem = useSelector((state: RootState) => state.buyNowCart);
+  const userLocation = useSelector((state: RootState) => state.user.city)
 
   const mergeCartsAndSetIntent = async () => {
     await checkHydration(store);
@@ -73,7 +75,6 @@ const Layout = () => {
       (userIntent == CheckoutIntent.Instant ||
         userIntent === CheckoutIntent.Local)
     ) {
-      console.log("Conditions met. Calling mergeCartsAndSetIntent.");
       (async () => {
         await mergeCartsAndSetIntent();
       })();
@@ -81,9 +82,10 @@ const Layout = () => {
   }, [location.pathname]);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen mx">
       <Header />
       <NavStrip />
+      <UserLocation location={userLocation} />
       <Sidebar user={{ name: "userName", city: "CA" }} />
       <div className="flex-grow">
         <Outlet />

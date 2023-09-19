@@ -5,4 +5,6 @@ export interface ProductCardProps {
   brand: string;
   avgRating: number;
   price: number;
+  subcategory: number;
+  category: number;
 }

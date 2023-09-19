@@ -8,10 +8,12 @@ const ProductCard = ({
   brand,
   avgRating,
   price,
+  subcategory,
+  category,
 }: ProductCardProps) => {
   return (
     <Link
-      to={`${id}`}
+      to={`/${category}/${subcategory}/${id}`}
       className="flex-1/2 w-full sm:w-1/2 md:w-1/4 lg:w-1/6"
     >
       <img src={thumbnail} alt={`image for ${productName}`} />

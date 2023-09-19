@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ReactComponent as SearchIcon } from "@assets/svg/search.svg";
 
 const SearchBar = ({ className }: { className?: string }) => {
   const [query, setQuery] = useState("");
@@ -10,16 +11,22 @@ const SearchBar = ({ className }: { className?: string }) => {
       navigate(`/search?query=${query}`);
     }
   };
+
   return (
-    <div className="flex">
+    <div className={`relative flex ${className}`}>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Search Electrozone"
-        className={`${className} rounded-md w-full`}
+        className={`rounded-md w-full pl-3 pr-10`}
       />
-      <button onClick={handleSearch} className="">Search</button>
+      <button
+        onClick={handleSearch}
+        className="absolute inset-y-0 right-0 flex items-center"
+      >
+        <SearchIcon className="w-full h-full bg-[#febd69] rounded-md" />
+      </button>
     </div>
   );
 };

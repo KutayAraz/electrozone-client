@@ -10,11 +10,11 @@ const HomePage = () => {
   }: any = useLoaderData();
 
   return (
-    <>
-      <div className="flex flex-col max-w-screen-lg mx-auto text-center">
-        <h2>Best Selling Products</h2>
+    <div className="bg-gray-100">
+      <div className="flex flex-col max-w-screen-lg mx-auto text-center ml-[1%]">
+        <h2 className="text-xl font-semibold my-2">Best Selling Products</h2>
         <Suspense fallback={<p>Loading..</p>}>
-          <div className="flex">
+          <div className="flex space-x-2 overflow-x-auto noScrollbar scroll-smooth">
             <Await
               resolve={bestSellingProducts}
               children={(product: any) =>
@@ -32,9 +32,10 @@ const HomePage = () => {
             />
           </div>
         </Suspense>
-        <h2>Most Wishlisted Products</h2>
+
+        <h2 className="text-xl font-semibold my-2">Most Wishlisted Products</h2>
         <Suspense fallback={<p>Loading..</p>}>
-          <div className="flex">
+          <div className="flex space-x-2 overflow-x-auto noScrollbar scroll-smooth">
             <Await
               resolve={bestRatedProducts}
               children={(product: any) =>
@@ -52,9 +53,10 @@ const HomePage = () => {
             />
           </div>
         </Suspense>
-        <h2>Best Rated Products</h2>
+
+        <h2 className="text-xl font-semibold my-2">Best Rated Products</h2>
         <Suspense fallback={<p>Loading..</p>}>
-          <div className="flex">
+          <div className="flex space-x-2 overflow-x-auto noScrollbar scroll-smooth mb-2">
             <Await
               resolve={mostWishlistedProducts}
               children={(product: any) =>
@@ -73,9 +75,10 @@ const HomePage = () => {
           </div>
         </Suspense>
       </div>
-    </>
+    </div>
   );
 };
+
 
 export default HomePage;
 const fetchProducts = async (url: string) => {
