@@ -5,7 +5,7 @@ import styles from "./Modal.module.css";
 import { BackdropProps, ModalOverlayProps, ModalProps, State } from "./models";
 import {ReactComponent as CloseButton } from "@assets/svg/close-button.svg"
 
-function Backdrop({ onClose }: BackdropProps) {
+export function Backdrop({ onClose }: BackdropProps) {
   return <div className={styles.backdrop} onClick={onClose} />;
 }
 
@@ -27,7 +27,7 @@ export function ModalOverlay({ children, isOpen }: ModalOverlayProps) {
   );
 }
 
-function Modal({ onClose, children }: ModalProps) {
+export function Modal({ onClose, children }: ModalProps) {
   const sideNavOpen = useSelector<State, boolean>(
     (state) => state.ui.isSideNavOpen
   );

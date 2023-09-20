@@ -1,5 +1,6 @@
 import { ReactComponent as LocationIcon } from "@assets/svg/location-pin2.svg";
 import { useState } from "react";
+import CustomizableModal from "../Modal/CustomizableModal";
 
 const UserLocation = ({ location }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,6 +16,22 @@ const UserLocation = ({ location }: any) => {
           ? `Currently delivering to ${location}`
           : "Select your location"}
       </button>
+      <CustomizableModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        width="100vw"
+        direction="bottom"
+        height="30%"
+        bottom="0"
+        left="0"
+        transitionType="slide"
+      >
+        <div className="flex flex-col">
+          <label>Enter your city</label>
+          <input type="text" className="border-2" />
+          <button onClick={() => setIsModalOpen(false)}>close</button>
+        </div>
+      </CustomizableModal>
     </div>
   );
 };

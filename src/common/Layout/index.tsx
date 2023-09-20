@@ -75,11 +75,12 @@ const Layout = () => {
       (userIntent == CheckoutIntent.Instant ||
         userIntent === CheckoutIntent.Local)
     ) {
+      console.log("Conditions met. Calling mergeCartsAndSetIntent.");
       (async () => {
         await mergeCartsAndSetIntent();
       })();
     }
-  }, [location.pathname]);
+  }, [location.pathname, userIntent]);
 
   return (
     <div className="flex flex-col min-h-screen mx">

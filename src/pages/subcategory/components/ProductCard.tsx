@@ -6,7 +6,7 @@ const ProductCard = ({
   thumbnail,
   productName,
   brand,
-  avgRating,
+  averageRating,
   price,
   subcategory,
   category,
@@ -19,7 +19,7 @@ const ProductCard = ({
       <img src={thumbnail} alt={`image for ${productName}`} />
       <h4>{productName}</h4>
       <p>{brand}</p>
-      <p>{avgRating}</p>
+      <p>{averageRating}</p>
       <h3>{price}</h3>
       <button>Buy Now</button>
     </Link>

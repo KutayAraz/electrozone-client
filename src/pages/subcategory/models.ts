@@ -3,8 +3,8 @@ export interface ProductCardProps {
   thumbnail: string;
   productName: string;
   brand: string;
-  avgRating: number;
+  averageRating: number;
   price: number;
-  subcategory: number;
-  category: number;
+  subcategory: string;
+  category: string;
 }

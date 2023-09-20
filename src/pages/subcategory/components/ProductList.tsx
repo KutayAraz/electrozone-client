@@ -11,8 +11,10 @@ const ProductList = ({ products }: ProductListProps) => {
           thumbnail={product.thumbnail}
           productName={product.productName}
           brand={product.brand}
-          avgRating={product.averageRating}
+          averageRating={product.averageRating}
           price={product.price}
+          subcategory={product.subcategory}
+          category={product.category}
         />
       ))}
     </div>

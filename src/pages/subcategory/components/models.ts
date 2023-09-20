@@ -6,10 +6,8 @@ export interface Product {
     description: string;
     price: number;
     averageRating: number;
-    subcategory: {
-      id: number;
-      name: string;
-    };
+    subcategory: string;
+    category: string;
   }
 
   export interface ProductListProps {

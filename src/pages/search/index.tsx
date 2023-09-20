@@ -37,7 +37,7 @@ const SearchResultsPage = () => {
             brand={product.brand}
             thumbnail={product.thumbnail}
             price={product.price}
-            avgRating={product.avgRating}
+            averageRating={product.avgRating}
             subcategory={product.subcategory}
             category={product.category}
           />
