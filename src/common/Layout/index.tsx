@@ -20,9 +20,8 @@ const Layout = () => {
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const dispatch = useDispatch();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
-  const accessToken = useSelector(selectAccessToken); 
+  const accessToken = useSelector(selectAccessToken);
   const buyNowCartItem = useSelector((state: RootState) => state.buyNowCart);
-  const userLocation = useSelector((state: RootState) => state.user.city)
 
   const mergeCartsAndSetIntent = async () => {
     await checkHydration(store);
@@ -86,7 +85,7 @@ const Layout = () => {
     <div className="flex flex-col min-h-screen mx">
       <Header />
       <NavStrip />
-      <UserLocation location={userLocation} />
+      <UserLocation />
       <Sidebar user={{ name: "userName", city: "CA" }} />
       <div className="flex-grow">
         <Outlet />

@@ -113,15 +113,16 @@ const SignInForm = () => {
     }
   };
 
-  const inputClasses = "border-2 border-[#13193F] rounded-md";
+  const inputClasses =
+    "border-2 border-[#13193F] rounded-md w-[80%] mx-auto px-1 py-1";
   const inputErrorClasses =
-    "border-2 border-[#13193F] rounded-md border-red-700";
+    "border-2 border-[#13193F] rounded-md border-red-700 w-[80%] mx-auto px-1 py-1";
 
   const emailClasses = emailHasError ? inputErrorClasses : inputClasses;
   const passwordClasses = passwordHasError ? inputErrorClasses : inputClasses;
 
   const errorText = (
-    <p className="text-red-700 text-sm">This area is required.</p>
+    <p className="text-red-700 text-sm mb-2">This area is required.</p>
   );
 
   return (
@@ -134,8 +135,10 @@ const SignInForm = () => {
         {formStatus}
       </p>
       <form action="POST" onSubmit={submitHandler}>
-        <div className="flex flex-col max-w-sm text-center mx-auto">
-          <label htmlFor="email">Your e-mail</label>
+        <div className="flex flex-col max-w-sm text-center mx-auto mt-2">
+          <label htmlFor="email" className="font-semibold ">
+            Your e-mail
+          </label>
           <input
             type="email"
             id="email"
@@ -145,23 +148,25 @@ const SignInForm = () => {
             className={emailClasses}
           />
           {emailHasError && errorText}
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password" className="font-semibold ">
+            Password
+          </label>
           <input
             type="password"
             id="password"
             onChange={passwordChangeHandler}
             onBlur={passwordBlurHandler}
             required
-            className={passwordClasses}
+            className={`${passwordClasses}`}
           />
           {emailHasError && errorText}
 
           <p className="font-semibold">{formStatus}</p>
           <button
             type="submit"
-            className={`max-w-[40%] mx-auto w-full border-2 bg-[#13193F] text-white p-2 ${
-              !formIsValid ? "bg-gray-500 " : "bg-[#13193F] hover:bg-[#A34393]"
-            }`}
+            className={`max-w-[40%] mx-auto w-full border-2 bg-[#13193F] text-white p-2 rounded-lg ${
+              !formIsValid ? "bg-gray-500 " : "bg-[#13193F] hover:bg-[#febd69]"
+            } md:focus:border-orange-500 md:active:border-orange-500 mt-2`}
             disabled={!formIsValid}
           >
             Sign in
@@ -169,7 +174,7 @@ const SignInForm = () => {
           <p>Don't have an account yet?</p>
           <button
             onClick={() => navigate("/sign-up")}
-            className="max-w-[80%] mx-auto w-full border-2 text-white p-2 bg-[#13193F] hover:bg-[#A34393] rounded-lg"
+            className="max-w-[80%] mx-auto w-full border-2 text-white p-2 bg-[#13193F] hover:bg-[#febd69] rounded-lg"
           >
             Create your Electrozone account
           </button>

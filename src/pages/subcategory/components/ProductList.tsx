@@ -3,7 +3,7 @@ import ProductCard from "./ProductCard";
 
 const ProductList = ({ products }: ProductListProps) => {
   return (
-    <div className="flex max-w-screen-lg flex-wrap mx-auto">
+    <div className="flex max-w-screen-lg flex-wrap mx-auto px-2">
       {products.map((product: Product) => (
         <ProductCard
           key={product.id}

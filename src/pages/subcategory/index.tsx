@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import ProductList from "./components/ProductList";
 import { Suspense, useEffect, useState } from "react";
+import { Box, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl } from "@mui/base";
 
 const fetchProducts = async (subcategory: string, sort: string) => {
   const response = await fetch(
@@ -37,17 +39,28 @@ const SubcategoryPage = () => {
   };
 
   return (
-    <div>
-      <h1>Products</h1>
-      <select
-        onChange={handleSortChange}
-        value={searchParams.get("sort") || "featured"}
-      >
-        <option value="featured">Featured</option>
-        <option value="rating">Rating</option>
-        <option value="price_ascending">Price Ascending</option>
-        <option value="price_descending">Price Descending</option>
-      </select>
+    <div className="bg-gray-100">
+      <div className="flex justify-between items-center px-2 my-1">
+        <h3 className="text-xl font-semibold text-gray-600">
+          {subcategory ? subcategory.toUpperCase() : "Products"}
+        </h3>
+        <Box sx={{ minWidth: 100 }} >
+          <FormControl className="pr-2 rounded-md " >
+            <InputLabel id="sort-by" className="text-sm">Sort By</InputLabel>
+            <Select
+              label="sort-by"
+              value={searchParams.get("sort") || "featured"}
+              onChange={handleSortChange}
+              sx={{ fontSize: '0.875rem' }}
+            >
+              <MenuItem value={"featured"}>Featured</MenuItem>
+              <MenuItem value={"rating"}>Rating</MenuItem>
+              <MenuItem value={"price_ascending"}>Price Ascending</MenuItem>
+              <MenuItem value={"price_descending"}>Price Descending</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </div>
       <Suspense fallback={<p>Loading Products..</p>}>
         <>
           <ProductList products={productsData} />

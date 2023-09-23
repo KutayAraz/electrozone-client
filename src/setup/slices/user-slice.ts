@@ -26,6 +26,9 @@ const userSlice = createSlice({
     setUserIntent(state, action) {
       state.userIntent = action.payload;
     },
+    setGuestLocation(state, action) {
+      state.city = action.payload.city;
+    },
   },
 });
 

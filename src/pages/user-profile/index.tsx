@@ -1,16 +1,9 @@
-import authSlice from "@/setup/slices/auth-slice";
 import { updateUserInfo } from "@/setup/slices/user-slice";
 import { RootState } from "@/setup/store";
-import refreshtoken, { fetchNewAccessToken } from "@/utils/fetch-access-token";
+import { fetchNewAccessToken } from "@/utils/fetch-access-token";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Await,
-  Form,
-  defer,
-  useLoaderData,
-  useNavigate,
-} from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -29,14 +22,17 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/user/profile`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
         const result = await response.json();
         setAddress(result.address);
         setEmail(result.email);

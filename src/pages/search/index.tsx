@@ -33,6 +33,7 @@ const SearchResultsPage = () => {
         {results.map((product: any) => (
           <ProductCard
             id={product.id}
+            key={product.id}
             productName={product.productName}
             brand={product.brand}
             thumbnail={product.thumbnail}

@@ -2,7 +2,6 @@ import { selectAccessToken } from "@/setup/slices/auth-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { Form } from "react-router-dom";
 import * as yup from "yup";
 
 type FormInputs = {

@@ -23,11 +23,20 @@ export const CustomizableModal = ({
   transitionDuration = 300,
 }: CustomizableModalProps) => {
   useEffect(() => {
+    // Disable scrolling on the main page when the modal is open
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
     let timer: ReturnType<typeof setTimeout>;
     if (isOpen && autoCloseDuration) {
       timer = setTimeout(onClose, autoCloseDuration);
     }
     return () => {
+      // Re-enable scrolling when the component unmounts or when the modal closes
+      document.body.style.overflow = '';
       if (timer) clearTimeout(timer);
     };
   }, [isOpen, autoCloseDuration, onClose]);

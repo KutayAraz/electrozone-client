@@ -8,7 +8,20 @@ export default {
       md: "1024px",
       lg: "1280px",
     },
-    extend: {},
+    extend: {
+      colors: {
+        "theme-blue": "#13193F",
+      },
+      spacing: {
+        1: "1px",
+      },
+      borderWidth: {
+        1: "1px",
+      },
+      fontFamily: {
+        'sans': ['Poppins', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };

@@ -5,6 +5,7 @@ import { uiActions } from "@/setup/slices/ui-slice";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "@/setup/store";
 import { useEffect } from "react";
+import { ReactComponent as ExitIcon } from "@assets/svg/exit.svg";
 
 const Sidebar = ({
   user: { city } = { city: "Select your location" },
@@ -34,24 +35,34 @@ const Sidebar = ({
         <ul className="flex flex-col">
           <h3>Shop by Department</h3>
           <h4 className="text-lg font-bold">TVs & Soundbars</h4>
-          <Link to={"tvs-and-soundbars/tvs"}>TVs</Link>
-          <Link to={"tvs-and-soundbars/soundbars"}>Soundbars</Link>
+          <Link to={"/category/tvs-and-soundbars/tvs"}>TVs</Link>
+          <Link to={"/category/tvs-and-soundbars/soundbars"}>Soundbars</Link>
           <h4 className="text-lg font-bold">PCs & Laptops</h4>
-          <Link to={"/computers-and-accessories/computers"}>PCs</Link>
-          <Link to={"computers-and-accessories/laptops"}>Laptops</Link>
-          <Link to={"computers-and-accessories/monitors"}>Monitors</Link>
-          <Link to={"computers-and-accessories/computer-accessories"}>
+          <Link to={"/category/computers-and-accessories/computers"}>PCs</Link>
+          <Link to={"/category/computers-and-accessories/laptops"}>
+            Laptops
+          </Link>
+          <Link to={"/category/computers-and-accessories/monitors"}>
+            Monitors
+          </Link>
+          <Link to={"/category/computers-and-accessories/computer-accessories"}>
             Computer Accessories
           </Link>
           <h4 className="text-lg font-bold">Printers & Ink</h4>
-          <Link to={"printers-and-ink/laser-printers"}>Laser Printers</Link>
-          <Link to={"printers-and-ink/inkjet-printers"}>Inkjet Printers</Link>
-          <Link to={"printers-and-ink/ink"}>Ink</Link>
+          <Link to={"/category/printers-and-ink/laser-printers"}>
+            Laser Printers
+          </Link>
+          <Link to={"/category/printers-and-ink/inkjet-printers"}>
+            Inkjet Printers
+          </Link>
+          <Link to={"/category/printers-and-ink/ink"}>Ink</Link>
           <h4 className="text-lg font-bold">Phones & Accessories</h4>
-          <Link to={"smartphones-and-accessories/smartphones"}>
+          <Link to={"/category/smartphones-and-accessories/smartphones"}>
             Smartphones
           </Link>
-          <Link to={"smartphones-and-accessories/smartphone-accessories"}>
+          <Link
+            to={"/category/smartphones-and-accessories/smartphone-accessories"}
+          >
             Phone Accessories
           </Link>
         </ul>
@@ -64,7 +75,12 @@ const Sidebar = ({
           )}
           {isSignedIn && <p>{city}</p>}
           <p>Customer Service</p>
-          {isSignedIn && <Link to={"/sign-out"}>Sign Out</Link>}
+          {isSignedIn && (
+            <div>
+              <Link to={"/sign-out"}>Sign Out</Link>
+              <ExitIcon className="w-6 h-6" />
+            </div>
+          )}
         </div>
       </div>
     </Modal>

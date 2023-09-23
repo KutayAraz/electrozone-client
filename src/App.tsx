@@ -1,6 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./common/Layout/index";
-import UpdatePassword from "./pages/your-account/components/UpdatePassword";
 import SubcategoryPage, {
   loader as subcategoryLoader,
 } from "./pages/subcategory/index.tsx";
@@ -16,7 +15,6 @@ import HomePage, { loader as homePageLoader } from "./pages/home/index.tsx";
 import SignIn from "./pages/sign-in/index.tsx";
 import SignOut from "./pages/sign-out/index.tsx";
 import SignUp from "./pages/sign-up/index.tsx";
-import UserProfile from "./pages/your-account/index.tsx";
 import ProtectedRoute from "./utils/ProtectedRoute.tsx";
 import Checkout, { loader as checkoutLoader } from "./pages/checkout/index.tsx";
 import UserWishlist, {
@@ -28,6 +26,10 @@ import OrderSuccess from "./pages/order-success/index.tsx";
 import OrderStatus, {
   loader as orderDetailLoader,
 } from "./pages/order-status/index.tsx";
+import ContactUs from "./pages/contact-us/index.tsx";
+import UserAccount from "./pages/user-account/index.tsx";
+import UserProfile from "./pages/user-profile/index.tsx";
+import UpdatePassword from "./pages/update-password/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -53,18 +55,22 @@ const router = createBrowserRouter([
       },
       {
         element: <ProtectedRoute />,
+        path: "/my-account",
         children: [
           {
             index: true,
-            path: "/my-profile",
+            element: <UserAccount />,
+          },
+          {
+            path: "profile",
             element: <UserProfile />,
           },
           {
-            path: "/my-profile/update-password",
+            path: "update-password",
             element: <UpdatePassword />,
           },
           {
-            path: "/my-orders",
+            path: "orders",
             children: [
               {
                 index: true,
@@ -78,6 +84,11 @@ const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: "wishlist",
+            element: <UserWishlist />,
+            loader: wishlistLoader,
+          },
         ],
       },
       {
@@ -85,9 +96,8 @@ const router = createBrowserRouter([
         element: <SearchResultsPage />,
       },
       {
-        path: "/my-wishlist",
-        element: <UserWishlist />,
-        loader: wishlistLoader,
+        path: "/contact-us",
+        element: <ContactUs />,
       },
       {
         path: "/my-cart",
@@ -108,7 +118,7 @@ const router = createBrowserRouter([
         element: <OrderSuccess />,
       },
       {
-        path: ":category",
+        path: "/category/:category",
         children: [
           {
             index: true,
