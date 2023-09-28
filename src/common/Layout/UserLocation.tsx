@@ -27,7 +27,7 @@ const UserLocation = () => {
     <div className="xs:hidden bg-[#3a4791] py-1">
       <button
         onClick={() => setIsModalOpen(true)}
-        className="text-white ml-[3%] flex"
+        className="text-white ml-[2.5%] flex"
       >
         <LocationIcon className="w-4 h-4 stroke-white my-auto mr-1" />
         {userLocation

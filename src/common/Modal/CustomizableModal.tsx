@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { ModalOverlay } from "./ModalOverlay";
 import { BackdropProps, CustomizableModalProps } from "./models";
-import styles from "./CustomModal.module.css"
+import styles from "./CustomModal.module.css";
+import { useLocation } from "react-router-dom";
 
 export function Backdrop({ onClose }: BackdropProps) {
   return <div className={styles.backdrop} onClick={onClose} />;
@@ -22,12 +23,18 @@ export const CustomizableModal = ({
   transitionType,
   transitionDuration = 300,
 }: CustomizableModalProps) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    onClose();
+  }, [location]);
+  
   useEffect(() => {
     // Disable scrolling on the main page when the modal is open
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
     }
 
     let timer: ReturnType<typeof setTimeout>;
@@ -36,7 +43,7 @@ export const CustomizableModal = ({
     }
     return () => {
       // Re-enable scrolling when the component unmounts or when the modal closes
-      document.body.style.overflow = '';
+      document.body.style.overflow = "";
       if (timer) clearTimeout(timer);
     };
   }, [isOpen, autoCloseDuration, onClose]);

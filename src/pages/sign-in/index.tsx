@@ -176,7 +176,7 @@ const SignInForm = () => {
             onClick={() => navigate("/sign-up")}
             className="max-w-[80%] mx-auto w-full border-2 text-white p-2 bg-[#13193F] hover:bg-[#febd69] rounded-lg"
           >
-            Create your Electrozone account
+            create your electrozone account
           </button>
         </div>
       </form>

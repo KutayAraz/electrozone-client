@@ -9,6 +9,9 @@ import { addtoBuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
 import WishlistButton from "./WishlistButton";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Product = ({
   id,
@@ -113,10 +116,12 @@ const Product = ({
   };
 
   return (
-    <div className="mt-4">
-      <div className="flex max-w-screen-md mx-auto text-center w-full justify-between">
-        <div className="flex">
-          <Link to={`/${category.replace(/-/g, "_")}`}>{category}&gt;</Link>
+    <div className="mt-4 sm:px-4 max-w-screen-sm mx-[2%]">
+      <div className="flex flex-col text-center">
+        <div className="hidden xs:flex mb-4 sm:mb-0">
+          <Link to={`/${category.replace(/-/g, "_")}`} className="mr-2">
+            {category}&gt;
+          </Link>
           <Link
             to={`/${category.replace(/-/g, "_")}/${subcategory.replace(
               /-/g,
@@ -126,7 +131,9 @@ const Product = ({
             {subcategory}
           </Link>
         </div>
-        <div className="flex flex-col-reverse w-[20%]">
+        <h2 className="text sm:text-lg ">{productName}</h2>
+        <p className="font-[500] sm:text-base mb-2">{brand}</p>
+        <div className="hidden sm:flex flex-col-reverse w-full sm:w-[20%] mb-4 sm:mb-0">
           <img
             src={thumbnail}
             alt=""
@@ -143,55 +150,100 @@ const Product = ({
             />
           ))}
         </div>
-        <img src={selectedImage} alt="" className="object-contain w-[50%]" />
-        <div className="flex flex-col">
-          <h2>{productName}</h2>
-          <p>{brand}</p>
+        <Slider
+          dots={true}
+          dotsClass="slick-dots"
+          infinite={true}
+          speed={500}
+          slidesToShow={1}
+          slidesToScroll={1}
+          className="lg:hidden"
+        >
+          <img
+            src={thumbnail}
+            alt={`thumbnail image for ${productName}`}
+            className="hidden xs:block object-contain w-full sm:w-[50%] mb-4 sm:mb-0"
+          />
+          {images?.map((image: any) => (
+            <div key={image.id}>
+              <img
+                src={image.productImage}
+                alt={`image for ${productName}`}
+                className="w-64 h-64 object-contain mx-auto"
+                onClick={() => setSelectedImage(image.productImage)}
+              />
+            </div>
+          ))}
+        </Slider>
 
-          <p>{price}</p>
-          <div className="flex">
-            <button onClick={decrementQuantity}>-</button>
+        <div className="flex flex-col text-left sm:text-center w-full sm:w-auto">          
+          <p className="text-lg sm:text-xl mb-2 text-center mt-10">${price}</p>
+          <div className="flex justify-center mb-4">
+            <button
+              onClick={decrementQuantity}
+              className="px-2 py-1 border rounded"
+            >
+              -
+            </button>
             <input
               type="text"
               value={quantity}
               onChange={handleQuantityChange}
               min={1}
               max={10}
-              className="text-center"
+              className="text-center w-16 mx-2 border rounded"
             />
-            <button onClick={incrementQuantity}>+</button>
+            <button
+              onClick={incrementQuantity}
+              className="px-2 py-1 border rounded"
+            >
+              +
+            </button>
           </div>
-
           {stock > 0 ? (
-            <div className="flex flex-col">
-              <button onClick={handleAddToCart}>Add to Cart</button>
-              <button onClick={handleBuyNow}>Buy now</button>
+            <div className="flex flex-col mb-4 w-[80%] mx-auto">
+              <button
+                onClick={handleAddToCart}
+                className=" sm:w-auto px-4 py-2 bg-theme-blue text-white rounded mb-2"
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={handleBuyNow}
+                className="w-full sm:w-auto px-4 py-2 bg-theme-orange text-white rounded"
+              >
+                Buy now
+              </button>
             </div>
           ) : (
-            <p>This product is currently out of stock</p>
+            <p className="text-red-500">
+              This product is currently out of stock
+            </p>
           )}
-          <Link to={""}>
-            <Rating
-              name="half-rating-read"
-              value={parseFloat(averageRating)}
-              precision={0.1}
-              readOnly
+          <div className="flex flex-col justify-center items-center mb-4">
+            <Link to={""} className="mr-4">
+              <Rating
+                name="half-rating-read"
+                value={parseFloat(averageRating)}
+                precision={0.1}
+                readOnly
+              />
+            </Link>
+            <WishlistButton
+              isWishlisted={isWishlisted}
+              toggleWishlist={toggleWishlist}
             />
-          </Link>
-
-          <WishlistButton
-            isWishlisted={isWishlisted}
-            toggleWishlist={toggleWishlist}
-          />
+          </div>
         </div>
       </div>
-      <div className="max-w-xs mx-auto text-center">
+      <h3 className="underline ml-[2%] mb-2">Product Description</h3>
+      <ul className="">
         {description.map((bulletPoint: string, index: number) => (
-          <p className="list-disc" key={index}>
+          <li className="text-sm list-disc mb-2" key={index}>
             {bulletPoint}
-          </p>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };

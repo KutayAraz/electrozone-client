@@ -50,7 +50,7 @@ const Header = () => {
                 <LocationPin width={28} height={28} />
               </div>
             </div>
-            <SearchBar className="hidden xs:block text-black h-10 w-[40%]" />
+            <SearchBar className="hidden xs:block text-black h-10 mx-[3%]" />
             <div className="flex items-center xs:pr-2 whitespace-nowrap">
               {isSignedIn ? (
                 <button

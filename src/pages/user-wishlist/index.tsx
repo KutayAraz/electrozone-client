@@ -69,7 +69,7 @@ async function loadWishlist() {
     accessToken = await fetchNewAccessToken();
   }
 
-  const response = await fetch(`${import.meta.env.API_URL}/user/wishlist`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/user/wishlist`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

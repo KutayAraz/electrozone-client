@@ -11,6 +11,7 @@ export default {
     extend: {
       colors: {
         "theme-blue": "#13193F",
+        "theme-orange": "#febd69",
       },
       spacing: {
         1: "1px",
@@ -19,7 +20,7 @@ export default {
         1: "1px",
       },
       fontFamily: {
-        'sans': ['Poppins', 'sans-serif'],
+        sans: ["Poppins", "sans-serif"],
       },
     },
   },

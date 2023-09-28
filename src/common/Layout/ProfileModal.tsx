@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import CustomizableModal from "../Modal/CustomizableModal";
 import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
 import { Divider } from "@mui/material";
+import { ReactComponent as ExitIcon } from "@assets/svg/exit.svg";
 
 export interface ProfileModalProps {
   isOpen: boolean;
@@ -44,8 +45,12 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
               <Divider />
             </div>
           </div>
-          <Link to="/sign-out" className="text-xl px-4 pb-4">
-            Sign Out
+
+          <Link to="/sign-out">
+            <Divider />
+            <div className="text-xl px-4 pb-4 mt-4">
+              Sign Out <ExitIcon className="w-6 h-6 inline" />
+            </div>
           </Link>
         </div>
       </CustomizableModal>

@@ -8,8 +8,8 @@ import {
 } from "react-router-dom";
 import ProductList from "./components/ProductList";
 import { Suspense, useEffect, useState } from "react";
-import { Box, InputLabel, MenuItem, Select } from "@mui/material";
-import { FormControl } from "@mui/base";
+import { Box, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
 
 const fetchProducts = async (subcategory: string, sort: string) => {
   const response = await fetch(
@@ -40,23 +40,34 @@ const SubcategoryPage = () => {
 
   return (
     <div className="bg-gray-100">
-      <div className="flex justify-between items-center px-2 my-1">
+      <div className="flex justify-between items-center px-2 py-4">
         <h3 className="text-xl font-semibold text-gray-600">
           {subcategory ? subcategory.toUpperCase() : "Products"}
         </h3>
-        <Box sx={{ minWidth: 100 }} >
-          <FormControl className="pr-2 rounded-md " >
-            <InputLabel id="sort-by" className="text-sm">Sort By</InputLabel>
+        <Box sx={{ minWidth: 120, maxHeight: "80px" }}>
+          <FormControl className="rounded-lg shadow-md " >
+            <InputLabel id="sort-by" sx={{ fontSize: "0.75rem" }}>
+              Sort By
+            </InputLabel>
             <Select
-              label="sort-by"
+              id="sort-by"
+              label="Sort By"
               value={searchParams.get("sort") || "featured"}
               onChange={handleSortChange}
-              sx={{ fontSize: '0.875rem' }}
+              sx={{ padding: '2px', '& .MuiSelect-select': { padding: '4px' } }}
             >
-              <MenuItem value={"featured"}>Featured</MenuItem>
-              <MenuItem value={"rating"}>Rating</MenuItem>
-              <MenuItem value={"price_ascending"}>Price Ascending</MenuItem>
-              <MenuItem value={"price_descending"}>Price Descending</MenuItem>
+              <MenuItem value={"featured"}>
+                <Typography variant="body2">Featured</Typography>
+              </MenuItem>
+              <MenuItem value={"rating"}>
+                <Typography variant="body2">Rating</Typography>
+              </MenuItem>
+              <MenuItem value={"price_ascending"}>
+                <Typography variant="body2">Price Ascending</Typography>
+              </MenuItem>
+              <MenuItem value={"price_descending"}>
+                <Typography variant="body2">Price Descending</Typography>
+              </MenuItem>
             </Select>
           </FormControl>
         </Box>

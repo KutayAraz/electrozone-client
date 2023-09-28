@@ -33,7 +33,7 @@ const ProductPage = () => {
             images={productData.productImages}
             brand={productData.brand}
             description={productData.description}
-            price={productData.price}
+            price={productData.price.toFixed(2)}
             stock={productData.stock}
             averageRating={productData.averageRating}
             subcategory={productData.subcategory}
@@ -52,20 +52,27 @@ const ProductPage = () => {
           />
         )}
       />
-      <Await
-        resolve={reviews}
-        children={(resolvedReviews) =>
-          resolvedReviews.map((review: any) => (
-            <Review
-              key={review.id}
-              id={review.id}
-              reviewDate={review.reviewDate}
-              rating={review.rating}
-              comment={review.comment}
-            />
-          ))
-        }
-      />
+      <section id="rating" className="my-4 ml-[4%]">
+        <h4 className=" underline">Reviews</h4>
+        <Await
+          resolve={reviews}
+          children={(resolvedReviews) =>
+            resolvedReviews.length === 0 ? (
+              <p className="text-sm ">This product has no reviews yet.</p>
+            ) : (
+              resolvedReviews.map((review: any) => (
+                <Review
+                  key={review.id}
+                  id={review.id}
+                  reviewDate={review.reviewDate}
+                  rating={review.rating}
+                  comment={review.comment}
+                />
+              ))
+            )
+          }
+        />
+      </section>
     </Suspense>
   );
 };
