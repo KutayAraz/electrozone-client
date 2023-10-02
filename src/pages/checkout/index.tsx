@@ -2,23 +2,16 @@ import { CheckoutIntent } from "@/setup/slices/models";
 import { RootState, store } from "@/setup/store";
 import { checkHydration } from "@/utils/check-hydration";
 import fetchNewAccessToken from "@/utils/fetch-access-token";
-import { Suspense, useEffect, useRef, useState } from "react";
-import {
-  useLoaderData,
-  Await,
-  defer,
-  useNavigate,
-  useLocation,
-  useNavigationType,
-  NavigationType,
-} from "react-router-dom";
+import { Suspense, useState } from "react";
+import { useLoaderData, Await, defer, useNavigate } from "react-router-dom";
 import CheckoutProductCard from "./components/CheckoutProductCard";
 import UserCard from "./components/UserCard";
 import { useDispatch, useSelector } from "react-redux";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
-import { Action } from "history";
+import { ReactComponent as BrandIcon } from "@assets/brand/brand.svg";
+import { ReactComponent as BackButton } from "@assets/svg/backbutton.svg";
 
 const Checkout = () => {
   const { cartItems, user }: any = useLoaderData();
@@ -121,15 +114,38 @@ const Checkout = () => {
   };
 
   return (
-    <>
-      <button onClick={handleBackToHome}>Go Back to Your Cart</button>
+    <div className="min-h-screen bg-gray-100 p-6">
+      <button onClick={handleBackToHome} className="mb-6">
+        <BrandIcon className="w-64 h-auto rounded-lg shadow-md transition-transform transform hover:scale-105" />
+      </button>
+      
       {showModal && (
-        <div className="modal">
-          <p>Do you want to add these items to your cart?</p>
-          <button onClick={addToCartAndNavigate}>Yes, Add to Cart</button>
-          <button onClick={justNavigate}>No, Thanks</button>
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-xl shadow-lg">
+            <p className="mb-4 text-lg">
+              Do you want to add these items to your cart?
+            </p>
+            <div className="flex space-x-4">
+              <button
+                onClick={addToCartAndNavigate}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+              >
+                Yes, Add to Cart
+              </button>
+              <button
+                onClick={justNavigate}
+                className="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+              >
+                No, Thanks
+              </button>
+            </div>
+          </div>
         </div>
       )}
+      <button onClick={handleBackToHome} className="block mb-2">
+        <BackButton className="w-[2rem] h-auto inline" />
+        Go back
+      </button>
       <Suspense fallback={<p>Loading...</p>}>
         <Await
           resolve={user}
@@ -142,7 +158,7 @@ const Checkout = () => {
             />
           )}
         />
-        <>
+        <div className="space-y-4 mt-6">
           {checkoutItems.products.map((product: any) => {
             return (
               <CheckoutProductCard
@@ -156,10 +172,15 @@ const Checkout = () => {
               />
             );
           })}
-        </>
+        </div>
       </Suspense>
-      <button onClick={handleOrderPlacement}>Confirm Order</button>
-    </>
+      <button
+        onClick={handleOrderPlacement}
+        className="bg-theme-orange text-white px-6 py-2 mt-8 rounded-md shadow-md hover:bg-orange-400 transition-colors"
+      >
+        Confirm Order
+      </button>
+    </div>
   );
 };
 

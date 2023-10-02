@@ -14,6 +14,7 @@ export interface ModalOverlayProps {
   direction: string;
   transitionDuration: number;
   transitionType: string;
+  className?: string;
 }
 
 export interface State {
@@ -38,13 +39,14 @@ export interface CustomizableModalProps {
   bottom?: string;
   left?: string;
   right?: string;
-  direction: "top" | "bottom" | "left" | "right";
+  direction: "top" | "bottom" | "left" | "right" | "center";
   autoCloseDuration?: number;
   transitionDuration?: number;
   transitionType: string;
   children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  className?: string;
 }
 
 export type ModalStyleType = {

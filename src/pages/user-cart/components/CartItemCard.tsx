@@ -4,6 +4,7 @@ import fetchNewAccessToken from "@/utils/fetch-access-token";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { ReactComponent as Bin } from "@assets/svg/bin.svg";
 
 const CartItemCard = ({
   id,
@@ -11,7 +12,7 @@ const CartItemCard = ({
   price,
   thumbnail,
   quantity,
-  totalPrice,
+  amount,
   subcategory,
   category,
   onRemoveItem,
@@ -86,27 +87,43 @@ const CartItemCard = ({
   };
 
   return (
-    <div className="flex flex-col" key={id}>
-      <Link to={`/${category}/${subcategory}/${id}`}>
-        <p>{productName}</p>
-        <div className="flex w-full justify-between">
-          <img src={thumbnail} alt="" />
-        </div>
+    <div className="border rounded-md p-4 flex items-start space-x-4" key={id}>
+      <Link to={`/category/${category}/${subcategory}/${id}`} className="flex-shrink-0">
+        <img
+          src={thumbnail}
+          alt={productName}
+          className="w-24 h-24 object-contain rounded-md"
+        />
       </Link>
 
-      <p>{price}</p>
-      <select
-        value={selectedQuantity}
-        onChange={(event) => handleQuantityChange(event)}
-      >
-        {Array.from({ length: 10 }, (_, index) => (
-          <option key={index + 1} value={index + 1}>
-            {index + 1}
-          </option>
-        ))}
-      </select>
-      <button onClick={handleRemoveProduct}>Remove item from cart</button>
-      <p>{totalPrice}</p>
+      <div className="flex-grow space-y-2">
+        <Link to={`/category/${category}/${subcategory}/${id}`}>
+          <p className="text-gray-700 hover:text-blue-500 transition duration-200">
+            {productName}
+          </p>
+        </Link>
+        <p className="text-gray-700">${price}</p>
+        <div className="flex items-center space-x-2">
+          <select
+            value={selectedQuantity}
+            onChange={(event) => handleQuantityChange(event)}
+            className="border rounded-md p-2"
+          >
+            {Array.from({ length: 10 }, (_, index) => (
+              <option key={index + 1} value={index + 1}>
+                {index + 1}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={handleRemoveProduct}
+            className="text-red-500 hover:underline"
+          >
+            <Bin className="w-6 h-auto" />
+          </button>
+        </div>
+        <p className="text-lg text-gray-700">Total: ${amount}</p>
+      </div>
     </div>
   );
 };

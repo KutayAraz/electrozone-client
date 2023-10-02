@@ -1,5 +1,5 @@
 import { CSSTransition } from "react-transition-group";
-import styles from "./CustomModal.module.css";
+import styles from "./CustomModal.module.scss";
 import { ModalOverlayProps, ModalStyleType } from "./models";
 
 export function ModalOverlay({
@@ -14,6 +14,7 @@ export function ModalOverlay({
   direction,
   transitionDuration,
   transitionType,
+  className,
 }: ModalOverlayProps) {
   const modalStyle: ModalStyleType = {
     top,
@@ -44,7 +45,7 @@ export function ModalOverlay({
       classNames={classNames}
       unmountOnExit
     >
-      <div className={styles.modal} style={modalStyle}>
+      <div className={`${styles.modal} ${className}`} style={modalStyle}>
         {children}
       </div>
     </CSSTransition>

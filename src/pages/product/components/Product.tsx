@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ProductProps } from "../models";
+import { ProductProps } from "./models";
 import Rating from "@mui/material/Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "@/setup/slices/localCart-slice";
@@ -116,7 +116,7 @@ const Product = ({
   };
 
   return (
-    <div className="mt-4 sm:px-4 max-w-screen-sm mx-[2%]">
+    <div className="mt-4 sm:px-4 max-w-screen-sm mx-[3%]">
       <div className="flex flex-col text-center">
         <div className="hidden xs:flex mb-4 sm:mb-0">
           <Link to={`/${category.replace(/-/g, "_")}`} className="mr-2">
@@ -158,6 +158,7 @@ const Product = ({
           slidesToShow={1}
           slidesToScroll={1}
           className="lg:hidden"
+          arrows={false}
         >
           <img
             src={thumbnail}
@@ -176,7 +177,7 @@ const Product = ({
           ))}
         </Slider>
 
-        <div className="flex flex-col text-left sm:text-center w-full sm:w-auto">          
+        <div className="flex flex-col text-left sm:text-center w-full sm:w-auto">
           <p className="text-lg sm:text-xl mb-2 text-center mt-10">${price}</p>
           <div className="flex justify-center mb-4">
             <button
@@ -204,13 +205,13 @@ const Product = ({
             <div className="flex flex-col mb-4 w-[80%] mx-auto">
               <button
                 onClick={handleAddToCart}
-                className=" sm:w-auto px-4 py-2 bg-theme-blue text-white rounded mb-2"
+                className=" sm:w-auto px-4 py-2 bg-theme-blue text-white rounded-xl mb-2"
               >
                 Add to Cart
               </button>
               <button
                 onClick={handleBuyNow}
-                className="w-full sm:w-auto px-4 py-2 bg-theme-orange text-white rounded"
+                className="w-full sm:w-auto px-4 py-2 bg-theme-orange text-white rounded-xl"
               >
                 Buy now
               </button>
@@ -221,7 +222,7 @@ const Product = ({
             </p>
           )}
           <div className="flex flex-col justify-center items-center mb-4">
-            <Link to={""} className="mr-4">
+            <Link to={"#rating"} className="mr-4">
               <Rating
                 name="half-rating-read"
                 value={parseFloat(averageRating)}
@@ -236,11 +237,11 @@ const Product = ({
           </div>
         </div>
       </div>
-      <h3 className="underline ml-[2%] mb-2">Product Description</h3>
+      <h3 className="underline mb-2 ">Product Description</h3>
       <ul className="">
         {description.map((bulletPoint: string, index: number) => (
-          <li className="text-sm list-disc mb-2" key={index}>
-            {bulletPoint}
+          <li className="text-sm  mb-2" key={index}>
+            - {bulletPoint}
           </li>
         ))}
       </ul>

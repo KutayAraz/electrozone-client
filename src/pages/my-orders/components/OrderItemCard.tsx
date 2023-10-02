@@ -8,9 +8,8 @@ const OrderItemCard = ({
   category,
 }: any) => {
   return (
-    <Link to={`/${category}/${subcategory}/${id}`} key={id}>
-      <p>{productName}</p>
-      <img src={thumbnail} alt={`image for ${productName}`} />
+    <Link to={`/category/${category}/${subcategory}/${id}`} key={id}>
+      <img src={thumbnail} alt={`image for ${productName}`} className="w-24 h-auto"/>
     </Link>
   );
 };

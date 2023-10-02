@@ -4,7 +4,7 @@ interface CartItemCardProps {
   thumbnail: string;
   quantity: number;
   price: number;
-  totalPrice: number;
+  amount: number;
   category: string;
   subcategory: string;
   onRemoveItem: () => void;

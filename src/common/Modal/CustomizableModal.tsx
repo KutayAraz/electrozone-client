@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ModalOverlay } from "./ModalOverlay";
 import { BackdropProps, CustomizableModalProps } from "./models";
-import styles from "./CustomModal.module.css";
+import styles from "./CustomModal.module.scss";
 import { useLocation } from "react-router-dom";
 
 export function Backdrop({ onClose }: BackdropProps) {
@@ -22,6 +22,7 @@ export const CustomizableModal = ({
   autoCloseDuration,
   transitionType,
   transitionDuration = 300,
+  className
 }: CustomizableModalProps) => {
   const location = useLocation();
 
@@ -62,6 +63,7 @@ export const CustomizableModal = ({
         direction={direction}
         transitionDuration={transitionDuration}
         transitionType={transitionType}
+        className={className}
       >
         {children}
       </ModalOverlay>

@@ -1,0 +1,51 @@
+$transition-duration: 300ms;
+$transition-easing: ease-out;
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  background-color: rgba(216, 228, 212, 0.8);
+}
+
+.modal {
+  position: fixed;
+  overflow-y: auto;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  z-index: 30;
+}
+
+@mixin modalTransitions($direction, $axis, $from, $to) {
+  .modal-enter-#{$direction}-slide {
+    transform: translate#{$axis }($from);
+    opacity: 0;
+  }
+
+  .modal-enter-active-#{$direction}-slide {
+    transform: translate#{$axis }($to);
+    opacity: 1;
+    transition: transform $transition-duration $transition-easing,
+      opacity $transition-duration $transition-easing;
+  }
+
+  .modal-exit-#{$direction}-slide {
+    transform: translate#{$axis }($to);
+    opacity: 1;
+  }
+
+  .modal-exit-active-#{$direction}-slide {
+    transform: translate#{$axis }($from);
+    opacity: 0;
+    transition: transform $transition-duration $transition-easing,
+      opacity $transition-duration $transition-easing;
+  }
+}
+
+@include modalTransitions(bottom, "Y", "100%", "0");
+@include modalTransitions(left, "X", "-100%", "0");
+@include modalTransitions(top, "Y", "-100%", "0");
+@include modalTransitions(right, "X", "100%", "0");

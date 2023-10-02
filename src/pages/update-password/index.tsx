@@ -39,19 +39,22 @@ const UpdatePassword: React.FC = () => {
   console.log(accessToken + "access");
 
   const handlePasswordChange = async (data: FormInputs) => {
-    const response = await fetch(`${import.meta.env.API_URL}/auth/update-password`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        oldPassword: data.currentPassword,
-        newPassword: data.newPassword,
-        newPasswordRetyped: data.retypedNewPassword,
-      }),
-    });
+    const response = await fetch(
+      `${import.meta.env.API_URL}/auth/update-password`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          oldPassword: data.currentPassword,
+          newPassword: data.newPassword,
+          newPasswordRetyped: data.retypedNewPassword,
+        }),
+      }
+    );
 
     if (response.status === 200) {
       return console.log("success");
@@ -63,33 +66,52 @@ const UpdatePassword: React.FC = () => {
       className="max-w-xs flex flex-col mx-auto text-center justify-items-center mt-2"
       onSubmit={handleSubmit(handlePasswordChange)}
     >
-      <label htmlFor="currentPassword">Current Password:</label>
+      <label
+        htmlFor="currentPassword"
+        className="text-lg font-[500] text-theme-blue"
+      >
+        Current Password:
+      </label>
       <input
         {...register("currentPassword")}
         type="password"
-        className="border-2 border-[#13193F] rounded-lg"
+        className="border-2 border-theme-blue rounded-lg pl-2 text-xl"
       />
       {errors.currentPassword && <p>{errors.currentPassword.message}</p>}
 
-      <label htmlFor="newPassword">New Password:</label>
+      <label
+        htmlFor="newPassword"
+        className="text-lg font-[500] text-theme-blue"
+      >
+        New Password:
+      </label>
       <input
         {...register("newPassword")}
         type="password"
-        className="border-2 border-[#13193F] rounded-lg"
+        className="border-2 border-theme-blue rounded-lg pl-2 text-xl"
       />
       {errors.newPassword && <p>{errors.newPassword.message}</p>}
 
-      <label htmlFor="retypedNewPassword">Confirm New Password:</label>
+      <label
+        htmlFor="retypedNewPassword"
+        className="text-lg font-[500] text-theme-blue"
+      >
+        Confirm New Password:
+      </label>
       <input
         {...register("retypedNewPassword")}
         type="password"
-        className="border-2 border-[#13193F] rounded-lg"
+        className="border-2 border-theme-blue rounded-lg pl-2 text-xl"
       />
-      {errors.retypedNewPassword && <p>{errors.retypedNewPassword.message}</p>}
+      {errors.retypedNewPassword && (
+        <p className="text-red-600 my-1">{errors.retypedNewPassword.message}</p>
+      )}
 
       <button
         type="submit"
-        className="bg-[#13193F] hover:bg-[#A34393] rounded-lg text-white max-w-[50%] my-2 mx-auto px-6 py-1"
+        className={`${
+          !isValid ? "bg-gray-500" : "bg-theme-blue hover:bg-[#A34393]"
+        }  rounded-lg font-[500] text-white max-w-[50%] my-2 mx-auto px-4 py-2`}
         disabled={!isValid}
       >
         Confirm

@@ -53,7 +53,7 @@ const ProductPage = () => {
         )}
       />
       <section id="rating" className="my-4 ml-[4%]">
-        <h4 className=" underline">Reviews</h4>
+        <h4 className="mb-2 underline">Reviews</h4>
         <Await
           resolve={reviews}
           children={(resolvedReviews) =>

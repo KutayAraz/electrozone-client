@@ -129,36 +129,44 @@ const UserCart = () => {
   };
 
   return (
-    <div className="max-w-screen-lg mx-auto">
-      <h2>Your Shopping Cart</h2>
-      <Suspense fallback={<p>Loading..</p>}>
+    <div className="max-w-screen-lg space-y-8 m-[3%]">
+      <h2 className="text-2xl font-semibold text-gray-700">Your Shopping Cart</h2>
+      <Suspense fallback={<p className="text-gray-600">Loading..</p>}>
         <div>
-          {cartData.length === 0 ? (
-            <p>There's nothing in your cart</p>
+          {cartData.products.length === 0 ? (
+            <p className="text-gray-500 italic">There's nothing in your cart.</p>
           ) : (
             <>
-              {cartData.products.map((product: any) => {
-                return (
+              <div className="space-y-4">
+                {cartData.products.map((product: any) => (
                   <CartItemCard
-                    key={product.id}
-                    id={product.id}
-                    productName={product.productName}
-                    thumbnail={product.thumbnail}
-                    price={product.price}
-                    quantity={product.quantity}
-                    totalPrice={product.totalPrice}
-                    subcategory={product.subcategory}
-                    category={product.category}
+                    {...product}
                     onQuantityChange={triggerRefetch}
                     onRemoveItem={triggerRefetch}
+                    key={product.id}
                   />
-                );
-              })}
-              <p>{cartData.cartTotal}</p>
-              <button onClick={handleCheckoutButton}>
-                Proceed to Checkout
-              </button>
-              <button onClick={handleClearCartButton}>Clear Cart</button>
+                ))}
+              </div>
+
+              <p className="text-xl text-gray-700 font-semibold mt-4">
+                Cart Total: ${cartData.cartTotal}
+              </p>
+
+              <div className="flex space-x-4 mt-4">
+                <button
+                  onClick={handleCheckoutButton}
+                  className="bg-theme-blue hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200"
+                >
+                  Proceed to Checkout
+                </button>
+                <button
+                  onClick={handleClearCartButton}
+                  className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-md transition duration-200"
+                  disabled={cartData.length === 0}
+                >
+                  Clear Cart
+                </button>
+              </div>
             </>
           )}
         </div>

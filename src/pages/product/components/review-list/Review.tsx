@@ -1,4 +1,4 @@
-import { ReviewType } from "../../models";
+import { ReviewType } from "../models";
 
 const Review = ({ id, rating, comment, reviewDate }: ReviewType) => {
   const date = new Date(reviewDate).toLocaleDateString();
