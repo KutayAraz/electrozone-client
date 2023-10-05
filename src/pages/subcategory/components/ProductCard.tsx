@@ -55,11 +55,11 @@ const ProductCard = ({
   return (
     <Link
       to={`/category/${category}/${subcategory}/${id}`}
-      className={`flex border-1 bg-white shadow-lg rounded-md sm:flex-row items-center text-center mb-2 w-full sm:w-1/4 md:w-1/6 ${
+      className={`flex border-1 bg-white shadow-lg rounded-md sm:flex-row items-stretch text-center mb-2 w-full sm:w-1/4 md:w-1/6 ${
         isClicked ? "clicked-class" : ""
       }`}
     >
-      <div className="relative w-[50%] sm:w-3/10 h-0 pb-[25vh] mb-2 sm:mb-0 sm:mr-2 ">
+      <div className="relative w-[50%] sm:w-3/10 h-0 pb-[25vh] mb-2 sm:mb-0 sm:mr-2">
         <div className="absolute inset-0 flex items-center justify-center overflow-hidden px-[4px]">
           <img
             src={thumbnail}
@@ -68,17 +68,17 @@ const ProductCard = ({
           />
         </div>
       </div>
-      <Divider orientation="vertical" />
-      <div className="flex-1 pr-[2px]">
-        <h4 className="text-sm mb-1 ">{productName}</h4>
-        <p className="text-sm mb-1 font-semibold">{brand}</p>
+      <Divider orientation="vertical" className="self-stretch" />
+      <div className="flex-1 px-2 flex flex-col justify-between my-2">
+        <p>{productName}</p>
+        <p className="font-[500]">{brand}</p>
         <div onClick={handleRatingClick}>
           <Rating value={averageRating} />
         </div>
-        <h3 className="text-lg mb-1">$ {price}</h3>
+        <h3 className="text-lg">$ {price.toFixed(2)}</h3>
         <button
           onClick={handleButtonClick}
-          className="border-2 py-1 p-2 bg-theme-blue text-white rounded-lg shadow-lg text-sm"
+          className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full  bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base"
         >
           Add to Cart
         </button>

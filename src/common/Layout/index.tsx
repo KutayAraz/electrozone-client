@@ -14,6 +14,8 @@ import { selectAccessToken } from "@/setup/slices/auth-slice";
 import fetchNewAccessToken from "@/utils/fetch-access-token";
 import { checkHydration } from "@/utils/check-hydration";
 import UserLocation from "./UserLocation";
+import { Alert } from "@mui/material";
+import { hideAlert } from "@/setup/slices/alert-slice";
 
 const Layout = () => {
   const location = useLocation();
@@ -22,6 +24,7 @@ const Layout = () => {
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const accessToken = useSelector(selectAccessToken);
   const buyNowCartItem = useSelector((state: RootState) => state.buyNowCart);
+  const alertState = useSelector((state: RootState) => state.alert)
 
   const mergeCartsAndSetIntent = async () => {
     await checkHydration(store);
@@ -82,11 +85,22 @@ const Layout = () => {
   }, [location.pathname, userIntent]);
 
   return (
-    <div className="flex flex-col min-h-screen mx">
-      <Header />
-      <NavStrip />
+    <div className="flex flex-col min-h-screen">
+      <div className="bg-theme-blue px-[2%]">
+        <Header />
+        <NavStrip />
+        <Sidebar />
+      </div>
       <UserLocation />
-      <Sidebar user={{ name: "userName", city: "CA" }} />
+      {alertState.isOpen && (
+        <Alert 
+          severity={alertState.type} 
+          onClose={() => dispatch(hideAlert())}
+          className="fixed w-full top-0 z-10"
+        >
+          {alertState.message}
+        </Alert>
+      )}
       <div className="flex-grow">
         <Outlet />
       </div>

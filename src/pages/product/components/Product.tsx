@@ -12,6 +12,9 @@ import WishlistButton from "./WishlistButton";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { displayAlert } from "@/setup/slices/alert-slice";
+import { AppDispatch, RootState } from "@/setup/store";
+import { AnyAction } from "@reduxjs/toolkit";
 
 const Product = ({
   id,
@@ -30,10 +33,10 @@ const Product = ({
 }: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState(thumbnail);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const isSignedIn = useSelector((state: any) => state.user.isSignedIn);
-  let accessToken = useSelector((state: any) => state.auth.accessToken);
+  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
+  let accessToken = useSelector((state: RootState) => state.auth.accessToken);
 
   const incrementQuantity = () => {
     setQuantity((prev) => (prev < 10 ? ++prev : prev));
@@ -63,11 +66,23 @@ const Product = ({
       });
 
       if (response.status === 201) {
-        window.alert("added to cart");
+        dispatch(
+          displayAlert({
+            type: "success",
+            message: "Product has been added to your cart!",
+            autoHide: true,
+          })
+        );
       }
     } else {
       dispatch(addItemToCart({ id, quantity }));
-      window.alert("added to cart");
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: "Product has been added to your cart!",
+          autoHide: true,
+        })
+      );
     }
   };
 
@@ -105,12 +120,26 @@ const Product = ({
     );
 
     if (response.status === 200 || response.status === 201) {
-      const data = await response.json(); // Parse the JSON from the response
+      const data = await response.json();
 
       if (data.action === "added") {
         updateWishlistStatus(true);
+        dispatch(
+          displayAlert({
+            type: "success",
+            message: "Product has been added to your wishlist!",
+            autoHide: true,
+          })
+        );
       } else if (data.action === "removed") {
         updateWishlistStatus(false);
+        dispatch(
+          displayAlert({
+            type: "success",
+            message: "Product has been removed to your wishlist!",
+            autoHide: true,
+          })
+        );
       }
     }
   };
@@ -118,7 +147,7 @@ const Product = ({
   return (
     <div className="mt-4 sm:px-4 max-w-screen-sm mx-[3%]">
       <div className="flex flex-col text-center">
-        <div className="hidden xs:flex mb-4 sm:mb-0">
+        <div className="hidden md:flex mb-4 sm:mb-0">
           <Link to={`/${category.replace(/-/g, "_")}`} className="mr-2">
             {category}&gt;
           </Link>

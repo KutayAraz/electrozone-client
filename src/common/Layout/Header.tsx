@@ -22,62 +22,59 @@ const Header = () => {
 
   return (
     <>
-      <div className="bg-[#13193F]">
-        <div className="mx-[2%]">
-          <div className="flex justify-between w-full bg text-white items-center ">
-            <div className="flex">
-              <BurgerMenu className="block xs:hidden"></BurgerMenu>
-              <Link to={"/"} className="max-w-[80%] mb-1">
-                <Brand className="block  xs:hidden" />
-              </Link>
-              <Link to={"/"}>
-                <BrandLogo className="hidden xs:block " />
-              </Link>
-              <div className="hidden md:flex items-center px-6">
-                <div className="flex-col whitespace-nowrap pr-2">
-                  {isSignedIn ? (
-                    <div className="text-center">
-                      <p>Deliver To</p>
-                      <p>{city}</p>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <p>Hello, </p>
-                      <p>Select your location</p>
-                    </div>
-                  )}
-                </div>
-                <LocationPin width={28} height={28} />
-              </div>
-            </div>
-            <SearchBar className="hidden xs:block text-black h-10 mx-[3%]" />
-            <div className="flex items-center xs:pr-2 whitespace-nowrap">
+      <div className="flex justify-between w-full bg text-white items-center ">
+        <div className="flex">
+          <BurgerMenu className="block md:hidden"></BurgerMenu>
+          <Link to={"/"} className="max-w-[80%] mb-1">
+            <Brand className="block  md:hidden" />
+          </Link>
+          <Link to={"/"}>
+            <BrandLogo className="hidden md:block " />
+          </Link>
+          <div className="hidden md:flex items-center px-6">
+            <div className="flex-col whitespace-nowrap pr-2">
               {isSignedIn ? (
-                <button
-                  onClick={() => setIsProfileModalOpen(true)}
-                  className="text-center"
-                >
-                  {firstName}
-                </button>
+                <div className="text-center">
+                  <p>Deliver To</p>
+                  <p>{city}</p>
+                </div>
               ) : (
-                <Link to="/sign-in" className="pl-4">
-                  Sign in
-                </Link>
+                <div className="text-center">
+                  <p>Hello, </p>
+                  <p>Select your location</p>
+                </div>
               )}
-              <Arrow width={20} height={20} />
-              <button onClick={() => setIsProfileModalOpen(true)}>
-                <UserIcon width={32} height={32} />
-              </button>
-              <Link to={"/my-cart"}>
-                <Basket width={40} height={40} className="ml-2" />
-              </Link>
             </div>
-          </div>
-          <div className="px-1">
-            <SearchBar className="xs:hidden text-black h-10 w-full my-1" />
+            <LocationPin width={28} height={28} />
           </div>
         </div>
+        <SearchBar className="hidden md:block text-black h-10 mx-[3%]" />
+        <div className="flex items-center xs:pr-2 whitespace-nowrap">
+          {isSignedIn ? (
+            <button
+              onClick={() => setIsProfileModalOpen(true)}
+              className="text-center"
+            >
+              {firstName}
+            </button>
+          ) : (
+            <Link to="/sign-in" className="pl-4">
+              Sign in
+            </Link>
+          )}
+          <Arrow width={20} height={20} />
+          <button onClick={() => setIsProfileModalOpen(true)}>
+            <UserIcon width={32} height={32} />
+          </button>
+          <Link to={"/my-cart"}>
+            <Basket width={40} height={40} className="ml-2" />
+          </Link>
+        </div>
       </div>
+      <div className="px-1">
+        <SearchBar className="md:hidden text-black h-10 w-full my-1" />
+      </div>
+
       <ProfileModal
         isOpen={isProfileModalOpen}
         onClose={() => setIsProfileModalOpen(false)}

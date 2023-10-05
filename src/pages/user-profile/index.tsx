@@ -1,3 +1,4 @@
+import { displayAlert } from "@/setup/slices/alert-slice";
 import { updateUserInfo } from "@/setup/slices/user-slice";
 import { RootState } from "@/setup/store";
 import { fetchNewAccessToken } from "@/utils/fetch-access-token";
@@ -7,7 +8,7 @@ import { Form, useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
 
   const city = useSelector((state: RootState) => state.user.city);
   const accessToken = useSelector((state: any) => state.auth.accessToken);
@@ -79,6 +80,12 @@ const UserProfile = () => {
     } else if (response?.status === 200) {
       const result = await response.json();
       dispatch(updateUserInfo({ city: result.city }));
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: "Your information has been successfuly updated.",
+          autoHide: true,
+        }))
     } else {
       console.log(response?.status);
     }

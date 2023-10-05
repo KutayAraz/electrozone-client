@@ -3,10 +3,6 @@ export interface User {
     city: string;
   }
   
-  export interface SidebarProps {
-    user?: User;
-  }
-  
   export interface HeaderProps {
     user?: User;
     isSignedIn: boolean;

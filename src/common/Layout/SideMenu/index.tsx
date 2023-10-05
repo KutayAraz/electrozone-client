@@ -1,30 +1,35 @@
-import { SidebarProps } from "@common/Layout/models";
 import Modal from "./Modal";
 import { useDispatch, useSelector } from "react-redux";
-import { uiActions } from "@/setup/slices/ui-slice";
 import { Link, useLocation } from "react-router-dom";
 import { RootState } from "@/setup/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ReactComponent as ExitIcon } from "@assets/svg/exit.svg";
+import CustomizableModal from "@/common/Modal/CustomizableModal";
 
-const Sidebar = ({
-  user: { city } = { city: "Select your location" },
-}: SidebarProps) => {
+const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
-
-  const handleSideNav = () => {
-    dispatch(uiActions.toggleSideNav());
-  };
+  const city = useSelector((state: RootState) => state.user.city);
 
   useEffect(() => {
-    dispatch(uiActions.closeSideNav());
+    setIsOpen(false);
   }, [location]);
 
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   return (
-    <Modal onClose={handleSideNav}>
+    <CustomizableModal
+      width="80%"
+      height="100vh"
+      top="0"
+      left="0"
+      direction="left"
+      transitionType="slide"
+      transitionDuration={300}
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+    >
       <div className="flex flex-col">
         <div>
           <h4 className="text-lg font-bold">Trending</h4>
@@ -73,17 +78,19 @@ const Sidebar = ({
           ) : (
             <Link to={"/sign-in"}>Sign In</Link>
           )}
-          {isSignedIn && <p>{city}</p>}
+          {city && <p>{city}</p>}
           <p>Customer Service</p>
           {isSignedIn && (
             <div>
-              <Link to={"/sign-out"}>Sign Out</Link>
-              <ExitIcon className="w-6 h-6" />
+              <Link to={"/sign-out"}>
+                Sign Out
+                <ExitIcon className="w-6 h-6" />
+              </Link>
             </div>
           )}
         </div>
       </div>
-    </Modal>
+    </CustomizableModal>
   );
 };
 

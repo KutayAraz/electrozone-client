@@ -46,7 +46,7 @@ const SubcategoryPage = () => {
         </h3>
         <Box sx={{ minWidth: 120, maxHeight: "80px" }}>
           <FormControl className="rounded-lg shadow-md " >
-            <InputLabel id="sort-by" sx={{ fontSize: "0.75rem" }}>
+            <InputLabel id="sort-by" sx={{ fontSize: "1rem" }}>
               Sort By
             </InputLabel>
             <Select

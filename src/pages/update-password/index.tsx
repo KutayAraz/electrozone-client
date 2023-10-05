@@ -1,7 +1,8 @@
+import { displayAlert } from "@/setup/slices/alert-slice";
 import { selectAccessToken } from "@/setup/slices/auth-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
 
 type FormInputs = {
@@ -30,17 +31,18 @@ const UpdatePassword: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = useForm<FormInputs>({
     resolver: yupResolver<FormInputs>(schema),
     mode: "onBlur",
   });
 
+  const dispatch = useDispatch<any>();
   const accessToken = useSelector(selectAccessToken);
-  console.log(accessToken + "access");
 
   const handlePasswordChange = async (data: FormInputs) => {
     const response = await fetch(
-      `${import.meta.env.API_URL}/auth/update-password`,
+      `${import.meta.env.VITE_API_URL}/auth/update-password`,
       {
         method: "PATCH",
         headers: {
@@ -57,7 +59,15 @@ const UpdatePassword: React.FC = () => {
     );
 
     if (response.status === 200) {
-      return console.log("success");
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: "Your password has successfuly updated.",
+          autoHide: true,
+        })
+      );
+      reset();
+      return;
     }
   };
 
