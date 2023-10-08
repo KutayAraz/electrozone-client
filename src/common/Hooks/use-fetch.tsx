@@ -1,5 +1,5 @@
 import { displayAlert } from "@/setup/slices/alert-slice";
-import { RootState } from "@/setup/store";
+import { RootState, store } from "@/setup/store";
 import fetchNewAccessToken from "@/utils/renew-token";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +45,7 @@ const useFetch = () => {
       // If the response is 401, try refreshing the token and retry the request
       if (response.status === 401) {
         const newToken = await fetchNewAccessToken();
+        console.log("newtoken", newToken, "accessfromredux", store.getState().auth.accessToken)
         if (newToken) {
           response = await doFetch(newToken);
         }

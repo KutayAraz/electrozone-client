@@ -15,6 +15,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { displayAlert } from "@/setup/slices/alert-slice";
 import { AppDispatch, RootState } from "@/setup/store";
 import { AnyAction } from "@reduxjs/toolkit";
+import useFetch from "@/common/Hooks/use-fetch";
 
 const Product = ({
   id,
@@ -37,6 +38,7 @@ const Product = ({
   const navigate = useNavigate();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   let accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const { fetchData } = useFetch();
 
   const incrementQuantity = () => {
     setQuantity((prev) => (prev < 10 ? ++prev : prev));
