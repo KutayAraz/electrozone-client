@@ -1,7 +1,7 @@
 import { CheckoutIntent } from "@/setup/slices/models";
 import { RootState, store } from "@/setup/store";
 import { checkHydration } from "@/utils/check-hydration";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import { Suspense, useState } from "react";
 import { useLoaderData, Await, defer, useNavigate } from "react-router-dom";
 import CheckoutProductCard from "./components/CheckoutProductCard";

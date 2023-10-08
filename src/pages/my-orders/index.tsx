@@ -1,5 +1,5 @@
 import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
 import OrderCard from "./components/OrderCard";

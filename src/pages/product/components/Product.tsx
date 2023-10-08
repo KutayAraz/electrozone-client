@@ -4,7 +4,7 @@ import Rating from "@mui/material/Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "@/setup/slices/localCart-slice";
 import { useState } from "react";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import { addtoBuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";

@@ -2,7 +2,7 @@ import { Await, defer, json, useLoaderData, useParams } from "react-router-dom";
 import { Suspense, useState } from "react";
 import Product from "./components/Product";
 import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import Review from "./components/review-list/Review";
 import ReviewForm from "./components/ReviewForm";
 import { hydrationCompleted } from "@/setup/slices/hydration-slice";

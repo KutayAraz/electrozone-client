@@ -16,15 +16,6 @@ const authSlice = createSlice({
   reducers: {
     setAccessToken(state, action) {
       state.accessToken = action.payload.accessToken;
-
-      const now = new Date().getTime();
-      const fifteenMinutes = 15 * 60 * 1000;
-      state.expirationTime = new Date().getTime() + 15 * 60 * 1000;
-
-      setTimeout(() => {
-        state.accessToken = null;
-        state.expirationTime = null;
-      }, fifteenMinutes);
     },
     clearAccessToken(state) {
       state.accessToken = null;

@@ -11,7 +11,7 @@ import CartItemCard from "./components/CartItemCard";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
 import { checkHydration } from "@/utils/check-hydration";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 
 const UserCart = () => {

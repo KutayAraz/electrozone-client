@@ -1,8 +1,8 @@
 import { setAccessToken } from "@/setup/slices/auth-slice";
-import { AppDispatch, store } from "@/setup/store";
+import { store } from "@/setup/store";
 
 export async function fetchNewAccessToken() {
-  const response = await fetch("http://localhost:3000/auth/refresh", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

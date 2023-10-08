@@ -1,6 +1,6 @@
 import { RootState } from "@/setup/store";
 import OrderItemCard from "./OrderItemCard";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "@/utils/format-time";
 

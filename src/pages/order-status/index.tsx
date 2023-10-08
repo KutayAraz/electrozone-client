@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Await, defer, useLoaderData, useParams } from "react-router-dom";
 import OrderItemCard from "./components/OrderItemCard";
 import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import OrderCard from "./components/OrderCard";
 
 const OrderStatus = () => {

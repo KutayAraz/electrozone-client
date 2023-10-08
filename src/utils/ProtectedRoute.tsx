@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from "@/setup/store";
 import { ReactNode, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, Route, redirect, useNavigate } from "react-router-dom";
-import fetchNewAccessToken from "./fetch-access-token";
+import fetchNewAccessToken from "./renew-token";
 
 const ProtectedRoute = () => {
   const accessToken = useSelector(selectAccessToken);

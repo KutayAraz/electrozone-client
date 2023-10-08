@@ -1,6 +1,6 @@
 import cartSlice from "@/setup/slices/localCart-slice";
 import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";

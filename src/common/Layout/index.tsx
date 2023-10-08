@@ -11,7 +11,7 @@ import { setUserIntent } from "@/setup/slices/user-slice";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { selectAccessToken } from "@/setup/slices/auth-slice";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import { checkHydration } from "@/utils/check-hydration";
 import UserLocation from "./UserLocation";
 import { Alert } from "@mui/material";

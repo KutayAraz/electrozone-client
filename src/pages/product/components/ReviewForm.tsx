@@ -1,7 +1,7 @@
 import CustomizableModal from "@/common/Modal/CustomizableModal";
 import StarIcon from "@mui/icons-material/Star";
 import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/fetch-access-token";
+import fetchNewAccessToken from "@/utils/renew-token";
 import { Box, Rating } from "@mui/material";
 import { useRef, useState } from "react";
 
