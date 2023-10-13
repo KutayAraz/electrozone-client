@@ -13,8 +13,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { displayAlert } from "@/setup/slices/alert-slice";
-import { AppDispatch, RootState } from "@/setup/store";
-import { AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "@/setup/store";
 import useFetch from "@/common/Hooks/use-fetch";
 
 const Product = ({
@@ -37,7 +36,6 @@ const Product = ({
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
-  let accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const { fetchData } = useFetch();
 
   const incrementQuantity = () => {
@@ -57,17 +55,14 @@ const Product = ({
 
   const handleAddToCart = async () => {
     if (isSignedIn) {
-      const response = await fetch("http://localhost:3000/carts/user-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ productId: id, quantity }),
-      });
+      const result = await fetchData(
+        `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+        "POST",
+        { productId: id, quantity },
+        true
+      );
 
-      if (response.status === 201) {
+      if (result?.data.ok) {
         dispatch(
           displayAlert({
             type: "success",
@@ -93,9 +88,6 @@ const Product = ({
     dispatch(setUserIntent(CheckoutIntent.Instant));
     if (!isSignedIn) {
       navigate("/sign-in", { state: { from: { pathname: "/checkout" } } });
-    } else if (!accessToken || isSignedIn) {
-      await fetchNewAccessToken();
-      navigate("/checkout");
     } else {
       navigate("/checkout");
     }
@@ -105,26 +97,15 @@ const Product = ({
     if (!isSignedIn) {
       navigate("/sign-in");
     }
-    if (!accessToken) {
-      accessToken = await fetchNewAccessToken();
-    }
-
-    const response = await fetch(
-      `http://localhost:3000/products/${id}/wishlist`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+    const result = await fetchData(
+      `${import.meta.env.VITE_API_URL}/products/${id}/wishlist`,
+      "PATCH",
+      null,
+      true
     );
 
-    if (response.status === 200 || response.status === 201) {
-      const data = await response.json();
-
-      if (data.action === "added") {
+    if (result?.response.ok) {
+      if (result.data.action === "added") {
         updateWishlistStatus(true);
         dispatch(
           displayAlert({
@@ -133,7 +114,7 @@ const Product = ({
             autoHide: true,
           })
         );
-      } else if (data.action === "removed") {
+      } else if (result.data.action === "removed") {
         updateWishlistStatus(false);
         dispatch(
           displayAlert({
@@ -269,7 +250,7 @@ const Product = ({
         </div>
       </div>
       <h3 className="underline mb-2 ">Product Description</h3>
-      <ul className="">
+      <ul>
         {description.map((bulletPoint: string, index: number) => (
           <li className="text-sm  mb-2" key={index}>
             - {bulletPoint}

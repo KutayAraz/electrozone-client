@@ -1,32 +1,24 @@
 export interface OrderCardProps {
   orderId: number;
   orderTotal: number;
-  orderQuantity: number;
   orderDate: string;
   user: {
     firstName: string;
     lastName: string;
+    address: string;
+    city: string;
   };
-  orderItems: Product[];
-}
-
-export interface ProductCardProps {
-  productName: string;
-  thumbnail: string;
+  orderItems: OrderItemCardProps[];
+  isCancellable: boolean;
 }
 
 export interface OrderItemCardProps {
-  id: string;
+  id: number;
   productName: string;
   thumbnail: string;
-  subcategory: string;
-  category: string;
-}
-
-export interface Product {
-  productId: string;
-  productName: string;
-  thumbnail: string;
+  quantity: number;
+  price: number;
+  brand: string;
   subcategory: string;
   category: string;
 }

@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "@/setup/slices/localCart-slice";
 import { RootState } from "@/setup/store";
+import useFetch from "@/common/Hooks/use-fetch";
+import { displayAlert } from "@/setup/slices/alert-slice";
 
 const ProductCard = ({
   id,
@@ -18,32 +20,31 @@ const ProductCard = ({
 }: ProductCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const { fetchData } = useFetch();
 
-  const handleButtonClick = async (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setIsClicked(!isClicked);
     if (isSignedIn) {
-      const response = await fetch("http://localhost:3000/carts/user-cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ productId: id, quantity: 1 }),
-      });
-
-      if (response.status === 201) {
-        window.alert("added to cart");
-      }
+      const result = await fetchData(
+        `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+        "POST",
+        { productId: id, quantity: 1 },
+        true
+      );
     } else {
       dispatch(addItemToCart({ id, quantity: 1 }));
-      window.alert("added to cart");
     }
+    dispatch(
+      displayAlert({
+        type: "success",
+        message: "Product has been added to your cart!",
+        autoHide: true,
+      })
+    );
   };
 
   const handleRatingClick = (e: React.MouseEvent) => {
@@ -77,7 +78,7 @@ const ProductCard = ({
         </div>
         <h3 className="text-lg">$ {price.toFixed(2)}</h3>
         <button
-          onClick={handleButtonClick}
+          onClick={handleAddToCart}
           className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full  bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base"
         >
           Add to Cart

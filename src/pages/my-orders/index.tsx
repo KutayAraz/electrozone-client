@@ -1,8 +1,15 @@
-import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/renew-token";
 import { Suspense } from "react";
-import { Await, defer, useLoaderData } from "react-router-dom";
+import {
+  Await,
+  Location,
+  defer,
+  redirect,
+  useLoaderData,
+} from "react-router-dom";
 import OrderCard from "./components/OrderCard";
+import loaderFetch from "@/utils/loader-fetch";
+import { store } from "@/setup/store";
+import { setRedirectPath } from "@/setup/slices/redirect-slice";
 
 const MyOrders = () => {
   const { orders }: any = useLoaderData();
@@ -11,9 +18,10 @@ const MyOrders = () => {
     <Suspense fallback={<p>Loading..</p>}>
       <Await
         resolve={orders}
-        children={(resolvedOrders) =>
-          resolvedOrders.map((order: any) => (
+        children={(resolvedOrders) => {
+          return resolvedOrders.map((order: any) => (
             <OrderCard
+              key={order.orderId}
               orderId={order.orderId}
               orderTotal={order.orderTotal}
               user={order.user}
@@ -21,8 +29,8 @@ const MyOrders = () => {
               orderDate={order.orderDate}
               orderItems={order.orderItems}
             />
-          ))
-        }
+          ));
+        }}
       />
     </Suspense>
   );
@@ -30,29 +38,23 @@ const MyOrders = () => {
 
 export default MyOrders;
 
-const loadUserOrders = async () => {
-  let accessToken = store.getState().auth.accessToken;
+export const ordersLoader = async (request: Request) => {
+  const urlObj = new URL(request.url);
+  const result = await loaderFetch(
+    `${import.meta.env.VITE_API_URL}/orders/user`,
+    "GET",
+    null,
+    true
+  );
 
-  if (!accessToken) {
-    accessToken = await fetchNewAccessToken();
+  if (result.error && "status" in result.error && result.error.status === 401) {
+    store.dispatch(setRedirectPath(urlObj.pathname));
+    return redirect("/sign-in");
   }
-
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/orders/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-
-  if (response.ok) {
-    return await response.json();
-  }
+  return result;
 };
 
-export const loader = async () => {
-  return defer({
-    orders: loadUserOrders(),
-  });
+export const loader = async ({ request }: any) => {
+  const orders: any = await ordersLoader(request);
+  return defer({ orders: orders.data });
 };

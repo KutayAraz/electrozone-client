@@ -7,6 +7,7 @@ import Review from "./components/review-list/Review";
 import ReviewForm from "./components/ReviewForm";
 import { hydrationCompleted } from "@/setup/slices/hydration-slice";
 import { checkHydration } from "@/utils/check-hydration";
+import loaderFetch from "@/utils/loader-fetch";
 
 const ProductPage = () => {
   const { product, reviews, wishlisted, canCurrentUserReview }: any =
@@ -103,26 +104,14 @@ async function checkWishlist(productId: string) {
     return false;
   }
 
-  let accessToken = store.getState().auth.accessToken;
-
-  if (!accessToken) {
-    accessToken = await fetchNewAccessToken();
-  }
-  const response = await fetch(
+  const result = await loaderFetch(
     `${import.meta.env.VITE_API_URL}/products/${productId}/wishlist`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    "GET",
+    null,
+    true
   );
 
-  if (response.ok) {
-    return await response.json();
-  }
+  return result.data;
 }
 
 async function loadReviews(productId: string) {
@@ -179,7 +168,7 @@ const canCurrentUserReview = async (productId: string) => {
 export async function loader({ params }: any) {
   const productId = params.productId;
   return defer({
-    product: loadProduct(productId),
+    product: await loadProduct(productId),
     wishlisted: await checkWishlist(productId),
     reviews: loadReviews(productId),
     canCurrentUserReview: await canCurrentUserReview(productId),

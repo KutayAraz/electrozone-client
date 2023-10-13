@@ -4,6 +4,7 @@ import { store } from "@/setup/store";
 import fetchNewAccessToken from "@/utils/renew-token";
 import { Box, Rating } from "@mui/material";
 import { useRef, useState } from "react";
+import useFetch from "@/common/Hooks/use-fetch";
 
 interface ReviewFormProps {
   canCurrentUserReview: boolean;
@@ -18,15 +19,16 @@ const ratingDescriptions: { [key: number]: string } = {
   5: "Excellent",
 };
 
-function getLabelText(value: number) {
+const getLabelText = (value: number) => {
   return `${value} Star${value !== 1 ? "s" : ""}, ${ratingDescriptions[value]}`;
-}
+};
 
 const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
   const [reviewForm, setReviewForm] = useState<boolean>(false);
   const [ratingValue, setRatingValue] = useState<number | null>(0);
   const [hover, setHover] = useState(-1);
   const review = useRef<HTMLTextAreaElement>(null);
+  const { fetchData } = useFetch();
 
   const handleSubmitReview = async (event: React.FormEvent) => {
     let accessToken = store.getState().auth.accessToken;
@@ -35,24 +37,15 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
       accessToken = await fetchNewAccessToken();
     }
 
-    const data = await fetch(
+    const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/reviews/${productId}/review`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          rating: ratingValue,
-          comment: review.current?.value,
-        }),
-      }
+      "POST",
+      { rating: ratingValue, comment: review.current?.value },
+      true
     );
 
-    if (data.ok) {
-      window.alert(data);
+    if (result?.response.ok) {
+      window.alert(result.data);
     }
   };
 

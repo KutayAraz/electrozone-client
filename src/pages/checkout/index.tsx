@@ -12,6 +12,9 @@ import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { ReactComponent as BrandIcon } from "@assets/brand/brand.svg";
 import { ReactComponent as BackButton } from "@assets/svg/backbutton.svg";
+import loaderFetch from "@/utils/loader-fetch";
+import useFetch from "@/common/Hooks/use-fetch";
+import { displayAlert } from "@/setup/slices/alert-slice";
 
 const Checkout = () => {
   const { cartItems, user }: any = useLoaderData();
@@ -20,7 +23,8 @@ const Checkout = () => {
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
+  const { fetchData } = useFetch();
 
   const addToCartAndNavigate = async () => {
     const productsToOrder = checkoutItems.products.map((item: any) => ({
@@ -28,20 +32,14 @@ const Checkout = () => {
       quantity: item.quantity,
     }));
 
-    const response = await fetch(
+    const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(productsToOrder),
-      }
+      "PATCH",
+      productsToOrder,
+      true
     );
 
-    if (response.ok) {
+    if (result?.response.ok) {
       dispatch(clearbuyNowCart());
       dispatch(clearLocalcart());
       dispatch(setUserIntent(CheckoutIntent.Normal));
@@ -56,43 +54,27 @@ const Checkout = () => {
   };
 
   const handleOrderPlacement = async () => {
-    if (!accessToken) {
-      await fetchNewAccessToken();
-    }
-
     const productsToOrder = checkoutItems.products.map((item: any) => ({
       productId: item.id,
       quantity: item.quantity,
     }));
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ orderItems: productsToOrder }),
-    });
+    const result = await fetchData(
+      `${import.meta.env.VITE_API_URL}/orders`,
+      "POST",
+      productsToOrder,
+      true
+    );
 
-    if (response.status === 201) {
-      const orderId = await response.json();
-      let accessToken = store.getState().auth.accessToken;
-
-      if (!accessToken) {
-        accessToken = await fetchNewAccessToken();
-      }
-
-      await fetch(`${import.meta.env.VITE_API_URL}/carts/clear-cart`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      window.alert("order has been placed with ID:" + orderId);
-      // dont forget to reset checkout intent
+    if (result?.response.ok) {
+      const orderId = await result.data.json();
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: `Your order with ${orderId} has been successfully placed`,
+          autoHide: true,
+        })
+      );
       if (userIntent !== CheckoutIntent.Normal) {
         dispatch(setUserIntent(CheckoutIntent.Normal));
       }
@@ -109,7 +91,7 @@ const Checkout = () => {
       dispatch(setUserIntent(CheckoutIntent.Normal));
       setShowModal(true);
     } else {
-      navigate("my-cart");
+      navigate("/my-cart");
     }
   };
 
@@ -118,7 +100,7 @@ const Checkout = () => {
       <button onClick={handleBackToHome} className="mb-6">
         <BrandIcon className="w-64 h-auto rounded-lg shadow-md transition-transform transform hover:scale-105" />
       </button>
-      
+
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
           <div className="bg-white p-8 rounded-xl shadow-lg">
@@ -190,75 +172,71 @@ async function getCartInfo() {
   await checkHydration(store);
   const state = store.getState();
   const userIntent = state.user.userIntent;
-  console.log(userIntent);
-  let accessToken = state.auth.accessToken;
-  if (!accessToken) {
-    accessToken = await fetchNewAccessToken();
-  }
 
-  if (userIntent === CheckoutIntent.Normal) {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/carts/user-cart`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+  // if (userIntent === CheckoutIntent.Normal) {
+  //   const response = await fetch(
+  //     `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Accept: "application/json",
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     }
+  //   );
 
-    if (response.ok) {
-      return await response.json();
-    } else if (response.status === 401) {
-      await fetchNewAccessToken();
-    }
-  } else if (userIntent === CheckoutIntent.Instant) {
-    const buyNowCart = state.buyNowCart;
-    console.log(buyNowCart);
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/carts/buynow-cart`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          productId: buyNowCart.productId,
-          quantity: buyNowCart.quantity,
-        }),
-      }
-    );
+  //   if (response.ok) {
+  //     return await response.json();
+  //   } else if (response.status === 401) {
+  //     await fetchNewAccessToken();
+  //   }
+  // } else if (userIntent === CheckoutIntent.Instant) {
+  //   const buyNowCart = state.buyNowCart;
+  //   console.log(buyNowCart);
+    
+  //   const response = await fetch(
+  //     `${import.meta.env.VITE_API_URL}/carts/buynow-cart`,
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Accept: "application/json",
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //       body: JSON.stringify({
+  //         productId: buyNowCart.productId,
+  //         quantity: buyNowCart.quantity,
+  //       }),
+  //     }
+  //   );
 
-    if (response.ok) {
-      return await response.json();
-    }
-  } else {
-    const localCart = state.localCart.items;
-    const productsToOrder = localCart.map((item: any) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/carts/local-cart`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(productsToOrder),
-      }
-    );
+  //   if (response.ok) {
+  //     return await response.json();
+  //   }
+  // } else {
+  //   const localCart = state.localCart.items;
+  //   const productsToOrder = localCart.map((item: any) => ({
+  //     productId: item.id,
+  //     quantity: item.quantity,
+  //   }));
+  //   const response = await fetch(
+  //     `${import.meta.env.VITE_API_URL}/carts/local-cart`,
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Accept: "application/json",
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //       body: JSON.stringify(productsToOrder),
+  //     }
+  //   );
 
-    if (response.ok) {
-      return await response.json();
-    }
-  }
+  //   if (response.ok) {
+  //     return await response.json();
+  //   }
+  // }
 }
 
 async function getUserInfo() {
@@ -268,6 +246,13 @@ async function getUserInfo() {
   if (!accessToken) {
     accessToken = await fetchNewAccessToken();
   }
+
+  const result = await loaderFetch(
+    `${import.meta.env.VITE_API_URL}/user/profile`,
+    "GET",
+    null,
+    true
+  );
 
   const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
     method: "GET",

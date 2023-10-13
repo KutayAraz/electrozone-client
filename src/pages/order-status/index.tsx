@@ -1,9 +1,17 @@
 import { Suspense } from "react";
-import { Await, defer, useLoaderData, useParams } from "react-router-dom";
+import {
+  Await,
+  defer,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router-dom";
 import OrderItemCard from "./components/OrderItemCard";
 import { store } from "@/setup/store";
 import fetchNewAccessToken from "@/utils/renew-token";
 import OrderCard from "./components/OrderCard";
+import loaderFetch from "@/utils/loader-fetch";
+import { setRedirectPath } from "@/setup/slices/redirect-slice";
 
 const OrderStatus = () => {
   const { order }: any = useLoaderData();
@@ -28,32 +36,27 @@ const OrderStatus = () => {
 
 export default OrderStatus;
 
-const getOrderDetails = async (orderId: number) => {
-  let accessToken = store.getState().auth.accessToken;
-
-  if (!accessToken) {
-    accessToken = await fetchNewAccessToken();
-  }
-  const response = await fetch(
+const getOrderDetails = async (orderId: number, request: Request) => {
+  const urlObj = new URL(request.url);
+  const result = await loaderFetch(
     `${import.meta.env.VITE_API_URL}/orders/user/${orderId}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    "GET",
+    null,
+    true
   );
-
-  if (response.ok) {
-    return await response.json();
+  if (result.error && "status" in result.error && result.error.status === 401) {
+    store.dispatch(setRedirectPath(urlObj.pathname));
+    return redirect("/sign-in");
   }
+  return result;
 };
 
-export const loader = ({ params }: any) => {
+export const loader = async (params: { orderId: number }, request: Request) => {
   const orderId = params.orderId;
+
+  const orderDetails: any = await getOrderDetails(orderId, request);
+
   return defer({
-    order: getOrderDetails(orderId),
+    order: orderDetails.data,
   });
 };

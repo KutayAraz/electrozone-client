@@ -1,5 +1,6 @@
 import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
+import { OrderItemCardProps } from "./types";
 
 const OrderItemCard = ({
   id,
@@ -10,7 +11,7 @@ const OrderItemCard = ({
   brand,
   subcategory,
   category,
-}: any) => {
+}: OrderItemCardProps) => {
   return (
     <Link
       to={`/category/${category}/${subcategory}/${id}`}

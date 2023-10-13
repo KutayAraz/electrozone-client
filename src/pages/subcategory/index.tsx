@@ -10,6 +10,7 @@ import ProductList from "./components/ProductList";
 import { Suspense, useEffect, useState } from "react";
 import { Box, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
+import loaderFetch from "@/utils/loader-fetch";
 
 const fetchProducts = async (subcategory: string, sort: string) => {
   const response = await fetch(
@@ -45,7 +46,7 @@ const SubcategoryPage = () => {
           {subcategory ? subcategory.toUpperCase() : "Products"}
         </h3>
         <Box sx={{ minWidth: 120, maxHeight: "80px" }}>
-          <FormControl className="rounded-lg shadow-md " >
+          <FormControl className="rounded-lg shadow-md ">
             <InputLabel id="sort-by" sx={{ fontSize: "1rem" }}>
               Sort By
             </InputLabel>
@@ -54,7 +55,7 @@ const SubcategoryPage = () => {
               label="Sort By"
               value={searchParams.get("sort") || "featured"}
               onChange={handleSortChange}
-              sx={{ padding: '2px', '& .MuiSelect-select': { padding: '4px' } }}
+              sx={{ padding: "2px", "& .MuiSelect-select": { padding: "4px" } }}
             >
               <MenuItem value={"featured"}>
                 <Typography variant="body2">Featured</Typography>
@@ -83,13 +84,13 @@ const SubcategoryPage = () => {
 
 export default SubcategoryPage;
 
-const loadSubcategory = async (subcategory: string) => {
-  return fetchProducts(subcategory, "featured");
-};
-
 export async function loader({ params }: any) {
   const subcategory = params.subcategory;
+  const result = await loaderFetch(
+    `${import.meta.env.VITE_API_URL}/subcategories/${subcategory}/featured`,
+    "GET"
+  );
   return defer({
-    subcategoryData: await loadSubcategory(subcategory),
+    subcategoryData: await result?.data,
   });
 }

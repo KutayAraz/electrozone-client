@@ -2,6 +2,7 @@ import { formatDateTime } from "@/utils/format-time";
 import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
 import OrderItemCard from "./OrderItemCard";
+import { OrderCardProps, Product } from "./types";
 
 const OrderCard = ({
   orderId,
@@ -10,7 +11,7 @@ const OrderCard = ({
   orderDate,
   user,
   orderItems,
-}: any) => {
+}: OrderCardProps) => {
   const navigate = useNavigate();
   const date = formatDateTime(orderDate);
   return (
@@ -30,7 +31,7 @@ const OrderCard = ({
 
       <Divider />
       <div className="flex my-2 pl-2 space-x-2">
-        {orderItems.map((product: any) => (
+        {orderItems.map((product: Product) => (
           <OrderItemCard
             key={product.productId}
             id={product.productId}

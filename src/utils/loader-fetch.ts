@@ -1,24 +1,37 @@
 import { store } from "@/setup/store";
 import fetchNewAccessToken from "./renew-token";
 
-const loaderFetch: any = async (
+export type FetchResponse<T = any> = {
+  data: T | null;
+  error:
+    | Error
+    | {
+        status: number;
+        reason: string;
+        originalError?: any;
+      }
+    | null;
+};
+
+const loaderFetch = async <T = any>(
   url: string,
   method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
   body?: any,
   withAuth: boolean = false,
   retry: boolean = true
-) => {
+): Promise<FetchResponse<T>> => {
   const accessToken = store.getState().auth.accessToken;
-  const headers: any = {
+  const headers: HeadersInit = {
     "Content-Type": "application/json",
     Accept: "application/json",
   };
 
   if (withAuth) {
     if (!accessToken) {
-      retry = false;
+      await fetchNewAccessToken();
+      retry = false; // Make sure we don't retry after fetching a new token
     }
-    headers.Authorization = `Bearer ${accessToken}`;
+    headers["Authorization"] = `Bearer ${store.getState().auth.accessToken}`;
   }
 
   try {
@@ -29,31 +42,39 @@ const loaderFetch: any = async (
     });
 
     if (response.status === 401 && retry) {
-      try {
-        await fetchNewAccessToken();
-        return loaderFetch(url, method, body, withAuth, false);
-      } catch (refreshError) {
-        return { data: null, error: refreshError };
-      }
+      await fetchNewAccessToken();
+      return loaderFetch(url, method, body, withAuth, false); // Recursive call with retry set to false
     }
 
     if (!response.ok) {
       const data = await response.json();
+      const errorData = {
+        status: response.status,
+        reason: data.message || "",
+        originalError: new Error(data.message || "Network error"),
+      };
+
       switch (response.status) {
         case 400:
-          throw new Error("Bad request.");
+          errorData.reason = "Bad request.";
+          break;
         case 402:
-          throw new Error("Payment required.");
+          errorData.reason = "Payment required.";
+          break;
         case 500:
-          throw new Error("Internal server error.");
-        default:
-          throw new Error(data.message || "Network error");
+          errorData.reason = "Internal server error.";
+          break;
       }
+
+      return { data: null, error: errorData };
     }
 
     return { data: await response.json(), error: null };
-  } catch (error) {
-    return { data: null, error };
+  } catch (error: any) {
+    return {
+      data: null,
+      error: { status: -1, reason: error.message, originalError: error },
+    }; // -1 indicates a non-HTTP related error
   }
 };
 

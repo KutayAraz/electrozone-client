@@ -1,3 +1,4 @@
+import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
 import { selectAccessToken } from "@/setup/slices/auth-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -26,7 +27,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref("newPassword"), undefined], "Passwords must match"),
 });
 
-const UpdatePassword: React.FC = () => {
+const UpdatePassword = () => {
   const {
     register,
     handleSubmit,
@@ -37,32 +38,28 @@ const UpdatePassword: React.FC = () => {
     mode: "onBlur",
   });
 
+  const { fetchData } = useFetch();
+
   const dispatch = useDispatch<any>();
   const accessToken = useSelector(selectAccessToken);
 
   const handlePasswordChange = async (data: FormInputs) => {
-    const response = await fetch(
+    const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/auth/update-password`,
+      "PATCH",
       {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          oldPassword: data.currentPassword,
-          newPassword: data.newPassword,
-          newPasswordRetyped: data.retypedNewPassword,
-        }),
-      }
+        oldPassword: data.currentPassword,
+        newPassword: data.newPassword,
+        newPasswordRetyped: data.retypedNewPassword,
+      },
+      true
     );
 
-    if (response.status === 200) {
+    if (result?.response.ok) {
       dispatch(
         displayAlert({
           type: "success",
-          message: "Your password has successfuly updated.",
+          message: "Your password has been successfully updated.",
           autoHide: true,
         })
       );

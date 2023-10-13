@@ -3,7 +3,7 @@ import { selectAccessToken, setAccessToken } from "@/setup/slices/auth-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
 import { setCredentials } from "@/setup/slices/user-slice";
-import { store } from "@/setup/store";
+import { RootState, store } from "@/setup/store";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ const SignInForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { from } = location.state || { from: { pathname: "/" } };
-
+  const redirectPath = useSelector((state: RootState) => state.redirect.path);
   const errRef = useRef<any>();
   const [formStatus, setFormStatus] = useState("");
   const {
@@ -106,7 +106,7 @@ const SignInForm = () => {
           navigate(from.pathname);
         }
       } else {
-        navigate(from.pathname);
+        navigate(`${redirectPath}`);
       }
     } else {
       setFormStatus("Invalid credentials");

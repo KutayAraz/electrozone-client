@@ -8,6 +8,8 @@ import authSlice from "./slices/auth-slice";
 import localCartSlice from "./slices/localCart-slice";
 import buyNowCartSlice from "./slices/buyNowCart-slice";
 import hydrationSlice, { hydrationCompleted } from "./slices/hydration-slice";
+import sessionStorage from "redux-persist/es/storage/session";
+import redirectSlice from "./slices/redirect-slice";
 
 const userPersistConfig = {
   key: "user",
@@ -24,6 +26,12 @@ const buyNowCartPersistConfig = {
   storage,
 };
 
+const redirectPersistConfig = {
+  key: "redirect",
+  storage: sessionStorage, // Store in session storage
+  whitelist: ["path"], // Only persist the 'path' key
+};
+
 const persistedUserReducer = persistReducer(
   userPersistConfig,
   userSlice.reducer
@@ -37,6 +45,11 @@ const persistedBuyNowCartReducer = persistReducer(
   buyNowCartSlice.reducer
 );
 
+const persistedRedirectReducer = persistReducer(
+  redirectPersistConfig,
+  redirectSlice.reducer
+);
+
 export const store = configureStore({
   reducer: {
     alert: alertReducer,
@@ -45,6 +58,7 @@ export const store = configureStore({
     user: persistedUserReducer,
     localCart: persistedLocalCartReducer,
     buyNowCart: persistedBuyNowCartReducer,
+    redirect: persistedRedirectReducer,
   },
   middleware: [thunk],
   devTools: true,

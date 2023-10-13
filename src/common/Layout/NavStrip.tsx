@@ -3,7 +3,7 @@ import BurgerMenu from "./BurgerMenu";
 
 const NavStrip = () => {
   const navContainerClass =
-    "flex bg-[#13193F] text-white justify-between overflow-x-auto whitespace-nowrap scroll-snap-type-x-mandatory noScrollbar scroll-smooth py-1 sm:py-[0.5rem]";
+    "flex bg-[#13193F] text-white items-center justify-between overflow-x-auto whitespace-nowrap scroll-snap-type-x-mandatory noScrollbar scroll-smooth py-1 sm:py-[0.5rem]";
   const navStripElementClass =
     "flex-shrink-0 scroll-snap-align-start mr-2 sm:mr-4 border border-transparent hover:border-1 hover:border-white rounded pr-4";
 

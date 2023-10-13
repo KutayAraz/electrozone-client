@@ -3,6 +3,10 @@ import OrderItemCard from "./OrderItemCard";
 import fetchNewAccessToken from "@/utils/renew-token";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "@/utils/format-time";
+import useFetch from "@/common/Hooks/use-fetch";
+import { useDispatch } from "react-redux";
+import { displayAlert } from "@/setup/slices/alert-slice";
+import { OrderCardProps } from "./types";
 
 const OrderCard = ({
   orderId,
@@ -11,29 +15,28 @@ const OrderCard = ({
   user,
   orderItems,
   isCancellable,
-}: any) => {
-  const accessToken = (state: RootState) => state.auth.accessToken;
+}: OrderCardProps) => {
   const date = formatDateTime(orderDate);
   const navigate = useNavigate();
-  const handleCancelButton = async () => {
-    if (!accessToken) {
-      await fetchNewAccessToken();
-    }
+  const dispatch = useDispatch<any>();
+  const { fetchData } = useFetch();
 
-    const response = await fetch(
+  const handleCancelButton = async () => {
+    const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/orders/${orderId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(orderId),
-      }
+      "POST",
+      orderId,
+      true
     );
 
-    if (response.ok) {
+    if (result?.response.ok) {
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: "Your order has been successfully cancelled!",
+          autoHide: true,
+        })
+      );
       navigate("/my-orders");
     }
   };
