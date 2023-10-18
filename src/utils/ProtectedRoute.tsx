@@ -1,26 +1,22 @@
-import {
-  selectAccessToken,
-  setAccessToken,
-  clearAccessToken,
-} from "@/setup/slices/auth-slice";
-import { AppDispatch, RootState } from "@/setup/store";
-import { ReactNode, useEffect, useState } from "react";
+import { selectAccessToken, clearAccessToken } from "@/setup/slices/auth-slice";
+import { RootState } from "@/setup/store";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Outlet, Route, redirect, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import fetchNewAccessToken from "./renew-token";
 
 const ProtectedRoute = () => {
-  const accessToken = useSelector(selectAccessToken);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
-  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn)
+
+  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
+  const accessToken = useSelector(selectAccessToken);
 
   useEffect(() => {
-    if(!isSignedIn){
-      navigate("/sign-in")
+    if (!isSignedIn) {
+      navigate("/sign-in");
     }
     if (!accessToken) {
       fetchNewAccessToken()
@@ -33,6 +29,7 @@ const ProtectedRoute = () => {
         .catch((error) => {
           dispatch(clearAccessToken());
           setLoading(false);
+          console.log("triggering from here", location.pathname)
           navigate("/sign-in");
         });
     } else {
@@ -44,13 +41,9 @@ const ProtectedRoute = () => {
     return <div>Loading...</div>;
   }
 
-  // If we have the accessToken at this point, render the children (protected content)
   if (accessToken) {
     return <Outlet />;
   }
-
-  // If no token, just redirect. But this might be redundant because our useEffect would have already handled this.
-  navigate("/sign-in");
   return null;
 };
 

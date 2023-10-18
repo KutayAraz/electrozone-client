@@ -4,7 +4,6 @@ import Rating from "@mui/material/Rating";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "@/setup/slices/localCart-slice";
 import { useState } from "react";
-import fetchNewAccessToken from "@/utils/renew-token";
 import { addtoBuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
@@ -61,33 +60,25 @@ const Product = ({
         { productId: id, quantity },
         true
       );
-
-      if (result?.data.ok) {
-        dispatch(
-          displayAlert({
-            type: "success",
-            message: "Product has been added to your cart!",
-            autoHide: true,
-          })
-        );
-      }
+      if (!result?.response.ok) return;
     } else {
       dispatch(addItemToCart({ id, quantity }));
-      dispatch(
-        displayAlert({
-          type: "success",
-          message: "Product has been added to your cart!",
-          autoHide: true,
-        })
-      );
     }
+
+    dispatch(
+      displayAlert({
+        type: "success",
+        message: "Product has been added to your cart!",
+        autoHide: true,
+      })
+    );
   };
 
   const handleBuyNow = async () => {
     dispatch(addtoBuyNowCart({ id, quantity }));
     dispatch(setUserIntent(CheckoutIntent.Instant));
     if (!isSignedIn) {
-      navigate("/sign-in", { state: { from: { pathname: "/checkout" } } });
+      navigate("/sign-in", { state: { from: "/checkout" } });
     } else {
       navigate("/checkout");
     }
@@ -95,7 +86,7 @@ const Product = ({
 
   const toggleWishlist = async () => {
     if (!isSignedIn) {
-      navigate("/sign-in");
+      return navigate("/sign-in", { state: { from: location.pathname } });
     }
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/products/${id}/wishlist`,

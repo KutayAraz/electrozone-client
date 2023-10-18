@@ -1,93 +1,74 @@
+import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
 import { updateUserInfo } from "@/setup/slices/user-slice";
 import { RootState } from "@/setup/store";
-import { fetchNewAccessToken } from "@/utils/renew-token";
-import { useEffect, useRef, useState } from "react";
+import {
+  UnauthorizedError,
+  loaderFetchProtected,
+} from "@/utils/loader-fetch-protected";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, useNavigate } from "react-router-dom";
+import { Form, defer, redirect, useLoaderData } from "react-router-dom";
 
 const UserProfile = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-
   const city = useSelector((state: RootState) => state.user.city);
-  const accessToken = useSelector((state: any) => state.auth.accessToken);
-
-  const [email, setEmail] = useState<string | null>(null);
-  const [address, setAddress] = useState<string | null>(null);
+  const { userInfo }: any = useLoaderData();
+  const [email, setEmail] = useState<string | null>(userInfo.email);
+  const [address, setAddress] = useState<string | null>(userInfo.address);
+  const [userCity, setUserCity] = useState<string | null>(city);
+  const { fetchData } = useFetch();
 
   const emailRef: any | null = useRef();
   const addressRef: any | null = useRef();
   const cityRef: any | null = useRef();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/user/profile`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-        const result = await response.json();
-        setAddress(result.address);
-        setEmail(result.email);
-      } catch (err) {}
-    };
-
-    fetchData();
-  }, []);
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    let currentToken = accessToken;
-
+  
     const requestBody = {
       email: emailRef.current?.value,
       address: addressRef.current?.value,
       city: cityRef.current?.value,
     };
-
+  
     const filteredBody = Object.fromEntries(
       Object.entries(requestBody).filter(
         ([_, value]) => value && value.trim() !== ""
       )
     );
-
+  
     if (Object.keys(filteredBody).length === 0) {
       return;
     }
-
-    const response = await fetch(`${import.meta.env.API_URL}/user/profile`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify(filteredBody),
-    });
-
-    if (response.status === 401) {
-      await fetchNewAccessToken();
-      navigate("/sign-in");
-    } else if (response?.status === 200) {
-      const result = await response.json();
-      dispatch(updateUserInfo({ city: result.city }));
+  
+    const result = await fetchData(
+      `${import.meta.env.VITE_API_URL}/user/profile`,
+      "PATCH",
+      filteredBody,
+      true
+    );
+  
+    if (result?.response.ok) {
+      // Update the placeholders, but keep the actual input values empty
+      if(emailRef.current?.value) setEmail(emailRef.current?.value);
+      if(addressRef.current?.value) setAddress(addressRef.current?.value);
+      if(cityRef.current?.value) setUserCity(cityRef.current?.value);
+      
+      // Clear input values (which are distinct from placeholders)
+      emailRef.current.value = "";
+      addressRef.current.value = "";
+      cityRef.current.value = "";
+  
+      dispatch(updateUserInfo({ city: result.data.city }));
+  
       dispatch(
         displayAlert({
           type: "success",
-          message: "Your information has been successfuly updated.",
+          message: "Your information has been successfully updated.",
           autoHide: true,
-        }))
-    } else {
-      console.log(response?.status);
+        })
+      );
     }
   }
 
@@ -120,7 +101,7 @@ const UserProfile = () => {
         </label>
         <input
           ref={cityRef}
-          placeholder={city || ""}
+          placeholder={userCity || ""}
           type="text"
           className="border-2 border-theme-blue rounded-md text-lg pl-2"
         ></input>
@@ -136,3 +117,21 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
+export const loader = async (request: any) => {
+  try {
+    const userInfo = await loaderFetchProtected(
+      `${import.meta.env.VITE_API_URL}/user/profile`,
+      "GET",
+      request.request
+    );
+
+    return defer({
+      userInfo,
+    });
+  } catch (error: unknown) {
+    if (error instanceof UnauthorizedError) {
+      return redirect("/sign-in");
+    }
+  }
+};

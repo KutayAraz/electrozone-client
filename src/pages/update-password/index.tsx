@@ -39,9 +39,7 @@ const UpdatePassword = () => {
   });
 
   const { fetchData } = useFetch();
-
   const dispatch = useDispatch<any>();
-  const accessToken = useSelector(selectAccessToken);
 
   const handlePasswordChange = async (data: FormInputs) => {
     const result = await fetchData(

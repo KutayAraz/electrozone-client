@@ -45,7 +45,6 @@ const useFetch = () => {
       // If the response is 401, try refreshing the token and retry the request
       if (response.status === 401) {
         const newToken = await fetchNewAccessToken();
-        console.log("newtoken", newToken, "accessfromredux", store.getState().auth.accessToken)
         if (newToken) {
           response = await doFetch(newToken);
         }
@@ -63,11 +62,11 @@ const useFetch = () => {
             );
             break;
           case 401:
-            navigate("/sign-in");
+            navigate('/sign-in', { state: { from: location } });
             dispatch(
               displayAlert({
                 type: "error",
-                message: "Unauthorized. Please login again.",
+                message: "Your session has timed out. Please login again.",
                 autoHide: true,
               })
             );
@@ -95,7 +94,5 @@ const useFetch = () => {
 
   return { fetchData, loading, error };
 };
-
-
 
 export default useFetch;

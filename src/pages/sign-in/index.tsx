@@ -1,7 +1,9 @@
+import useFetch from "@/common/Hooks/use-fetch";
 import useInput from "@/common/Hooks/use-input";
 import { selectAccessToken, setAccessToken } from "@/setup/slices/auth-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
+import { clearRedirectPath } from "@/setup/slices/redirect-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
 import { RootState, store } from "@/setup/store";
 import { useRef, useState } from "react";
@@ -15,9 +17,14 @@ const SignInForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { from } = location.state || { from: { pathname: "/" } };
   const redirectPath = useSelector((state: RootState) => state.redirect.path);
+  const from = location.state?.from || redirectPath || "/";
+
+  console.log("redirect", redirectPath);
+  console.log("from", location.state?.from);
+
   const errRef = useRef<any>();
+  const { fetchData } = useFetch();
   const [formStatus, setFormStatus] = useState("");
   const {
     value: emailValue,
@@ -40,74 +47,53 @@ const SignInForm = () => {
     formIsValid = true;
   }
 
+  const mergeCartsAndNavigate = async () => {
+    const localCartItems = store.getState().localCart.items;
+    const productsToAdd = localCartItems.map((item: any) => ({
+      productId: item.id,
+      quantity: item.quantity,
+    }));
+
+    const result = await fetchData(
+      `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
+      "PATCH",
+      productsToAdd,
+      true
+    );
+
+    if (result?.response.ok) {
+      dispatch(clearLocalcart());
+    }
+  };
+
+  const handleSuccessfulLogin = async (credentials: any) => {
+    dispatch(setCredentials({ ...credentials }));
+    dispatch(setAccessToken({ accessToken: credentials.access_token }));
+
+    if (
+      store.getState().user.userIntent === CheckoutIntent.Normal &&
+      store.getState().localCart.items.length > 0
+    ) {
+      await mergeCartsAndNavigate();
+    }
+
+    navigate(from);
+    dispatch(clearRedirectPath());
+  };
+
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!formIsValid) {
-      return;
-    }
+    if (!formIsValid) return;
 
-    const response = await fetch(
+    const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/auth/signin`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          email: emailValue,
-          password: passwordValue,
-        }),
-      }
+      "POST",
+      { email: emailValue, password: passwordValue }
     );
 
-    if (response.status === 200) {
-      const result = await response.json();
-      dispatch(
-        setCredentials({
-          ...result,
-        })
-      );
-
-      dispatch(
-        setAccessToken({
-          accessToken: result.access_token,
-        })
-      );
-      if (
-        store.getState().user.userIntent === CheckoutIntent.Normal &&
-        store.getState().localCart.items.length > 0
-      ) {
-        const localCartItems = store.getState().localCart.items;
-        const productsToAdd = localCartItems.map((item: any) => ({
-          productId: item.id,
-          quantity: item.quantity,
-        }));
-
-        console.log("merging carts in sign-in page");
-
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-              Authorization: `Bearer ${result.access_token}`,
-            },
-            body: JSON.stringify(productsToAdd),
-          }
-        );
-
-        if (response.ok) {
-          dispatch(clearLocalcart());
-          navigate(from.pathname);
-        }
-      } else {
-        navigate(`${redirectPath}`);
-      }
+    if (result?.response.ok) {
+      await handleSuccessfulLogin(result.data);
     } else {
       setFormStatus("Invalid credentials");
     }

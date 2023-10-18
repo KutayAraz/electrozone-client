@@ -1,35 +1,30 @@
-import { RootState, store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/renew-token";
 import { Suspense, useState } from "react";
-import { Await, defer, useLoaderData } from "react-router-dom";
-import WishlistProductCard, {
-  WishlistProductCardProps,
-} from "./components/WishlistProductCard";
-import { useSelector } from "react-redux";
+import { defer, redirect, useLoaderData } from "react-router-dom";
+import WishlistProductCard from "./components/WishlistProductCard";
+import { useDispatch } from "react-redux";
+import useFetch from "@/common/Hooks/use-fetch";
+import { displayAlert } from "@/setup/slices/alert-slice";
+import {
+  UnauthorizedError,
+  loaderFetchProtected,
+} from "@/utils/loader-fetch-protected";
 
 const UserWishlist = () => {
-  const { retrievedProducts }: any = useLoaderData();
+  const { wishlistedProducts }: any = useLoaderData();
   const [wishlistProducts, setWishlistProducts] =
-    useState<any>(retrievedProducts);
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+    useState<any>(wishlistedProducts);
+  const { fetchData } = useFetch();
+  const dispatch = useDispatch<any>();
 
   const handleRemove = async (id: number) => {
-    if (!accessToken) {
-      await fetchNewAccessToken();
-    }
-
-    const response = await fetch(
+    const result = await fetchData(
       `${import.meta.env.API_URL}/products/${id}/wishlist`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+      "PATCH",
+      null,
+      true
     );
-    if (response.status === 200) {
+
+    if (result?.response.ok) {
       setWishlistProducts((prevProducts: any) =>
         prevProducts.filter((product: any) => product.id !== id)
       );
@@ -39,18 +34,20 @@ const UserWishlist = () => {
   const handleAddToCart = async (id: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    const response = await fetch("http://localhost:3000/carts/user-cart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({ productId: id, quantity: 1 }),
-    });
-
-    if (response.status === 201) {
-      window.alert("added to cart");
+    const result = await fetchData(
+      `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+      "POST",
+      { productId: id, quantity: 1 },
+      true
+    );
+    if (result?.data.ok) {
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: "Product has been added to your cart!",
+          autoHide: true,
+        })
+      );
     }
   };
 
@@ -90,32 +87,20 @@ const UserWishlist = () => {
 
 export default UserWishlist;
 
-async function loadWishlist() {
-  let accessToken = store.getState().auth.accessToken;
-
-  if (!accessToken) {
-    accessToken = await fetchNewAccessToken();
-  }
-
-  const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/user/wishlist`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
+export const loader = async (request: any) => {
+  try {
+    const wishlistedProducts = await loaderFetchProtected(
+      `${import.meta.env.VITE_API_URL}/user/wishlist`,
+      "GET",
+      request.request
+    );
+    return defer({
+      wishlistedProducts,
+    });
+  } catch (error: unknown) {
+    if (error instanceof UnauthorizedError) {
+      return redirect("/sign-in");
     }
-  );
-
-  if (response.status === 200) {
-    return await response.json();
+    throw error;
   }
-}
-
-export async function loader() {
-  return defer({
-    retrievedProducts: await loadWishlist(),
-  });
-}
+};

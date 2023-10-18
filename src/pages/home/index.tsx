@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
 import ProductCard from "./components/ProductCard";
+import loaderFetch from "@/utils/loader-fetch";
 
 const HomePage = () => {
   const {
@@ -79,14 +80,13 @@ const HomePage = () => {
   );
 };
 
-
 export default HomePage;
 const fetchProducts = async (url: string) => {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/products/${url}`);
-  if (response.status === 200) {
-    return response.json();
-  }
-  throw new Error(`Failed to fetch ${url} data`);
+  const result = await loaderFetch(
+    `${import.meta.env.VITE_API_URL}/products/${url}`,
+    "GET"
+  );
+  return result.data;
 };
 
 const loadBestRatedProducts = () => fetchProducts("best-rated");

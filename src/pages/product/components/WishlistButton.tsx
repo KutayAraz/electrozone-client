@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
-
-type WishlistButtonProps = {
-  isWishlisted: boolean;
-  toggleWishlist: () => void;
-};
+import { WishlistButtonProps } from "./models";
 
 const WishlistButton = React.memo(
   ({ isWishlisted, toggleWishlist }: WishlistButtonProps) => {

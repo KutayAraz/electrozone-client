@@ -28,7 +28,7 @@ import OrderStatus, {
 } from "./pages/order-status/index.tsx";
 import ContactUs from "./pages/contact-us/index.tsx";
 import UserAccount from "./pages/user-account/index.tsx";
-import UserProfile from "./pages/user-profile/index.tsx";
+import UserProfile, { loader as profileLoader } from "./pages/user-profile/index.tsx";
 import UpdatePassword from "./pages/update-password/index.tsx";
 
 const router = createBrowserRouter([
@@ -64,6 +64,7 @@ const router = createBrowserRouter([
           {
             path: "profile",
             element: <UserProfile />,
+            loader: profileLoader
           },
           {
             path: "update-password",

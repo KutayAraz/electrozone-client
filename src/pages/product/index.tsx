@@ -1,4 +1,11 @@
-import { Await, defer, json, useLoaderData, useParams } from "react-router-dom";
+import {
+  Await,
+  defer,
+  json,
+  redirect,
+  useLoaderData,
+  useParams,
+} from "react-router-dom";
 import { Suspense, useState } from "react";
 import Product from "./components/Product";
 import { store } from "@/setup/store";
@@ -8,6 +15,10 @@ import ReviewForm from "./components/ReviewForm";
 import { hydrationCompleted } from "@/setup/slices/hydration-slice";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
+import {
+  UnauthorizedError,
+  loaderFetchProtected,
+} from "@/utils/loader-fetch-protected";
 
 const ProductPage = () => {
   const { product, reviews, wishlisted, canCurrentUserReview }: any =
@@ -81,96 +92,106 @@ const ProductPage = () => {
 export default ProductPage;
 
 async function loadProduct(productId: string) {
-  const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/products/${productId}`
+  const result = await loaderFetch(
+    `${import.meta.env.VITE_API_URL}/products/${productId}`,
+    "GET"
   );
-
-  if (!response.ok) {
-    throw json(
-      { message: "Could not fetch the product." },
-      {
-        status: 500,
-      }
-    );
-  } else {
-    return await response.json();
-  }
+  return result.data;
 }
 
-async function checkWishlist(productId: string) {
+async function checkWishlist({ request, productId }: any) {
   const isSignedIn = store.getState().user.isSignedIn;
 
   if (!isSignedIn) {
     return false;
   }
 
-  const result = await loaderFetch(
+  const result = await loaderFetchProtected(
     `${import.meta.env.VITE_API_URL}/products/${productId}/wishlist`,
     "GET",
-    null,
-    true
+    request
   );
 
   return result.data;
 }
 
 async function loadReviews(productId: string) {
-  const response = await fetch(
+  const response = await loaderFetch(
     `${import.meta.env.VITE_API_URL}/reviews/${productId}/reviews`,
-    {
-      method: "GET",
-    }
+    "GET"
   );
 
-  if (!response.ok) {
-    throw json(
-      { message: "Could not fetch the product." },
-      {
-        status: 500,
-      }
-    );
-  } else {
-    return await response.json();
-  }
+  return response.data;
 }
 
-const canCurrentUserReview = async (productId: string) => {
+async function canCurrentUserReview({ request, productId }: any) {
   await checkHydration(store);
   const isSignedIn = store.getState().user.isSignedIn;
   if (!isSignedIn) {
     return false;
   }
+  try {
+    const result = await loaderFetchProtected(
+      `${import.meta.env.VITE_API_URL}/reviews/${productId}/canReview`,
+      "GET",
+      request
+    );
 
-  let accessToken = store.getState().auth.accessToken;
-
-  if (!accessToken) {
-    accessToken = await fetchNewAccessToken();
-  }
-  const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/reviews/${productId}/canReview`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
+    return result === true;
+  } catch (error: unknown) {
+    if (error instanceof UnauthorizedError) {
+      throw error;
     }
-  );
+    if (
+      error instanceof Error &&
+      "status" in error &&
+      (error as any).status === 400
+    ) {
+      return false;
+    }
+    throw error;
+  }
+}
 
-  if (response.ok) {
-    return true;
-  } else {
-    return false;
+async function isUserSignedIn() {
+  return store.getState().user.isSignedIn;
+}
+
+export const loader = async ({ request, params }: any) => {
+  try {
+    const productId = params.productId;
+
+    await checkHydration(store);
+
+    const productPromise = loadProduct(productId);
+    const reviewsPromise = loadReviews(productId);
+
+    let wishlistedPromise = Promise.resolve(false);
+    let canReviewPromise = Promise.resolve(false);
+
+    if (await isUserSignedIn()) {
+      wishlistedPromise = checkWishlist({ request, productId });
+      canReviewPromise = canCurrentUserReview({ request, productId });
+    }
+
+    const [product, reviews, wishlisted, canReview] = await Promise.all([
+      productPromise,
+      reviewsPromise,
+      wishlistedPromise,
+      canReviewPromise,
+    ]);
+
+    return defer({
+      product,
+      wishlisted,
+      reviews,
+      canCurrentUserReview: canReview,
+    });
+  } catch (error: unknown) {
+    console.log("err", error);
+    if (error instanceof UnauthorizedError) {
+      return redirect("/sign-in");
+    }
+    throw error;
   }
 };
-
-export async function loader({ params }: any) {
-  const productId = params.productId;
-  return defer({
-    product: await loadProduct(productId),
-    wishlisted: await checkWishlist(productId),
-    reviews: loadReviews(productId),
-    canCurrentUserReview: await canCurrentUserReview(productId),
-  });
-}

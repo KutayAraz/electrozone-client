@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Await, ParamParseKey, Params, defer, useLoaderData } from "react-router-dom";
+import { Await, defer, useLoaderData } from "react-router-dom";
 import Subcategory from "./components/Subcategory";
 import loaderFetch from "@/utils/loader-fetch";
 
@@ -28,15 +28,12 @@ export const CategoryPage = () => {
 
 export default CategoryPage;
 
-async function loadSubcategory(categoryName: string) {
-  return await loaderFetch(
+export const loader = async ({ params }: any) => {
+  const categoryName = params.category.replace(/-/g, "_");
+  const category = await loaderFetch(
     `${import.meta.env.VITE_API_URL}/categories/` + categoryName
   );
-}
-
-export function loader({ params }: any) {
-  const category = params.category.replace(/-/g, "_");
   return defer({
-    category: loadSubcategory(category),
+    category,
   });
-}
+};

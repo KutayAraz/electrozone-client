@@ -1,9 +1,14 @@
 import { CheckoutIntent } from "@/setup/slices/models";
 import { RootState, store } from "@/setup/store";
 import { checkHydration } from "@/utils/check-hydration";
-import fetchNewAccessToken from "@/utils/renew-token";
 import { Suspense, useState } from "react";
-import { useLoaderData, Await, defer, useNavigate } from "react-router-dom";
+import {
+  useLoaderData,
+  Await,
+  defer,
+  useNavigate,
+  redirect,
+} from "react-router-dom";
 import CheckoutProductCard from "./components/CheckoutProductCard";
 import UserCard from "./components/UserCard";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,15 +17,17 @@ import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { ReactComponent as BrandIcon } from "@assets/brand/brand.svg";
 import { ReactComponent as BackButton } from "@assets/svg/backbutton.svg";
-import loaderFetch from "@/utils/loader-fetch";
 import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
+import {
+  UnauthorizedError,
+  loaderFetchProtected,
+} from "@/utils/loader-fetch-protected";
 
 const Checkout = () => {
-  const { cartItems, user }: any = useLoaderData();
+  const { cartData, user }: any = useLoaderData();
   const [showModal, setShowModal] = useState(false);
-  const [checkoutItems, setCheckoutItems] = useState<any>(cartItems);
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
+  const [checkoutItems, setCheckoutItems] = useState<any>(cartData);
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
@@ -62,12 +69,13 @@ const Checkout = () => {
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/orders`,
       "POST",
-      productsToOrder,
+      { orderItems: productsToOrder },
       true
     );
 
     if (result?.response.ok) {
-      const orderId = await result.data.json();
+      const orderId = result.data;
+      console.log("here")
       dispatch(
         displayAlert({
           type: "success",
@@ -141,7 +149,7 @@ const Checkout = () => {
           )}
         />
         <div className="space-y-4 mt-6">
-          {checkoutItems.products.map((product: any) => {
+          {checkoutItems.products.map((product: CheckoutProductCardProps) => {
             return (
               <CheckoutProductCard
                 key={product.id}
@@ -168,110 +176,64 @@ const Checkout = () => {
 
 export default Checkout;
 
-async function getCartInfo() {
+async function getCartInfo(request: any) {
   await checkHydration(store);
   const state = store.getState();
   const userIntent = state.user.userIntent;
 
-  // if (userIntent === CheckoutIntent.Normal) {
-  //   const response = await fetch(
-  //     `${import.meta.env.VITE_API_URL}/carts/user-cart`,
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Accept: "application/json",
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //     }
-  //   );
-
-  //   if (response.ok) {
-  //     return await response.json();
-  //   } else if (response.status === 401) {
-  //     await fetchNewAccessToken();
-  //   }
-  // } else if (userIntent === CheckoutIntent.Instant) {
-  //   const buyNowCart = state.buyNowCart;
-  //   console.log(buyNowCart);
-    
-  //   const response = await fetch(
-  //     `${import.meta.env.VITE_API_URL}/carts/buynow-cart`,
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Accept: "application/json",
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //       body: JSON.stringify({
-  //         productId: buyNowCart.productId,
-  //         quantity: buyNowCart.quantity,
-  //       }),
-  //     }
-  //   );
-
-  //   if (response.ok) {
-  //     return await response.json();
-  //   }
-  // } else {
-  //   const localCart = state.localCart.items;
-  //   const productsToOrder = localCart.map((item: any) => ({
-  //     productId: item.id,
-  //     quantity: item.quantity,
-  //   }));
-  //   const response = await fetch(
-  //     `${import.meta.env.VITE_API_URL}/carts/local-cart`,
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Accept: "application/json",
-  //         Authorization: `Bearer ${accessToken}`,
-  //       },
-  //       body: JSON.stringify(productsToOrder),
-  //     }
-  //   );
-
-  //   if (response.ok) {
-  //     return await response.json();
-  //   }
-  // }
+  if (userIntent === CheckoutIntent.Normal) {
+    return await loaderFetchProtected(
+      `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+      "GET",
+      request
+    );
+  } else if (userIntent === CheckoutIntent.Instant) {
+    const buyNowCart = state.buyNowCart;
+    return await loaderFetchProtected(
+      `${import.meta.env.VITE_API_URL}/carts/buynow-cart`,
+      "POST",
+      request,
+      {
+        productId: buyNowCart.productId,
+        quantity: buyNowCart.quantity,
+      }
+    );
+  } else {
+    const localCart = state.localCart.items;
+    const productsToOrder = localCart.map((item: any) => ({
+      productId: item.id,
+      quantity: item.quantity,
+    }));
+    return await loaderFetchProtected(
+      `${import.meta.env.VITE_API_URL}/carts/local-cart`,
+      "POST",
+      request,
+      productsToOrder
+    );
+  }
 }
 
-async function getUserInfo() {
+async function getUserInfo(request: any) {
   await checkHydration(store);
-  const state = store.getState();
-  let accessToken = state.auth.accessToken;
-  if (!accessToken) {
-    accessToken = await fetchNewAccessToken();
-  }
-
-  const result = await loaderFetch(
+  return await loaderFetchProtected(
     `${import.meta.env.VITE_API_URL}/user/profile`,
     "GET",
-    null,
-    true
+    request
   );
-
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  if (response.status === 200) {
-    return await response.json();
-  } else {
-    throw new Error("Failed to fetch user info");
-  }
 }
 
-export async function loader() {
-  return defer({
-    cartItems: await getCartInfo(),
-    user: await getUserInfo(),
-  });
+export async function loader({ request }: any) {
+  try {
+    const cartData = await getCartInfo(request);
+    const user = await getUserInfo(request);
+    return defer({
+      cartData,
+      user,
+    });
+  } catch (error: unknown) {
+    if (error instanceof UnauthorizedError) {
+      return redirect("/sign-in");
+    }
+    throw error; // rethrow the error if it's not an UnauthorizedError
+  }
 }

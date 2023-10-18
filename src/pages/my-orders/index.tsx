@@ -1,15 +1,10 @@
 import { Suspense } from "react";
-import {
-  Await,
-  Location,
-  defer,
-  redirect,
-  useLoaderData,
-} from "react-router-dom";
+import { Await, defer, redirect, useLoaderData } from "react-router-dom";
 import OrderCard from "./components/OrderCard";
-import loaderFetch from "@/utils/loader-fetch";
-import { store } from "@/setup/store";
-import { setRedirectPath } from "@/setup/slices/redirect-slice";
+import {
+  UnauthorizedError,
+  loaderFetchProtected,
+} from "@/utils/loader-fetch-protected";
 
 const MyOrders = () => {
   const { orders }: any = useLoaderData();
@@ -38,23 +33,18 @@ const MyOrders = () => {
 
 export default MyOrders;
 
-export const ordersLoader = async (request: Request) => {
-  const urlObj = new URL(request.url);
-  const result = await loaderFetch(
-    `${import.meta.env.VITE_API_URL}/orders/user`,
-    "GET",
-    null,
-    true
-  );
-
-  if (result.error && "status" in result.error && result.error.status === 401) {
-    store.dispatch(setRedirectPath(urlObj.pathname));
-    return redirect("/sign-in");
-  }
-  return result;
-};
-
 export const loader = async ({ request }: any) => {
-  const orders: any = await ordersLoader(request);
-  return defer({ orders: orders.data });
+  try {
+    const result = await loaderFetchProtected(
+      `${import.meta.env.VITE_API_URL}/orders/user`,
+      "GET",
+      request,
+      null
+    );
+    return defer({ orders: result });
+  } catch (error: unknown) {
+    if (error instanceof UnauthorizedError) {
+      return redirect("/sign-in");
+    }
+  }
 };

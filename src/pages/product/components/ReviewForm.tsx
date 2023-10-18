@@ -1,10 +1,10 @@
 import CustomizableModal from "@/common/Modal/CustomizableModal";
 import StarIcon from "@mui/icons-material/Star";
-import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/renew-token";
 import { Box, Rating } from "@mui/material";
 import { useRef, useState } from "react";
 import useFetch from "@/common/Hooks/use-fetch";
+import { useDispatch } from "react-redux";
+import { displayAlert } from "@/setup/slices/alert-slice";
 
 interface ReviewFormProps {
   canCurrentUserReview: boolean;
@@ -29,14 +29,9 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
   const [hover, setHover] = useState(-1);
   const review = useRef<HTMLTextAreaElement>(null);
   const { fetchData } = useFetch();
+  const dispatch = useDispatch<any>();
 
   const handleSubmitReview = async (event: React.FormEvent) => {
-    let accessToken = store.getState().auth.accessToken;
-
-    if (!accessToken) {
-      accessToken = await fetchNewAccessToken();
-    }
-
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/reviews/${productId}/review`,
       "POST",
@@ -45,7 +40,13 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
     );
 
     if (result?.response.ok) {
-      window.alert(result.data);
+      dispatch(
+        displayAlert({
+          type: "success",
+          message:
+            "Your review has been added to the product. Thank you for your review.",
+        })
+      );
     }
   };
 

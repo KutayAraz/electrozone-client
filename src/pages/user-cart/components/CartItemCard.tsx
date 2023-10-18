@@ -1,10 +1,11 @@
 import cartSlice from "@/setup/slices/localCart-slice";
 import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/renew-token";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { ReactComponent as Bin } from "@assets/svg/bin.svg";
+import useFetch from "@/common/Hooks/use-fetch";
+import { displayAlert } from "@/setup/slices/alert-slice";
 
 const CartItemCard = ({
   id,
@@ -18,32 +19,24 @@ const CartItemCard = ({
   onRemoveItem,
   onQuantityChange,
 }: CartItemCardProps) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const [selectedQuantity, setSelectedQuantity] = useState(quantity);
   const isSignedIn = store.getState().user.isSignedIn;
+  const { fetchData } = useFetch();
 
   const handleQuantityChange = async (
     event: ChangeEvent<HTMLSelectElement>
   ) => {
     if (isSignedIn) {
-      let accessToken = store.getState().auth.accessToken;
-
       const newQuantity = parseInt(event.target.value);
+      const result = await fetchData(
+        `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+        "PATCH",
+        { productId: id, quantity: newQuantity },
+        true
+      );
 
-      if (!accessToken) {
-        accessToken = await fetchNewAccessToken();
-      }
-      const data = await fetch("http://localhost:3000/carts/user-cart", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ productId: id, quantity: newQuantity }),
-      });
-
-      if (data.status === 200) {
+      if (result?.response.ok) {
         setSelectedQuantity(newQuantity);
         onQuantityChange();
       }
@@ -61,34 +54,35 @@ const CartItemCard = ({
 
   const handleRemoveProduct = async () => {
     if (isSignedIn) {
-      let accessToken = store.getState().auth.accessToken;
+      const result = await fetchData(
+        `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+        "DELETE",
+        { productId: id },
+        true
+      );
 
-      if (!accessToken) {
-        accessToken = await fetchNewAccessToken();
-      }
-
-      const data = await fetch("http://localhost:3000/carts/user-cart", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ productId: id }),
-      });
-
-      if (data.status === 200) {
+      if (result?.response.ok) {
         onRemoveItem();
       }
     } else {
       dispatch(cartSlice.actions.removeItemFromCart(id));
       onRemoveItem();
     }
+    dispatch(
+      displayAlert({
+        type: "success",
+        message: "Product has been removed from to your cart!",
+        autoHide: true,
+      })
+    );
   };
 
   return (
     <div className="border rounded-md p-4 flex items-start space-x-4" key={id}>
-      <Link to={`/category/${category}/${subcategory}/${id}`} className="flex-shrink-0">
+      <Link
+        to={`/category/${category}/${subcategory}/${id}`}
+        className="flex-shrink-0"
+      >
         <img
           src={thumbnail}
           alt={productName}

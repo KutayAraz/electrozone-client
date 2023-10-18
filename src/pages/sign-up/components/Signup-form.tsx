@@ -1,4 +1,6 @@
+import useFetch from "@/common/Hooks/use-fetch";
 import useInput from "@/common/Hooks/use-input";
+import { displayAlert } from "@/setup/slices/alert-slice";
 import { setAccessToken } from "@/setup/slices/auth-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
 import Cookies from "js-cookie";
@@ -12,7 +14,8 @@ const isPassword = (value: string) => value.length > 5;
 
 const SignUpForm = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
+  const { fetchData } = useFetch();
   const [isSending, setIsSending] = useState(false);
   const [formStatus, setFormStatus] = useState("");
   const {
@@ -92,36 +95,34 @@ const SignUpForm = () => {
       return;
     }
 
-    const response = await fetch(
+    const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/auth/signup`,
+      "POST",
       {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: emailValue,
-          password: passwordValue,
-          retypedPassword: retypedPasswordValue,
-          firstName: firstNameValue,
-          lastName: lastNameValue,
-          address: addressValue,
-          city: cityValue,
-        }),
+        email: emailValue,
+        password: passwordValue,
+        retypedPassword: retypedPasswordValue,
+        firstName: firstNameValue,
+        lastName: lastNameValue,
+        address: addressValue,
+        city: cityValue,
       }
     );
-    if (response.status === 201) {
-      const result = await response.json();
-      const { access_token } = result;
-      dispatch(setAccessToken(access_token));
 
+    if (result?.response.ok) {
+      dispatch(setAccessToken(result.data.access_token));
       dispatch(
         setCredentials({
-          ...result,
+          ...result.data,
         })
       );
-      navigate("/");
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: "Your account is created. You can now log in",
+          autoHide: true,
+        })
+      );
     } else {
       setFormStatus("Please provide valid information.");
     }

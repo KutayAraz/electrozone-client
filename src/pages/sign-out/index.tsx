@@ -1,4 +1,4 @@
-import useFetch from "@/common/Hooks/use-fetch";
+import { displayAlert } from "@/setup/slices/alert-slice";
 import { clearAccessToken } from "@/setup/slices/auth-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { clearCredentials } from "@/setup/slices/user-slice";
@@ -7,16 +7,29 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const SignOut = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-  const { fetchData } = useFetch();
 
   useEffect(() => {
     const signOutAsync = async () => {
+      await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        credentials: "include",
+      });
       dispatch(clearCredentials());
       dispatch(clearLocalcart());
       dispatch(clearAccessToken());
-      await fetchData(`${import.meta.env.VITE_API_URL}/auth/logout`, "POST");
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: "Successfully logged out.",
+          autoHide: true,
+        })
+      );
       navigate("/");
     };
 

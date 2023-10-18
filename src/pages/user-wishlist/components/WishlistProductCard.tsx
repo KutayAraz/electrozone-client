@@ -2,20 +2,7 @@ import { Link } from "react-router-dom";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
 import { useState } from "react";
 import { Rating } from "@mui/material";
-
-export interface WishlistProductCardProps {
-  id: number;
-  productName: string;
-  brand: string;
-  thumbnail: string;
-  price: number;
-  averageRating: number;
-  stock: number;
-  subcategory: string;
-  category: string;
-  onAddToCart: (id: number, e: React.MouseEvent) => void;
-  onRemoveFromWishlist: (id: number) => void;
-}
+import { WishlistProductCardProps } from "./types";
 
 const WishlistProductCard = ({
   id,
