@@ -24,7 +24,7 @@ const Layout = () => {
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const accessToken = useSelector(selectAccessToken);
   const buyNowCartItem = useSelector((state: RootState) => state.buyNowCart);
-  const alertState = useSelector((state: RootState) => state.alert)
+  const alertState = useSelector((state: RootState) => state.alert);
 
   const mergeCartsAndSetIntent = async () => {
     await checkHydration(store);
@@ -93,10 +93,11 @@ const Layout = () => {
       </div>
       <UserLocation />
       {alertState.isOpen && (
-        <Alert 
-          severity={alertState.type} 
+        <Alert
+          severity={alertState.type}
           onClose={() => dispatch(hideAlert())}
-          className="fixed w-full top-0 z-10"
+          className="fixed w-full top-0 z-10 "
+          style={{ borderRadius: 0 }}
         >
           {alertState.message}
         </Alert>

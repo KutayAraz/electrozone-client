@@ -15,7 +15,7 @@ import HomePage, { loader as homePageLoader } from "./pages/home/index.tsx";
 import SignIn from "./pages/sign-in/index.tsx";
 import SignOut from "./pages/sign-out/index.tsx";
 import SignUp from "./pages/sign-up/index.tsx";
-import ProtectedRoute from "./utils/ProtectedRoute.tsx";
+import ProtectedRoute from "./common/ProtectedRoute.tsx";
 import Checkout, { loader as checkoutLoader } from "./pages/checkout/index.tsx";
 import UserWishlist, {
   loader as wishlistLoader,

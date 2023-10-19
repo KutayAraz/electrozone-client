@@ -3,7 +3,7 @@ import { RootState } from "@/setup/store";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
-import fetchNewAccessToken from "./renew-token";
+import fetchNewAccessToken from "../utils/renew-token";
 
 const ProtectedRoute = () => {
   const dispatch = useDispatch();

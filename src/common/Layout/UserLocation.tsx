@@ -43,6 +43,7 @@ const UserLocation = () => {
         bottom="0"
         left="0"
         transitionType="slide"
+        transitionDuration={300}
       >
         <CloseButton
           className="absolute top-4 right-4 bg-transparent w-6 h-6"
@@ -51,28 +52,28 @@ const UserLocation = () => {
           close
         </CloseButton>
         <div className="flex flex-col text-center mx-auto my-6 w-[80%]">
-          <h2 className="text-xl font-semibold mt-4 mb-1">
+          <h2 className="text-xl font-[500] mt-4 mb-2">
             Choose your location
           </h2>
           <Link
             to="/sign-in"
-            className="bg-[#febd69] rounded-lg font-semibold py-1 my-1"
+            className="bg-[#febd69] rounded-lg font-[500] py-[4px] my-1"
           >
             Sign in to see your address
           </Link>
-          <p className="text-center my-1">or</p>
-          <label className="font-semibold mb-1">
+          <p className="text-center my-2">or</p>
+          <label className="font-[500] mb-2">
             {userLocation ? "Change your city" : "Enter your city"}
           </label>
           <input
             type="text"
-            className="border-2 rounded-lg border-[#3a4791]"
+            className="border-2 rounded-lg border-[#3a4791] py-1"
             ref={locationInput}
           />
           <button
             onClick={handleLocation}
             type="submit"
-            className="bg-[#febd69] rounded-lg w-[50%] mx-auto my-3 py-1 font-semibold"
+            className="bg-[#febd69] rounded-lg w-[50%] mx-auto my-3 py-[4px] font-[500]"
           >
             Apply
           </button>

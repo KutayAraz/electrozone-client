@@ -68,7 +68,7 @@ const UpdatePassword = () => {
 
   return (
     <form
-      className="max-w-xs flex flex-col mx-auto text-center justify-items-center mt-2"
+      className="flex flex-col mx-3 xs:mx-auto text-center justify-items-center mt-2 font-[500]"
       onSubmit={handleSubmit(handlePasswordChange)}
     >
       <label
@@ -116,7 +116,7 @@ const UpdatePassword = () => {
         type="submit"
         className={`${
           !isValid ? "bg-gray-500" : "bg-theme-blue hover:bg-[#A34393]"
-        }  rounded-lg font-[500] text-white max-w-[50%] my-2 mx-auto px-4 py-2`}
+        }  rounded-lg font-[500] text-white min-w-[50%] my-2 mx-auto px-4 py-2`}
         disabled={!isValid}
       >
         Confirm

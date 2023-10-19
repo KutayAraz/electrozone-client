@@ -18,7 +18,7 @@ const UserWishlist = () => {
 
   const handleRemove = async (id: number) => {
     const result = await fetchData(
-      `${import.meta.env.API_URL}/products/${id}/wishlist`,
+      `${import.meta.env.VITE_API_URL}/products/${id}/wishlist`,
       "PATCH",
       null,
       true
@@ -28,19 +28,27 @@ const UserWishlist = () => {
       setWishlistProducts((prevProducts: any) =>
         prevProducts.filter((product: any) => product.id !== id)
       );
+      dispatch(
+        displayAlert({
+          type: "success",
+          message: "Product has been removed to your wishlist!",
+          autoHide: true,
+        })
+      );
     }
   };
 
   const handleAddToCart = async (id: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    console.log("alejandro")
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/carts/user-cart`,
       "POST",
       { productId: id, quantity: 1 },
       true
     );
-    if (result?.data.ok) {
+    if (result?.response.ok) {
       dispatch(
         displayAlert({
           type: "success",
@@ -48,6 +56,7 @@ const UserWishlist = () => {
           autoHide: true,
         })
       );
+      
     }
   };
 

@@ -1,6 +1,3 @@
-$transition-duration: 300ms;
-$transition-easing: ease-out;
-
 .backdrop {
   position: fixed;
   top: 0;
@@ -19,33 +16,55 @@ $transition-easing: ease-out;
   z-index: 30;
 }
 
-@mixin modalTransitions($direction, $axis, $from, $to) {
+// .modal-enter-bottom-slide {
+//   transform: translateY(100%);
+//   opacity: 0;
+// }
+
+// .modal-enter-active-bottom-slide {
+//   transform: translateY(0);
+//   opacity: 1;
+//   transition: transform 300ms ease-out, opacity 300ms ease-out;
+// }
+
+// .modal-exit-bottom-slide {
+//   transform: translateY(0);
+//   opacity: 1;
+// }
+
+// .modal-exit-active-bottom-slide {
+//   transform: translateY(100%);
+//   opacity: 0;
+//   transition: transform 300ms ease-out, opacity 300ms ease-out;
+// }
+
+$transition-duration: 300ms;
+$transition-easing: ease-out;
+
+@mixin modalSlideTransitions($direction, $axis, $from, $to) {
   .modal-enter-#{$direction}-slide {
-    transform: translate#{$axis }($from);
+    transform: translate#{$axis}($from);
     opacity: 0;
   }
 
   .modal-enter-active-#{$direction}-slide {
-    transform: translate#{$axis }($to);
+    transform: translate#{$axis}($to);
     opacity: 1;
-    transition: transform $transition-duration $transition-easing,
-      opacity $transition-duration $transition-easing;
+    transition: transform $transition-duration $transition-easing, opacity $transition-duration $transition-easing;
   }
 
   .modal-exit-#{$direction}-slide {
-    transform: translate#{$axis }($to);
+    transform: translate#{$axis}($to);
     opacity: 1;
   }
 
   .modal-exit-active-#{$direction}-slide {
-    transform: translate#{$axis }($from);
+    transform: translate#{$axis}($from);
     opacity: 0;
-    transition: transform $transition-duration $transition-easing,
-      opacity $transition-duration $transition-easing;
+    transition: transform $transition-duration $transition-easing, opacity $transition-duration $transition-easing;
   }
 }
 
-@include modalTransitions(bottom, "Y", "100%", "0");
-@include modalTransitions(left, "X", "-100%", "0");
-@include modalTransitions(top, "Y", "-100%", "0");
-@include modalTransitions(right, "X", "100%", "0");
+@include modalSlideTransitions(top, "Y", "-100%", "0");
+@include modalSlideTransitions(bottom, "Y", "100%", "0");
+

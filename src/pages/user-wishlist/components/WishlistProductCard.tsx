@@ -18,11 +18,31 @@ const WishlistProductCard = ({
   onRemoveFromWishlist,
 }: WishlistProductCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
+  const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
+
+  const handleAddToCartClick = (e: React.MouseEvent) => {
+    setIsAddToCartClicked(true);
+
+    onAddToCart(id, e);
+    setTimeout(() => setIsAddToCartClicked(false), 150);
+  };
+
+  const handleWishlistButtonClick = () => {
+    setIsClicked(true);
+    setTimeout(() => {
+      setIsClicked(false);
+    }, 100);
+
+    setTimeout(() => {
+      onRemoveFromWishlist(id);
+    }, 300);
+  };
+
   return (
     <div className="border-1 rounded-md mx-2 my-2 p-1 flex flex-col space-x-2 relative group">
       <div className="flex justify-between items-start mb-2">
         <button
-          onClick={() => onRemoveFromWishlist(id)}
+          onClick={handleWishlistButtonClick}
           className="transition-transform duration-300 transform scale-100 group-hover:scale-110 ml-auto"
         >
           <HeartIcon
@@ -56,8 +76,10 @@ const WishlistProductCard = ({
           <p className="text-red-500 italic">Product out of stock</p>
         )}
         <button
-          onClick={(e) => onAddToCart(id, e)}
-          className="bg-theme-blue text-white p-[0.25rem] hover:bg-blue-600 rounded-lg w-full text-center"
+          onClick={handleAddToCartClick}
+          className={`bg-theme-blue text-white p-[0.25rem] ${
+            isAddToCartClicked ? "bg-blue-600" : "bg-theme-blue"
+          } rounded-lg w-full text-center`}
         >
           Add to Cart
         </button>

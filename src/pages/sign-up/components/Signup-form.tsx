@@ -3,17 +3,14 @@ import useInput from "@/common/Hooks/use-input";
 import { displayAlert } from "@/setup/slices/alert-slice";
 import { setAccessToken } from "@/setup/slices/auth-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
-import Cookies from "js-cookie";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 
 const isNotEmpty = (value: string) => value.trim() !== "";
 const isEmail = (value: string) => value.includes("@");
 const isPassword = (value: string) => value.length > 5;
 
 const SignUpForm = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch<any>();
   const { fetchData } = useFetch();
   const [isSending, setIsSending] = useState(false);
@@ -145,12 +142,13 @@ const SignUpForm = () => {
   const cityClasses = cityHasError ? inputErrorClasses : inputClasses;
 
   const errorText = (
-    <p className="text-red-700 text-sm">This area is required.</p>
+    <p className="text-red-700 text-sm">This field is required.</p>
   );
 
   return (
     <form action="POST" onSubmit={submitHandler}>
-      <div className="flex flex-col max-w-sm text-center mx-auto">
+      <div className="flex flex-col max-w-sm text-center mx-auto font-[500] my-2">
+        <h4 className="text-lg">Account Information:</h4>
         <label htmlFor="email">Email*</label>
         <input
           type="email"
@@ -182,6 +180,7 @@ const SignUpForm = () => {
         />
         <p>Passwords must be at least 6 characters.</p>
         {emailHasError && errorText}
+        <h4 className="mt-3 text-lg">Personal Information:</h4>
         <label htmlFor="firstName">First name*</label>
         <input
           type="text"
@@ -229,8 +228,8 @@ const SignUpForm = () => {
         <p className="font-semibold">{formStatus}</p>
         <button
           type="submit"
-          className={` border-2 bg-[#13193F] text-white p-2 ${
-            !formIsValid ? "bg-gray-500 " : "bg-[#13193F] hover:bg-[#A34393]"
+          className={`rounded-lg border-2 my-2 min-w-[80%] mx-auto bg-[#13193F] text-white p-2 ${
+            !formIsValid ? "bg-gray-500 " : "bg-theme-blue hover:bg-blue-600"
           }`}
           disabled={!formIsValid}
         >

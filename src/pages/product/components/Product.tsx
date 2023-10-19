@@ -160,13 +160,13 @@ const Product = ({
           speed={500}
           slidesToShow={1}
           slidesToScroll={1}
-          className="lg:hidden"
+          className="block sm:hidden"
           arrows={false}
         >
           <img
             src={thumbnail}
             alt={`thumbnail image for ${productName}`}
-            className="hidden xs:block object-contain w-full sm:w-[50%] mb-4 sm:mb-0"
+            className="object-contain w-64 h-64 mb-4 sm:mb-0"
           />
           {images?.map((image: any) => (
             <div key={image.id}>

@@ -16,7 +16,7 @@ const OrderItemCard = ({
     <Link
       to={`/category/${category}/${subcategory}/${id}`}
       key={id}
-      className="group border px-4 py-2 rounded-md hover:shadow-md transition duration-200 transform hover:scale-105"
+      className="group border px-4 py-2 rounded-md hover:shadow-md transition duration-200 transform hover:scale-[101%]"
     >
       <div className="flex items-center justify-center mb-4">
         <img

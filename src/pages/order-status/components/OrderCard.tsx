@@ -1,6 +1,4 @@
-import { RootState } from "@/setup/store";
 import OrderItemCard from "./OrderItemCard";
-import fetchNewAccessToken from "@/utils/renew-token";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "@/utils/format-time";
 import useFetch from "@/common/Hooks/use-fetch";
@@ -44,16 +42,20 @@ const OrderCard = ({
   return (
     <div
       key={orderId}
-      className="border p-2 bg-white shadow-md rounded-md space-y-4 max-w-xl my-8 mx-[1%]"
+      className="border p-2 bg-white shadow-md rounded-md space-y-4 my-2 mx-[1%]"
     >
       <div className="space-y-1">
-        <p className="text-gray-700 font-semibold">Order ID: {orderId}</p>
+        <p className="text-gray-700 font-semibold underline">
+          Order ID: {orderId}
+        </p>
         <p className="text-gray-700">Order Total: ${orderTotal}</p>
         <p className="text-gray-700">Date of Order: {date}</p>
       </div>
 
       <div className="space-y-1">
-        <h2 className="text-blue-500 font-bold">User Details</h2>
+        <h2 className="text-theme-blue font-semibold underline">
+          User Details:
+        </h2>
         <p className="text-gray-700">
           {user.firstName} {user.lastName}
         </p>
