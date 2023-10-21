@@ -16,7 +16,8 @@ const useFetch = () => {
     url: string,
     method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
     body?: any,
-    withAuth: boolean = false
+    withAuth: boolean = false,
+    withCredentials: boolean = false
   ) => {
     setLoading(true);
     setError(null);
@@ -35,6 +36,7 @@ const useFetch = () => {
         method,
         headers,
         body: body ? JSON.stringify(body) : undefined,
+        credentials: withCredentials ? 'include' : 'same-origin'
       });
       return response;
     };

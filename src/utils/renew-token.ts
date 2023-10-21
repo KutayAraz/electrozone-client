@@ -11,7 +11,7 @@ export async function fetchNewAccessToken() {
     credentials: "include",
   });
 
-  if (response.status === 200) {
+  if (response.ok) {
     const result = await response.json();
     const { access_token } = result;
     store.dispatch(setAccessToken({ accessToken: access_token }));

@@ -11,4 +11,7 @@
 /* Hide scrollbar for Firefox */
 .noScrollbar {
   scrollbar-width: none;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
+

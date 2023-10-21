@@ -5,12 +5,12 @@ export interface BackdropProps {
 export interface ModalOverlayProps {
   children: React.ReactNode;
   isOpen: boolean;
-  width: string;
-  height: string;
-  top?: string;
-  bottom?: string;
-  left?: string;
-  right?: string;
+  widthClass: string;
+  heightClass: string;
+  topClass?: string;
+  bottomClass?: string;
+  leftClass?: string;
+  rightClass?: string;
   direction: string;
   transitionDuration: number;
   transitionType: string;
@@ -33,12 +33,12 @@ export interface SidebarProps {
 }
 
 export interface CustomizableModalProps {
-  width: string;
-  height: string;
-  top?: string;
-  bottom?: string;
-  left?: string;
-  right?: string;
+  widthClass: string;
+  heightClass: string;
+  topClass?: string;
+  bottomClass?: string;
+  leftClass?: string;
+  rightClass?: string;
   direction: "top" | "bottom" | "left" | "right" | "center";
   autoCloseDuration?: number;
   transitionDuration?: number;

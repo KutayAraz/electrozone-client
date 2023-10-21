@@ -16,55 +16,122 @@
   z-index: 30;
 }
 
-// .modal-enter-bottom-slide {
-//   transform: translateY(100%);
-//   opacity: 0;
-// }
+/*--BOTTOM--*/
 
-// .modal-enter-active-bottom-slide {
-//   transform: translateY(0);
-//   opacity: 1;
-//   transition: transform 300ms ease-out, opacity 300ms ease-out;
-// }
-
-// .modal-exit-bottom-slide {
-//   transform: translateY(0);
-//   opacity: 1;
-// }
-
-// .modal-exit-active-bottom-slide {
-//   transform: translateY(100%);
-//   opacity: 0;
-//   transition: transform 300ms ease-out, opacity 300ms ease-out;
-// }
-
-$transition-duration: 300ms;
-$transition-easing: ease-out;
-
-@mixin modalSlideTransitions($direction, $axis, $from, $to) {
-  .modal-enter-#{$direction}-slide {
-    transform: translate#{$axis}($from);
-    opacity: 0;
-  }
-
-  .modal-enter-active-#{$direction}-slide {
-    transform: translate#{$axis}($to);
-    opacity: 1;
-    transition: transform $transition-duration $transition-easing, opacity $transition-duration $transition-easing;
-  }
-
-  .modal-exit-#{$direction}-slide {
-    transform: translate#{$axis}($to);
-    opacity: 1;
-  }
-
-  .modal-exit-active-#{$direction}-slide {
-    transform: translate#{$axis}($from);
-    opacity: 0;
-    transition: transform $transition-duration $transition-easing, opacity $transition-duration $transition-easing;
-  }
+.modal-enter-bottom-slide {
+  transform: translateY(100%);
+  opacity: 0;
 }
 
-@include modalSlideTransitions(top, "Y", "-100%", "0");
-@include modalSlideTransitions(bottom, "Y", "100%", "0");
+.modal-enter-active-bottom-slide {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
 
+.modal-exit-bottom-slide {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.modal-exit-active-bottom-slide {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+/*--LEFT--*/
+
+.modal-enter-left-slide {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.modal-enter-active-left-slide {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+.modal-exit-left-slide {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.modal-exit-active-left-slide {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+/*--RIGHT--*/
+
+.modal-enter-right-slide {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.modal-enter-active-right-slide {
+  transform: translateX(0%);
+  opacity: 1;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+.modal-exit-right-slide {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+.modal-exit-active-right-slide {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+/*--TOP--*/
+
+.modal-enter-top-slide {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.modal-enter-active-top-slide {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+.modal-exit-top-slide {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.modal-exit-active-top-slide {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+/*--CENTER--*/
+
+.modal-enter-center-slide {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.modal-enter-active-center-slide {
+  transform: translateY(50%); /* Adjust this value to determine where the modal stops. 50% will make it stop at the middle. */
+  opacity: 1;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+.modal-exit-center-slide {
+  transform: translateY(50%); /* Starting from the middle */
+  opacity: 1;
+}
+
+.modal-exit-active-center-slide {
+  transform: translateY(-100%); /* Sliding back up */
+  opacity: 0;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}

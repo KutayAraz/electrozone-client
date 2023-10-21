@@ -34,6 +34,6 @@ export const loader = async ({ params }: any) => {
     `${import.meta.env.VITE_API_URL}/categories/` + categoryName
   );
   return defer({
-    category,
+    category: category.data
   });
 };

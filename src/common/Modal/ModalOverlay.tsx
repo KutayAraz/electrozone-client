@@ -5,31 +5,17 @@ import { ModalOverlayProps, ModalStyleType } from "./models";
 export function ModalOverlay({
   children,
   isOpen,
-  width,
-  top,
-  bottom,
-  left,
-  right,
-  height,
+  widthClass = '', 
+  topClass = '',
+  bottomClass = '', 
+  leftClass = '',
+  rightClass = '',
+  heightClass = '',
   direction,
   transitionDuration,
   transitionType,
   className,
 }: ModalOverlayProps) {
-  const modalStyle: ModalStyleType = {
-    top,
-    left,
-    bottom,
-    right,
-    width,
-    height,
-  };
-
-  if (direction === "center") {
-    modalStyle.top = "50%";
-    modalStyle.left = "50%";
-    modalStyle.transform = "translate(-50%, -50%)";
-  }
 
   const classNames = {
     enter: styles[`modal-enter-${direction}-${transitionType}`],
@@ -45,9 +31,21 @@ export function ModalOverlay({
       classNames={classNames}
       unmountOnExit
     >
-      <div className={`${styles.modal} ${className}`} style={modalStyle}>
+      <div 
+        className={` 
+          ${styles.modal} 
+          ${widthClass} 
+          ${topClass} 
+          ${bottomClass} 
+          ${leftClass} 
+          ${rightClass} 
+          ${heightClass}
+          ${className}
+        `}
+      >
         {children}
       </div>
     </CSSTransition>
   );
 }
+

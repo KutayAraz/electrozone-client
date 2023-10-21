@@ -17,7 +17,7 @@ const OrderCard = ({
   return (
     <div
       key={orderId}
-      className="relative border-2 max-w-screen-lg my-2 mx-[1%] rounded-lg"
+      className="relative border-2 my-2 mx-[1%] rounded-lg"
     >
       <div className="bg-gray-100 p-2">
         <p>Order id: {orderId}</p>
@@ -30,7 +30,7 @@ const OrderCard = ({
       </div>
 
       <Divider />
-      <div className="flex my-2 pl-2 space-x-2">
+      <div className="flex my-2 pl-2 space-x-2 overflow-x-auto whitespace-nowrap scroll-snap-type-x-mandatory noScrollbar scroll-smooth">
         {orderItems.map((product: Product) => (
           <OrderItemCard
             key={product.productId}

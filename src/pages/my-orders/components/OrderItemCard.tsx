@@ -9,11 +9,11 @@ const OrderItemCard = ({
   category,
 }: OrderItemCardProps) => {
   return (
-    <Link to={`/category/${category}/${subcategory}/${id}`} key={id}>
+    <Link to={`/category/${category}/${subcategory}/${id}`} key={id} className="flex-shrink-0 scroll-snap-align-start mr-2 sm:mr-4 border border-transparent hover:border-1 hover:border-white rounded pr-4">
       <img
         src={thumbnail}
         alt={`image for ${productName}`}
-        className="w-24 h-auto"
+        className="h-20 w-auto object-contain"
       />
     </Link>
   );

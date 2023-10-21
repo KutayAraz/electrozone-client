@@ -31,8 +31,6 @@ const localCartSlice = createSlice({
       const { id, quantity } = action.payload;
       const item = state.items.find((item) => item.id === id);
 
-      console.log(quantity)
-
       if (item) {
         state.totalQuantity = state.totalQuantity - item.quantity + quantity;
         item.quantity = quantity;

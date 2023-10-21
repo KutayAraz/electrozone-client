@@ -1,7 +1,5 @@
 import {
-  Await,
   defer,
-  json,
   useLoaderData,
   useParams,
   useSearchParams,
@@ -13,8 +11,9 @@ import FormControl from "@mui/material/FormControl";
 import loaderFetch from "@/utils/loader-fetch";
 
 const fetchProducts = async (subcategory: string, sort: string) => {
+  const subcategoryUrl = subcategory.replace(/-/g, "_");
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/subcategories/${subcategory}/${sort}`
+    `${import.meta.env.VITE_API_URL}/subcategories/${subcategoryUrl}/${sort}`
   );
   if (response.ok) {
     return response.json();
@@ -85,12 +84,12 @@ const SubcategoryPage = () => {
 export default SubcategoryPage;
 
 export async function loader({ params }: any) {
-  const subcategory = params.subcategory;
+  const subcategory = params.subcategory.replace(/-/g, "_");
   const result = await loaderFetch(
     `${import.meta.env.VITE_API_URL}/subcategories/${subcategory}/featured`,
     "GET"
   );
   return defer({
-    subcategoryData: await result?.data,
+    subcategoryData: result.data,
   });
 }

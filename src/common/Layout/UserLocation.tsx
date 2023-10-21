@@ -37,11 +37,11 @@ const UserLocation = () => {
       <CustomizableModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        width="100vw"
+        widthClass="w-full"
         direction="bottom"
-        height="auto"
-        bottom="0"
-        left="0"
+        heightClass="auto"
+        bottomClass="bottom-0"
+        leftClass="left-0"
         transitionType="slide"
         transitionDuration={300}
       >

@@ -70,7 +70,7 @@ const ProductPage = () => {
           resolve={reviews}
           children={(resolvedReviews) =>
             resolvedReviews.length === 0 ? (
-              <p className="text-sm ">This product has no reviews yet.</p>
+              <p className="text-sm italic">This product has no reviews yet.</p>
             ) : (
               resolvedReviews.map((review: any) => (
                 <Review
@@ -90,6 +90,65 @@ const ProductPage = () => {
 };
 
 export default ProductPage;
+
+// const API_URL = import.meta.env.VITE_API_URL;
+
+// async function fetchData(endpoint: string, method: any, useAuth = false, request: any = null) {
+//   const fetchFunction = useAuth ? loaderFetchProtected : loaderFetch;
+//   const result = await fetchFunction(`${API_URL}${endpoint}`, method, request);
+//   return result.data;
+// }
+
+// async function isUserSignedIn() {
+//   await checkHydration(store);
+//   return store.getState().user.isSignedIn;
+// }
+
+// export const loader = async ({ request, params }: any) => {
+//   try {
+//     const { productId } = params;
+//     const isLoggedIn = await isUserSignedIn();
+
+//     // Fetch product and reviews concurrently
+//     const [product, reviews] = await Promise.all([
+//       fetchData(`/products/${productId}`, "GET"),
+//       fetchData(`/reviews/${productId}/reviews`, "GET")
+//     ]);
+
+//     let wishlisted = false;
+//     let canReview = false;
+
+//     if (isLoggedIn) {
+//       // Fetch wishlist status and review permission concurrently for logged-in users
+//       [wishlisted, canReview] = await Promise.all([
+//         fetchData(`/products/${productId}/wishlist`, "GET", true, request),
+//         (async () => {
+//           try {
+//             const result = await fetchData(`/reviews/${productId}/canReview`, "GET", true, request);
+//             return result === true;
+//           } catch (error) {
+//             if (error instanceof UnauthorizedError) throw error;
+//             return false;
+//           }
+//         })()
+//       ]);
+//     }
+
+//     return defer({
+//       product,
+//       wishlisted,
+//       reviews,
+//       canCurrentUserReview: canReview
+//     });
+//   } catch (error: unknown) {
+//     console.log("err", error);
+//     if (error instanceof UnauthorizedError) {
+//       return redirect("/sign-in");
+//     }
+//     throw error;
+//   }
+// };
+
 
 async function loadProduct(productId: string) {
   const result = await loaderFetch(

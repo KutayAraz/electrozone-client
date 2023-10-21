@@ -1,5 +1,5 @@
 import ProductCard from "./ProductCard";
-import { Product, SubcategoryProps } from "./models";
+import { CategoryProductProps, SubcategoryProps } from "./models";
 
 const Subcategory = ({
   subcategoryName,
@@ -7,23 +7,29 @@ const Subcategory = ({
   topWishlisted,
 }: SubcategoryProps) => {
   return (
-    <div>
-      <h3>Top Selling Products in {subcategoryName}</h3>
-      {topSelling.map((product: Product) => (
+    <div className="m-[2%]">
+      <h3 className="text-xl font-semibold text-gray-700 ">
+        Top Selling Products in {subcategoryName.toUpperCase()}
+      </h3>
+      {topSelling.map((product: CategoryProductProps) => (
         <ProductCard
           subcategoryName={subcategoryName}
           id={product.id}
           thumbnail={product.thumbnail}
-          productName={product.thumbnail}
+          productName={product.productName}
+          price={product.price}
         />
       ))}
-      <h3>Top Wishlisted Productsin {subcategoryName}</h3>
-      {topWishlisted.map((product: Product) => (
+      <h3 className="text-xl font-semibold text-gray-700 p-[2%]">
+        Top Wishlisted Productsin {subcategoryName.toUpperCase()}
+      </h3>
+      {topWishlisted.map((product: CategoryProductProps) => (
         <ProductCard
           subcategoryName={subcategoryName}
           id={product.id}
           thumbnail={product.thumbnail}
-          productName={product.thumbnail}
+          productName={product.productName}
+          price={product.price}
         />
       ))}
     </div>

@@ -1,13 +1,14 @@
 export interface SubcategoryProps {
   subcategoryName: string;
-  topSelling: Product[];
-  topWishlisted: Product[];
+  topSelling: CategoryProductProps[];
+  topWishlisted: CategoryProductProps[];
 }
 
-export interface Product {
+export interface CategoryProductProps {
   id: string;
   subcategoryName: string;
   productName: string;
   thumbnail: string;
+  price: number;
 }
 

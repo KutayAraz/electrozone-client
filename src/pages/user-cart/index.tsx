@@ -36,7 +36,9 @@ const UserCart = () => {
   const navigate = useNavigate();
   const dispatch: any = useDispatch();
   const { cart }: any = useLoaderData();
-  const [cartData, setCartData] = useState<any>(cart);
+  const [products, setProducts] = useState<any>(cart.products);
+  const [cartTotal, setCartTotal] = useState<any>(cart.cartTotal);
+
   const [refetchTrigger, setRefetchTrigger] = useState(false);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const { fetchData } = useFetch();
@@ -53,7 +55,8 @@ const UserCart = () => {
   const handleClearCartButton = async () => {
     if (!isSignedIn) {
       dispatch(clearLocalcart());
-      setCartData([]);
+      setProducts([]);
+      setCartTotal(0)
     } else {
       const result = await fetchData(
         `${import.meta.env.VITE_API_URL}/carts/clear-cart`,
@@ -62,8 +65,9 @@ const UserCart = () => {
         true
       );
 
-      if (result?.response.ok) {
-        setCartData([]);
+      if (result?.data === true) {
+        setProducts([]);
+        setCartTotal(0)
       }
     }
     dispatch(
@@ -79,7 +83,8 @@ const UserCart = () => {
     async function refetchCart() {
       const result = await RefetchCart(isSignedIn, fetchData);
       if (result?.response.ok) {
-        setCartData(result.data);
+        setProducts(result.data.products);
+        setCartTotal(result.data.cartTotal);
       }
     }
     refetchCart();
@@ -96,14 +101,14 @@ const UserCart = () => {
       </h2>
       <Suspense fallback={<p className="text-gray-600">Loading..</p>}>
         <div>
-          {!cartData.products ? (
+          {products.length === 0 ? (
             <p className="text-gray-500 italic">
               There's nothing in your cart.
             </p>
           ) : (
             <>
               <div className="space-y-4">
-                {cartData.products.map((product: any) => (
+                {products.map((product: any) => (
                   <CartItemCard
                     {...product}
                     onQuantityChange={triggerRefetch}
@@ -114,7 +119,7 @@ const UserCart = () => {
               </div>
 
               <p className="text-xl text-gray-700 font-semibold mt-4">
-                Cart Total: ${cartData.cartTotal}
+                Cart Total: ${cartTotal}
               </p>
 
               <div className="flex space-x-4 mt-4">
@@ -127,7 +132,7 @@ const UserCart = () => {
                 <button
                   onClick={handleClearCartButton}
                   className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-md transition duration-200"
-                  disabled={cartData.length === 0}
+                  disabled={products.length === 0}
                 >
                   Clear Cart
                 </button>
@@ -162,7 +167,7 @@ export const loader = async (request: any) => {
       productsToOrder
     );
 
-    return defer({ cart });
+    return defer({ cart: cart.data });
   } else {
     try {
       const cart = await loaderFetchProtected(
@@ -170,8 +175,6 @@ export const loader = async (request: any) => {
         "GET",
         request.request
       );
-
-      console.log("here", cart)
 
       return defer({ cart });
     } catch (error: unknown) {

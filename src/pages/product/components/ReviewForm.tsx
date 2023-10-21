@@ -63,14 +63,17 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
       <CustomizableModal
         direction="center"
         transitionType="slide"
-        transitionDuration={400}
-        width="90vw"
-        height="auto"
+        transitionDuration={300}
+        widthClass="w-[90%]"
+        heightClass="h-72"
+        topClass="top-72"
+        leftClass="left-[5%]"
         isOpen={reviewForm}
         onClose={() => setReviewForm(false)}
-        className="rounded-xl "
+        className="rounded-xl noScrollbar"
       >
-        <form onSubmit={handleSubmitReview} className="p-4">
+        <div className="p-4">
+          <button className="absolute top-2 right-3" onClick={() => setReviewForm(false)}>X</button>
           <Rating
             name="user-rating"
             value={ratingValue}
@@ -105,14 +108,16 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
             maxLength={250}
             placeholder="Leave your review here"
             className="block w-full h-32 border-1 border-theme-blue rounded-lg mx-auto mt-6 p-2 resize-none shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            autoFocus
           />
           <button
-            type="submit"
+            type="button"
             className="mt-4 bg-theme-blue hover:bg-blue-700 text-white  py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleSubmitReview}
           >
             Submit Review
           </button>
-        </form>
+        </div>
       </CustomizableModal>
     </div>
   );

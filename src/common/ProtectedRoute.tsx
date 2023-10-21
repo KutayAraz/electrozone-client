@@ -23,6 +23,7 @@ const ProtectedRoute = () => {
         .then((newToken) => {
           setLoading(false);
           if (!newToken) {
+            console.log("triggering from here", location.pathname)
             navigate("/sign-in");
           }
         })

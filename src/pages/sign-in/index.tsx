@@ -89,7 +89,9 @@ const SignInForm = () => {
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/auth/signin`,
       "POST",
-      { email: emailValue, password: passwordValue }
+      { email: emailValue, password: passwordValue },
+      true,
+      true
     );
 
     if (result?.response.ok) {

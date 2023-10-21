@@ -24,7 +24,7 @@ const Sidebar = () => {
       height="100vh"
       top="0"
       left="0"
-      direction="left"
+      direction="right"
       transitionType="slide"
       transitionDuration={300}
       isOpen={isOpen}

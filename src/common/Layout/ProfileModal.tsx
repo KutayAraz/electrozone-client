@@ -13,10 +13,10 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
   return (
     <>
       <CustomizableModal
-        height="100vh"
-        width="80%"
-        right="0"
-        top="0"
+        heightClass="h-screen"
+        widthClass="w-[80%]"
+        rightClass="right-0"
+        topClass="top-0"
         transitionType="slide"
         direction="left"
         isOpen={isOpen}

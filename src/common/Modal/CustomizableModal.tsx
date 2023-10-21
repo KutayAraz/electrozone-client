@@ -12,12 +12,12 @@ export const CustomizableModal = ({
   onClose,
   isOpen,
   children,
-  width,
-  height,
-  top,
-  bottom,
-  left,
-  right,
+  widthClass,
+  heightClass,
+  topClass,
+  bottomClass,
+  leftClass,
+  rightClass,
   direction,
   autoCloseDuration,
   transitionType,
@@ -54,12 +54,12 @@ export const CustomizableModal = ({
       {isOpen && <Backdrop onClose={onClose} />}
       <ModalOverlay
         isOpen={isOpen}
-        width={width}
-        height={height}
-        top={top}
-        bottom={bottom}
-        left={left}
-        right={right}
+        widthClass={widthClass}
+        heightClass={heightClass}
+        topClass={topClass}
+        bottomClass={bottomClass}
+        leftClass={leftClass}
+        rightClass={rightClass}
         direction={direction}
         transitionDuration={transitionDuration}
         transitionType={transitionType}

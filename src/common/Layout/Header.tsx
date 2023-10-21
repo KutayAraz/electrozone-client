@@ -6,12 +6,10 @@ import BurgerMenu from "./BurgerMenu";
 import { ReactComponent as Basket } from "@assets/svg/basket.svg";
 import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
 import { ReactComponent as LocationPin } from "@assets/svg/location-pin.svg";
-import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
-import CustomizableModal from "../Modal/CustomizableModal";
 
 const Header = () => {
   const firstName = useSelector((state: any) => state.user.firstName);
@@ -22,7 +20,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex justify-between w-full bg text-white items-center ">
+      <div className="flex justify-between w-full text-white items-center ">
         <div className="flex">
           <BurgerMenu className="block md:hidden"></BurgerMenu>
           <Link to={"/"} className="max-w-[80%] mb-1">
