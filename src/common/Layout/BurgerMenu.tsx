@@ -66,7 +66,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
         transitionDuration={300}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        className="noScrollbar"
+        className="noScrollbar overflow-y-hidden overflow-x-hidden"
       >
         <div className="bg-theme-blue p-4 shadow-md text-white w-full flex items-center">
           {isSignedIn ? (
@@ -91,7 +91,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
               <h4 className="text-2xl font-semibold">Trending</h4>
               <Divider />
               <Link
-                to={"/category/best-sellers"}
+                to={"/trending/best-sellers"}
                 className="text-xl hover:bg-gray-100"
               >
                 Best Sellers
@@ -101,6 +101,12 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
                 className="text-xl hover:bg-gray-100"
               >
                 Most Wishlisted
+              </Link>
+              <Link
+                to={"/category/best-rated"}
+                className="text-xl hover:bg-gray-100"
+              >
+                Best Rated
               </Link>
             </div>
             <Divider />
@@ -299,10 +305,11 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       </CustomizableModal>
       {isOpen && (
         <button
-          className="absolute top-2 left-[calc(80%+40px)] w-7 h-7 bg-gray-300 z-[35]"
+          className="absolute top-4 left-[calc(80%+40px)] w-7 h-7 z-[40]"
           onClick={() => setIsOpen(false)}
         >
-          <CloseButton width={32} height={32} />
+          <CloseButton width={32} height={32} className="text-red-500"/>
+
         </button>
       )}
     </div>

@@ -39,7 +39,7 @@ const SubcategoryPage = () => {
   };
 
   return (
-    <div className="bg-gray-100">
+    <div>
       <div className="flex justify-between items-center px-2 py-4">
         <h3 className="text-xl font-semibold text-gray-600">
           {subcategory ? subcategory.toUpperCase() : "Products"}

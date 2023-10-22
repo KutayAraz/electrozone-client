@@ -14,7 +14,7 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
     <>
       <CustomizableModal
         heightClass="h-screen"
-        widthClass="w-[80%]"
+        widthClass="w-[85%]"
         rightClass="right-0"
         topClass="top-0"
         transitionType="slide"
@@ -56,7 +56,7 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
       </CustomizableModal>
       {isOpen && (
         <button
-          className="absolute top-2 right-[calc(80%+20px)] w-7 h-7 bg-gray-300 z-[35]"
+          className="absolute top-6 right-[calc(80%+40px)] w-7 h-7 z-[35]"
           onClick={() => onClose()}
         >
           <CloseButton width={32} height={32} />

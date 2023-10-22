@@ -1,7 +1,8 @@
 import { Suspense } from "react";
-import { Await, defer, useLoaderData } from "react-router-dom";
+import { Await, Link, defer, useLoaderData } from "react-router-dom";
 import ProductCard from "./components/ProductCard";
 import loaderFetch from "@/utils/loader-fetch";
+import Categories from "./components/Categories";
 
 const HomePage = () => {
   const {
@@ -12,8 +13,11 @@ const HomePage = () => {
 
   return (
     <div className="bg-gray-100">
-      <div className="flex flex-col max-w-screen-lg mx-auto text-center ml-[1%]">
-        <h2 className="text-xl font-semibold my-2">Best Selling Products</h2>
+      <div className="flex flex-col mx-auto text-center ml-[1%]">
+        <Categories />
+        <h2 className="text-xl font-semibold my-2 text-gray-700">
+          Best Selling Products
+        </h2>
         <Suspense fallback={<p>Loading..</p>}>
           <div className="flex space-x-2 overflow-x-auto noScrollbar scroll-smooth">
             <Await
@@ -34,7 +38,9 @@ const HomePage = () => {
           </div>
         </Suspense>
 
-        <h2 className="text-xl font-semibold my-2">Most Wishlisted Products</h2>
+        <h2 className="text-xl font-semibold my-2 text-gray-700">
+          Most Wishlisted Products
+        </h2>
         <Suspense fallback={<p>Loading..</p>}>
           <div className="flex space-x-2 overflow-x-auto noScrollbar scroll-smooth">
             <Await
@@ -55,7 +61,9 @@ const HomePage = () => {
           </div>
         </Suspense>
 
-        <h2 className="text-xl font-semibold my-2">Best Rated Products</h2>
+        <h2 className="text-xl font-semibold my-2 text-gray-700">
+          Best Rated Products
+        </h2>
         <Suspense fallback={<p>Loading..</p>}>
           <div className="flex space-x-2 overflow-x-auto noScrollbar scroll-smooth mb-2">
             <Await
@@ -89,9 +97,9 @@ const fetchProducts = async (url: string) => {
   return result.data;
 };
 
-const loadBestRatedProducts = () => fetchProducts("best-rated");
+const loadBestRatedProducts = () => fetchProducts("top-rated");
 const loadMostWishlistedProducts = () => fetchProducts("most-wishlisted");
-const loadMostSoldProducts = () => fetchProducts("most-sold");
+const loadMostSoldProducts = () => fetchProducts("best-sellers");
 
 export const loader = async () => {
   return defer({

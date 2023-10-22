@@ -5,6 +5,7 @@ import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
+import { OrderCardProps } from "./components/types";
 
 const MyOrders = () => {
   const { orders }: any = useLoaderData();
@@ -14,7 +15,7 @@ const MyOrders = () => {
       <Await
         resolve={orders}
         children={(resolvedOrders) => {
-          return resolvedOrders.map((order: any) => (
+          return resolvedOrders.map((order: OrderCardProps) => (
             <OrderCard
               key={order.orderId}
               orderId={order.orderId}

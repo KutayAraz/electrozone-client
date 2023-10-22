@@ -54,37 +54,43 @@ const ProductCard = ({
   };
 
   return (
-    <Link
-      to={`/category/${category}/${subcategory}/${id}`}
-      className={`flex border-1 bg-white shadow-lg rounded-md sm:flex-row items-stretch text-center mb-2 w-full sm:w-1/4 md:w-1/6 ${
-        isClicked ? "clicked-class" : ""
-      }`}
-    >
-      <div className="relative w-[50%] sm:w-3/10 h-0 pb-[25vh] mb-2 sm:mb-0 sm:mr-2">
-        <div className="absolute inset-0 flex items-center justify-center overflow-hidden px-[4px]">
+    <div className="w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-2">
+      <Link
+        to={`${subcategory + "/" + id}`}
+        className="border-1 border-gray-300 rounded-md shadow-md hover:bg-gray-100 h-full px-2 xs:px-4 py-2 xs:pt-4 pb-2 flex xs:flex-col xs:justify-between"
+      >
+        <div className="flex-1 px-2 xs:px-0">
           <img
             src={thumbnail}
             alt={`image for ${productName}`}
-            className="max-h-full max-w-full object-cover"
+            className="w-56 h-56 xs:h-auto object-contain mx-auto"
           />
         </div>
-      </div>
-      <Divider orientation="vertical" className="self-stretch" />
-      <div className="flex-1 px-2 flex flex-col justify-between my-2">
-        <p>{productName}</p>
-        <p className="font-[500]">{brand}</p>
-        <div onClick={handleRatingClick}>
-          <Rating value={averageRating} />
+        <Divider
+          orientation="vertical"
+          className="self-stretch xs:hidden mx-2"
+        />
+        <Divider className="self-stretch hidden xs:block" />
+        <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-2 justify-between">
+          <p>{productName}</p>
+          <p className="font-[500]">{brand}</p>
+          <Rating
+            name="half-rating-read"
+            value={averageRating}
+            precision={0.1}
+            readOnly
+            className="mx-auto"
+          />
+          <p>$ {price.toFixed(2)}</p>
+          <button
+            onClick={handleAddToCart}
+            className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full  bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-700"
+          >
+            Add to Cart
+          </button>
         </div>
-        <h3 className="text-lg">$ {price.toFixed(2)}</h3>
-        <button
-          onClick={handleAddToCart}
-          className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full  bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base"
-        >
-          Add to Cart
-        </button>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

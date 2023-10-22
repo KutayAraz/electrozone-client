@@ -30,6 +30,7 @@ import ContactUs from "./pages/contact-us/index.tsx";
 import UserAccount from "./pages/user-account/index.tsx";
 import UserProfile, { loader as profileLoader } from "./pages/user-profile/index.tsx";
 import UpdatePassword from "./pages/update-password/index.tsx";
+import Trending, {loader as trendingLoader} from "./pages/trending/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,11 @@ const router = createBrowserRouter([
       {
         path: "/sign-out",
         element: <SignOut />,
+      },
+      {
+        path: "/trending/:type",
+        element: <Trending />,
+        loader: trendingLoader
       },
       {
         element: <ProtectedRoute />,
@@ -145,6 +151,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  
   {
     element: <ProtectedRoute />,
     children: [

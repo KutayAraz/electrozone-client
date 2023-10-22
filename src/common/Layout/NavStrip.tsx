@@ -8,13 +8,13 @@ const NavStrip = () => {
     "flex-shrink-0 scroll-snap-align-start mr-2 sm:mr-4 border border-transparent hover:border-1 hover:border-white rounded pr-4";
 
   const menuItems = [
-    "Best Sellers",
-    "Today's Deals",
-    "Most Wishlisted",
-    "Computers",
-    "Printers",
-    "Smartphones",
-    "Televisions",
+    { name: "Best Sellers", url: "/trending/best-sellers" },
+    { name: "TVs", url: "/category/tvs-and-soundbars/tvs"},
+    { name: "Most Wishlisted", url: "/trending/most-wishlisted" },
+    { name: "Laptops", url: "/category/computers-and-accessories/laptops"},
+    { name: "Top Rated", url: "/trending/top-rated" },
+    { name: "Smartphones", url: "/category/smartphones-and-accessories/smartphones"},
+    { name: "Printers", url: "/category/printers-and-ink/printers"},
   ];
 
   return (
@@ -23,8 +23,8 @@ const NavStrip = () => {
         <p>All</p>
       </BurgerMenu>
       {menuItems.map((item, index) => (
-        <Link to="" key={index} className={navStripElementClass}>
-          {item}
+        <Link to={item.url} key={index} className={navStripElementClass}>
+          {item.name}
         </Link>
       ))}
     </div>

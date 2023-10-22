@@ -14,6 +14,7 @@ export const CategoryPage = () => {
             loadedCategory.map((subcategory: any, index: number) => (
               <Subcategory
                 key={index}
+                id={index}
                 subcategoryName={subcategory.subcategory}
                 topSelling={subcategory.topSelling}
                 topWishlisted={subcategory.topWishlisted}
@@ -34,6 +35,6 @@ export const loader = async ({ params }: any) => {
     `${import.meta.env.VITE_API_URL}/categories/` + categoryName
   );
   return defer({
-    category: category.data
+    category: category.data,
   });
 };
