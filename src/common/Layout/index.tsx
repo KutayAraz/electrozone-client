@@ -1,7 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./Footer/index";
 import NavStrip from "./NavStrip";
-import Sidebar from "./SideMenu";
 import Header from "./Header";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -89,7 +88,6 @@ const Layout = () => {
       <div className="bg-theme-blue px-[2%]">
         <Header />
         <NavStrip />
-        <Sidebar />
       </div>
       <UserLocation />
       {alertState.isOpen && (

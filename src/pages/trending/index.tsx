@@ -25,6 +25,7 @@ const Trending = () => {
                   id={product.id}
                   thumbnail={product.thumbnail}
                   productName={product.productName}
+                  brand={product.brand}
                   averageRating={product.averageRating}
                   price={product.price}
                 />
