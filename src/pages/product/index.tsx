@@ -64,13 +64,13 @@ const ProductPage = () => {
           />
         )}
       />
-      <section id="rating" className="my-4 ml-[4%]">
-        <h4 className="mb-2 underline">Reviews</h4>
+      <section id="rating" className="my-4 max-w-screen-xl mx-[2%] xl:mx-auto">
+        <h4 className="mb-2 underline text-lg">Reviews</h4>
         <Await
           resolve={reviews}
           children={(resolvedReviews) =>
             resolvedReviews.length === 0 ? (
-              <p className="text-sm italic">This product has no reviews yet.</p>
+              <p className="italic">This product has no reviews yet.</p>
             ) : (
               resolvedReviews.map((review: any) => (
                 <Review

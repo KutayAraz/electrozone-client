@@ -3,12 +3,12 @@ export interface ProductProps {
   productName: string;
   brand: string;
   description: string[];
-  averageRating: string;
+  averageRating: number;
   thumbnail: string;
   price: number;
   stock: number;
-  images: string[] | null;
-  category:string;
+  images: Array<{ id: number; productImage: string }>;
+  category: string;
   subcategory: string;
   isWishlisted: boolean;
   updateWishlistStatus: (status: boolean) => void;
@@ -25,7 +25,27 @@ export interface ReviewType {
   comment: string;
 }
 
-export interface WishlistButtonProps  {
+export interface WishlistButtonProps {
   isWishlisted: boolean;
   toggleWishlist: () => void;
-};
+}
+
+export interface ProductLayoutProps {
+  productName: string;
+  brand: string;
+  thumbnail: string;
+  images: Array<{ id: number; productImage: string }>;
+  setSelectedImage: (image: string) => void;
+  selectedImage?: string;
+  price: number;
+  quantity: number;
+  decrementQuantity: () => void;
+  handleQuantityChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  incrementQuantity: () => void;
+  stock: number;
+  handleAddToCart: () => void;
+  handleBuyNow: () => void;
+  averageRating: number;
+  isWishlisted: boolean;
+  toggleWishlist: () => void;
+}
