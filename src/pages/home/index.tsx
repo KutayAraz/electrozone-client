@@ -1,8 +1,13 @@
 import { Suspense } from "react";
-import { Await, Link, defer, useLoaderData } from "react-router-dom";
+import { Await, defer, useLoaderData } from "react-router-dom";
+import { ReactComponent as Arrow } from "@assets/svg/navigation.svg";
+import { ReactComponent as PrevArrow } from "@assets/svg/pre.svg";
 import ProductCard from "./components/ProductCard";
 import loaderFetch from "@/utils/loader-fetch";
 import Categories from "./components/Categories";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 
 const HomePage = () => {
   const {
@@ -10,6 +15,39 @@ const HomePage = () => {
     mostWishlistedProducts,
     bestSellingProducts,
   }: any = useLoaderData();
+
+  var settings = {
+    arrows: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+    ],
+  };
 
   return (
     <div className="bg-gray-100">
@@ -19,13 +57,14 @@ const HomePage = () => {
           Best Selling Products
         </h2>
         <Suspense fallback={<p>Loading..</p>}>
-          <div className="flex space-x-2 overflow-x-auto noScrollbar scroll-smooth">
+          <div className="max-w-screen-lg mx-auto">
             <Await
               resolve={bestSellingProducts}
-              children={(product: any) =>
-                product.map((product: any) => (
+              children={(products: any) =>
+                // return (
+                //   <Slider {...settings} className="hidden sm:block mx-4">
+                products.map((product: any) => (
                   <ProductCard
-                    key={product.id}
                     id={product.id}
                     productName={product.productName}
                     thumbnail={product.thumbnail}
@@ -34,6 +73,8 @@ const HomePage = () => {
                   />
                 ))
               }
+              // </Slider>
+              // );
             />
           </div>
         </Suspense>

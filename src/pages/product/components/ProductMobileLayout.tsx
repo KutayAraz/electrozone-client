@@ -36,7 +36,6 @@ const ProductMobileLayout = ({
         slidesToShow={1}
         slidesToScroll={1}
         className="block sm:hidden"
-        arrows={false}
       >
         <img
           src={thumbnail}

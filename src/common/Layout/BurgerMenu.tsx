@@ -21,7 +21,8 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
   const location = useLocation();
   const [activeView, setActiveView] = useState("main");
   const city = useSelector((state: RootState) => state.user.city);
-  const firstName = useSelector((state: RootState) => state.user.firstName);
+  const firstName = useSelector((state: RootState) => state.user.firstName);  
+  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   useEffect(() => {
     setIsOpen(false);
@@ -43,17 +44,17 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
     }
   }, [isOpen]);
 
-  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   return (
     <div className="flex">
       <button
-        className={`items-center ${className}`}
+        className={`items-center border border-transparent hover:border-1 hover:border-white rounded ${className}`}
         onClick={() => {
           setActiveView("main"); // Set the activeView to "main"
           setIsOpen(true); // Open the modal
         }}
       >
         <BurgerIcon width={32} height={32} />
+        <p className="hidden sm:flex my-auto px-2">All</p>
       </button>
 
       <CustomizableModal
@@ -66,7 +67,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
         transitionDuration={300}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        className="noScrollbar overflow-y-hidden overflow-x-hidden"
+        className="overflow-x-hidden" 
       >
         <div className="bg-theme-blue p-4 shadow-md text-white w-full flex items-center">
           {isSignedIn ? (
@@ -309,9 +310,10 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           onClick={() => setIsOpen(false)}
         >
           <CloseButton width={32} height={32} className="text-red-500"/>
-
+          
         </button>
       )}
+      {children}
     </div>
   );
 };

@@ -22,14 +22,14 @@ const Header = () => {
     <>
       <div className="flex justify-between w-full text-white items-center ">
         <div className="flex">
-          <BurgerMenu className="block md:hidden"></BurgerMenu>
+          <BurgerMenu className="block sm:hidden"></BurgerMenu>
           <Link to={"/"} className="max-w-[80%] mb-1">
-            <Brand className="block  md:hidden" />
+            <Brand className="block sm:hidden" />
           </Link>
           <Link to={"/"}>
-            <BrandLogo className="hidden md:block " />
+            <BrandLogo className="hidden sm:block " />
           </Link>
-          <div className="hidden md:flex items-center px-6">
+          <div className="hidden sm:flex items-center px-6">
             <div className="flex-col whitespace-nowrap pr-2">
               {isSignedIn ? (
                 <div className="text-center">
@@ -37,7 +37,7 @@ const Header = () => {
                   <p>{city}</p>
                 </div>
               ) : (
-                <div className="text-center">
+                <div className="text-center"> 
                   <p>Hello, </p>
                   <p>Select your location</p>
                 </div>
