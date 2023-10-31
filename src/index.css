@@ -12,13 +12,3 @@
 .noScrollbar {
   scrollbar-width: none;
 }
-
-.slick-next svg,
-.slick-prev svg {
-   stroke: #000000; /* Change this to your desired line color */
-}
-
-.slick-next svg path,
-.slick-prev svg path {
-   stroke: #000000; /* Change this to your desired line color */
-}

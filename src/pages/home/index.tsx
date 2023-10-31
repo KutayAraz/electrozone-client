@@ -57,7 +57,7 @@ const HomePage = () => {
           Best Selling Products
         </h2>
         <Suspense fallback={<p>Loading..</p>}>
-          <div className="max-w-screen-lg mx-auto">
+          <div className="flex space-x-2 overflow-x-auto noScrollbar scroll-smooth">
             <Await
               resolve={bestSellingProducts}
               children={(products: any) =>

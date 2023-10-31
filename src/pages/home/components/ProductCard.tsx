@@ -12,14 +12,14 @@ const ProductCard = ({
     <div>
       <Link
         to={`/category/${category}/${subcategory}/${id}`}
-        className="flex flex-col bg-white items-center p-2 hover:underline border-2 rounded-md shadow-sm"
+        className="flex flex-col bg-white items-center max-w-screen-sm p-2 hover:underline border-2 rounded-md shadow-sm"
         key={id}
       >
-        <div className="rounded-md">
+        <div className="w-52 h-52 overflow-hidden rounded-md">
           <img
             src={thumbnail}
             alt={`Image for ${productName}`}
-            className="w-16 h-16 object-contain object-center"
+            className="w-full h-full object-contain object-center"
           />
         </div>
         <Divider className="text-gray-700"/>
