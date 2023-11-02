@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { ReactComponent as Bin } from "@assets/svg/bin.svg";
 import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
+import { Divider } from "@mui/material";
 
 const CartItemCard = ({
   id,
@@ -78,19 +79,22 @@ const CartItemCard = ({
   };
 
   return (
-    <div className="border rounded-md p-4 flex items-start space-x-4" key={id}>
+    <div className="border rounded-md p-2 sm:p-4 flex items-start space-x-4" key={id}>
       <Link
         to={`/category/${category}/${subcategory}/${id}`}
-        className="flex-shrink-0"
+        className="my-auto flex-shrink-0"
       >
-        <img
-          src={thumbnail}
-          alt={productName}
-          className="w-24 h-24 object-contain rounded-md"
-        />
+        <div className="">
+          <img
+            src={thumbnail}
+            alt={productName}
+            className="w-32 h-32 sm:w-56 sm:h-56 lg:w-64 lg:h-64 object-contain rounded-md"
+          />
+        </div>
       </Link>
+      <Divider orientation="vertical"  flexItem />
 
-      <div className="flex-grow space-y-2">
+      <div className="flex-grow space-y-2 ">
         <Link to={`/category/${category}/${subcategory}/${id}`}>
           <p className="text-gray-700 hover:text-blue-500 transition duration-200">
             {productName}

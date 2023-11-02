@@ -1,5 +1,5 @@
+import ProductCard from "@/common/ProductCard";
 import { Product, ProductListProps } from "./models";
-import ProductCard from "./ProductCard";
 
 const ProductList = ({ products }: ProductListProps) => {
   return (

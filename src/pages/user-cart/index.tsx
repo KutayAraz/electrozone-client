@@ -56,7 +56,7 @@ const UserCart = () => {
     if (!isSignedIn) {
       dispatch(clearLocalcart());
       setProducts([]);
-      setCartTotal(0)
+      setCartTotal(0);
     } else {
       const result = await fetchData(
         `${import.meta.env.VITE_API_URL}/carts/clear-cart`,
@@ -65,9 +65,9 @@ const UserCart = () => {
         true
       );
 
-      if (result?.data === true) {
+      if (result?.data.success === true) {
         setProducts([]);
-        setCartTotal(0)
+        setCartTotal(0);
       }
     }
     dispatch(
@@ -95,7 +95,7 @@ const UserCart = () => {
   };
 
   return (
-    <div className="max-w-screen-lg space-y-8 m-[3%]">
+    <div className="max-w-screen-lg space-y-8 my-[2%] mx-[1%]">
       <h2 className="text-2xl font-semibold text-gray-700">
         Your Shopping Cart
       </h2>
@@ -113,29 +113,31 @@ const UserCart = () => {
                     {...product}
                     onQuantityChange={triggerRefetch}
                     onRemoveItem={triggerRefetch}
+                    onClearCart={triggerRefetch}
                     key={product.id}
                   />
                 ))}
               </div>
+              <div>
+                <p className="text-xl text-gray-700 font-semibold mt-4">
+                  Cart Total: ${cartTotal}
+                </p>
 
-              <p className="text-xl text-gray-700 font-semibold mt-4">
-                Cart Total: ${cartTotal}
-              </p>
-
-              <div className="flex space-x-4 mt-4">
-                <button
-                  onClick={handleCheckoutButton}
-                  className="bg-theme-blue hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200"
-                >
-                  Proceed to Checkout
-                </button>
-                <button
-                  onClick={handleClearCartButton}
-                  className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-md transition duration-200"
-                  disabled={products.length === 0}
-                >
-                  Clear Cart
-                </button>
+                <div className="flex space-x-4 mt-4">
+                  <button
+                    onClick={handleCheckoutButton}
+                    className="bg-theme-blue hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200"
+                  >
+                    Proceed to Checkout
+                  </button>
+                  <button
+                    onClick={handleClearCartButton}
+                    className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-md transition duration-200"
+                    disabled={products.length === 0}
+                  >
+                    Clear Cart
+                  </button>
+                </div>
               </div>
             </>
           )}

@@ -85,7 +85,7 @@ const Layout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="bg-theme-blue px-[2%]">
+      <div className="bg-theme-blue px-[2%] md:px-3">
         <Header />
         <NavStrip />
       </div>

@@ -28,9 +28,12 @@ import OrderStatus, {
 } from "./pages/order-status/index.tsx";
 import ContactUs from "./pages/contact-us/index.tsx";
 import UserAccount from "./pages/user-account/index.tsx";
-import UserProfile, { loader as profileLoader } from "./pages/user-profile/index.tsx";
+import UserProfile, {
+  loader as profileLoader,
+} from "./pages/user-profile/index.tsx";
 import UpdatePassword from "./pages/update-password/index.tsx";
-import Trending, {loader as trendingLoader} from "./pages/trending/index.tsx";
+import Trending, { loader as trendingLoader } from "./pages/trending/index.tsx";
+import Contact from "./pages/contact-us/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -55,9 +58,13 @@ const router = createBrowserRouter([
         element: <SignOut />,
       },
       {
+        path: "/contact",
+        element: <Contact />,
+      },
+      {
         path: "/trending/:type",
         element: <Trending />,
-        loader: trendingLoader
+        loader: trendingLoader,
       },
       {
         element: <ProtectedRoute />,
@@ -70,7 +77,7 @@ const router = createBrowserRouter([
           {
             path: "profile",
             element: <UserProfile />,
-            loader: profileLoader
+            loader: profileLoader,
           },
           {
             path: "update-password",
@@ -151,7 +158,7 @@ const router = createBrowserRouter([
       },
     ],
   },
-  
+
   {
     element: <ProtectedRoute />,
     children: [

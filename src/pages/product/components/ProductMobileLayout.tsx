@@ -33,6 +33,7 @@ const ProductMobileLayout = ({
         dotsClass="slick-dots"
         infinite={true}
         speed={500}
+        lazyLoad={"ondemand"}
         slidesToShow={1}
         slidesToScroll={1}
         className="block sm:hidden"

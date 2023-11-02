@@ -63,15 +63,17 @@ const HomePage = () => {
               children={(products: any) =>
                 // return (
                 //   <Slider {...settings} className="hidden sm:block mx-4">
-                products.map((product: any) => (
-                  <ProductCard
-                    id={product.id}
-                    productName={product.productName}
-                    thumbnail={product.thumbnail}
-                    subcategory={product.subcategory}
-                    category={product.category}
-                  />
-                ))
+                products.map((product: any) => {
+                  return (
+                    <ProductCard
+                      id={product.id}
+                      productName={product.productName}
+                      thumbnail={product.thumbnail}
+                      subcategory={product.subcategory}
+                      category={product.category}
+                    />
+                  );
+                })
               }
               // </Slider>
               // );

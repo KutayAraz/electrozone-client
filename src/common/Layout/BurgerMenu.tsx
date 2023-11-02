@@ -58,7 +58,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       </button>
 
       <CustomizableModal
-        widthClass="w-[85%]"
+        widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%]"
         heightClass="h-screen"
         topClass="top-0"
         leftClass="left-0"
@@ -306,7 +306,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       </CustomizableModal>
       {isOpen && (
         <button
-          className="absolute top-4 left-[calc(80%+40px)] w-7 h-7 z-[40]"
+          className="absolute top-4 left-[calc(80%+40px)] sm:left-[calc(60%+30px)] md:left-[calc(40%+30px)] lg:left-[calc(30%+30px)] w-7 h-7 z-[40]"
           onClick={() => setIsOpen(false)}
         >
           <CloseButton width={32} height={32} className="text-red-500"/>

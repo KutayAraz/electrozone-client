@@ -17,7 +17,7 @@ const OrderCard = ({
   return (
     <div
       key={orderId}
-      className="relative border-2 my-2 mx-[1%] rounded-lg"
+      className="relative border-2 my-2 mx-[1%] md:mx-auto rounded-lg"
     >
       <div className="bg-gray-100 p-2">
         <p>Order id: {orderId}</p>

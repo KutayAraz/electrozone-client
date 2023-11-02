@@ -1,8 +1,8 @@
 import loaderFetch from "@/utils/loader-fetch";
 import { Suspense } from "react";
 import { Await, defer, useLoaderData, useParams } from "react-router-dom";
-import ProductCard from "../category/components/ProductCard";
 import { capitalizeWords } from "@/utils/capitalize-words";
+import ProductCard from "@/common/ProductCard";
 
 const Trending = () => {
   const { products }: any = useLoaderData();
@@ -21,7 +21,8 @@ const Trending = () => {
               return resolvedProducts.map((product: any) => (
                 <ProductCard
                   key={product.id}
-                  subcategoryName={product.subcategoryName}
+                  subcategory={product.subcategory}
+                  category={product.category}
                   id={product.id}
                   thumbnail={product.thumbnail}
                   productName={product.productName}

@@ -10,11 +10,17 @@ import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
+import BasketWithBadge from "../UI/BasketWithBadge";
+import { RootState } from "@/setup/store";
 
 const Header = () => {
   const firstName = useSelector((state: any) => state.user.firstName);
   const city = useSelector((state: any) => state.user.city);
   const isSignedIn = firstName && city;
+
+  const itemCount = isSignedIn
+    ? null
+    : useSelector((state: RootState) => state.localCart.totalQuantity);
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
@@ -37,7 +43,7 @@ const Header = () => {
                   <p>{city}</p>
                 </div>
               ) : (
-                <div className="text-center"> 
+                <div className="text-center">
                   <p>Hello, </p>
                   <p>Select your location</p>
                 </div>
@@ -46,7 +52,7 @@ const Header = () => {
             <LocationPin width={28} height={28} />
           </div>
         </div>
-        <SearchBar className="hidden md:block text-black h-10 mx-[3%]" />
+        <SearchBar className="hidden md:flex text-black h-10 mx-[3%] md:flex-grow" />
         <div className="flex items-center xs:pr-2 whitespace-nowrap">
           {isSignedIn ? (
             <button
@@ -65,7 +71,7 @@ const Header = () => {
             <UserIcon width={32} height={32} />
           </button>
           <Link to={"/my-cart"}>
-            <Basket width={40} height={40} className="ml-2" />
+            <BasketWithBadge itemCount={itemCount} />
           </Link>
         </div>
       </div>
