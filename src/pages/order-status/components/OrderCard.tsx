@@ -42,7 +42,7 @@ const OrderCard = ({
   return (
     <div
       key={orderId}
-      className="border p-2 bg-white shadow-md rounded-md space-y-4 my-2 mx-[1%]"
+      className="border p-2 bg-white shadow-md rounded-md space-y-4 my-4 mx-[1%]"
     >
       <div className="space-y-1">
         <p className="text-gray-700 font-semibold underline">

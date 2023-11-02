@@ -66,7 +66,7 @@ const ProductCard = ({
   return (
     <div className="w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-2">
       <Link
-        to={`${subcategory + "/" + id}`}
+        to={`/category/${category + "/" + subcategory + "/" + id}`}
         className="border-1 border-gray-300 rounded-md shadow-md hover:bg-gray-100 h-full px-2 xs:px-4 py-2 xs:pt-4 pb-2 flex xs:flex-col xs:justify-between"
       >
         <div className="flex-1 px-2 xs:px-0 ">

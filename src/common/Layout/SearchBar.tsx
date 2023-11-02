@@ -25,7 +25,7 @@ const SearchBar = ({ className }: { className?: string }) => {
         onClick={handleSearch}
         className="absolute inset-y-0 right-0 flex items-center"
       >
-        <SearchIcon className="w-auto h-full bg-theme-orange rounded-md" />
+        <SearchIcon className="w-auto h-full bg-theme-orange rounded-md hover:bg-orange-400" />
       </button>
     </div>
   );

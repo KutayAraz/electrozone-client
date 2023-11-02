@@ -126,12 +126,12 @@ const Product = ({
     <div className="mt-4 max-w-screen-xl mx-[2%] xl:mx-auto">
       <div className="flex flex-col text-center">
         <div className="hidden sm:block text-left">
-          <Link to={`/${category.replace(/-/g, "_")}`} className="underline">
+          <Link to={`/category/${category.replace(/-/g, "_")}`} className="underline">
             {modifiedCategory}
           </Link>
           <span>&gt;</span>
           <Link
-            to={`/${category.replace(/-/g, "_")}/${subcategory.replace(
+            to={`/category/${category.replace(/-/g, "_")}/${subcategory.replace(
               /-/g,
               "_"
             )}`}

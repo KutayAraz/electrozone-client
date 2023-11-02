@@ -106,11 +106,11 @@ const ProductDesktopLayout = ({
         <button onClick={prevImage}>
           <NavigationButton className="w-6 h-16 rotate-180 mr-2" />
         </button>
-        <div className="flex items-center justify-center h-[640px] max-w-[640px] border-1 border-gray-300 rounded-md">
+        <div className="flex flex-grow items-center justify-center h-[640px] max-w-[640px] border-1 border-gray-300 rounded-md">
           <img
             src={hoveredImage ? hoveredImage : selectedImage}
             alt={`image for ${productName}`}
-            className="w-auto h-auto rounded-[6px] object-contain "
+            className="w-auto h-auto rounded-[6px] object-contain max-h-[640px]"
           />
         </div>
         <button onClick={nextImage}>

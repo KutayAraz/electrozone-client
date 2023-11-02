@@ -4,11 +4,11 @@ import {
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import ProductList from "./components/ProductList";
 import { Suspense, useEffect, useState } from "react";
 import { Box, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import loaderFetch from "@/utils/loader-fetch";
+import ProductList from "./components/ProductList";
 
 const fetchProducts = async (subcategory: string, sort: string) => {
   const subcategoryUrl = subcategory.replace(/-/g, "_");
@@ -40,8 +40,8 @@ const SubcategoryPage = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center px-2 py-4">
-        <h3 className="text-xl font-semibold text-gray-600">
+      <div className="flex justify-between items-center px-[1%] py-4">
+        <h3 className="text-xl font-semibold text-gray-600 ">
           {subcategory ? subcategory.toUpperCase() : "Products"}
         </h3>
         <Box sx={{ minWidth: 120, maxHeight: "80px" }}>

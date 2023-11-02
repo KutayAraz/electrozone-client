@@ -9,21 +9,23 @@ import {
 const OrderStatus = () => {
   const { order }: any = useLoaderData();
   return (
-    <Suspense fallback={<p>Loading Order...</p>}>
-      <Await
-        resolve={order}
-        children={(resolvedOrder) => (
-          <OrderCard
-            orderId={resolvedOrder.orderId}
-            orderTotal={resolvedOrder.orderTotal}
-            orderDate={resolvedOrder.orderDate}
-            user={resolvedOrder.user}
-            orderItems={resolvedOrder.orderItems}
-            isCancellable={resolvedOrder.isCancellable}
-          />
-        )}
-      />
-    </Suspense>
+    <div className="max-w-screen-lg mx-auto mt-2">
+      <Suspense fallback={<p>Loading Order...</p>}>
+        <Await
+          resolve={order}
+          children={(resolvedOrder) => (
+            <OrderCard
+              orderId={resolvedOrder.orderId}
+              orderTotal={resolvedOrder.orderTotal}
+              orderDate={resolvedOrder.orderDate}
+              user={resolvedOrder.user}
+              orderItems={resolvedOrder.orderItems}
+              isCancellable={resolvedOrder.isCancellable}
+            />
+          )}
+        />
+      </Suspense>
+    </div>
   );
 };
 

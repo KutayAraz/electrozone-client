@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import ProductCard from "../subcategory/components/ProductCard";
 import useFetch from "@/common/Hooks/use-fetch";
 import { ProductType } from "./types";
+import ProductCard from "@/common/ProductCard";
 
 const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
@@ -31,8 +31,8 @@ const SearchResultsPage = () => {
 
   return (
     <div>
-      <h1>Search Results for "{query}"</h1>
-      <>
+      <h1 className="mx-[1%] my-2">Search Results for "{query}"</h1>
+      <div className="flex flex-wrap mx-auto px-2">
         {results.map((product: ProductType) => (
           <ProductCard
             id={product.id}
@@ -46,7 +46,7 @@ const SearchResultsPage = () => {
             category={product.category}
           />
         ))}
-      </>
+      </div>
     </div>
   );
 };

@@ -64,10 +64,10 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
         direction="center"
         transitionType="slide"
         transitionDuration={300}
-        widthClass="w-[90%]"
-        heightClass="h-72"
-        topClass="top-72"
-        leftClass="left-[5%]"
+        widthClass="w-[90%] md:w-[50%] lg:w-[30%]"
+        heightClass="h-[72]"
+        topClass="top-[35%]"
+        leftClass="left-[5%] md:left-[25%] lg:left-[35%]"
         isOpen={reviewForm}
         onClose={() => setReviewForm(false)}
         className="rounded-xl noScrollbar"
