@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 const Categories = () => {
   return (
     <>
-      <h2 className="font-semibold text-xl text-gray-700 mt-2">
+      <h2 className="font-semibold text-xl text-gray-700 mt-2 ">
         Shop by Category
       </h2>
-      <div className="flex flex-wrap mx-auto">
+      <div className="flex flex-wrap mx-[2%] xl:mx-auto">
         <Link
           to={"/category/tvs-and-soundbars"}
           className="w-1/2 md:w-1/4 p-2 flex flex-col justify-between"

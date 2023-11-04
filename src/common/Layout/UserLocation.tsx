@@ -24,7 +24,7 @@ const UserLocation = () => {
   };
 
   return (
-    <div className="xs:hidden bg-[#3a4791] py-[5px]">
+    <div className="sm:hidden bg-[#3a4791] py-[5px]">
       <button
         onClick={() => setIsModalOpen(true)}
         className="text-white ml-[2.5%] flex"

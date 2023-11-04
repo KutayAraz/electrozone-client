@@ -21,7 +21,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
   const location = useLocation();
   const [activeView, setActiveView] = useState("main");
   const city = useSelector((state: RootState) => state.user.city);
-  const firstName = useSelector((state: RootState) => state.user.firstName);  
+  const firstName = useSelector((state: RootState) => state.user.firstName);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   useEffect(() => {
@@ -67,52 +67,59 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
         transitionDuration={300}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        className="overflow-x-hidden" 
+        className="overflow-x-hidden"
       >
-        <div className="bg-theme-blue p-4 shadow-md text-white w-full flex items-center">
+        <div className="bg-theme-blue shadow-md text-white w-full flex items-center justify-between">
           {isSignedIn ? (
-            <Link to={"/my-account"} className="text-3xl flex-grow">
-              Hello, {firstName}
+            <Link
+              to={"/my-account"}
+              className="flex items-center justify-between w-full p-4"
+            >
+              <span className="text-3xl">Hello, {firstName}</span>
+              <UserIcon className="h-8 w-auto" />
             </Link>
           ) : (
-            <Link to={"/sign-in"} className="text-3xl flex-grow">
-              Hello, Sign In
+            <Link
+              to={"/sign-in"}
+              className="flex items-center justify-between w-full p-4"
+            >
+              <span className="text-3xl">Hello, Sign In</span>
+              <UserIcon className="h-8 w-auto" />
             </Link>
           )}
-
-          <UserIcon className="h-8 w-auto ml-auto" />
         </div>
+
         <div className="flex flex-col text-gray-700 justify-between relative">
           <div
-            className={`transition-transform duration-300 p-4 space-y-4 ease-in-out ${
+            className={`transition-transform duration-300 ease-in-out ${
               activeView !== "main" ? "-translate-x-full" : ""
             }`}
           >
-            <div className="flex flex-col space-y-4">
-              <h4 className="text-2xl font-semibold">Trending</h4>
+            <div className="flex flex-col ">
+              <label className="text-2xl font-semibold px-4 py-4">Trending</label>
               <Divider />
               <Link
                 to={"/trending/best-sellers"}
-                className="text-xl hover:bg-gray-100"
+                className="text-xl hover:bg-gray-100 px-4 py-3"
               >
                 Best Sellers
               </Link>
               <Link
                 to={"/category/most-wishlisted"}
-                className="text-xl hover:bg-gray-100"
+                className="text-xl hover:bg-gray-100 px-4 py-3"
               >
                 Most Wishlisted
               </Link>
               <Link
                 to={"/category/best-rated"}
-                className="text-xl hover:bg-gray-100"
+                className="text-xl hover:bg-gray-100 px-4 py-3"
               >
                 Best Rated
               </Link>
             </div>
             <Divider />
-            <div>
-              <Link to={"/category"} className="text-2xl font-semibold">
+            <div className="px-4 py-4">
+              <Link to={"/category"} className="text-2xl font-semibold ">
                 Shop By Department
               </Link>
             </div>
@@ -121,60 +128,58 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
               onClick={() => setActiveView("tvsAndSoundbars")}
               className="hover:bg-gray-100 w-full text-left flex"
             >
-              <h4 className="text-xl">TVs & Soundbars</h4>
-              <Arrow className="h-4 w-auto ml-auto fill-white my-auto" />
+              <h4 className="text-xl px-4 py-4">TVs & Soundbars</h4>
+              <Arrow className="h-4 w-auto ml-auto pr-3 fill-white my-auto" />
             </button>
             <button
               onClick={() => setActiveView("pcAndLaptops")}
               className="hover:bg-gray-100 w-full text-left flex"
             >
-              <h4 className="text-xl">Computers & Accessories</h4>
-              <Arrow className="h-4 w-auto ml-auto fill-white my-auto" />
+              <h4 className="text-xl px-4 py-4">Computers & Accessories</h4>
+              <Arrow className="h-4 w-auto ml-auto pr-3 fill-white my-auto" />
             </button>
             <button
               onClick={() => setActiveView("smartphonesAndAccessories")}
               className="hover:bg-gray-100 w-full text-left flex"
             >
-              <h4 className="text-xl">Smartphones & Accessories</h4>
-              <Arrow className="h-4 w-auto ml-auto fill-white my-auto" />
+              <h4 className="text-xl px-4 py-4">Smartphones & Accessories</h4>
+              <Arrow className="h-4 w-auto ml-auto pr-3 fill-white my-auto" />
             </button>
             <button
               onClick={() => setActiveView("printersAndInk")}
               className="hover:bg-gray-100 w-full text-left flex"
             >
-              <h4 className="text-xl">Printers & Ink</h4>
-              <Arrow className="h-4 w-auto ml-auto fill-white my-auto" />
+              <h4 className="text-xl px-4 py-4">Printers & Ink</h4>
+              <Arrow className="h-4 w-auto ml-auto pr-3 fill-white my-auto" />
             </button>
             <Divider />
-            <div className="flex flex-col space-y-4">
-              <h4 className="text-2xl font-semibold">Help & Settings</h4>
+            <div className="flex flex-col">
+              <label className="text-2xl font-semibold px-4 py-4">Help & Settings</label>
               <Divider />
               {isSignedIn && (
-                <Link to={"/my-account"} className="text-xl hover:bg-gray-100">
+                <Link to={"/my-account"} className="text-xl px-4 py-4 hover:bg-gray-100">
                   Your Account
                 </Link>
               )}
               {city && <p className="text-xl">Delivery Location: {city}</p>}
-              <Link to={"/contact"} className="text-xl hover:bg-gray-100">
+              <Link to={"/contact"} className="text-xl px-4 py-4 hover:bg-gray-100">
                 Contact
               </Link>
 
-              <div className="text-xl">
                 {isSignedIn ? (
-                  <Link to={"/sign-out"} className="hover:bg-gray-100">
+                  <Link to={"/sign-out"} className="text-xl hover:bg-gray-100 px-4 py-4">
                     Sign Out <ExitIcon className="w-6 h-6 mr-4 inline" />
                   </Link>
                 ) : (
-                  <Link to={"/sign-in"} className="hover:bg-gray-100">
+                  <Link to={"/sign-in"} className="text-xl hover:bg-gray-100 px-4 py-4">
                     Sign In
                   </Link>
                 )}
-              </div>
             </div>
           </div>
 
           <div
-            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full p-4 space-y-4 flex flex-col ${
+            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${
               activeView !== "tvsAndSoundbars"
                 ? "translate-x-full overflow-hidden "
                 : ""
@@ -182,7 +187,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-2xl hover:bg-gray-100 w-full"
+              className="flex items-center mr-auto text-2xl hover:bg-gray-100 w-full py-4 px-3"
             >
               <BackArrow className="h-6 w-auto inline my-auto" />
               Main Menu
@@ -190,13 +195,13 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             <Divider />
             <Link
               to={"/category/tvs-and-soundbars/tvs"}
-              className="text-xl hover:bg-gray-100"
+              className="text-xl hover:bg-gray-100 py-4 px-3"
             >
               TVs
             </Link>
             <Link
               to={"/category/tvs-and-soundbars/soundbars"}
-              className="text-xl hover:bg-gray-100"
+              className="text-xl hover:bg-gray-100 py-4 px-3"
             >
               Soundbars
             </Link>
@@ -309,8 +314,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           className="absolute top-4 left-[calc(80%+40px)] sm:left-[calc(60%+30px)] md:left-[calc(40%+30px)] lg:left-[calc(30%+30px)] w-7 h-7 z-[40]"
           onClick={() => setIsOpen(false)}
         >
-          <CloseButton width={32} height={32} className="text-red-500"/>
-          
+          <CloseButton width={32} height={32} className="text-red-500" />
         </button>
       )}
       {children}

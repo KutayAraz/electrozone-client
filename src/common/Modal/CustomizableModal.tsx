@@ -29,6 +29,25 @@ export const CustomizableModal = ({
   useEffect(() => {
     onClose();
   }, [location]);
+
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    // Attach the event listener
+    if (isOpen) {
+      window.addEventListener('keydown', handleEscapeKey);
+    }
+
+    // Detach the event listener on cleanup
+    return () => {
+      window.removeEventListener('keydown', handleEscapeKey);
+    };
+  }, [isOpen, onClose]);
+
   
   useEffect(() => {
     // Disable scrolling on the main page when the modal is open

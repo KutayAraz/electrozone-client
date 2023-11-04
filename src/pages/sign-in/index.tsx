@@ -20,9 +20,6 @@ const SignInForm = () => {
   const redirectPath = useSelector((state: RootState) => state.redirect.path);
   const from = location.state?.from || redirectPath || "/";
 
-  console.log("redirect", redirectPath);
-  console.log("from", location.state?.from);
-
   const errRef = useRef<any>();
   const { fetchData } = useFetch();
   const [formStatus, setFormStatus] = useState("");

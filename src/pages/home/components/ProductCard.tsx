@@ -9,17 +9,17 @@ const ProductCard = ({
   category,
 }: ProductCard) => {
   return (
-    <div>
+    <div className="relative mx-3">
       <Link
         to={`/category/${category}/${subcategory}/${id}`}
-        className="flex flex-col bg-white items-center max-w-screen-sm p-2 hover:underline border-2 rounded-md shadow-sm"
+        className="flex flex-col bg-white items-center p-2 hover:underline border-2 rounded-md shadow-sm"
         key={id}
       >
-        <div className="w-52 h-52 overflow-hidden rounded-md">
+        <div className="rounded-md h-[200px]">
           <img
             src={thumbnail}
             alt={`Image for ${productName}`}
-            className="w-full h-full object-contain object-center"
+            className="w-full h-full object-contain"
           />
         </div>
         <Divider className="text-gray-700"/>
