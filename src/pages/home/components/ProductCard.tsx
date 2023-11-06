@@ -9,13 +9,13 @@ const ProductCard = ({
   category,
 }: ProductCard) => {
   return (
-    <div className="relative mx-3">
+    <div className="relative mx-[4px] xs:mx-2 sm:mx-3">
       <Link
         to={`/category/${category}/${subcategory}/${id}`}
         className="flex flex-col bg-white items-center p-2 hover:underline border-2 rounded-md shadow-sm"
         key={id}
       >
-        <div className="rounded-md h-[200px]">
+        <div className="rounded-md h-[80px] sm:h-[200px]">
           <img
             src={thumbnail}
             alt={`Image for ${productName}`}

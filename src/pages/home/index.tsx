@@ -9,10 +9,7 @@ import Categories from "./components/Categories";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-
-const Next = ({ slideCount, currentSlide }: any) => {
-  return <PrevArrow className="w-10 h-10" />;
-};
+import { useMediaQuery } from "@mui/material";
 
 const HomePage = () => {
   const {
@@ -21,13 +18,17 @@ const HomePage = () => {
     bestSellingProducts,
   }: any = useLoaderData();
 
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
   const settings = {
     infinite: false,
     speed: 700,
     slidesToShow: 5,
     slidesToScroll: 5,
     initialSlide: 0,
-    nextArrow: <NextArrow className="w-0 h-0 mt-10" />,
+    draggable: true,
+    swipe: true,
+    nextArrow: <NextArrow className="w-10 h-10" />,
     prevArrow: <PrevArrow className="w-10 h-10" />,
     responsive: [
       {
@@ -44,6 +45,13 @@ const HomePage = () => {
           slidesToScroll: 3,
         },
       },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
     ],
   };
 
@@ -54,13 +62,14 @@ const HomePage = () => {
         <h2 className="text-xl font-semibold mt-6 mb-3 text-gray-700">
           Best Selling Products
         </h2>
-        <Suspense fallback={<p>Loading..</p>}>
+        <Suspense fallback={<p>Loading...</p>}>
           <Await
             resolve={bestSellingProducts}
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                className="hidden sm:block max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
+                lazyLoad= "ondemand"
+                className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
               >
                 {products.map((product: ProductCard) => (
                   <ProductCard
@@ -86,7 +95,8 @@ const HomePage = () => {
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                className="hidden sm:block max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
+                lazyLoad= "ondemand"
+                className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
               >
                 {products.map((product: ProductCard) => (
                   <ProductCard
@@ -112,7 +122,8 @@ const HomePage = () => {
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                className="hidden sm:block max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
+                lazyLoad= "ondemand"
+                className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
               >
                 {products.map((product: ProductCard) => (
                   <ProductCard

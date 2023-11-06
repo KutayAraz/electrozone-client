@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import useFetch from "@/common/Hooks/use-fetch";
 import { useDispatch } from "react-redux";
 import { displayAlert } from "@/setup/slices/alert-slice";
+import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
 
 interface ReviewFormProps {
   canCurrentUserReview: boolean;
@@ -72,8 +73,11 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
         onClose={() => setReviewForm(false)}
         className="rounded-xl noScrollbar"
       >
+        <CloseButton
+          className="absolute top-4 right-4 cursor-pointer w-6 h-6 stroke-gray-500"
+          onClick={() => setReviewForm(false)}
+        />
         <div className="p-4">
-          <button className="absolute top-2 right-3" onClick={() => setReviewForm(false)}>X</button>
           <Rating
             name="user-rating"
             value={ratingValue}

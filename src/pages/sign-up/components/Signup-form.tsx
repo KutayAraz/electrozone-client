@@ -1,118 +1,74 @@
 import useFetch from "@/common/Hooks/use-fetch";
-import useInput from "@/common/Hooks/use-input";
 import { displayAlert } from "@/setup/slices/alert-slice";
-import { setAccessToken } from "@/setup/slices/auth-slice";
-import { setCredentials } from "@/setup/slices/user-slice";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
 
-const isNotEmpty = (value: string) => value.trim() !== "";
-const isEmail = (value: string) => value.includes("@");
-const isPassword = (value: string) => value.length > 5;
+type SignUpFormInputs = {
+  email: string;
+  password: string;
+  retypedPassword: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+};
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters long"),
+  retypedPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("Retyped password is required"),
+  firstName: yup.string().required("First name is required"),
+  lastName: yup.string().required("Last name is required"),
+  address: yup.string().required("Address name is required"),
+  city: yup.string().required("City name is required"),
+});
 
 const SignUpForm = () => {
   const dispatch = useDispatch<any>();
   const { fetchData } = useFetch();
+  const navigate = useNavigate();
   const [isSending, setIsSending] = useState(false);
-  const [formStatus, setFormStatus] = useState("");
-  const {
-    value: emailValue,
-    isValid: emailIsValid,
-    hasError: emailHasError,
-    valueChangeHandler: emailChangeHandler,
-    inputBlurHandler: emailBlurHandler,
-  } = useInput(isEmail);
 
   const {
-    value: passwordValue,
-    isValid: passwordIsValid,
-    hasError: passwordHasError,
-    valueChangeHandler: passwordChangeHandler,
-    inputBlurHandler: passwordBlurHandler,
-  } = useInput(isPassword);
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SignUpFormInputs>({
+    resolver: yupResolver<SignUpFormInputs>(schema),
+    mode: "onBlur",
+  });
 
-  const {
-    value: retypedPasswordValue,
-    isValid: retypedPasswordIsValid,
-    hasError: retypedPasswordHasError,
-    valueChangeHandler: retypedPasswordChangeHandler,
-    inputBlurHandler: retypedPasswordBlurHandler,
-  } = useInput(isPassword);
-  const {
-    value: firstNameValue,
-    isValid: firstNameIsValid,
-    hasError: firstNameHasError,
-    valueChangeHandler: firstNameChangeHandler,
-    inputBlurHandler: firstNameBlurHandler,
-  } = useInput(isNotEmpty);
-  const {
-    value: lastNameValue,
-    isValid: lastNameIsValid,
-    hasError: lastNameHasError,
-    valueChangeHandler: lastNameChangeHandler,
-    inputBlurHandler: lastNameBlurHandler,
-  } = useInput(isNotEmpty);
-
-  const {
-    value: addressValue,
-    isValid: addressIsValid,
-    hasError: addressHasError,
-    valueChangeHandler: topicChangeHandler,
-    inputBlurHandler: topicBlurHandler,
-  } = useInput(isNotEmpty);
-  const {
-    value: cityValue,
-    isValid: cityIsValid,
-    hasError: cityHasError,
-    valueChangeHandler: cityChangeHandler,
-    inputBlurHandler: cityBlurHandler,
-  } = useInput(isNotEmpty);
-
-  let formIsValid = false;
-
-  if (
-    emailIsValid &&
-    passwordIsValid &&
-    retypedPasswordIsValid &&
-    firstNameIsValid &&
-    lastNameIsValid &&
-    addressIsValid &&
-    cityIsValid &&
-    passwordValue === retypedPasswordValue
-  ) {
-    formIsValid = true;
-  }
-
-  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const SignUpRequest = async (data: SignUpFormInputs) => {
     setIsSending(true);
-
-    if (!formIsValid) {
-      setIsSending(false);
-      return;
-    }
 
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/auth/signup`,
       "POST",
       {
-        email: emailValue,
-        password: passwordValue,
-        retypedPassword: retypedPasswordValue,
-        firstName: firstNameValue,
-        lastName: lastNameValue,
-        address: addressValue,
-        city: cityValue,
+        email: data.email,
+        password: data.password,
+        retypedPassword: data.retypedPassword,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        address: data.address,
+        city: data.city,
       }
     );
 
     if (result?.response.ok) {
-      dispatch(setAccessToken(result.data.access_token));
-      dispatch(
-        setCredentials({
-          ...result.data,
-        })
-      );
       dispatch(
         displayAlert({
           type: "success",
@@ -120,120 +76,107 @@ const SignUpForm = () => {
           autoHide: true,
         })
       );
-    } else {
-      setFormStatus("Please provide valid information.");
+      navigate("/sign-in");
     }
     setIsSending(false);
   };
 
-  const inputClasses = "border-2 border-[#13193F] rounded-md";
-  const inputErrorClasses =
-    "border-2 border-[#13193F] rounded-md border-red-700";
-
-  const emailClasses = emailHasError ? inputErrorClasses : inputClasses;
-
-  const passwordClasses = passwordHasError ? inputErrorClasses : inputClasses;
-  const retypedPasswordClasses = retypedPasswordHasError
-    ? inputErrorClasses
-    : inputClasses;
-  const firstNameClasses = firstNameHasError ? inputErrorClasses : inputClasses;
-  const lastNameClasses = lastNameHasError ? inputErrorClasses : inputClasses;
-  const addressClasses = addressHasError ? inputErrorClasses : inputClasses;
-  const cityClasses = cityHasError ? inputErrorClasses : inputClasses;
-
-  const errorText = (
-    <p className="text-red-700 text-sm">This field is required.</p>
-  );
+  const inputClasses =
+    "border-2 border-gray-300 rounded-md px-4 py-2 mt-1 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition duration-300";
+  const labelClasses = "text-gray-600 mt-2";
+  const errorMessageClasses = "text-red-500 text-sm mt-1";
 
   return (
-    <form action="POST" onSubmit={submitHandler}>
-      <div className="flex flex-col max-w-sm text-center mx-auto font-[500] my-2">
-        <h4 className="text-lg">Account Information:</h4>
-        <label htmlFor="email">Email*</label>
-        <input
-          type="email"
-          id="email"
-          onChange={emailChangeHandler}
-          onBlur={emailBlurHandler}
-          required
-          className={emailClasses}
-        />
-        {emailHasError && errorText}
-        <label htmlFor="password">Password*</label>
-        <input
-          type="password"
-          id="password"
-          onChange={passwordChangeHandler}
-          onBlur={passwordBlurHandler}
-          required
-          className={passwordClasses}
-        />
-        {emailHasError && errorText}
-        <label htmlFor="retypedPassword">Confirm Password*</label>
-        <input
-          type="password"
-          id="retypedPassword"
-          onChange={retypedPasswordChangeHandler}
-          onBlur={retypedPasswordBlurHandler}
-          required
-          className={retypedPasswordClasses}
-        />
-        <p>Passwords must be at least 6 characters.</p>
-        {emailHasError && errorText}
-        <h4 className="mt-3 text-lg">Personal Information:</h4>
-        <label htmlFor="firstName">First name*</label>
-        <input
-          type="text"
-          id="firstName"
-          value={firstNameValue}
-          name="firstName"
-          onChange={firstNameChangeHandler}
-          onBlur={firstNameBlurHandler}
-          required
-          className={firstNameClasses}
-        />
-        {firstNameHasError && errorText}
-        <label htmlFor="lastName">Last name*</label>
-        <input
-          type="text"
-          id="lastName"
-          value={lastNameValue}
-          onChange={lastNameChangeHandler}
-          onBlur={lastNameBlurHandler}
-          required
-          className={lastNameClasses}
-        />
-        {lastNameHasError && errorText}
+    <form action="POST" onSubmit={handleSubmit(SignUpRequest)}>
+      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+        <h4 className="text-lg font-semibold text-gray-800">
+          Account Information:
+        </h4>
 
-        <label htmlFor="address">Address*</label>
+        <label htmlFor="email" className={labelClasses}>
+          Email*
+        </label>
+        <input {...register("email")} type="email" className={inputClasses} />
+        {errors.email && (
+          <p className={errorMessageClasses}>{errors.email.message}</p>
+        )}
+
+        <label htmlFor="password" className={labelClasses}>
+          Password*
+        </label>
+        <p className={"text-gray-600 text-sm"}>
+          Passwords must be at least 6 characters long.
+        </p>
         <input
+          {...register("password")}
+          type="password"
+          className={inputClasses}
+        />
+        {errors.password && (
+          <p className={errorMessageClasses}>{errors.password.message}</p>
+        )}
+
+        <label htmlFor="retypedPassword" className={labelClasses}>
+          Confirm Password*
+        </label>
+        <input
+          {...register("retypedPassword")}
+          type="password"
+          className={inputClasses}
+        />
+        {errors.retypedPassword && (
+          <p className={errorMessageClasses}>
+            {errors.retypedPassword.message}
+          </p>
+        )}
+
+        <h4 className="text-lg font-semibold mt-4 text-gray-800">
+          Personal Information:
+        </h4>
+        <label htmlFor="firstName" className={labelClasses}>
+          First name*
+        </label>
+        <input
+          {...register("firstName")}
           type="text"
-          id="address"
-          value={addressValue}
-          className={addressClasses}
-          onChange={topicChangeHandler}
-          onBlur={topicBlurHandler}
+          className={inputClasses}
         />
-        {addressHasError && errorText}
-        <label htmlFor="city">City/State*</label>
-        <input
-          type="city"
-          id="city"
-          value={cityValue}
-          className={cityClasses}
-          onChange={cityChangeHandler}
-          onBlur={cityBlurHandler}
-        />
-        {cityHasError && errorText}
-        <p className="font-semibold">{formStatus}</p>
+        {errors.firstName && (
+          <p className={errorMessageClasses}>{errors.firstName.message}</p>
+        )}
+
+        <label htmlFor="lastName" className={labelClasses}>
+          Last name*
+        </label>
+        <input {...register("lastName")} type="text" className={inputClasses} />
+        {errors.lastName && (
+          <p className={errorMessageClasses}>{errors.lastName.message}</p>
+        )}
+
+        <label htmlFor="address" className={labelClasses}>
+          Address*
+        </label>
+        <input {...register("address")} type="text" className={inputClasses} />
+        {errors.address && (
+          <p className={errorMessageClasses}>{errors.address.message}</p>
+        )}
+
+        <label htmlFor="city" className={labelClasses}>
+          City/State*
+        </label>
+        <input {...register("city")} type="text" className={inputClasses} />
+        {errors.city && (
+          <p className={errorMessageClasses}>{errors.city.message}</p>
+        )}
+
         <button
           type="submit"
-          className={`rounded-lg border-2 my-2 min-w-[80%] mx-auto bg-[#13193F] text-white p-2 ${
-            !formIsValid ? "bg-gray-500 " : "bg-theme-blue hover:bg-blue-600"
-          }`}
-          disabled={!formIsValid}
+          className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
+            isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
+          } transition duration-300 ease-in-out`}
+          disabled={!isValid}
         >
-          {isSending ? "Creating a new user.." : "Sign up!"}
+          {isSending ? "Creating your account..." : "Sign Up"}
         </button>
       </div>
     </form>

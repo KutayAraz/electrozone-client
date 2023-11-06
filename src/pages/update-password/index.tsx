@@ -1,9 +1,9 @@
 import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
-import { selectAccessToken } from "@/setup/slices/auth-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 
 type FormInputs = {
@@ -40,6 +40,7 @@ const UpdatePassword = () => {
 
   const { fetchData } = useFetch();
   const dispatch = useDispatch<any>();
+  const [isSending, setIsSending] = useState(false);
 
   const handlePasswordChange = async (data: FormInputs) => {
     const result = await fetchData(
@@ -66,61 +67,70 @@ const UpdatePassword = () => {
     }
   };
 
+  const inputClasses =
+    "border-2 border-gray-300 rounded-md px-4 py-2 mt-1 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition duration-300";
+  const labelClasses = "text-gray-600 mt-2";
+  const errorMessageClasses = "text-red-500 text-sm mt-1";
+
   return (
-    <form
-      className="flex flex-col mx-3 xs:mx-auto text-center justify-items-center mt-2 font-[500]"
-      onSubmit={handleSubmit(handlePasswordChange)}
-    >
-      <label
-        htmlFor="currentPassword"
-        className="text-lg font-[500] text-theme-blue"
-      >
-        Current Password:
-      </label>
-      <input
-        {...register("currentPassword")}
-        type="password"
-        className="border-2 border-theme-blue rounded-lg pl-2 text-xl"
-      />
-      {errors.currentPassword && <p>{errors.currentPassword.message}</p>}
+    <form onSubmit={handleSubmit(handlePasswordChange)}>
+      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+        <h4 className="text-lg font-semibold text-gray-800">
+          Account Information:
+        </h4>
 
-      <label
-        htmlFor="newPassword"
-        className="text-lg font-[500] text-theme-blue"
-      >
-        New Password:
-      </label>
-      <input
-        {...register("newPassword")}
-        type="password"
-        className="border-2 border-theme-blue rounded-lg pl-2 text-xl"
-      />
-      {errors.newPassword && <p>{errors.newPassword.message}</p>}
+        <label htmlFor="currentPassword" className={labelClasses}>
+          Current Password*
+        </label>
+        <input
+          {...register("currentPassword")}
+          type="password"
+          className={inputClasses}
+        />
+        {errors.currentPassword && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.currentPassword.message}
+          </p>
+        )}
 
-      <label
-        htmlFor="retypedNewPassword"
-        className="text-lg font-[500] text-theme-blue"
-      >
-        Confirm New Password:
-      </label>
-      <input
-        {...register("retypedNewPassword")}
-        type="password"
-        className="border-2 border-theme-blue rounded-lg pl-2 text-xl"
-      />
-      {errors.retypedNewPassword && (
-        <p className="text-red-600 my-1">{errors.retypedNewPassword.message}</p>
-      )}
+        <label htmlFor="newPassword" className={labelClasses}>
+          New Password*
+        </label>
+        <input
+          {...register("newPassword")}
+          type="password"
+          className={inputClasses}
+        />
+        {errors.newPassword && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.newPassword.message}
+          </p>
+        )}
+
+        <label htmlFor="currentPassword" className={labelClasses}>
+          Confirm New Password*
+        </label>
+        <input
+          {...register("currentPassword")}
+          type="password"
+          className={inputClasses}
+        />
+        {errors.currentPassword && (
+          <p className="text-red-500 text-sm mt-1">
+            {errors.currentPassword.message}
+          </p>
+        )}
 
       <button
         type="submit"
-        className={`${
-          !isValid ? "bg-gray-500" : "bg-theme-blue hover:bg-[#A34393]"
-        }  rounded-lg font-[500] text-white min-w-[50%] my-2 mx-auto px-4 py-2`}
+        className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
+          isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
+        } transition duration-300 ease-in-out`}
         disabled={!isValid}
       >
-        Confirm
+        {isSending ? "Changing your password..." : "Change password"}
       </button>
+      </div>
     </form>
   );
 };

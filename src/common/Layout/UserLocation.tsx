@@ -12,9 +12,13 @@ const UserLocation = () => {
   const dispatch = useDispatch();
   const locationInput = useRef<HTMLInputElement>(null);
   const userLocation = useSelector((state: RootState) => state.user.city);
+  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   const handleLocation = () => {
-    if (!locationInput.current || locationInput.current.value.trim().length < 2) {
+    if (
+      !locationInput.current ||
+      locationInput.current.value.trim().length < 2
+    ) {
       return;
     }
     dispatch(
@@ -25,15 +29,23 @@ const UserLocation = () => {
 
   return (
     <div className="sm:hidden bg-[#3a4791] py-[5px]">
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="text-white ml-[2.5%] flex"
-      >
-        <LocationIcon className="w-4 h-4 stroke-white my-auto mr-1" />
-        {userLocation
-          ? `Currently delivering to ${userLocation}`
-          : "Select your location"}
-      </button>
+      {isSignedIn ? (
+        <label
+          htmlFor="userLocation"
+          className="text-white pl-[2%] flex w-full"
+        >
+          Currently delivering to {userLocation}
+        </label>
+      ) : (
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="text-white pl-[2%] flex w-full"
+        >
+          <LocationIcon className="w-4 h-4 stroke-white my-auto " />
+          Select your location
+        </button>
+      )}
+
       <CustomizableModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -46,23 +58,19 @@ const UserLocation = () => {
         transitionDuration={300}
       >
         <CloseButton
-          className="absolute top-4 right-4 bg-transparent w-6 h-6"
+          className="absolute top-4 right-4 cursor-pointer w-6 h-6 stroke-gray-500"
           onClick={() => setIsModalOpen(false)}
-        >
-          close
-        </CloseButton>
+        />
         <div className="flex flex-col text-center mx-auto my-6 w-[80%]">
-          <h2 className="text-xl font-[500] mt-4 mb-2">
-            Choose your location
-          </h2>
+          <h2 className="text-xl font-[500] mt-4 mb-2">Choose your location</h2>
           <Link
             to="/sign-in"
-            className="bg-[#febd69] rounded-lg font-[500] py-[4px] my-1"
+            className="bg-[#febd69] rounded-lg font-[500] py-2 my-1"
           >
             Sign in to see your address
           </Link>
           <p className="text-center my-2">or</p>
-          <label className="font-[500] mb-2">
+          <label className="font-[500] mb-1 text-xl">
             {userLocation ? "Change your city" : "Enter your city"}
           </label>
           <input
@@ -73,7 +81,7 @@ const UserLocation = () => {
           <button
             onClick={handleLocation}
             type="submit"
-            className="bg-[#febd69] rounded-lg w-[50%] mx-auto my-3 py-[4px] font-[500]"
+            className="bg-[#febd69] rounded-lg w-[50%] mx-auto my-3 py-2 font-[500]"
           >
             Apply
           </button>

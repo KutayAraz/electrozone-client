@@ -6,12 +6,31 @@ import { CheckoutIntent } from "@/setup/slices/models";
 import { clearRedirectPath } from "@/setup/slices/redirect-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
 import { RootState, store } from "@/setup/store";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
+import * as yup from "yup";
 
-const isEmail = (value: string) => value.includes("@");
-const isPassword = (value: string) => value.length > 5;
+type SignInFormInputs = {
+  email: string;
+  password: string;
+};
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Invalid email address")
+    .required("Please enter your email address"),
+  password: yup
+    .string()
+    .required("Please enter your password")
+    .min(
+      6,
+      "Passwords are least 6 characters long. Please enter a valid password"
+    ),
+});
 
 const SignInForm = () => {
   const dispatch = useDispatch();
@@ -22,27 +41,16 @@ const SignInForm = () => {
 
   const errRef = useRef<any>();
   const { fetchData } = useFetch();
-  const [formStatus, setFormStatus] = useState("");
-  const {
-    value: emailValue,
-    isValid: emailIsValid,
-    hasError: emailHasError,
-    valueChangeHandler: emailChangeHandler,
-    inputBlurHandler: emailBlurHandler,
-  } = useInput(isEmail);
+  const [isSending, setIsSending] = useState(false);
 
   const {
-    value: passwordValue,
-    isValid: passwordIsValid,
-    hasError: passwordHasError,
-    valueChangeHandler: passwordChangeHandler,
-    inputBlurHandler: passwordBlurHandler,
-  } = useInput(isPassword);
-  let formIsValid = false;
-
-  if (emailIsValid && passwordIsValid) {
-    formIsValid = true;
-  }
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SignInFormInputs>({
+    resolver: yupResolver<SignInFormInputs>(schema),
+    mode: "onBlur",
+  });
 
   const mergeCartsAndNavigate = async () => {
     const localCartItems = store.getState().localCart.items;
@@ -78,94 +86,70 @@ const SignInForm = () => {
     dispatch(clearRedirectPath());
   };
 
-  const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!formIsValid) return;
-
+  const loginRequest = async (data: SignInFormInputs) => {
+    setIsSending(true);
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/auth/signin`,
       "POST",
-      { email: emailValue, password: passwordValue },
+      { email: data.email, password: data.password },
       true,
       true
     );
 
     if (result?.response.ok) {
       await handleSuccessfulLogin(result.data);
-    } else {
-      setFormStatus("Invalid credentials");
+      setIsSending(false);
     }
+    setIsSending(false);
   };
 
   const inputClasses =
-    "border-2 border-[#13193F] rounded-md w-[80%] mx-auto px-1 py-1";
-  const inputErrorClasses =
-    "border-2 border-[#13193F] rounded-md border-red-700 w-[80%] mx-auto px-1 py-1";
-
-  const emailClasses = emailHasError ? inputErrorClasses : inputClasses;
-  const passwordClasses = passwordHasError ? inputErrorClasses : inputClasses;
-
-  const errorText = (
-    <p className="text-red-700 text-sm mb-2">This area is required.</p>
-  );
+    "border-2 border-gray-300 rounded-md px-4 py-2 mt-1 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition duration-300";
+  const labelClasses = "text-gray-600 mt-2";
+  const errorMessageClasses = "text-red-500 text-sm mt-1";
 
   return (
-    <>
-      <p
-        ref={errRef}
-        className={formStatus ? "errmsg" : "offscreen"}
-        aria-live="assertive"
-      >
-        {formStatus}
-      </p>
-      <form action="POST" onSubmit={submitHandler}>
-        <div className="flex flex-col max-w-sm text-center mx-auto mt-2">
-          <label htmlFor="email" className="font-semibold ">
-            Your e-mail
-          </label>
-          <input
-            type="email"
-            id="email"
-            onChange={emailChangeHandler}
-            onBlur={emailBlurHandler}
-            required
-            className={emailClasses}
-          />
-          {emailHasError && errorText}
-          <label htmlFor="password" className="font-semibold ">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            onChange={passwordChangeHandler}
-            onBlur={passwordBlurHandler}
-            required
-            className={`${passwordClasses}`}
-          />
-          {emailHasError && errorText}
+    <form action="POST" onSubmit={handleSubmit(loginRequest)}>
+      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+        <label htmlFor="email" className={labelClasses}>
+          Email*
+        </label>
+        <input {...register("email")} type="email" className={inputClasses} />
+        {errors.email && (
+          <p className={errorMessageClasses}>{errors.email.message}</p>
+        )}
+        <label htmlFor="password" className={labelClasses}>
+          Password*
+        </label>
+        <input
+          {...register("password")}
+          type="password"
+          className={inputClasses}
+        />
+        {errors.password && (
+          <p className={errorMessageClasses}>{errors.password.message}</p>
+        )}
 
-          <p className="font-semibold">{formStatus}</p>
-          <button
-            type="submit"
-            className={`max-w-[40%] mx-auto w-full border-2 bg-[#13193F] text-white p-2 rounded-lg ${
-              !formIsValid ? "bg-gray-500 " : "bg-[#13193F] hover:bg-[#febd69]"
-            } md:focus:border-orange-500 md:active:border-orange-500 mt-2`}
-            disabled={!formIsValid}
-          >
-            Sign in
-          </button>
-          <p>Don't have an account yet?</p>
-          <button
-            onClick={() => navigate("/sign-up")}
-            className="max-w-[80%] mx-auto w-full border-2 text-white p-2 bg-[#13193F] hover:bg-[#febd69] rounded-lg"
-          >
-            create your electrozone account
-          </button>
-        </div>
-      </form>
-    </>
+        <button
+          type="submit"
+          className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
+            isValid ? "bg-theme-blue hover:bg-blue-700" : "bg-gray-400"
+          } transition duration-300 ease-in-out`}
+          disabled={!isValid}
+        >
+          {isSending ? "Signing in" : "Sign In"}
+        </button>
+        <p className="text-gray-600 mt-4 mb-1 text-center">Don't have an account yet?</p>
+        <button
+          onClick={() => navigate("/sign-up")}
+          className={`w-full rounded-lg py-2 text-white font-semibold 
+            bg-theme-blue hover:bg-blue-700
+           transition duration-300 ease-in-out`}
+        >
+          Create your electrozone account
+        </button>
+      </div>
+    </form>
   );
 };
 
