@@ -1,4 +1,8 @@
 import { Link } from "react-router-dom";
+import TVsAndSoundbars from "@assets/images/TVs-Soundbars.webp"
+import ComputersAndAccessories from "@assets/images/Computers-Accessories.webp"
+import SmartphonessAndAccessories from "@assets/images/Smartphones&Acc.webp"
+import PrintersAndInk from "@assets/images/Printers-Ink.webp"
 
 const Categories = () => {
   return (
@@ -13,7 +17,7 @@ const Categories = () => {
         >
           <h4 className="text-lg font-[500] text-gray-700">TVs & Soundbars</h4>
           <img
-            src="https://storage.googleapis.com/electrozone-image/TVs-Soundbars.webp"
+            src={TVsAndSoundbars}
             className="w-64 h-auto object-contain mx-auto"
             style={{ borderRadius: "15px" }}
           />
@@ -26,7 +30,7 @@ const Categories = () => {
             Computers & Accessories
           </h4>
           <img
-            src="https://storage.googleapis.com/electrozone-image/Computers-Accessories.webp"
+            src={ComputersAndAccessories}
             className="w-64 h-auto object-contain mx-auto"
             style={{ borderRadius: "15px" }}
           />
@@ -39,7 +43,7 @@ const Categories = () => {
             Smartphones & Accessories
           </h4>
           <img
-            src="https://storage.googleapis.com/electrozone-image/Smartphones%26Acc.webp"
+            src={SmartphonessAndAccessories}
             className="w-64 h-auto object-contain mx-auto"
             style={{ borderRadius: "15px" }}
           />
@@ -50,7 +54,7 @@ const Categories = () => {
         >
           <h4 className="text-lg font-[500] text-gray-700">TVs & Soundbars</h4>
           <img
-            src="https://storage.googleapis.com/electrozone-image/Printers-Ink.webp"
+            src={PrintersAndInk}
             className="w-64 h-auto object-contain mx-auto"
             style={{ borderRadius: "15px" }}
           />
