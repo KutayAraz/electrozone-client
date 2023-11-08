@@ -68,7 +68,6 @@ const HomePage = () => {
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                lazyLoad= "ondemand"
                 className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
               >
                 {products.map((product: ProductCard) => (
@@ -95,7 +94,6 @@ const HomePage = () => {
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                lazyLoad= "ondemand"
                 className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
               >
                 {products.map((product: ProductCard) => (
@@ -122,7 +120,6 @@ const HomePage = () => {
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                lazyLoad= "ondemand"
                 className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
               >
                 {products.map((product: ProductCard) => (
