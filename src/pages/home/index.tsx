@@ -11,6 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { useMediaQuery } from "@mui/material";
 
+
 const HomePage = () => {
   const {
     bestRatedProducts,
@@ -57,7 +58,7 @@ const HomePage = () => {
 
   return (
     <div className="bg-gray-100">
-      <div className="flex flex-col mx-auto text-center ">
+      <div className="flex flex-col max-w-screen-lg mx-[4%] xl:mx-auto text-center">
         <Categories />
         <h2 className="text-xl font-semibold mt-6 mb-3 text-gray-700">
           Best Selling Products
@@ -68,7 +69,8 @@ const HomePage = () => {
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
+                lazyLoad="ondemand"
+                className="mb-5"
               >
                 {products.map((product: ProductCard) => (
                   <ProductCard
@@ -94,7 +96,8 @@ const HomePage = () => {
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
+                lazyLoad="ondemand"
+                className="mb-5"
               >
                 {products.map((product: ProductCard) => (
                   <ProductCard
@@ -120,7 +123,8 @@ const HomePage = () => {
             children={(products: ProductCard[]) => (
               <Slider
                 {...settings}
-                className="max-w-[90%] sm:max-w-screen-lg mx-[4%] xl:mx-auto mb-5"
+                lazyLoad="ondemand"
+                className="mb-5"
               >
                 {products.map((product: ProductCard) => (
                   <ProductCard

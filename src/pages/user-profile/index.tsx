@@ -6,62 +6,91 @@ import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
-import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, defer, redirect, useLoaderData } from "react-router-dom";
+import { defer, redirect, useLoaderData } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useState } from "react";
+
+interface UpdateProfileInputs {
+  email?: string | null;
+  address?: string | null;
+  city?: string | null;
+}
+
+const schema = yup.object({
+  email: yup.string().email("Invalid email address").nullable().notRequired(),
+  address: yup
+    .string()
+    .nullable()
+    .notRequired()
+    .test(
+      "address-test",
+      "Please enter a valid address",
+      (value) => !value || value.length >= 3
+    ),
+  city: yup
+    .string()
+    .nullable()
+    .notRequired()
+    .test(
+      "city-test",
+      "Please enter a valid city",
+      (value) => !value || value.length >= 2
+    ),
+});
 
 const UserProfile = () => {
   const dispatch = useDispatch<any>();
-  const city = useSelector((state: RootState) => state.user.city);
   const { userInfo }: any = useLoaderData();
-  const [email, setEmail] = useState<string | null>(userInfo.email);
-  const [address, setAddress] = useState<string | null>(userInfo.address);
-  const [userCity, setUserCity] = useState<string | null>(city);
+  const cityFromStore = useSelector((state: RootState) => state.user.city);
+  const [emailPlaceholder, setEmailPlaceholder] = useState(
+    userInfo.email || ""
+  );
+  const [addressPlaceholder, setAddressPlaceholder] = useState(
+    userInfo.address || ""
+  );
+  const [cityPlaceholder, setCityPlaceholder] = useState(cityFromStore || "");
   const { fetchData } = useFetch();
 
-  const emailRef: any | null = useRef();
-  const addressRef: any | null = useRef();
-  const cityRef: any | null = useRef();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      email: "",
+      address: "",
+      city: "",
+    },
+  });
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-  
-    const requestBody = {
-      email: emailRef.current?.value,
-      address: addressRef.current?.value,
-      city: cityRef.current?.value,
-    };
-  
-    const filteredBody = Object.fromEntries(
-      Object.entries(requestBody).filter(
-        ([_, value]) => value && value.trim() !== ""
-      )
+  const onSubmit = async (data: UpdateProfileInputs) => {
+    const filteredData = Object.fromEntries(
+      Object.entries(data).filter(([_, value]) => value && value.trim() !== "")
     );
-  
-    if (Object.keys(filteredBody).length === 0) {
+
+    if (Object.keys(filteredData).length === 0) {
+      dispatch(displayAlert({
+        type: "warning",
+        message: "No changes to update.",
+        autoHide: true,
+      }));
       return;
     }
-  
+
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/user/profile`,
       "PATCH",
-      filteredBody,
+      filteredData,
       true
     );
-  
+
     if (result?.response.ok) {
-      // Update the placeholders, but keep the actual input values empty
-      if(emailRef.current?.value) setEmail(emailRef.current?.value);
-      if(addressRef.current?.value) setAddress(addressRef.current?.value);
-      if(cityRef.current?.value) setUserCity(cityRef.current?.value);
-      
-      // Clear input values (which are distinct from placeholders)
-      emailRef.current.value = "";
-      addressRef.current.value = "";
-      cityRef.current.value = "";
-  
       dispatch(updateUserInfo({ city: result.data.city }));
-  
       dispatch(
         displayAlert({
           type: "success",
@@ -69,50 +98,70 @@ const UserProfile = () => {
           autoHide: true,
         })
       );
+      if (data.email) setEmailPlaceholder(data.email);
+      if (data.address) setAddressPlaceholder(data.address);
+      if (data.city) setCityPlaceholder(data.city);
+      reset();
     }
-  }
+  };
+
+  const inputClasses =
+    "border-2 border-gray-300 rounded-md px-4 py-2 mt-1 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition duration-300";
+  const labelClasses = "text-gray-600 mt-2";
+  const errorMessageClasses = "text-red-500 text-sm mt-1";
 
   return (
-    <>
-      <Form
-        onSubmit={handleSubmit}
-        className="max-w-xs mx-auto flex flex-col text-center mt-2 "
-      >
-        <label htmlFor="" className="text-lg text-theme-blue font-[500]">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+        <h2 className="text-lg font-semibold text-gray-800">My Profile:</h2>
+        <label htmlFor="email" className={labelClasses}>
           Email
         </label>
         <input
-          ref={emailRef}
-          placeholder={email || ""}
+          {...register("email")}
           type="text"
-          className="border-2 border-theme-blue rounded-md pl-2 text-lg mb-1"
-        ></input>
-        <label htmlFor="" className="text-lg text-theme-blue font-[500]">
+          placeholder={emailPlaceholder}
+          className={inputClasses}
+        />
+        {errors.email && (
+          <p className={errorMessageClasses}>{errors.email.message}</p>
+        )}
+
+        <label htmlFor="address" className={labelClasses}>
           Address
         </label>
         <input
-          ref={addressRef}
-          placeholder={address || ""}
+          {...register("address")}
           type="text"
-          className="border-2 border-theme-blue rounded-md text-lg pl-2"
-        ></input>
-        <label htmlFor="" className="text-lg text-theme-blue font-[500]">
+          placeholder={addressPlaceholder}
+          className={inputClasses}
+        />
+        {errors.address && (
+          <p className={errorMessageClasses}>{errors.address.message}</p>
+        )}
+
+        <label htmlFor="city" className={labelClasses}>
           City/State
         </label>
         <input
-          ref={cityRef}
-          placeholder={userCity || ""}
+          {...register("city")}
           type="text"
-          className="border-2 border-theme-blue rounded-md text-lg pl-2"
-        ></input>
+          placeholder={cityPlaceholder}
+          className={inputClasses}
+        />
+        {errors.city && (
+          <p className={errorMessageClasses}>{errors.city.message}</p>
+        )}
+
         <button
           type="submit"
           className="bg-theme-blue hover:bg-[#A34393] rounded-lg font-[500] text-white max-w-[50%] my-2 mx-auto px-4 py-2"
+          disabled={isSubmitting}
         >
-          Update Profile
+          {isSubmitting ? "Updating..." : "Update Profile"}
         </button>
-      </Form>
-    </>
+      </div>
+    </form>
   );
 };
 
