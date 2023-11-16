@@ -43,6 +43,7 @@ const WishlistProductCard = ({
       <div className="flex justify-between items-start mb-2">
         <button
           onClick={handleWishlistButtonClick}
+          aria-label="Remove from wishlist"
           className="transition-transform duration-300 transform scale-100 group-hover:scale-110 ml-auto"
         >
           <HeartIcon

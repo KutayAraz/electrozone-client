@@ -40,19 +40,17 @@ const SignUpForm = () => {
   const dispatch = useDispatch<any>();
   const { fetchData } = useFetch();
   const navigate = useNavigate();
-  const [isSending, setIsSending] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<SignUpFormInputs>({
     resolver: yupResolver<SignUpFormInputs>(schema),
     mode: "onBlur",
   });
 
   const SignUpRequest = async (data: SignUpFormInputs) => {
-    setIsSending(true);
 
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/auth/signup`,
@@ -78,7 +76,6 @@ const SignUpForm = () => {
       );
       navigate("/sign-in");
     }
-    setIsSending(false);
   };
 
   const inputClasses =
@@ -88,21 +85,28 @@ const SignUpForm = () => {
 
   return (
     <form action="POST" onSubmit={handleSubmit(SignUpRequest)}>
-      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+      <div className="flex flex-col max-w-md mx-2 md:mx-auto p-6 bg-white shadow-md rounded-xl mb-4">
         <h4 className="text-lg font-semibold text-gray-800">
           Account Information:
         </h4>
 
         <label htmlFor="email" className={labelClasses}>
-          Email*
+          Email<span aria-hidden="true">*</span>
         </label>
-        <input {...register("email")} type="email" className={inputClasses} />
+        <input
+          {...register("email")}
+          id="email"
+          type="email"
+          className={inputClasses}
+          aria-required="true"
+          required
+        />
         {errors.email && (
           <p className={errorMessageClasses}>{errors.email.message}</p>
         )}
 
         <label htmlFor="password" className={labelClasses}>
-          Password*
+          Password<span aria-hidden="true">*</span>
         </label>
         <p className={"text-gray-600 text-sm"}>
           Passwords must be at least 6 characters long.
@@ -110,19 +114,25 @@ const SignUpForm = () => {
         <input
           {...register("password")}
           type="password"
+          id="password"
           className={inputClasses}
+          aria-required="true"
+          required
         />
         {errors.password && (
           <p className={errorMessageClasses}>{errors.password.message}</p>
         )}
 
         <label htmlFor="retypedPassword" className={labelClasses}>
-          Confirm Password*
+          Confirm Password<span aria-hidden="true">*</span>
         </label>
         <input
           {...register("retypedPassword")}
           type="password"
+          id="retypedPassword"
           className={inputClasses}
+          aria-required="true"
+          required
         />
         {errors.retypedPassword && (
           <p className={errorMessageClasses}>
@@ -134,49 +144,74 @@ const SignUpForm = () => {
           Personal Information:
         </h4>
         <label htmlFor="firstName" className={labelClasses}>
-          First name*
+          First name<span aria-hidden="true">*</span>
         </label>
         <input
           {...register("firstName")}
+          id="firstName"
           type="text"
           className={inputClasses}
+          aria-required="true"
+          required
         />
         {errors.firstName && (
           <p className={errorMessageClasses}>{errors.firstName.message}</p>
         )}
 
         <label htmlFor="lastName" className={labelClasses}>
-          Last name*
+          Last name<span aria-hidden="true">*</span>
         </label>
-        <input {...register("lastName")} type="text" className={inputClasses} />
+        <input
+          {...register("lastName")}
+          id="lastName"
+          type="text"
+          className={inputClasses}
+          aria-required="true"
+          required
+        />
         {errors.lastName && (
           <p className={errorMessageClasses}>{errors.lastName.message}</p>
         )}
 
         <label htmlFor="address" className={labelClasses}>
-          Address*
+          Address<span aria-hidden="true">*</span>
         </label>
-        <input {...register("address")} type="text" className={inputClasses} />
+        <input
+          {...register("address")}
+          id="address"
+          type="text"
+          className={inputClasses}
+          aria-required="true"
+          required
+        />
         {errors.address && (
           <p className={errorMessageClasses}>{errors.address.message}</p>
         )}
 
         <label htmlFor="city" className={labelClasses}>
-          City/State*
+          City/State<span aria-hidden="true">*</span>
         </label>
-        <input {...register("city")} type="text" className={inputClasses} />
+        <input
+          {...register("city")}
+          id="city"
+          type="text"
+          className={inputClasses}
+          aria-required="true"
+          required
+        />
         {errors.city && (
           <p className={errorMessageClasses}>{errors.city.message}</p>
         )}
 
         <button
           type="submit"
+          aria-label="Sign up"
           className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
             isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
           } transition duration-300 ease-in-out`}
-          disabled={!isValid}
+          disabled={!isValid || isSubmitting}
         >
-          {isSending ? "Creating your account..." : "Sign Up"}
+          {isSubmitting ? "Creating your account..." : "Sign Up"}
         </button>
       </div>
     </form>

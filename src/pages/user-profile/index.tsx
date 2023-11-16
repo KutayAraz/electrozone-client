@@ -112,16 +112,18 @@ const UserProfile = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+      <div className="flex flex-col max-w-md mx-2 xs:mx-auto p-6 bg-white shadow-md rounded-xl my-4">
         <h2 className="text-lg font-semibold text-gray-800">My Profile:</h2>
         <label htmlFor="email" className={labelClasses}>
           Email
         </label>
         <input
           {...register("email")}
+          id="email"
           type="text"
           placeholder={emailPlaceholder}
           className={inputClasses}
+          
         />
         {errors.email && (
           <p className={errorMessageClasses}>{errors.email.message}</p>
@@ -132,6 +134,7 @@ const UserProfile = () => {
         </label>
         <input
           {...register("address")}
+          id="address"
           type="text"
           placeholder={addressPlaceholder}
           className={inputClasses}
@@ -145,6 +148,7 @@ const UserProfile = () => {
         </label>
         <input
           {...register("city")}
+          id="city"
           type="text"
           placeholder={cityPlaceholder}
           className={inputClasses}
@@ -155,6 +159,7 @@ const UserProfile = () => {
 
         <button
           type="submit"
+          aria-label="Update Profile"
           className="bg-theme-blue hover:bg-[#A34393] rounded-lg font-[500] text-white max-w-[50%] my-2 mx-auto px-4 py-2"
           disabled={isSubmitting}
         >

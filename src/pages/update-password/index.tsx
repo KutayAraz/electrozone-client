@@ -1,7 +1,7 @@
 import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import * as yup from "yup";
@@ -31,7 +31,7 @@ const UpdatePassword = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
     reset,
   } = useForm<FormInputs>({
     resolver: yupResolver<FormInputs>(schema),
@@ -40,7 +40,14 @@ const UpdatePassword = () => {
 
   const { fetchData } = useFetch();
   const dispatch = useDispatch<any>();
-  const [isSending, setIsSending] = useState(false);
+
+  useEffect(() => {
+    if (isSubmitting) {
+      document.body.classList.add('loading-cursor');
+    } else {
+      document.body.classList.remove('loading-cursor');
+    }
+  }, [isSubmitting]);
 
   const handlePasswordChange = async (data: FormInputs) => {
     const result = await fetchData(
@@ -74,7 +81,7 @@ const UpdatePassword = () => {
 
   return (
     <form onSubmit={handleSubmit(handlePasswordChange)}>
-      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl mb-4">
         <h4 className="text-lg font-semibold text-gray-800">
           Account Information:
         </h4>
@@ -84,11 +91,14 @@ const UpdatePassword = () => {
         </label>
         <input
           {...register("currentPassword")}
+          id="currentPassword"
           type="password"
           className={inputClasses}
+          aria-required="true"
+          required
         />
         {errors.currentPassword && (
-          <p className="text-red-500 text-sm mt-1">
+          <p className={errorMessageClasses}>
             {errors.currentPassword.message}
           </p>
         )}
@@ -98,37 +108,44 @@ const UpdatePassword = () => {
         </label>
         <input
           {...register("newPassword")}
+          id="newPassword"
           type="password"
           className={inputClasses}
+          aria-required="true"
+          required
         />
         {errors.newPassword && (
-          <p className="text-red-500 text-sm mt-1">
+          <p className={errorMessageClasses}>
             {errors.newPassword.message}
           </p>
         )}
 
-        <label htmlFor="currentPassword" className={labelClasses}>
+        <label htmlFor="retypedNewPassword" className={labelClasses}>
           Confirm New Password*
         </label>
         <input
           {...register("currentPassword")}
+          id="retypedNewPassword"
           type="password"
           className={inputClasses}
+          aria-required="true"
+          required
         />
         {errors.currentPassword && (
-          <p className="text-red-500 text-sm mt-1">
+          <p className={errorMessageClasses}>
             {errors.currentPassword.message}
           </p>
         )}
 
       <button
         type="submit"
+        aria-label="Update Password"
         className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
           isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
         } transition duration-300 ease-in-out`}
-        disabled={!isValid}
+        disabled={!isValid || isSubmitting}
       >
-        {isSending ? "Changing your password..." : "Change password"}
+        {isSubmitting ? "Changing your password..." : "Change password"}
       </button>
       </div>
     </form>

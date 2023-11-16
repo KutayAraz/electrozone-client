@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { ReactComponent as BurgerIcon } from "@assets/svg/burger.svg";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RootState } from "@/setup/store";
 import { ReactComponent as ExitIcon } from "@assets/svg/exit.svg";
 import CustomizableModal from "../Modal/CustomizableModal";
@@ -44,6 +44,15 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
     }
   }, [isOpen]);
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null); // Create a ref
+
+  useEffect(() => {
+    // When activeView changes, scroll to the top of the container
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+  }, [activeView]);
+
   return (
     <div className="flex">
       <button
@@ -59,7 +68,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
 
       <CustomizableModal
         widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%]"
-        heightClass="h-screen"
+        heightClass={`${activeView === "main" ? "h-full" : "h-fit"}`}
         topClass="top-0"
         leftClass="left-0"
         direction="right"
@@ -89,14 +98,16 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           )}
         </div>
 
-        <div className="flex flex-col text-gray-700 justify-between relative">
+        <div className="flex flex-col text-gray-700 justify-between relative h-fit">
           <div
             className={`transition-transform duration-300 ease-in-out ${
               activeView !== "main" ? "-translate-x-full" : ""
             }`}
           >
             <div className="flex flex-col ">
-              <label className="text-2xl font-semibold px-4 py-4">Trending</label>
+              <label className="text-2xl font-semibold px-4 py-4">
+                Trending
+              </label>
               <Divider />
               <Link
                 to={"/trending/best-sellers"}
@@ -154,32 +165,47 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             </button>
             <Divider />
             <div className="flex flex-col">
-              <label className="text-2xl font-semibold px-4 py-4">Help & Settings</label>
+              <label className="text-2xl font-semibold px-4 py-4">
+                Help & Settings
+              </label>
               <Divider />
               {isSignedIn && (
-                <Link to={"/my-account"} className="text-xl px-4 py-4 hover:bg-gray-100">
+                <Link
+                  to={"/my-account"}
+                  className="text-xl px-4 py-4 hover:bg-gray-100"
+                >
                   Your Account
                 </Link>
               )}
-              {city && <p className="text-xl">Delivery Location: {city}</p>}
-              <Link to={"/contact"} className="text-xl px-4 py-4 hover:bg-gray-100">
+              {city && (
+                <p className="text-xl px-4">Delivery Location: {city}</p>
+              )}
+              <Link
+                to={"/contact"}
+                className="text-xl px-4 py-4 hover:bg-gray-100"
+              >
                 Contact
               </Link>
-
-                {isSignedIn ? (
-                  <Link to={"/sign-out"} className="text-xl hover:bg-gray-100 px-4 py-4">
-                    Sign Out <ExitIcon className="w-6 h-6 mr-4 inline" />
-                  </Link>
-                ) : (
-                  <Link to={"/sign-in"} className="text-xl hover:bg-gray-100 px-4 py-4">
-                    Sign In
-                  </Link>
-                )}
+              {isSignedIn ? (
+                <Link
+                  to={"/sign-out"}
+                  className="text-xl hover:bg-gray-100 px-4 py-4"
+                >
+                  Sign Out <ExitIcon className="w-6 h-6 mr-4 inline" />
+                </Link>
+              ) : (
+                <Link
+                  to={"/sign-in"}
+                  className="text-xl hover:bg-gray-100 px-4 py-4"
+                >
+                  Sign In
+                </Link>
+              )}
             </div>
           </div>
 
           <div
-            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${
+            className={` fixed top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${
               activeView !== "tvsAndSoundbars"
                 ? "translate-x-full overflow-hidden "
                 : ""
@@ -274,11 +300,12 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           </div>
 
           <div
-            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col p-4 space-y-4 ${
+            className={`absolute top-0 transition-transform overflow-none duration-300 ease-in-out w-full h-fit flex flex-col p-4 space-y-4 ${
               activeView !== "printersAndInk"
                 ? "translate-x-full overflow-hidden "
                 : ""
             }`}
+            ref={scrollContainerRef}
           >
             <button
               onClick={() => setActiveView("main")}

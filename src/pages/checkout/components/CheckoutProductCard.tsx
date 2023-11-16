@@ -21,8 +21,7 @@ const CheckoutProductCard = ({
         />
       </div>
       <Divider orientation="vertical" flexItem/>
-      <div className="flex-1">
-      
+      <div className="flex-1">      
         <p className="font-[500]">{productName}</p>
         <p className="text-gray-700">{brand}</p>
         <p className="mt-2">{quantity}</p>

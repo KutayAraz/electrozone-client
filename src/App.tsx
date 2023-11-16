@@ -34,6 +34,7 @@ import UserProfile, {
 import UpdatePassword from "./pages/update-password/index.tsx";
 import Trending, { loader as trendingLoader } from "./pages/trending/index.tsx";
 import Contact from "./pages/contact-us/index.tsx";
+import ProjectDetails from "./pages/project-details/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/project-details",
+        element: <ProjectDetails />
       },
       {
         path: "/trending/:type",

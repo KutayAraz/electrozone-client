@@ -31,6 +31,7 @@ const ProductMobileLayout = ({
       <Slider
         dots={true}
         dotsClass="slick-dots"
+        arrows={false}
         infinite={true}
         speed={500}
         lazyLoad={"ondemand"}

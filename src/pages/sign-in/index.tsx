@@ -7,7 +7,7 @@ import { clearRedirectPath } from "@/setup/slices/redirect-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
 import { RootState, store } from "@/setup/store";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -41,12 +41,11 @@ const SignInForm = () => {
 
   const errRef = useRef<any>();
   const { fetchData } = useFetch();
-  const [isSending, setIsSending] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<SignInFormInputs>({
     resolver: yupResolver<SignInFormInputs>(schema),
     mode: "onBlur",
@@ -87,7 +86,6 @@ const SignInForm = () => {
   };
 
   const loginRequest = async (data: SignInFormInputs) => {
-    setIsSending(true);
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/auth/signin`,
       "POST",
@@ -98,9 +96,7 @@ const SignInForm = () => {
 
     if (result?.response.ok) {
       await handleSuccessfulLogin(result.data);
-      setIsSending(false);
     }
-    setIsSending(false);
   };
 
   const inputClasses =
@@ -110,21 +106,33 @@ const SignInForm = () => {
 
   return (
     <form action="POST" onSubmit={handleSubmit(loginRequest)}>
-      <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+      <div className="flex flex-col max-w-md mx-2 xs:mx-auto p-6 bg-white shadow-md rounded-xl mb-4">
+        <h4 className="text-lg font-semibold text-gray-800">Welcome,</h4>
         <label htmlFor="email" className={labelClasses}>
-          Email*
+          Email<span aria-hidden="true">*</span>
         </label>
-        <input {...register("email")} type="email" className={inputClasses} />
+        <input
+          {...register("email")}
+          id="email"
+          type="email"
+          className={inputClasses}
+          aria-required="true"
+          required
+        />
         {errors.email && (
           <p className={errorMessageClasses}>{errors.email.message}</p>
         )}
+
         <label htmlFor="password" className={labelClasses}>
-          Password*
+          Password<span aria-hidden="true">*</span>
         </label>
         <input
           {...register("password")}
+          id="password"
           type="password"
           className={inputClasses}
+          aria-required="true"
+          required
         />
         {errors.password && (
           <p className={errorMessageClasses}>{errors.password.message}</p>
@@ -132,14 +140,19 @@ const SignInForm = () => {
 
         <button
           type="submit"
+          aria-label="Sign in"
           className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
             isValid ? "bg-theme-blue hover:bg-blue-700" : "bg-gray-400"
           } transition duration-300 ease-in-out`}
-          disabled={!isValid}
+          disabled={!isValid || isSubmitting}
         >
-          {isSending ? "Signing in" : "Sign In"}
+          {isSubmitting ? "Signing in" : "Sign In"}
         </button>
-        <p className="text-gray-600 mt-4 mb-1 text-center">Don't have an account yet?</p>
+
+        <p className="text-gray-600 mt-4 mb-1 text-center">
+          Don't have an account yet?
+        </p>
+
         <button
           onClick={() => navigate("/sign-up")}
           className={`w-full rounded-lg py-2 text-white font-semibold 

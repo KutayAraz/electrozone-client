@@ -4,8 +4,7 @@ import SearchBar from "./SearchBar";
 import { useDispatch, useSelector } from "react-redux";
 import BurgerMenu from "./BurgerMenu";
 import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
-import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
-import { ReactComponent as LocationPin } from "@assets/svg/location-pin.svg";
+import { ReactComponent as LocationPin } from "@assets/svg/location.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
 import { Link } from "react-router-dom";
 import { useRef, useState } from "react";
@@ -43,42 +42,44 @@ const Header = () => {
 
   return (
     <>
-      <div className="flex justify-between w-full text-white items-center ">
+      <div className="flex justify-between w-full text-white items-center">
         <div className="flex">
           <BurgerMenu className="block sm:hidden"></BurgerMenu>
-          <Link to={"/"} className="max-w-[80%] mb-1">
+          <Link to={"/"} className="max-w-[80%] mb-1 flex items-center">
             <Brand className="block sm:hidden" />
           </Link>
           <Link to={"/"}>
             <BrandLogo className="hidden sm:block " />
           </Link>
           <div className="hidden sm:flex items-center px-6">
-            <div className="flex-col whitespace-nowrap pr-2">
-              {isSignedIn ? (
-                <div className="text-center">
-                  <p>Delivering to</p>
-                  <p>{city}</p>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setIsLocationModalOpen(true)}
-                  className="text-center"
-                >
-                  {city ? (
-                    <div className="text-center">
-                      <p>Delivering to</p>
-                      <p>{city}</p>
-                    </div>
-                  ) : (
-                    <div className="text-center">
-                      <p>Hello, </p>
-                      <p>Select your location</p>
-                    </div>
-                  )}
-                </button>
-              )}
-            </div>
-            <LocationPin width={28} height={28} />
+            <LocationPin
+              width={28}
+              height={28}
+              className="mr-[4px] stroke-white"
+            />
+            {isSignedIn ? (
+              <div className="text-left">
+                <p>Delivering to:</p>
+                <p>{city}</p>
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsLocationModalOpen(true)}
+                className="text-left"
+              >
+                {city ? (
+                  <div>
+                    <p>Delivering to:</p>
+                    <p>{city}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <p>Hello,</p>
+                    <p>Select your location</p>
+                  </div>
+                )}
+              </button>
+            )}
           </div>
         </div>
         <SearchBar className="hidden md:flex text-black h-10 mx-[3%] md:flex-grow" />
@@ -91,7 +92,7 @@ const Header = () => {
               {firstName}
             </button>
           ) : (
-            <Link to="/sign-in" className="pl-4">
+            <Link to="/sign-in" className="pl-2 xs:pl-4">
               Sign in
             </Link>
           )}

@@ -1,4 +1,4 @@
-import { ReactComponent as LocationIcon } from "@assets/svg/location-pin2.svg";
+import { ReactComponent as LocationIcon } from "@assets/svg/location.svg";
 import { useRef, useState } from "react";
 import CustomizableModal from "../Modal/CustomizableModal";
 import { Link } from "react-router-dom";
@@ -41,7 +41,7 @@ const UserLocation = () => {
           onClick={() => setIsModalOpen(true)}
           className="text-white pl-[2%] flex w-full"
         >
-          <LocationIcon className="w-4 h-4 stroke-white my-auto " />
+          <LocationIcon className="w-6 h-6 stroke-white" />
           Select your location
         </button>
       )}
