@@ -1,13 +1,12 @@
 import useFetch from "@/common/Hooks/use-fetch";
-import useInput from "@/common/Hooks/use-input";
-import { selectAccessToken, setAccessToken } from "@/setup/slices/auth-slice";
+import { setAccessToken } from "@/setup/slices/auth-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
 import { clearRedirectPath } from "@/setup/slices/redirect-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
 import { RootState, store } from "@/setup/store";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useEffect, useRef, useState } from "react";
+import { CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -39,7 +38,6 @@ const SignInForm = () => {
   const redirectPath = useSelector((state: RootState) => state.redirect.path);
   const from = location.state?.from || redirectPath || "/";
 
-  const errRef = useRef<any>();
   const { fetchData } = useFetch();
 
   const {
@@ -146,7 +144,16 @@ const SignInForm = () => {
           } transition duration-300 ease-in-out`}
           disabled={!isValid || isSubmitting}
         >
-          {isSubmitting ? "Signing in" : "Sign In"}
+          {isSubmitting ? (
+            <p>
+              <span>
+                <CircularProgress />
+              </span>
+              Signing in
+            </p>
+          ) : (
+            "Sign In"
+          )}
         </button>
 
         <p className="text-gray-600 mt-4 mb-1 text-center">

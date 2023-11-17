@@ -10,7 +10,6 @@ const redirectSlice = createSlice({
       state.path = action.payload;
     },
     clearRedirectPath: (state) => {
-      console.log("aha")
       state.path = null;
     },
   },

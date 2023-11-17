@@ -182,7 +182,7 @@ const Product = ({
         />
       )}
       <h3 className="underline mb-2 text-lg font-[500]">Product Description</h3>
-      <ul className="max-w-screen-xl">
+      <ul className="max-w-screen-xl" id="rating">
         {description.map((bulletPoint: string, index: number) => (
           <li className="mb-2" key={index}>
             - {bulletPoint}

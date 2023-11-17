@@ -1,7 +1,6 @@
 import {
   Await,
   defer,
-  json,
   redirect,
   useLoaderData,
   useParams,
@@ -9,10 +8,8 @@ import {
 import { Suspense, useState } from "react";
 import Product from "./components/Product";
 import { store } from "@/setup/store";
-import fetchNewAccessToken from "@/utils/renew-token";
 import Review from "./components/review-list/Review";
 import ReviewForm from "./components/ReviewForm";
-import { hydrationCompleted } from "@/setup/slices/hydration-slice";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
 import {

@@ -48,6 +48,7 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
             "Your review has been added to the product. Thank you for your review.",
         })
       );
+      setReviewForm(false);
     }
   };
 

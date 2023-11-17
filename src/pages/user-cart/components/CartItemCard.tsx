@@ -88,13 +88,13 @@ const CartItemCard = ({
           <img
             src={thumbnail}
             alt={productName}
-            className="w-32 h-32 sm:w-56 sm:h-56 lg:w-64 lg:h-64 object-contain rounded-md"
+            className="w-32 h-32 md:w-40 md:h-40 object-contain rounded-md"
           />
         </div>
       </Link>
       <Divider orientation="vertical"  flexItem />
 
-      <div className="flex-grow space-y-2 ">
+      <div className="flex-grow space-y-3 lg:space-y-4">
         <Link to={`/category/${category}/${subcategory}/${id}`}>
           <p className="text-gray-700 hover:text-blue-500 transition duration-200">
             {productName}

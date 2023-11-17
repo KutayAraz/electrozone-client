@@ -122,7 +122,7 @@ const ProductDesktopLayout = ({
       <div className="flex flex-col w-[30%] text-center m-auto border-1 py-6 border-gray-300 rounded-md h-[640px] justify-evenly lg:justify-center lg:space-y-3 px-2">
         <h2 className="text-lg">{productName}</h2>
         <p className="font-[500] ">Brand: {brand}</p>
-        <Link to={"#rating"} className="mr-4">
+        <a href="#rating" className="mr-4">
           <Rating
             name="half-rating-read"
             value={averageRating}
@@ -130,7 +130,7 @@ const ProductDesktopLayout = ({
             readOnly
             className="mt-4"
           />
-        </Link>
+        </a>
         <p className="text-lg font-[500]">${price}</p>
         <div className="flex justify-center mb-4 items-center s">
           <button
