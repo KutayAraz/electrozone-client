@@ -10,7 +10,7 @@ const Subcategory = ({
 }: SubcategoryProps) => {
   return (
     <div className="m-[1%]" key={id}>
-      <h3 className="text-xl font-semibold text-gray-700 mb-4 m-[1%]">
+      <h3 className="text-xl font-semibold text-gray-700 mb-3 m-[1%]">
         Top Selling Products in{" "}
         <Link to={`${subcategoryName}`} className="underline">
           {subcategoryName.toUpperCase()}

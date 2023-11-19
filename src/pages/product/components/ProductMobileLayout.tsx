@@ -56,20 +56,12 @@ const ProductMobileLayout = ({
         ))}
       </Slider>
 
-      <div className="flex flex-col text-left sm:text-center w-full sm:w-auto">
-        <Link to={"#rating"} className="mt-10 mx-auto">
-          <Rating
-            name="half-rating-read"
-            value={averageRating}
-            precision={0.1}
-            readOnly
-          />
-        </Link>
-        <p className="text-lg sm:text-xl mb-2 text-center mt-2">${price}</p>
-        <div className="flex justify-center mb-4">
+      <div className="flex py-4 items-center justify-around fixed bottom-0 left-0 right-0 w-full bg-gray-100">
+        <p className="text-lg sm:text-xl ml-2">${price}</p>
+        <div className="flex">
           <button
             onClick={decrementQuantity}
-            className="px-2 py-1 border rounded"
+            className="px-2 py-1 border border-gray-300 rounded"
           >
             -
           </button>
@@ -79,33 +71,42 @@ const ProductMobileLayout = ({
             onChange={handleQuantityChange}
             min={1}
             max={10}
-            className="text-center w-16 mx-2 border rounded"
+            className="text-center w-10 mx-[4px] border rounded"
           />
           <button
             onClick={incrementQuantity}
-            className="px-2 py-1 border rounded"
+            className="px-2 py-1 border border-gray-300 rounded"
           >
             +
           </button>
         </div>
         {stock > 0 ? (
-          <div className="flex flex-col mb-4 w-[80%] mx-auto">
-            <button
-              onClick={handleAddToCart}
-              className=" sm:w-auto px-4 py-2 bg-theme-blue text-white rounded-xl mb-2"
-            >
-              Add to Cart
-            </button>
-            <button
-              onClick={handleBuyNow}
-              className="w-full sm:w-auto px-4 py-2 bg-theme-orange text-white rounded-xl"
-            >
-              Buy now
-            </button>
-          </div>
+          <button
+            onClick={handleAddToCart}
+            className="sm:w-auto px-4 py-2 bg-theme-blue text-white rounded-md"
+          >
+            Add to Cart
+          </button>
         ) : (
-          <p className="text-red-500">This product is currently out of stock</p>
+          <p className="text-red-500">Out of stock</p>
         )}
+      </div>
+
+      <div className="flex flex-col text-left sm:text-center w-full sm:w-auto">
+        <Link to={"#rating"} className="mt-10 mx-auto">
+          <Rating
+            name="half-rating-read"
+            value={averageRating}
+            precision={0.1}
+            readOnly
+          />
+        </Link>
+        <button
+          onClick={handleBuyNow}
+          className="w-[80%] mx-auto my-2 sm:w-auto px-4 py-2 bg-theme-orange text-white rounded-md"
+        >
+          Buy now
+        </button>
         <div className="flex flex-col justify-center items-center mb-4">
           <WishlistButton
             isWishlisted={isWishlisted}

@@ -14,7 +14,7 @@ import { RootState } from "@/setup/store";
 import CustomizableModal from "../Modal/CustomizableModal";
 import userSlice from "@/setup/slices/user-slice";
 
-const Header = () => {
+const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
   const firstName = useSelector((state: any) => state.user.firstName);
   const city = useSelector((state: any) => state.user.city);
   const dispatch = useDispatch();
@@ -82,7 +82,7 @@ const Header = () => {
             )}
           </div>
         </div>
-        <SearchBar className="hidden md:flex text-black h-10 mx-[3%] md:flex-grow" />
+        <SearchBar className="hidden md:flex text-gray-700 h-10 mx-[3%] md:flex-grow" />
         <div className="flex items-center xs:pr-2 whitespace-nowrap">
           {isSignedIn ? (
             <button
@@ -105,8 +105,16 @@ const Header = () => {
           </Link>
         </div>
       </div>
-      <div className="px-1">
-        <SearchBar className="md:hidden text-black h-10 w-full my-1" />
+      <div
+        className={`px-1 ${
+          isScrolled ? "fixed top-0 left-0 right-0 z-10 bg-white" : ""
+        }`}
+      >
+        <SearchBar
+          className={`md:hidden text-gray-700 h-10 w-full my-1 ${
+            isScrolled ? "shadow-md" : ""
+          }`}
+        />
       </div>
       <CustomizableModal
         isOpen={isLocationModalOpen}

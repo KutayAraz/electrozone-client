@@ -73,6 +73,15 @@ const useFetch = () => {
               })
             );
             break;
+            case 404:
+              dispatch(
+                displayAlert({
+                  type: "error",
+                  message: "404 Not Found.",
+                  autoHide: true,
+                })
+              );
+              break;
           default:
             throw new Error("Network response was not ok.");
         }

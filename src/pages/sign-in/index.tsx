@@ -38,12 +38,12 @@ const SignInForm = () => {
   const redirectPath = useSelector((state: RootState) => state.redirect.path);
   const from = location.state?.from || redirectPath || "/";
 
-  const { fetchData } = useFetch();
+  const { fetchData, loading } = useFetch();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid },
   } = useForm<SignInFormInputs>({
     resolver: yupResolver<SignInFormInputs>(schema),
     mode: "onBlur",
@@ -142,15 +142,17 @@ const SignInForm = () => {
           className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
             isValid ? "bg-theme-blue hover:bg-blue-700" : "bg-gray-400"
           } transition duration-300 ease-in-out`}
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || loading}
         >
-          {isSubmitting ? (
-            <p>
-              <span>
-                <CircularProgress />
-              </span>
-              Signing in
-            </p>
+          {loading ? (
+            <div className="flex justify-center">
+              <CircularProgress
+                style={{ width: "1.25rem", height: "1.25rem" }}
+                sx={{ color: "#13193F" }}
+                className="mr-2 "
+              />
+              <p>Signing in..</p>
+            </div>
           ) : (
             "Sign In"
           )}

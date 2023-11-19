@@ -31,7 +31,7 @@ const Checkout = () => {
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
-  const { fetchData } = useFetch();
+  const { fetchData, loading } = useFetch();
 
   const addToCartAndNavigate = async () => {
     const productsToOrder = checkoutItems.products.map((item: any) => ({
@@ -75,7 +75,6 @@ const Checkout = () => {
 
     if (result?.response.ok) {
       const orderId = result.data;
-      console.log("here")
       dispatch(
         displayAlert({
           type: "success",

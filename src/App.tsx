@@ -10,9 +10,7 @@ import CategoryPage, {
   loader as categoryLoader,
 } from "./pages/category/index.tsx";
 import UserCart, { loader as cartLoader } from "./pages/user-cart/index.tsx";
-import ConfirmOrder from "./pages/confirm-order/index.tsx";
 import HomePage, { loader as homePageLoader } from "./pages/home/index.tsx";
-import SignIn from "./pages/sign-in/index.tsx";
 import SignOut from "./pages/sign-out/index.tsx";
 import SignUp from "./pages/sign-up/index.tsx";
 import ProtectedRoute from "./common/ProtectedRoute.tsx";
@@ -35,6 +33,7 @@ import UpdatePassword from "./pages/update-password/index.tsx";
 import Trending, { loader as trendingLoader } from "./pages/trending/index.tsx";
 import Contact from "./pages/contact-us/index.tsx";
 import ProjectDetails from "./pages/project-details/index.tsx";
+import SignInForm from "./pages/sign-in/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -50,10 +49,7 @@ const router = createBrowserRouter([
         path: "/sign-up",
         element: <SignUp />,
       },
-      {
-        path: "/sign-in",
-        element: <SignIn />,
-      },
+      
       {
         path: "/sign-out",
         element: <SignOut />,
@@ -126,10 +122,6 @@ const router = createBrowserRouter([
             element: <UserCart />,
             loader: cartLoader,
           },
-          {
-            path: "confirm-order",
-            element: <ConfirmOrder />,
-          },
         ],
       },
       {
@@ -162,6 +154,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "/sign-in",
+    element: <SignInForm />,
   },
 
   {

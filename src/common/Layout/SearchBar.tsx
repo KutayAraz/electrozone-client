@@ -12,14 +12,21 @@ const SearchBar = ({ className }: { className?: string }) => {
     }
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className={`relative flex ${className}`}>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Search Electrozone"
-        className={`rounded-md w-full pl-3 pr-10 h-full`}
+        className={`rounded-md w-full pl-3 pr-10 h-full focus:outline-none focus:ring-1 focus:ring-gray-500`}
       />
       <button
         onClick={handleSearch}

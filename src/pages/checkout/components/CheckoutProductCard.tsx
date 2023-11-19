@@ -13,7 +13,7 @@ const CheckoutProductCard = ({
       className="bg-white p-4 rounded-md shadow-md flex items-center space-x-4"
       key={id}
     >
-      <div className="w-2/5">
+      <div className="w-2/5 sm:w-1/5">
         <img
           src={thumbnail}
           alt={`image for ${productName}`}

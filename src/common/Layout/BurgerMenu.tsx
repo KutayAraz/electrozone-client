@@ -178,7 +178,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
                 </Link>
               )}
               {city && (
-                <p className="text-xl px-4">Delivery Location: {city}</p>
+                <p className="text-xl px-4 py-4">Delivery Location: {city}</p>
               )}
               <Link
                 to={"/contact"}
@@ -205,7 +205,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           </div>
 
           <div
-            className={` fixed top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${
+            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col p-4 space-y-4 ${
               activeView !== "tvsAndSoundbars"
                 ? "translate-x-full overflow-hidden "
                 : ""
@@ -213,7 +213,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-2xl hover:bg-gray-100 w-full py-4 px-3"
+              className="flex items-center mr-auto text-2xl hover:bg-gray-100 w-full"
             >
               <BackArrow className="h-6 w-auto inline my-auto" />
               Main Menu
@@ -221,13 +221,13 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             <Divider />
             <Link
               to={"/category/tvs-and-soundbars/tvs"}
-              className="text-xl hover:bg-gray-100 py-4 px-3"
+              className="text-xl hover:bg-gray-100"
             >
               TVs
             </Link>
             <Link
               to={"/category/tvs-and-soundbars/soundbars"}
-              className="text-xl hover:bg-gray-100 py-4 px-3"
+              className="text-xl hover:bg-gray-100"
             >
               Soundbars
             </Link>
@@ -338,7 +338,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       </CustomizableModal>
       {isOpen && (
         <button
-          className="absolute top-4 left-[calc(80%+40px)] sm:left-[calc(60%+30px)] md:left-[calc(40%+30px)] lg:left-[calc(30%+30px)] w-7 h-7 z-[40]"
+          className="absolute top-4 left-[calc(80%+10%)] sm:left-[calc(60%+30px)] md:left-[calc(40%+30px)] lg:left-[calc(30%+30px)] w-7 h-7 z-[40]"
           onClick={() => setIsOpen(false)}
         >
           <CloseButton width={32} height={32} className="text-red-500" />

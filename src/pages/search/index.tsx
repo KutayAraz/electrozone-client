@@ -31,21 +31,27 @@ const SearchResultsPage = () => {
 
   return (
     <div>
-      <h1 className="mx-[1%] my-2">Search Results for "{query}"</h1>
+      <h1 className="mx-[1%] my-2 text-gray-700">
+        Search Results for "{query}"
+      </h1>
       <div className="flex flex-wrap mx-auto px-2">
-        {results.map((product: ProductType) => (
-          <ProductCard
-            id={product.id}
-            key={product.id}
-            productName={product.productName}
-            brand={product.brand}
-            thumbnail={product.thumbnail}
-            price={product.price}
-            averageRating={product.averageRating}
-            subcategory={product.subcategory}
-            category={product.category}
-          />
-        ))}
+        {results.length > 0 ? (
+          results.map((product: ProductType) => (
+            <ProductCard
+              id={product.id}
+              key={product.id}
+              productName={product.productName}
+              brand={product.brand}
+              thumbnail={product.thumbnail}
+              price={product.price}
+              averageRating={product.averageRating}
+              subcategory={product.subcategory}
+              category={product.category}
+            />
+          ))
+        ) : (
+          <p className="text-gray-700 w-full italic">No products found.</p>
+        )}
       </div>
     </div>
   );

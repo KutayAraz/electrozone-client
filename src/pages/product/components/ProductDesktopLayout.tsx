@@ -1,6 +1,5 @@
 import { Rating } from "@mui/material";
 import WishlistButton from "./WishlistButton";
-import { Link } from "react-router-dom";
 import { ProductLayoutProps } from "./models";
 import { useState } from "react";
 import { ReactComponent as NavigationButton } from "@assets/svg/navigation.svg";

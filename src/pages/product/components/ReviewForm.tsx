@@ -29,7 +29,7 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
   const [ratingValue, setRatingValue] = useState<number | null>(0);
   const [hover, setHover] = useState(-1);
   const review = useRef<HTMLTextAreaElement>(null);
-  const { fetchData } = useFetch();
+  const { fetchData, loading } = useFetch();
   const dispatch = useDispatch<any>();
 
   const handleSubmitReview = async (event: React.FormEvent) => {
@@ -46,6 +46,7 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
           type: "success",
           message:
             "Your review has been added to the product. Thank you for your review.",
+          autoHide: true,
         })
       );
       setReviewForm(false);
@@ -117,10 +118,13 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
           />
           <button
             type="button"
-            className="mt-4 bg-theme-blue hover:bg-blue-700 text-white  py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            className={`mt-4 ${
+              loading ? "bg-gray-600" : "bg-theme-blue"
+            } hover:bg-blue-700 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline`}
             onClick={handleSubmitReview}
+            disabled={loading}
           >
-            Submit Review
+            {loading ? "Submitting" : "Submit Review"}
           </button>
         </div>
       </CustomizableModal>

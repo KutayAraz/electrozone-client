@@ -2,33 +2,31 @@ import { Outlet, useLocation } from "react-router-dom";
 import Footer from "./Footer/index";
 import NavStrip from "./NavStrip";
 import Header from "./Header";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, store } from "@/setup/store";
 import { CheckoutIntent } from "@/setup/slices/models";
 import { setUserIntent } from "@/setup/slices/user-slice";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
-import { selectAccessToken } from "@/setup/slices/auth-slice";
-import fetchNewAccessToken from "@/utils/renew-token";
-import { checkHydration } from "@/utils/check-hydration";
 import UserLocation from "./UserLocation";
 import { Alert } from "@mui/material";
 import { hideAlert } from "@/setup/slices/alert-slice";
+import useFetch from "../Hooks/use-fetch";
 
 const Layout = () => {
   const location = useLocation();
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const dispatch = useDispatch();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
-  const accessToken = useSelector(selectAccessToken);
   const buyNowCartItem = useSelector((state: RootState) => state.buyNowCart);
   const alertState = useSelector((state: RootState) => state.alert);
+  const { fetchData } = useFetch();
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const mergeCartsAndSetIntent = async () => {
-    await checkHydration(store);
     let productsToOrder;
-    let token = accessToken;
 
     if (userIntent === CheckoutIntent.Instant) {
       productsToOrder = [buyNowCartItem];
@@ -40,33 +38,34 @@ const Layout = () => {
       }));
     }
 
-    if (!token) {
-      token = await fetchNewAccessToken();
-    }
-
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(productsToOrder),
-        }
-      );
-
-      if (response.ok) {
-        dispatch(clearbuyNowCart());
-        dispatch(clearLocalcart());
-        dispatch(setUserIntent(CheckoutIntent.Normal));
-      }
-    } catch (error) {
-      console.error("Error merging carts:", error);
+    const result = await fetchData(
+      `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
+      "PATCH",
+      productsToOrder,
+      true
+    );
+    if (result?.response.ok) {
+      dispatch(clearbuyNowCart());
+      dispatch(clearLocalcart());
+      dispatch(setUserIntent(CheckoutIntent.Normal));
     }
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (headerRef.current) {
+        const headerHeight = headerRef.current.offsetHeight;
+        const offset = window.scrollY;
+        setIsScrolled(offset > headerHeight);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isSignedIn) return;
@@ -85,8 +84,8 @@ const Layout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="bg-theme-blue px-[2%] md:px-3">
-        <Header />
+      <div className="bg-theme-blue px-[2%] md:px-3" ref={headerRef}>
+        <Header isScrolled={isScrolled}/>
         <NavStrip />
       </div>
       <UserLocation />
