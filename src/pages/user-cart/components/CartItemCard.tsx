@@ -7,6 +7,7 @@ import { ReactComponent as Bin } from "@assets/svg/bin.svg";
 import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
 import { Divider } from "@mui/material";
+import { updateCartItemCount } from "@/setup/slices/user-slice";
 
 const CartItemCard = ({
   id,
@@ -40,6 +41,9 @@ const CartItemCard = ({
       if (result?.response.ok) {
         setSelectedQuantity(newQuantity);
         onQuantityChange();
+        dispatch(
+          updateCartItemCount({ cartItemCount: result.data.totalQuantity })
+        );
       }
     } else {
       dispatch(
@@ -64,6 +68,9 @@ const CartItemCard = ({
 
       if (result?.response.ok) {
         onRemoveItem();
+        dispatch(
+          updateCartItemCount({ cartItemCount: result.data.totalQuantity })
+        );
       }
     } else {
       dispatch(cartSlice.actions.removeItemFromCart(id));
@@ -79,7 +86,10 @@ const CartItemCard = ({
   };
 
   return (
-    <div className="border rounded-md p-2 sm:p-4 flex items-start space-x-4" key={id}>
+    <div
+      className="border rounded-md p-2 sm:p-4 flex items-start space-x-4"
+      key={id}
+    >
       <Link
         to={`/category/${category}/${subcategory}/${id}`}
         className="my-auto flex-shrink-0"
@@ -92,7 +102,7 @@ const CartItemCard = ({
           />
         </div>
       </Link>
-      <Divider orientation="vertical"  flexItem />
+      <Divider orientation="vertical" flexItem />
 
       <div className="flex-grow space-y-3 lg:space-y-4">
         <Link to={`/category/${category}/${subcategory}/${id}`}>
@@ -100,7 +110,7 @@ const CartItemCard = ({
             {productName}
           </p>
         </Link>
-        <p className="text-gray-700">${price}</p>
+        <p className="text-gray-700">${price.toFixed(2)}</p>
         <div className="flex items-center space-x-2">
           <select
             value={selectedQuantity}
@@ -120,7 +130,7 @@ const CartItemCard = ({
             <Bin className="w-6 h-auto" />
           </button>
         </div>
-        <p className="text-lg text-gray-700">Total: ${amount}</p>
+        <p className="text-lg text-gray-700">Total: ${amount.toFixed(2)}</p>
       </div>
     </div>
   );

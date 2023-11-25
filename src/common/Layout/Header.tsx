@@ -23,6 +23,16 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
 
+  const localCartQuantity = useSelector(
+    (state: RootState) => state.localCart.totalQuantity
+  );
+
+  const cartQuantity = useSelector(
+    (state: RootState) => state.user.cartItemCount
+  );
+
+  const itemCount = isSignedIn ? cartQuantity : localCartQuantity;
+
   const handleLocation = () => {
     if (
       !locationInput.current ||
@@ -35,10 +45,6 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
     );
     setIsLocationModalOpen(false);
   };
-
-  const itemCount = isSignedIn
-    ? null
-    : useSelector((state: RootState) => state.localCart.totalQuantity);
 
   return (
     <>
@@ -163,6 +169,7 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
 
       <ProfileModal
         isOpen={isProfileModalOpen}
+        isSignedIn={isSignedIn}
         onClose={() => setIsProfileModalOpen(false)}
       />
     </>

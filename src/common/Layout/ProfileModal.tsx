@@ -6,10 +6,11 @@ import { ReactComponent as ExitIcon } from "@assets/svg/exit.svg";
 
 export interface ProfileModalProps {
   isOpen: boolean;
+  isSignedIn: boolean;
   onClose: () => void;
 }
 
-const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
+const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
   return (
     <>
       <CustomizableModal
@@ -33,24 +34,36 @@ const ProfileModal = ({ isOpen, onClose }: ProfileModalProps) => {
             </Link>
             <div className="flex flex-col space-y-4 mt-4 text-xl bg-white">
               <Divider />
-              <Link to="/my-account/orders" className="px-4">Previous Orders</Link>
+              <Link to="/my-account/orders" className="px-4">
+                Previous Orders
+              </Link>
               <Divider />
-              <Link to="/my-account/profile" className="px-4">Manage Address</Link>
+              <Link to="/my-account/profile" className="px-4">
+                Manage Address
+              </Link>
               <Divider />
-              <Link to="/my-account/update-password" className="px-4">Account Security</Link>
+              <Link to="/my-account/update-password" className="px-4">
+                Account Security
+              </Link>
               <Divider />
-              <Link to="/my-account/wishlist" className="px-4">Wishlist</Link>
+              <Link to="/my-account/wishlist" className="px-4">
+                Wishlist
+              </Link>
               <Divider />
-              <Link to="/contact-us" className="px-4">Contact Us</Link>
+              <Link to="/contact-us" className="px-4">
+                Contact Us
+              </Link>
               <Divider />
             </div>
           </div>
 
           <Link to="/sign-out">
             <Divider />
-            <div className="text-xl px-4 pb-4 mt-4">
-              Sign Out <ExitIcon className="w-[2rem] h-auto inline" />
-            </div>
+            {isSignedIn && (
+              <div className="text-xl px-4 pb-4 mt-4">
+                Sign Out <ExitIcon className="w-[2rem] h-auto inline" />
+              </div>
+            )}
           </Link>
         </div>
       </CustomizableModal>

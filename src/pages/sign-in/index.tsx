@@ -79,8 +79,8 @@ const SignInForm = () => {
       await mergeCartsAndNavigate();
     }
 
-    navigate(from);
     dispatch(clearRedirectPath());
+    navigate(from);
   };
 
   const loginRequest = async (data: SignInFormInputs) => {

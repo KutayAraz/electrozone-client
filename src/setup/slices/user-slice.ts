@@ -6,6 +6,7 @@ const initialState: User = {
   city: null,
   isSignedIn: false,
   userIntent: CheckoutIntent.Normal,
+  cartItemCount: null,
 };
 
 const userSlice = createSlice({
@@ -16,6 +17,7 @@ const userSlice = createSlice({
       state.firstName = action.payload.firstName;
       state.city = action.payload.city;
       state.isSignedIn = true;
+      state.cartItemCount = action.payload.cartItemCount;
     },
     clearCredentials(state) {
       Object.assign(state, initialState);
@@ -29,6 +31,9 @@ const userSlice = createSlice({
     setGuestLocation(state, action) {
       state.city = action.payload.city;
     },
+    updateCartItemCount(state, action) {
+      state.cartItemCount = action.payload.cartItemCount;
+    },
   },
 });
 
@@ -37,6 +42,7 @@ export const {
   clearCredentials,
   updateUserInfo,
   setUserIntent,
+  updateCartItemCount,
 } = userSlice.actions;
 
 export default userSlice;

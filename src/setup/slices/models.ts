@@ -3,6 +3,7 @@ export interface User {
   city: string | null;
   isSignedIn: boolean;
   userIntent: CheckoutIntent;
+  cartItemCount: number | null;
 }
 
 export interface UserProtected {

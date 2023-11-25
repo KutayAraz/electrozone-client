@@ -13,6 +13,7 @@ import UserLocation from "./UserLocation";
 import { Alert } from "@mui/material";
 import { hideAlert } from "@/setup/slices/alert-slice";
 import useFetch from "../Hooks/use-fetch";
+import { checkHydration } from "@/utils/check-hydration";
 
 const Layout = () => {
   const location = useLocation();
@@ -23,9 +24,10 @@ const Layout = () => {
   const alertState = useSelector((state: RootState) => state.alert);
   const { fetchData } = useFetch();
   const headerRef = useRef<HTMLDivElement>(null);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   const mergeCartsAndSetIntent = async () => {
+    await checkHydration(store);
     let productsToOrder;
 
     if (userIntent === CheckoutIntent.Instant) {
@@ -45,11 +47,26 @@ const Layout = () => {
       true
     );
     if (result?.response.ok) {
+      dispatch(setUserIntent(CheckoutIntent.Normal));
       dispatch(clearbuyNowCart());
       dispatch(clearLocalcart());
-      dispatch(setUserIntent(CheckoutIntent.Normal));
     }
   };
+
+  useEffect(() => {
+    if (!isSignedIn) return;
+    if (
+      location.pathname !== "/checkout" &&
+      location.pathname !== "/sign-in" &&
+      (userIntent == CheckoutIntent.Instant ||
+        userIntent === CheckoutIntent.Local)
+    ) {
+      (async () => {
+        await checkHydration(store);
+        await mergeCartsAndSetIntent();
+      })();
+    }
+  }, [location.pathname, userIntent]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,32 +77,17 @@ const Layout = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  useEffect(() => {
-    if (!isSignedIn) return;
-    if (
-      location.pathname !== "/checkout" &&
-      location.pathname !== "/sign-in" &&
-      (userIntent == CheckoutIntent.Instant ||
-        userIntent === CheckoutIntent.Local)
-    ) {
-      console.log("Conditions met. Calling mergeCartsAndSetIntent.");
-      (async () => {
-        await mergeCartsAndSetIntent();
-      })();
-    }
-  }, [location.pathname, userIntent]);
 
   return (
     <div className="flex flex-col min-h-screen">
       <div className="bg-theme-blue px-[2%] md:px-3" ref={headerRef}>
-        <Header isScrolled={isScrolled}/>
+        <Header isScrolled={isScrolled} />
         <NavStrip />
       </div>
       <UserLocation />

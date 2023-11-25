@@ -30,19 +30,15 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
 
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = "hidden"; // Prevent scrolling
-
-      // Prevent touch events
-      const preventSwipe = (e: any) => e.preventDefault();
-      document.addEventListener("touchmove", preventSwipe, { passive: false });
-
-      // Clean up
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflowX = "hidden"; // Prevent x-axis scrolling
+  
       return () => {
-        document.body.style.overflow = "";
-        document.removeEventListener("touchmove", preventSwipe);
+        document.body.style.overflow = originalStyle;
       };
     }
   }, [isOpen]);
+  
 
   const scrollContainerRef = useRef<HTMLDivElement>(null); // Create a ref
 
@@ -68,7 +64,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
 
       <CustomizableModal
         widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%]"
-        heightClass={`${activeView === "main" ? "h-full" : "h-fit"}`}
+        heightClass={`${activeView === "main" ? "h-full" : "h-auto"}`}
         topClass="top-0"
         leftClass="left-0"
         direction="right"
@@ -78,7 +74,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
         onClose={() => setIsOpen(false)}
         className="overflow-x-hidden"
       >
-        <div className="bg-theme-blue shadow-md text-white w-full flex items-center justify-between">
+        <div className="bg-theme-blue shadow-md text-white w-full flex items-center justify-between ">
           {isSignedIn ? (
             <Link
               to={"/my-account"}
@@ -269,7 +265,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           </div>
 
           <div
-            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col p-4 space-y-4 ${
+            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col p-4  space-y-4 ${
               activeView !== "smartphonesAndAccessories"
                 ? "translate-x-full overflow-hidden "
                 : ""

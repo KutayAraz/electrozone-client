@@ -53,6 +53,7 @@ const Checkout = () => {
     }
 
     setShowModal(false);
+    navigate("/my-cart")
   };
 
   const justNavigate = () => {

@@ -3,7 +3,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { defer, redirect, useLoaderData, useNavigate } from "react-router-dom";
 import CartItemCard from "./components/CartItemCard";
-import { setUserIntent } from "@/setup/slices/user-slice";
+import { setUserIntent, updateCartItemCount } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
 import { checkHydration } from "@/utils/check-hydration";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
@@ -68,6 +68,7 @@ const UserCart = () => {
       if (result?.data.success === true) {
         setProducts([]);
         setCartTotal(0);
+        dispatch(updateCartItemCount(0))
       }
     }
     dispatch(
@@ -120,7 +121,7 @@ const UserCart = () => {
               </div>
               <div>
                 <p className="text-xl text-gray-700 font-semibold mt-4">
-                  Cart Total: ${cartTotal}
+                  Cart Total: ${cartTotal.toFixed(2)}
                 </p>
 
                 <div className="flex space-x-4 mt-4">

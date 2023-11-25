@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "@/setup/slices/localCart-slice";
 import { useState } from "react";
 import { addtoBuyNowCart } from "@/setup/slices/buyNowCart-slice";
-import { setUserIntent } from "@/setup/slices/user-slice";
+import { setUserIntent, updateCartItemCount } from "@/setup/slices/user-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -64,7 +64,10 @@ const Product = ({
         { productId: id, quantity },
         true
       );
-      if (!result?.response.ok) return;
+      if (result?.response.ok)
+        dispatch(
+          updateCartItemCount({ cartItemCount: result.data.totalQuantity })
+        );
     } else {
       dispatch(addItemToCart({ id, quantity }));
     }
@@ -126,7 +129,10 @@ const Product = ({
     <div className="mt-4 max-w-screen-xl mx-[2%] xl:mx-auto">
       <div className="flex flex-col text-center">
         <div className="hidden sm:block text-left">
-          <Link to={`/category/${category.replace(/-/g, "_")}`} className="underline">
+          <Link
+            to={`/category/${category.replace(/-/g, "_")}`}
+            className="underline"
+          >
             {modifiedCategory}
           </Link>
           <span>&gt;</span>
