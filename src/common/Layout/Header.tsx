@@ -106,7 +106,7 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
           <button onClick={() => setIsProfileModalOpen(true)}>
             <UserIcon width={32} height={32} />
           </button>
-          <Link to={"/my-cart"}>
+          <Link to={"/my-cart"} className="flex mt-auto">
             <BasketWithBadge itemCount={itemCount} />
           </Link>
         </div>

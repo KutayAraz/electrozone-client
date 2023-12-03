@@ -1,16 +1,9 @@
+import { ProductCardProps } from "@/common/ProductCard";
+
 export interface SubcategoryProps {
   id: number;
-  subcategoryName: string;
-  topSelling: CategoryProductProps[];
-  topWishlisted: CategoryProductProps[];
-}
-
-export interface CategoryProductProps {
-  id: string;
-  subcategoryName: string;
-  productName: string;
-  brand: string;
-  thumbnail: string;
-  averageRating: string;
-  price: number;
+  category: string;
+  subcategory: string;
+  topSelling: ProductCardProps[];
+  topWishlisted: ProductCardProps[];
 }

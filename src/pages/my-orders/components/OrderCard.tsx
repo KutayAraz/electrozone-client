@@ -44,7 +44,7 @@ const OrderCard = ({
       </div>
       <button
         onClick={() => navigate(`${orderId}`)}
-        className="absolute top-2 right-2 border-1 text-white bg-theme-blue hover:bg-blue-600 rounded-md p-[4px]"
+        className="absolute top-2 right-2 border-1 text-white bg-theme-blue hover:bg-black rounded-md p-[4px]"
       >
         Order Details
       </button>

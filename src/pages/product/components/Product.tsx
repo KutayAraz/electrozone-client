@@ -36,7 +36,7 @@ const Product = ({
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
-  const { fetchData } = useFetch();
+  const { fetchData, isLoading } = useFetch();
   const modifiedCategory = capitalizeWords(category.replace(/_/g, " "));
   const modifiedSubcategory = capitalizeWords(subcategory.replace(/_/g, " "));
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -62,7 +62,9 @@ const Product = ({
         `${import.meta.env.VITE_API_URL}/carts/user-cart`,
         "POST",
         { productId: id, quantity },
-        true
+        true,
+        false,
+        "addToCart"
       );
       if (result?.response.ok)
         dispatch(
@@ -99,7 +101,9 @@ const Product = ({
       `${import.meta.env.VITE_API_URL}/products/${id}/wishlist`,
       "PATCH",
       null,
-      true
+      true,
+      false,
+      "wishlist"
     );
 
     if (result?.response.ok) {
@@ -162,7 +166,9 @@ const Product = ({
           decrementQuantity={decrementQuantity}
           handleQuantityChange={handleQuantityChange}
           handleAddToCart={handleAddToCart}
+          addingToCart={isLoading("default")}
           handleBuyNow={handleBuyNow}
+          togglingWishlist={isLoading("toggleWishlist")}
           toggleWishlist={toggleWishlist}
           setSelectedImage={setSelectedImage}
         />
@@ -182,8 +188,10 @@ const Product = ({
           decrementQuantity={decrementQuantity}
           handleQuantityChange={handleQuantityChange}
           handleAddToCart={handleAddToCart}
+          addingToCart={isLoading("default")}
           handleBuyNow={handleBuyNow}
           toggleWishlist={toggleWishlist}
+          togglingWishlist={isLoading("toggleWishlist")}
           setSelectedImage={setSelectedImage}
         />
       )}

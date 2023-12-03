@@ -16,7 +16,7 @@ const OrderItemCard = ({
     <Link
       to={`/category/${category}/${subcategory}/${id}`}
       key={id}
-      className="group border px-4 py-2 rounded-md hover:shadow-md transition duration-200 transform hover:scale-[101%]"
+      className="group border px-4 py-2 rounded-md hover:shadow-md hover:border-gray-400"
     >
       <div className="flex items-center justify-center mb-4">
         <img
@@ -26,12 +26,13 @@ const OrderItemCard = ({
         />
       </div>
       <Divider />
-      <p className="text-gray-700 group-hover:text-theme-blue mt-2">{productName}</p>
-      <p className="text-gray-700 group-hover:text-theme-blue transition duration-200">
-        {brand}
+      <p className="text-gray-700 group-hover:text-theme-blue mt-2">
+        {productName}
       </p>
-      <p className="text-gray-700 group-hover:text-theme-blue group-hover:font-semibold">
-        {quantity} x ${price.toFixed(2)}
+      <p className="text-gray-700 group-hover:text-theme-blue">{brand}</p>
+      <p className="text-gray-700 group-hover:text-theme-blue">Quantity: {quantity}</p>
+      <p className="text-gray-700 group-hover:text-theme-blue ">
+        Total: ${price.toFixed(2)}
       </p>
     </Link>
   );

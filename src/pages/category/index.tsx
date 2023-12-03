@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
 import Subcategory from "./components/Subcategory";
 import loaderFetch from "@/utils/loader-fetch";
+import { SubcategoryProps } from "./components/models";
 
 export const CategoryPage = () => {
   const { category }: any = useLoaderData();
@@ -11,11 +12,12 @@ export const CategoryPage = () => {
       <Suspense fallback={<p>Loading Category..</p>}>
         <Await resolve={category}>
           {(loadedCategory) =>
-            loadedCategory.map((subcategory: any, index: number) => (
+            loadedCategory.map((subcategory: SubcategoryProps, index: number) => (
               <Subcategory
                 key={index}
                 id={index}
-                subcategoryName={subcategory.subcategory}
+                category={subcategory.category}
+                subcategory={subcategory.subcategory}
                 topSelling={subcategory.topSelling}
                 topWishlisted={subcategory.topWishlisted}
               />

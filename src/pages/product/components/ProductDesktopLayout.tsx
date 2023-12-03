@@ -18,6 +18,8 @@ const ProductDesktopLayout = ({
   incrementQuantity,
   stock,
   handleAddToCart,
+  addingToCart,
+  navigatingToCart,
   handleBuyNow,
   averageRating,
   isWishlisted,
@@ -61,7 +63,7 @@ const ProductDesktopLayout = ({
           <button onClick={scrollUp}>
             <NavigationButton className="w-6 h-6 rotate-[270deg] mb-2" />
           </button>
-          ) : (
+        ) : (
           <div className="w-6 h-6 mb-2"></div>
         )}
 
@@ -157,13 +159,16 @@ const ProductDesktopLayout = ({
           <div className="flex flex-col w-[80%] mx-auto">
             <button
               onClick={handleAddToCart}
-              className="w-full px-4 py-2 bg-theme-blue text-white rounded-xl my-4"
+              disabled={addingToCart}
+              className={`${
+                addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-600"
+              } w-full px-4 py-2  text-white rounded-xl my-4`}
             >
-              Add to Cart
+              {addingToCart ? "Adding To Cart.." : "Add to Cart"}
             </button>
             <button
               onClick={handleBuyNow}
-              className="w-full px-4 py-2 bg-theme-orange text-white rounded-xl"
+              className="w-full px-4 py-2 bg-orange-400 hover:bg-orange-300 text-white rounded-xl"
             >
               Buy now
             </button>

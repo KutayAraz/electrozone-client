@@ -13,6 +13,7 @@ export default {
       colors: {
         "theme-blue": "#13193F",
         "theme-orange": "#febd69",
+        "theme-purple": "#A34393",
       },
       spacing: {
         1: "1px",
@@ -25,6 +26,5 @@ export default {
       },
     },
   },
-  plugins: [
-  ],
+  plugins: [],
 };

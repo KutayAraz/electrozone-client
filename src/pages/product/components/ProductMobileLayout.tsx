@@ -20,6 +20,8 @@ const ProductMobileLayout = ({
   stock,
   handleAddToCart,
   handleBuyNow,
+  addingToCart,
+  navigatingToCart,
   averageRating,
   isWishlisted,
   toggleWishlist,

@@ -8,7 +8,10 @@ import { useNavigate } from "react-router-dom";
 const useFetch = () => {
   const dispatch = useDispatch<any>();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  const [loading, setLoading] = useState(false);
+  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
+    {}
+  );
+
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -17,9 +20,10 @@ const useFetch = () => {
     method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
     body?: any,
     withAuth: boolean = false,
-    withCredentials: boolean = false
+    withCredentials: boolean = false,
+    identifier: string = "default"
   ) => {
-    setLoading(true);
+    setLoadingStates((prev) => ({ ...prev, [identifier]: true }));
     setError(null);
 
     const doFetch = async (token: string | null) => {
@@ -36,7 +40,7 @@ const useFetch = () => {
         method,
         headers,
         body: body ? JSON.stringify(body) : undefined,
-        credentials: withCredentials ? 'include' : 'same-origin'
+        credentials: withCredentials ? "include" : "same-origin",
       });
       return response;
     };
@@ -64,7 +68,7 @@ const useFetch = () => {
             );
             break;
           case 401:
-            navigate('/sign-in', { state: { from: location } });
+            navigate("/sign-in", { state: { from: location } });
             dispatch(
               displayAlert({
                 type: "error",
@@ -73,25 +77,25 @@ const useFetch = () => {
               })
             );
             break;
-            case 404:
-              dispatch(
-                displayAlert({
-                  type: "error",
-                  message: "404 Not Found.",
-                  autoHide: true,
-                })
-              );
-              break;
+          case 404:
+            dispatch(
+              displayAlert({
+                type: "error",
+                message: "404 Not Found.",
+                autoHide: true,
+              })
+            );
+            break;
           default:
             throw new Error("Network response was not ok.");
         }
       }
 
       const data = await response.json();
-      setLoading(false);
+      setLoadingStates((prev) => ({ ...prev, [identifier]: false }));
       return { response, data };
     } catch (err: any) {
-      setLoading(false);
+      setLoadingStates((prev) => ({ ...prev, [identifier]: false }));
       setError(err.message);
       dispatch(
         displayAlert({
@@ -103,7 +107,10 @@ const useFetch = () => {
     }
   };
 
-  return { fetchData, loading, error };
+  const isLoading = (identifier: string = "default") =>
+    loadingStates[identifier] || false;
+
+  return { fetchData, isLoading, error };
 };
 
 export default useFetch;

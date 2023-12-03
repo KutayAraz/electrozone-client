@@ -1,6 +1,6 @@
 const ProjectDetails = () => {
   return (
-    <div className="max-w-screen-lg mx-2 xs:mx-[2%] mt-2">
+    <div className="max-w-screen-lg mx-2 xs:mx-[2%] my-4">
       <h4 className="text-lg text-gray-700 font-semibold">Thank you for visiting electrozone.com! Below you can find the tools used to create this project.</h4>
       <ul className="flex flex-col space-y-[4px] mt-2 list-disc ml-4 xs:ml-[2%]">
         <li>This project is built with Vite.js and Typescript.</li>

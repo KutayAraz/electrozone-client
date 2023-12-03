@@ -10,21 +10,21 @@ const CheckoutProductCard = ({
 }: CheckoutProductCardProps) => {
   return (
     <div
-      className="bg-white p-4 rounded-md shadow-md flex items-center space-x-4"
+      className="bg-white p-4 rounded-md shadow-md flex items-center space-x-4 w-full max-w-screen-md "
       key={id}
     >
-      <div className="w-2/5 sm:w-1/5">
+      <div className="max-w-[20%] min-w-[100px] md:max-w-[200px] flex-grow">
         <img
           src={thumbnail}
           alt={`image for ${productName}`}
-          className="w-full h-auto object-contain rounded-md"
+          className="w-auto h-32 object-contain mx-auto"
         />
       </div>
       <Divider orientation="vertical" flexItem/>
       <div className="flex-1">      
         <p className="font-[500]">{productName}</p>
         <p className="text-gray-700">{brand}</p>
-        <p className="mt-2">{quantity}</p>
+        <p className="mt-2">Quantity: {quantity}</p>
         <p className="text-theme-blue font-semibold">${price.toFixed(2)}</p>
       </div>
     </div>

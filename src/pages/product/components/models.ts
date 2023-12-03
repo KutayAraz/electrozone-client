@@ -45,6 +45,8 @@ export interface ProductLayoutProps {
   stock: number;
   handleAddToCart: () => void;
   handleBuyNow: () => void;
+  addingToCart: boolean;
+  navigatingToCart: boolean;
   averageRating: number;
   isWishlisted: boolean;
   toggleWishlist: () => void;
