@@ -168,7 +168,6 @@ const Product = ({
           handleAddToCart={handleAddToCart}
           addingToCart={isLoading("default")}
           handleBuyNow={handleBuyNow}
-          togglingWishlist={isLoading("toggleWishlist")}
           toggleWishlist={toggleWishlist}
           setSelectedImage={setSelectedImage}
         />
@@ -191,7 +190,6 @@ const Product = ({
           addingToCart={isLoading("default")}
           handleBuyNow={handleBuyNow}
           toggleWishlist={toggleWishlist}
-          togglingWishlist={isLoading("toggleWishlist")}
           setSelectedImage={setSelectedImage}
         />
       )}

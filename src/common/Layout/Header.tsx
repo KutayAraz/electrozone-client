@@ -48,7 +48,7 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
 
   return (
     <>
-      <div className="flex justify-between w-full text-white items-center">
+      <div className="flex justify-between w-full text-white items-center py-2 sm:py-0">
         <div className="flex">
           <BurgerMenu className="block sm:hidden"></BurgerMenu>
           <Link to={"/"} className="max-w-[80%] mb-1 flex items-center">

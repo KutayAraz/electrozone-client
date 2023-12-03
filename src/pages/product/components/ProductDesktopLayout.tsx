@@ -19,7 +19,6 @@ const ProductDesktopLayout = ({
   stock,
   handleAddToCart,
   addingToCart,
-  navigatingToCart,
   handleBuyNow,
   averageRating,
   isWishlisted,
@@ -123,7 +122,7 @@ const ProductDesktopLayout = ({
       <div className="flex flex-col w-[30%] text-center m-auto border-1 py-6 border-gray-300 rounded-md h-[640px] justify-evenly lg:justify-center lg:space-y-3 px-2">
         <h2 className="text-lg">{productName}</h2>
         <p className="font-[500] ">Brand: {brand}</p>
-        <a href="#rating" className="mr-4">
+        <a href="#rating" className="mx-auto">
           <Rating
             name="half-rating-read"
             value={averageRating}
@@ -168,7 +167,7 @@ const ProductDesktopLayout = ({
             </button>
             <button
               onClick={handleBuyNow}
-              className="w-full px-4 py-2 bg-orange-400 hover:bg-orange-300 text-white rounded-xl"
+              className="w-full px-4 py-2 bg-orange-300 hover:bg-orange-400  rounded-xl"
             >
               Buy now
             </button>

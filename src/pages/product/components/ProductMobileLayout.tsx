@@ -21,7 +21,6 @@ const ProductMobileLayout = ({
   handleAddToCart,
   handleBuyNow,
   addingToCart,
-  navigatingToCart,
   averageRating,
   isWishlisted,
   toggleWishlist,
