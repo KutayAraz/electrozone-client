@@ -64,7 +64,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
 
       <CustomizableModal
         widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%]"
-        heightClass={`${activeView === "main" ? "h-full" : "h-auto"}`}
+        heightClass={`${activeView === "main" ? "h-full" : "h-[100%]"}`}
         topClass="top-0"
         leftClass="left-0"
         direction="right"
