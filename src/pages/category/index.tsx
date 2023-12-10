@@ -16,7 +16,6 @@ export const CategoryPage = () => {
               <Subcategory
                 key={index}
                 id={index}
-                category={subcategory.category}
                 subcategory={subcategory.subcategory}
                 topSelling={subcategory.topSelling}
                 topWishlisted={subcategory.topWishlisted}

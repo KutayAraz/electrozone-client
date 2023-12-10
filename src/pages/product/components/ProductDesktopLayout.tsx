@@ -1,9 +1,9 @@
-import { Rating } from "@mui/material";
+import { Divider, Rating } from "@mui/material";
 import WishlistButton from "./WishlistButton";
 import { ProductLayoutProps } from "./models";
 import { useState } from "react";
 import { ReactComponent as NavigationButton } from "@assets/svg/navigation.svg";
-
+import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
 const ProductDesktopLayout = ({
   productName,
   brand,
@@ -23,11 +23,19 @@ const ProductDesktopLayout = ({
   averageRating,
   isWishlisted,
   toggleWishlist,
+  onRatingClick,
 }: ProductLayoutProps) => {
   const allImages = [{ productImage: thumbnail }, ...images];
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [startIndex, setStartIndex] = useState<number>(0);
   const [hoveredImage, setHoveredImage] = useState(null);
+  const [isClicked, setIsClicked] = useState(false);
+
+  const handleClick = () => {
+    toggleWishlist();
+    setIsClicked(true);
+    setTimeout(() => setIsClicked(false), 300); 
+  };
 
   const nextImage = () => {
     const nextIndex = (selectedIndex + 1) % allImages.length;
@@ -54,7 +62,7 @@ const ProductDesktopLayout = ({
   };
 
   return (
-    <div className="flex w-full my-6 h-[700px]">
+    <div className="flex w-full h-[700px]">
       {/* First Child Div - Image Thumbnails */}
       <div className="flex flex-col flex-shrink-0 items-center justify-center">
         {/* Scroll Up Button or Spacer */}
@@ -77,7 +85,7 @@ const ProductDesktopLayout = ({
                 key={index}
                 src={image.productImage}
                 alt={`image for ${productName}`}
-                className={`object-contain cursor-pointer h-28 w-28 rounded-[10px] ${
+                className={`object-contain cursor-pointer h-28 w-28 p-2 rounded-[10px] ${
                   (hoveredImage ? hoveredImage : selectedImage) ===
                   image.productImage
                     ? "border-1 border-theme-blue"
@@ -104,25 +112,25 @@ const ProductDesktopLayout = ({
       {/* Second Child Div - Large Selected Image */}
       <div className="flex flex-grow items-center justify-center ml-2 lg:ml-0">
         <button onClick={prevImage}>
-          <NavigationButton className="w-6 h-16 rotate-180 mr-2" />
+          <NavigationButton className="w-6 h-16 rotate-180 m-2" />
         </button>
         <div className="flex flex-grow items-center justify-center h-[640px] max-w-[640px] border-1 border-gray-300 rounded-md">
           <img
             src={hoveredImage ? hoveredImage : selectedImage}
             alt={`image for ${productName}`}
-            className="w-auto h-auto rounded-[6px] object-contain max-h-[640px]"
+            className="w-auto h-auto rounded-[6px] object-contain max-h-[640px] p-4"
           />
         </div>
-        <button onClick={nextImage}>
-          <NavigationButton className="w-6 h-16 ml-2" />
+        <button onClick={nextImage} className="m">
+          <NavigationButton className="w-6 h-16 m-2" />
         </button>
       </div>
 
       {/* Third Child Div - Product Details and Actions */}
-      <div className="flex flex-col w-[30%] text-center m-auto border-1 py-6 border-gray-300 rounded-md h-[640px] justify-evenly lg:justify-center lg:space-y-3 px-2">
+      <div className="flex flex-col w-[30%] text-center m-auto border-1 py-6 border-gray-300 rounded-md h-[640px] justify-evenly lg:justify-center lg:space-y-3 px-2 flex-shrink-0">
         <h2 className="text-lg">{productName}</h2>
         <p className="font-[500] ">Brand: {brand}</p>
-        <a href="#rating" className="mx-auto">
+        <div onClick={onRatingClick} className="mx-auto hover:cursor-pointer">
           <Rating
             name="half-rating-read"
             value={averageRating}
@@ -130,7 +138,7 @@ const ProductDesktopLayout = ({
             readOnly
             className="mt-4"
           />
-        </a>
+        </div>
         <p className="text-lg font-[500]">${price}</p>
         <div className="flex justify-center mb-4 items-center s">
           <button
@@ -160,7 +168,7 @@ const ProductDesktopLayout = ({
               onClick={handleAddToCart}
               disabled={addingToCart}
               className={`${
-                addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-600"
+                addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-900"
               } w-full px-4 py-2  text-white rounded-xl my-4`}
             >
               {addingToCart ? "Adding To Cart.." : "Add to Cart"}
@@ -176,10 +184,17 @@ const ProductDesktopLayout = ({
           <p className="text-red-500">This product is currently out of stock</p>
         )}
         <div className="flex flex-col justify-center items-center">
-          <WishlistButton
-            isWishlisted={isWishlisted}
-            toggleWishlist={toggleWishlist}
-          />
+          <div className="flex">
+            <button onClick={handleClick}>
+              <HeartIcon
+                className={`w-8 h-8 inline-block transition-transform duration-300 ${
+                  isClicked ? "transform scale-125" : ""
+                } `}
+                fill={`${isWishlisted ? "#febd69" : "#ffffff"}`}
+              />
+              {isWishlisted ? "Remove from wishlist" : "Add to Wishlist"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

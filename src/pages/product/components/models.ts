@@ -12,6 +12,7 @@ export interface ProductProps {
   subcategory: string;
   isWishlisted: boolean;
   updateWishlistStatus: (status: boolean) => void;
+  onRatingClick: () => void;
 }
 
 export interface ReviewsProps {
@@ -49,4 +50,5 @@ export interface ProductLayoutProps {
   averageRating: number;
   isWishlisted: boolean;
   toggleWishlist: () => void;
+  onRatingClick: () => void;
 }

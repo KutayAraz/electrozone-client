@@ -12,7 +12,7 @@ import { displayAlert } from "@/setup/slices/alert-slice";
 import { RootState } from "@/setup/store";
 import useFetch from "@/common/Hooks/use-fetch";
 import { capitalizeWords } from "@/utils/capitalize-words";
-import { useMediaQuery } from "@mui/material";
+import { Divider, useMediaQuery } from "@mui/material";
 import ProductMobileLayout from "./ProductMobileLayout";
 import ProductDesktopLayout from "./ProductDesktopLayout";
 
@@ -30,6 +30,7 @@ const Product = ({
   subcategory,
   isWishlisted,
   updateWishlistStatus,
+  onRatingClick,
 }: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState(thumbnail);
@@ -170,6 +171,7 @@ const Product = ({
           handleBuyNow={handleBuyNow}
           toggleWishlist={toggleWishlist}
           setSelectedImage={setSelectedImage}
+          onRatingClick={onRatingClick}
         />
       ) : (
         <ProductDesktopLayout
@@ -191,9 +193,11 @@ const Product = ({
           handleBuyNow={handleBuyNow}
           toggleWishlist={toggleWishlist}
           setSelectedImage={setSelectedImage}
+          onRatingClick={onRatingClick}
         />
       )}
-      <h3 className="underline mb-2 text-lg font-[500]">Product Description</h3>
+      <Divider sx={{ borderBottomWidth: 1.5, marginY: 3 }} />
+      <h3 className="underline my-2 text-lg font-[500]">Product Description</h3>
       <ul className="max-w-screen-xl" id="rating">
         {description.map((bulletPoint: string, index: number) => (
           <li className="mb-2" key={index}>
@@ -201,6 +205,7 @@ const Product = ({
           </li>
         ))}
       </ul>
+      <Divider sx={{ borderBottomWidth: 1.5, marginY: 3 }} />
     </div>
   );
 };

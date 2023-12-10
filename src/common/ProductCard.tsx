@@ -57,11 +57,12 @@ const ProductCard = ({
     );
   };
 
-  const handleRatingClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // prevent the Link component click event
-    console.log("rating clicked");
-    navigate(`/category/${category}/${subcategory}/${id}#rating`);
-  };
+  // const handleRatingClick = (e: React.MouseEvent) => {
+  //   e.preventDefault();
+  //   e.stopPropagation(); // prevent the Link component click event
+  //   console.log("rating clicked");
+  //   navigate(`/category/${category}/${subcategory}/${id}#rating`);
+  // };
 
   return (
     <div className="w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-2">
@@ -76,15 +77,16 @@ const ProductCard = ({
             className="w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto"
           />
         </div>
-        
+
         <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-2 justify-between">
-        <Divider
-          orientation="vertical"
-          className="self-stretch xs:hidden m-2"
-        />
-        <Divider className="self-stretch hidden xs:block" />
+          <Divider
+            orientation="vertical"
+            className="self-stretch xs:hidden m-2"
+          />
+          <Divider className="self-stretch hidden xs:block" />
           <p>{productName}</p>
           <p className="font-[500]">{brand}</p>
+
           <Rating
             name="half-rating-read"
             value={averageRating}
@@ -92,10 +94,11 @@ const ProductCard = ({
             readOnly
             className="mx-auto"
           />
+
           <p>$ {price.toFixed(2)}</p>
           <button
             onClick={handleAddToCart}
-            className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full  bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-900"
+            className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-900"
           >
             Add to Cart
           </button>

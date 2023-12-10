@@ -64,7 +64,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
 
       <CustomizableModal
         widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%]"
-        heightClass={`${activeView === "main" ? "h-full" : "h-[100%]"}`}
+        heightClass={`${activeView === "main" ? "h-full overflow-y-auto" : "min-h-screen h-auto overflow-y-hidden"}`}
         topClass="top-0"
         leftClass="left-0"
         direction="right"
@@ -112,13 +112,13 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
                 Best Sellers
               </Link>
               <Link
-                to={"/category/most-wishlisted"}
+                to={"/trending/most-wishlisted"}
                 className="text-xl hover:bg-gray-100 px-4 py-3"
               >
                 Most Wishlisted
               </Link>
               <Link
-                to={"/category/best-rated"}
+                to={"/trending/best-rated"}
                 className="text-xl hover:bg-gray-100 px-4 py-3"
               >
                 Best Rated

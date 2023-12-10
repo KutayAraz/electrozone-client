@@ -38,19 +38,22 @@ const ProductMobileLayout = ({
         lazyLoad={"ondemand"}
         slidesToShow={1}
         slidesToScroll={1}
-        className="block sm:hidden"
+        className=""
       >
-        <img
-          src={thumbnail}
-          alt={`thumbnail image for ${productName}`}
-          className="object-contain w-64 h-64 mb-4 sm:mb-0"
-        />
+        <div>
+          <img
+            src={thumbnail}
+            alt={`thumbnail image for ${productName}`}
+            className="object-contain h-[40vh] w-auto mx-auto"
+          />
+        </div>
+
         {images?.map((image: any) => (
           <div key={image.id}>
             <img
               src={image.productImage}
               alt={`image for ${productName}`}
-              className="w-64 h-64 object-contain mx-auto"
+              className="object-contain h-[40vh] w-auto mx-auto"
               onClick={() => setSelectedImage(image.productImage)}
             />
           </div>

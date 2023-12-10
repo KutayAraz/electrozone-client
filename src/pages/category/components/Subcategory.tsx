@@ -3,7 +3,6 @@ import { SubcategoryProps } from "./models";
 import ProductCard, { ProductCardProps } from "@/common/ProductCard";
 
 const Subcategory = ({
-  category,
   subcategory,
   topSelling,
   topWishlisted,
@@ -21,8 +20,8 @@ const Subcategory = ({
         {topSelling.map((product: ProductCardProps) => (
           <ProductCard
             key={product.id}
-            category={category}
-            subcategory={subcategory}
+            category={product.category}
+            subcategory={product.subcategory}
             id={product.id}
             thumbnail={product.thumbnail}
             productName={product.productName}
@@ -43,8 +42,8 @@ const Subcategory = ({
         {topWishlisted.map((product: ProductCardProps) => (
           <ProductCard
             key={product.id}
-            category={category}
-            subcategory={subcategory}
+            category={product.category}
+            subcategory={product.subcategory}
             id={product.id}
             thumbnail={product.thumbnail}
             productName={product.productName}

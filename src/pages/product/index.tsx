@@ -3,12 +3,13 @@ import {
   defer,
   redirect,
   useLoaderData,
+  useLocation,
   useParams,
 } from "react-router-dom";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Product from "./components/Product";
 import { store } from "@/setup/store";
-import Review from "./components/review-list/Review";
+import Review from "./components/Review";
 import ReviewForm from "./components/ReviewForm";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
@@ -24,10 +25,38 @@ const ProductPage = () => {
   const params = useParams();
   const productId = params.productId as string;
 
+  const location = useLocation();
+
+  // useEffect(() => {
+  //   if (location.hash === "#rating") {
+  //     const observer = new MutationObserver((mutations, obs) => {
+  //       const reviewsSection = document.getElementById("rating");
+  //       if (reviewsSection) {
+  //         reviewsSection.scrollIntoView({ behavior: "smooth" });
+  //         obs.disconnect(); // Stop observing once we have found the element
+  //       }
+  //     });
+
+  //     observer.observe(document, {
+  //       childList: true,
+  //       subtree: true,
+  //     });
+
+  //     return () => observer.disconnect();
+  //   }
+  // }, [location.hash]);
+
   const [productWishlist, setProductWishlist] = useState<boolean>(wishlisted);
 
   const updateWishlistStatus = (isWishlisted: boolean) => {
     setProductWishlist(isWishlisted);
+  };
+
+  const scrollToReviews = () => {
+    const reviewsSection = document.getElementById("rating");
+    if (reviewsSection) {
+      reviewsSection.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -45,6 +74,7 @@ const ProductPage = () => {
             price={productData.price.toFixed(2)}
             stock={productData.stock}
             averageRating={productData.averageRating}
+            onRatingClick={scrollToReviews}
             subcategory={productData.subcategory}
             category={productData.category}
             isWishlisted={productWishlist}
@@ -61,23 +91,25 @@ const ProductPage = () => {
           />
         )}
       />
-      <section id="rating" className="my-4 max-w-screen-xl mx-[2%] xl:mx-auto">
-        <h4 className="mb-2 underline text-lg">Reviews</h4>
+      <section id="rating" className="max-w-screen-xl mx-[2%] xl:mx-auto">
+        <h4 className="underline text-lg font-[500] mb-6">Customer Reviews</h4>
         <Await
           resolve={reviews}
           children={(resolvedReviews) =>
             resolvedReviews.length === 0 ? (
-              <p className="italic">This product has no reviews yet.</p>
+              <p className="italic mb-4">This product has no reviews yet.</p>
             ) : (
-              resolvedReviews.map((review: any) => (
-                <Review
-                  key={review.id}
-                  id={review.id}
-                  reviewDate={review.reviewDate}
-                  rating={review.rating}
-                  comment={review.comment}
-                />
-              ))
+              <div className="mb-8">
+                {resolvedReviews.map((review: any) => (
+                  <Review
+                    key={review.id}
+                    id={review.id}
+                    reviewDate={review.reviewDate}
+                    rating={review.rating}
+                    comment={review.comment}
+                  />
+                ))}
+              </div>
             )
           }
         />
@@ -145,7 +177,6 @@ export default ProductPage;
 //     throw error;
 //   }
 // };
-
 
 async function loadProduct(productId: string) {
   const result = await loaderFetch(
