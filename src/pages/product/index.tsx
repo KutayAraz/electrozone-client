@@ -191,13 +191,11 @@ async function checkWishlist({ request, productId }: any) {
     return false;
   }
 
-  const result = await loaderFetchProtected(
+  return await loaderFetchProtected(
     `${import.meta.env.VITE_API_URL}/products/${productId}/wishlist`,
     "GET",
     request
   );
-
-  return result.data;
 }
 
 async function loadReviews(productId: string) {
