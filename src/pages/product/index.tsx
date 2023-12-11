@@ -3,10 +3,9 @@ import {
   defer,
   redirect,
   useLoaderData,
-  useLocation,
   useParams,
 } from "react-router-dom";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import Product from "./components/Product";
 import { store } from "@/setup/store";
 import Review from "./components/Review";
@@ -22,10 +21,17 @@ const ProductPage = () => {
   const { product, reviews, wishlisted, canCurrentUserReview }: any =
     useLoaderData();
 
+  const [productWishlist, setProductWishlist] = useState<boolean>(wishlisted);
+
+  const updateWishlistStatus = (isWishlisted: boolean) => {
+    setProductWishlist(isWishlisted);
+  };
+
   const params = useParams();
   const productId = params.productId as string;
 
-  const location = useLocation();
+  // This code is for being able to scroll to reviews outside of this component 
+  // const location = useLocation();
 
   // useEffect(() => {
   //   if (location.hash === "#rating") {
@@ -46,12 +52,6 @@ const ProductPage = () => {
   //   }
   // }, [location.hash]);
 
-  const [productWishlist, setProductWishlist] = useState<boolean>(wishlisted);
-
-  const updateWishlistStatus = (isWishlisted: boolean) => {
-    setProductWishlist(isWishlisted);
-  };
-
   const scrollToReviews = () => {
     const reviewsSection = document.getElementById("rating");
     if (reviewsSection) {
@@ -63,23 +63,21 @@ const ProductPage = () => {
     <Suspense fallback={<p>Loading...</p>}>
       <Await
         resolve={Promise.all([product, wishlisted])}
-        children={([productData]) => (
-          <Product
-            id={productData.id}
-            productName={productData.productName}
-            thumbnail={productData.thumbnail}
-            images={productData.productImages}
-            brand={productData.brand}
-            description={productData.description}
-            price={productData.price.toFixed(2)}
-            stock={productData.stock}
-            averageRating={productData.averageRating}
-            onRatingClick={scrollToReviews}
-            subcategory={productData.subcategory}
-            category={productData.category}
-            isWishlisted={productWishlist}
-            updateWishlistStatus={updateWishlistStatus}
-          />
+        children={([productData, wishlist]) => (<Product
+          id={productData.id}
+          productName={productData.productName}
+          thumbnail={productData.thumbnail}
+          images={productData.productImages}
+          brand={productData.brand}
+          description={productData.description}
+          price={productData.price.toFixed(2)}
+          stock={productData.stock}
+          averageRating={productData.averageRating}
+          onRatingClick={scrollToReviews}
+          subcategory={productData.subcategory}
+          category={productData.category}
+          isInitiallyWishlisted={wishlisted}
+        />
         )}
       />
       <Await
@@ -193,13 +191,11 @@ async function checkWishlist({ request, productId }: any) {
     return false;
   }
 
-  const result = await loaderFetchProtected(
+  return await loaderFetchProtected(
     `${import.meta.env.VITE_API_URL}/products/${productId}/wishlist`,
     "GET",
     request
   );
-
-  return result.data;
 }
 
 async function loadReviews(productId: string) {
@@ -267,6 +263,8 @@ export const loader = async ({ request, params }: any) => {
       wishlistedPromise,
       canReviewPromise,
     ]);
+
+
 
     return defer({
       product,

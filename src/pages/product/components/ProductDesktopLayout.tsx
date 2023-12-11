@@ -1,10 +1,11 @@
-import { Divider, Rating } from "@mui/material";
+import { Rating } from "@mui/material";
 import WishlistButton from "./WishlistButton";
 import { ProductLayoutProps } from "./models";
 import { useState } from "react";
 import { ReactComponent as NavigationButton } from "@assets/svg/navigation.svg";
-import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
+
 const ProductDesktopLayout = ({
+  productId,
   productName,
   brand,
   thumbnail,
@@ -21,21 +22,16 @@ const ProductDesktopLayout = ({
   addingToCart,
   handleBuyNow,
   averageRating,
-  isWishlisted,
-  toggleWishlist,
+  isInitiallyWishlisted,
   onRatingClick,
 }: ProductLayoutProps) => {
   const allImages = [{ productImage: thumbnail }, ...images];
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [startIndex, setStartIndex] = useState<number>(0);
   const [hoveredImage, setHoveredImage] = useState(null);
-  const [isClicked, setIsClicked] = useState(false);
 
-  const handleClick = () => {
-    toggleWishlist();
-    setIsClicked(true);
-    setTimeout(() => setIsClicked(false), 300); 
-  };
+
+
 
   const nextImage = () => {
     const nextIndex = (selectedIndex + 1) % allImages.length;
@@ -85,12 +81,11 @@ const ProductDesktopLayout = ({
                 key={index}
                 src={image.productImage}
                 alt={`image for ${productName}`}
-                className={`object-contain cursor-pointer h-28 w-28 p-2 rounded-[10px] ${
-                  (hoveredImage ? hoveredImage : selectedImage) ===
-                  image.productImage
+                className={`object-contain cursor-pointer h-28 w-28 p-2 rounded-[10px] ${(hoveredImage ? hoveredImage : selectedImage) ===
+                    image.productImage
                     ? "border-1 border-theme-blue"
                     : ""
-                }`}
+                  }`}
                 onMouseOver={() => setHoveredImage(image.productImage)}
                 onClick={() => {
                   setSelectedImage(image.productImage);
@@ -167,9 +162,8 @@ const ProductDesktopLayout = ({
             <button
               onClick={handleAddToCart}
               disabled={addingToCart}
-              className={`${
-                addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-900"
-              } w-full px-4 py-2  text-white rounded-xl my-4`}
+              className={`${addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-900"
+                } w-full px-4 py-2  text-white rounded-xl my-4`}
             >
               {addingToCart ? "Adding To Cart.." : "Add to Cart"}
             </button>
@@ -184,17 +178,7 @@ const ProductDesktopLayout = ({
           <p className="text-red-500">This product is currently out of stock</p>
         )}
         <div className="flex flex-col justify-center items-center">
-          <div className="flex">
-            <button onClick={handleClick}>
-              <HeartIcon
-                className={`w-8 h-8 inline-block transition-transform duration-300 ${
-                  isClicked ? "transform scale-125" : ""
-                } `}
-                fill={`${isWishlisted ? "#febd69" : "#ffffff"}`}
-              />
-              {isWishlisted ? "Remove from wishlist" : "Add to Wishlist"}
-            </button>
-          </div>
+          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId}/>
         </div>
       </div>
     </div>

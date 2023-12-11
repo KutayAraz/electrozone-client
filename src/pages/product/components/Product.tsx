@@ -28,8 +28,7 @@ const Product = ({
   stock,
   category,
   subcategory,
-  isWishlisted,
-  updateWishlistStatus,
+  isInitiallyWishlisted,
   onRatingClick,
 }: ProductProps) => {
   const [quantity, setQuantity] = useState<number>(1);
@@ -41,6 +40,8 @@ const Product = ({
   const modifiedCategory = capitalizeWords(category.replace(/_/g, " "));
   const modifiedSubcategory = capitalizeWords(subcategory.replace(/_/g, " "));
   const isMobile = useMediaQuery("(max-width: 768px)");
+
+  console.log("wishlist status initial", isInitiallyWishlisted)
 
   const incrementQuantity = () => {
     setQuantity((prev) => (prev < 10 ? ++prev : prev));
@@ -94,42 +95,6 @@ const Product = ({
     }
   };
 
-  const toggleWishlist = async () => {
-    if (!isSignedIn) {
-      return navigate("/sign-in", { state: { from: location.pathname } });
-    }
-    const result = await fetchData(
-      `${import.meta.env.VITE_API_URL}/products/${id}/wishlist`,
-      "PATCH",
-      null,
-      true,
-      false,
-      "wishlist"
-    );
-
-    if (result?.response.ok) {
-      if (result.data.action === "added") {
-        updateWishlistStatus(true);
-        dispatch(
-          displayAlert({
-            type: "success",
-            message: "Product has been added to your wishlist!",
-            autoHide: true,
-          })
-        );
-      } else if (result.data.action === "removed") {
-        updateWishlistStatus(false);
-        dispatch(
-          displayAlert({
-            type: "success",
-            message: "Product has been removed to your wishlist!",
-            autoHide: true,
-          })
-        );
-      }
-    }
-  };
-
   return (
     <div className="mt-4 max-w-screen-xl mx-[2%] xl:mx-auto">
       <div className="flex flex-col text-center">
@@ -154,6 +119,7 @@ const Product = ({
       </div>
       {isMobile ? (
         <ProductMobileLayout
+          productId={id}
           productName={productName}
           brand={brand}
           thumbnail={thumbnail}
@@ -162,19 +128,19 @@ const Product = ({
           stock={stock}
           quantity={quantity}
           averageRating={averageRating}
-          isWishlisted={isWishlisted}
+          isInitiallyWishlisted={isInitiallyWishlisted}
           incrementQuantity={incrementQuantity}
           decrementQuantity={decrementQuantity}
           handleQuantityChange={handleQuantityChange}
           handleAddToCart={handleAddToCart}
           addingToCart={isLoading("default")}
           handleBuyNow={handleBuyNow}
-          toggleWishlist={toggleWishlist}
           setSelectedImage={setSelectedImage}
           onRatingClick={onRatingClick}
         />
       ) : (
         <ProductDesktopLayout
+          productId={id}
           productName={productName}
           brand={brand}
           thumbnail={thumbnail}
@@ -184,14 +150,13 @@ const Product = ({
           stock={stock}
           quantity={quantity}
           averageRating={averageRating}
-          isWishlisted={isWishlisted}
+          isInitiallyWishlisted={isInitiallyWishlisted}
           incrementQuantity={incrementQuantity}
           decrementQuantity={decrementQuantity}
           handleQuantityChange={handleQuantityChange}
           handleAddToCart={handleAddToCart}
           addingToCart={isLoading("default")}
           handleBuyNow={handleBuyNow}
-          toggleWishlist={toggleWishlist}
           setSelectedImage={setSelectedImage}
           onRatingClick={onRatingClick}
         />
