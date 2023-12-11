@@ -10,8 +10,7 @@ export interface ProductProps {
   images: Array<{ id: number; productImage: string }>;
   category: string;
   subcategory: string;
-  isWishlisted: boolean;
-  updateWishlistStatus: (status: boolean) => void;
+  isInitiallyWishlisted: boolean;
   onRatingClick: () => void;
 }
 
@@ -27,11 +26,12 @@ export interface ReviewType {
 }
 
 export interface WishlistButtonProps {
-  isWishlisted: boolean;
-  toggleWishlist: () => void;
+  productId: number;
+  isInitiallyWishlisted: boolean;
 }
 
 export interface ProductLayoutProps {
+  productId: number;
   productName: string;
   brand: string;
   thumbnail: string;
@@ -48,7 +48,6 @@ export interface ProductLayoutProps {
   handleBuyNow: () => void;
   addingToCart: boolean;
   averageRating: number;
-  isWishlisted: boolean;
-  toggleWishlist: () => void;
+  isInitiallyWishlisted: boolean;
   onRatingClick: () => void;
 }
