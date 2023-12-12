@@ -5,7 +5,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { Suspense, useEffect, useState } from "react";
-import { Box, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Box, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import loaderFetch from "@/utils/loader-fetch";
 import ProductList from "./components/ProductList";
@@ -34,7 +34,7 @@ const SubcategoryPage = () => {
       .catch((error) => console.error(error));
   }, [subcategory, searchParams]);
 
-  const handleSortChange = (e: any) => {
+  const handleSortChange = (e: SelectChangeEvent) => {
     setSearchParams({ sort: e.target.value });
   };
 

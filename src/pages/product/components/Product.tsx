@@ -41,8 +41,6 @@ const Product = ({
   const modifiedSubcategory = capitalizeWords(subcategory.replace(/_/g, " "));
   const isMobile = useMediaQuery("(max-width: 768px)");
 
-  console.log("wishlist status initial", isInitiallyWishlisted)
-
   const incrementQuantity = () => {
     setQuantity((prev) => (prev < 10 ? ++prev : prev));
   };
@@ -133,7 +131,7 @@ const Product = ({
           decrementQuantity={decrementQuantity}
           handleQuantityChange={handleQuantityChange}
           handleAddToCart={handleAddToCart}
-          addingToCart={isLoading("default")}
+          addingToCart={isLoading("addToCart")}
           handleBuyNow={handleBuyNow}
           setSelectedImage={setSelectedImage}
           onRatingClick={onRatingClick}
@@ -155,7 +153,7 @@ const Product = ({
           decrementQuantity={decrementQuantity}
           handleQuantityChange={handleQuantityChange}
           handleAddToCart={handleAddToCart}
-          addingToCart={isLoading("default")}
+          addingToCart={isLoading("addToCart")}
           handleBuyNow={handleBuyNow}
           setSelectedImage={setSelectedImage}
           onRatingClick={onRatingClick}
