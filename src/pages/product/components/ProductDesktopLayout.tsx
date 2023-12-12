@@ -30,9 +30,6 @@ const ProductDesktopLayout = ({
   const [startIndex, setStartIndex] = useState<number>(0);
   const [hoveredImage, setHoveredImage] = useState(null);
 
-
-
-
   const nextImage = () => {
     const nextIndex = (selectedIndex + 1) % allImages.length;
     setSelectedIndex(nextIndex);
@@ -82,9 +79,9 @@ const ProductDesktopLayout = ({
                 src={image.productImage}
                 alt={`image for ${productName}`}
                 className={`object-contain cursor-pointer h-28 w-28 p-2 rounded-[10px] ${(hoveredImage ? hoveredImage : selectedImage) ===
-                    image.productImage
-                    ? "border-1 border-theme-blue"
-                    : ""
+                  image.productImage
+                  ? "border-1 border-theme-blue"
+                  : ""
                   }`}
                 onMouseOver={() => setHoveredImage(image.productImage)}
                 onClick={() => {
@@ -178,7 +175,7 @@ const ProductDesktopLayout = ({
           <p className="text-red-500">This product is currently out of stock</p>
         )}
         <div className="flex flex-col justify-center items-center">
-          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId}/>
+          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} />
         </div>
       </div>
     </div>

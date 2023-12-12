@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const ProductMobileLayout = ({
+  productId,
   productName,
   brand,
   thumbnail,
@@ -22,8 +23,8 @@ const ProductMobileLayout = ({
   handleBuyNow,
   addingToCart,
   averageRating,
-  isWishlisted,
-  toggleWishlist,
+  isInitiallyWishlisted,
+  onRatingClick
 }: ProductLayoutProps) => {
   return (
     <>
@@ -87,9 +88,10 @@ const ProductMobileLayout = ({
         {stock > 0 ? (
           <button
             onClick={handleAddToCart}
-            className="sm:w-auto px-4 py-2 bg-theme-blue text-white rounded-md"
+            disabled={addingToCart}
+            className={`${addingToCart ? "bg-gray-400" : "bg-theme-blue"} sm:w-auto px-4 py-2 text-white rounded-md`}
           >
-            Add to Cart
+            {addingToCart ? "Adding To Cart.." : "Add to Cart"}
           </button>
         ) : (
           <p className="text-red-500">Out of stock</p>
@@ -97,14 +99,15 @@ const ProductMobileLayout = ({
       </div>
 
       <div className="flex flex-col text-left sm:text-center w-full sm:w-auto">
-        <Link to={"#rating"} className="mt-10 mx-auto">
+        <div onClick={onRatingClick} className="mt-10 mx-auto">
           <Rating
             name="half-rating-read"
             value={averageRating}
             precision={0.1}
             readOnly
+            className="mt-4"
           />
-        </Link>
+        </div>
         <button
           onClick={handleBuyNow}
           className="w-[80%] mx-auto my-2 sm:w-auto px-4 py-2 bg-theme-orange text-white rounded-md"
@@ -112,10 +115,7 @@ const ProductMobileLayout = ({
           Buy now
         </button>
         <div className="flex flex-col justify-center items-center mb-4">
-          <WishlistButton
-            isWishlisted={isWishlisted}
-            toggleWishlist={toggleWishlist}
-          />
+          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} />
         </div>
       </div>
     </>
