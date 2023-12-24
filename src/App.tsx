@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import Layout from "./common/Layout/index";
+import Layout, { loader as LayoutLoader } from "./common/Layout/index";
 import SubcategoryPage, {
   loader as subcategoryLoader,
 } from "./pages/subcategory/index.tsx";
@@ -39,6 +39,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    loader: LayoutLoader,
     children: [
       {
         index: true,

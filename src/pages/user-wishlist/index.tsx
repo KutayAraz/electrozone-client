@@ -41,7 +41,6 @@ const UserWishlist = () => {
   const handleAddToCart = async (id: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("alejandro")
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/carts/user-cart`,
       "POST",
@@ -68,7 +67,7 @@ const UserWishlist = () => {
             There's nothing in your wishlist.
           </p>
         ) : (
-          <div>
+          <div className="flex flex-wrap mx-auto px-2">
             {wishlistProducts.map((product: any) => {
               return (
                 <WishlistProductCard

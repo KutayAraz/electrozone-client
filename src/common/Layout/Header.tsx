@@ -13,6 +13,7 @@ import BasketWithBadge from "../UI/BasketWithBadge";
 import { RootState } from "@/setup/store";
 import CustomizableModal from "../Modal/CustomizableModal";
 import userSlice from "@/setup/slices/user-slice";
+import { useNavigate } from 'react-router-dom';
 
 const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
   const firstName = useSelector((state: any) => state.user.firstName);
@@ -22,6 +23,7 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
   const locationInput = useRef<HTMLInputElement>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const navigate = useNavigate()
 
   const localCartQuantity = useSelector(
     (state: RootState) => state.localCart.totalQuantity
@@ -98,9 +100,9 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
               {firstName}
             </button>
           ) : (
-            <Link to="/sign-in" className="pl-2 xs:pl-4">
+            <button onClick={() => navigate("/sign-in")}  className="pl-2 xs:pl-4">
               Sign in
-            </Link>
+            </button>
           )}
           <Arrow width={20} height={20} />
           <button onClick={() => setIsProfileModalOpen(true)}>

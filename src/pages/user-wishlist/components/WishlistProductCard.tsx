@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
 import { useState } from "react";
-import { Rating } from "@mui/material";
-import { WishlistProductCardProps } from "./types";
+import { Divider, Rating } from "@mui/material";
+import { WishlistProductCardProps } from "./models";
 
 const WishlistProductCard = ({
   id,
@@ -21,13 +21,16 @@ const WishlistProductCard = ({
   const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
 
   const handleAddToCartClick = (e: React.MouseEvent) => {
-    setIsAddToCartClicked(true);
 
+    setIsAddToCartClicked(true);
     onAddToCart(id, e);
     setTimeout(() => setIsAddToCartClicked(false), 150);
   };
 
-  const handleWishlistButtonClick = () => {
+  const handleWishlistButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     setIsClicked(true);
     setTimeout(() => {
       setIsClicked(false);
@@ -39,53 +42,64 @@ const WishlistProductCard = ({
   };
 
   return (
-    <div className="border-1 rounded-md mx-2 my-2 p-1 flex flex-col space-x-2 relative group">
-      <div className="flex justify-between items-start mb-2">
-        <button
-          onClick={handleWishlistButtonClick}
-          aria-label="Remove from wishlist"
-          className="transition-transform duration-300 transform scale-100 group-hover:scale-110 ml-auto"
+    <div className="w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xs:px-2 text-center items-center my-2 relative">
+      <div className="border-1 border-gray-300 rounded-md shadow-md hover:bg-gray-100 ">
+        <div className="ml-auto text-right pr-2">
+          <button
+            onClick={handleWishlistButtonClick}
+            aria-label="Remove from wishlist"
+            className="transition-transform duration-300 transform scale-100 group-hover:scale-110"
+          >
+            <HeartIcon
+              className={`w-10 h-auto inline-block ${isClicked ? "transform scale-125" : ""
+                }`}
+              fill={"#febd69"}
+            />
+          </button>
+        </div>
+        <Link
+          to={`/category/${category + "/" + subcategory + "/" + id}`}
+          className="h-full px-2 xs:px-4  xs:pt-4 pb-2 flex xs:flex-col xs:justify-between"
         >
-          <HeartIcon
-            className={`w-10 h-auto inline-block ${
-              isClicked ? "transform scale-125" : ""
-            }`}
-            fill={"#febd69"}
-          />
-        </button>
+          {/* Wishlist button */}
+
+          <div className="flex-1 px-2 xs:px-0">
+            <img
+              src={thumbnail}
+              alt={`image for ${productName}`}
+              className="min-w-[100px] w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto"
+            />
+          </div>
+
+          <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-2 justify-between">
+            <Divider
+              orientation="vertical"
+              className="self-stretch xs:hidden m-2"
+            />
+            <Divider className="self-stretch hidden xs:block" />
+            <p>{productName}</p>
+            <p className="font-[500]">{brand}</p>
+
+            <Rating
+              name="half-rating-read"
+              value={averageRating}
+              precision={0.1}
+              readOnly
+              className="mx-auto"
+            />
+
+            <p>$ {price.toFixed(2)}</p>
+            <button
+              onClick={handleAddToCartClick}
+              className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-900"
+            >
+              Add to Cart
+            </button>
+          </div>
+        </Link>
       </div>
-
-      <Link to={`/${category}/${subcategory}/${id}`} className="block mb-2">
-        <img
-          src={thumbnail}
-          alt={`thumbnail image for ${productName}`}
-          className="w-auto h-32 object-contain mx-auto"
-        />
-      </Link>
-
-      <Link to={`/${category}/${subcategory}/${id}`} className="space-y-2">
-        <p>{productName}</p>
-        <p>{brand}</p>
-        <Rating
-          name="half-rating-read"
-          value={averageRating}
-          precision={0.1}
-          readOnly
-        />
-        <p>$ {price.toFixed(2)}</p>
-        {stock < 1 && (
-          <p className="text-red-500 italic">Product out of stock</p>
-        )}
-        <button
-          onClick={handleAddToCartClick}
-          className={`bg-theme-blue text-white p-[0.25rem] ${
-            isAddToCartClicked ? "bg-blue-600" : "bg-theme-blue"
-          } rounded-lg w-full text-center`}
-        >
-          Add to Cart
-        </button>
-      </Link>
     </div>
+
   );
 };
 

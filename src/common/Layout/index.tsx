@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { LoaderFunction, Outlet, useLocation } from "react-router-dom";
 import Footer from "./Footer/index";
 import NavStrip from "./NavStrip";
 import Header from "./Header";
@@ -6,67 +6,21 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, store } from "@/setup/store";
 import { CheckoutIntent } from "@/setup/slices/models";
-import { setUserIntent } from "@/setup/slices/user-slice";
+import { setUserIntent, updateCartItemCount } from "@/setup/slices/user-slice";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import UserLocation from "./UserLocation";
 import { Alert } from "@mui/material";
 import { hideAlert } from "@/setup/slices/alert-slice";
-import useFetch from "../Hooks/use-fetch";
 import { checkHydration } from "@/utils/check-hydration";
+import loaderFetch from "@/utils/loader-fetch";
 
 const Layout = () => {
-  const location = useLocation();
-  const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const dispatch = useDispatch();
-  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
-  const buyNowCartItem = useSelector((state: RootState) => state.buyNowCart);
   const alertState = useSelector((state: RootState) => state.alert);
-  const { fetchData } = useFetch();
   const headerRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
-  const mergeCartsAndSetIntent = async () => {
-    await checkHydration(store);
-    let productsToOrder;
-
-    if (userIntent === CheckoutIntent.Instant) {
-      productsToOrder = [buyNowCartItem];
-    } else if (userIntent === CheckoutIntent.Local) {
-      const localCartItems = store.getState().localCart.items;
-      productsToOrder = localCartItems.map((item: any) => ({
-        productId: item.id,
-        quantity: item.quantity,
-      }));
-    }
-
-    const result = await fetchData(
-      `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
-      "PATCH",
-      productsToOrder,
-      true
-    );
-    if (result?.response.ok) {
-      dispatch(setUserIntent(CheckoutIntent.Normal));
-      dispatch(clearbuyNowCart());
-      dispatch(clearLocalcart());
-    }
-  };
-
-  useEffect(() => {
-    if (!isSignedIn) return;
-    if (
-      location.pathname !== "/checkout" &&
-      location.pathname !== "/sign-in" &&
-      (userIntent == CheckoutIntent.Instant ||
-        userIntent === CheckoutIntent.Local)
-    ) {
-      (async () => {
-        await checkHydration(store);
-        await mergeCartsAndSetIntent();
-      })();
-    }
-  }, [location.pathname, userIntent]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -110,3 +64,49 @@ const Layout = () => {
 };
 
 export default Layout;
+
+const mergeCartsAndSetIntent = async () => {
+  const state = store.getState();
+  let productsToOrder;
+
+  const userIntent = state.user.userIntent;
+  const buyNowCart = state.buyNowCart
+
+  if (!state.user.isSignedIn) return;
+
+  if (userIntent === CheckoutIntent.Instant) {
+    productsToOrder = [buyNowCart];
+  } else if (userIntent === CheckoutIntent.Local) {
+    const localCartItems = state.localCart.items;
+    productsToOrder = localCartItems.map((item: any) => ({
+      productId: item.id,
+      quantity: item.quantity,
+    }));
+  }
+
+  const result = await loaderFetch(`${import.meta.env.VITE_API_URL}/carts/merge-carts`,
+    "PATCH",
+    productsToOrder,
+    true)
+  if (result?.data) {
+    store.dispatch(setUserIntent(CheckoutIntent.Normal));
+    store.dispatch(clearbuyNowCart());
+    store.dispatch(clearLocalcart());
+    store.dispatch(updateCartItemCount({ cartItemCount:result.data.totalQuantity}))
+  }
+}
+
+export const loader: LoaderFunction = async ({ request }: any) => {
+  const url = new URL(request.url);
+  const currentPath = url.pathname;
+  await checkHydration(store)
+  const userIntent = store.getState().user.userIntent;
+
+  if (currentPath !== "/checkout" &&
+    currentPath !== "/sign-in" &&
+    (userIntent == CheckoutIntent.Instant ||
+      userIntent === CheckoutIntent.Local)) {
+    mergeCartsAndSetIntent()
+  }
+  return null;
+}

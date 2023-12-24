@@ -74,10 +74,9 @@ const ProductCard = ({
           <img
             src={thumbnail}
             alt={`image for ${productName}`}
-            className="w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto"
+            className="min-w-[100px] w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto"
           />
         </div>
-
         <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-2 justify-between">
           <Divider
             orientation="vertical"

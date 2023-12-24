@@ -1,7 +1,6 @@
 import Slider from "react-slick";
 import WishlistButton from "./WishlistButton";
 import { Rating } from "@mui/material";
-import { Link } from "react-router-dom";
 import { ProductLayoutProps } from "./models";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

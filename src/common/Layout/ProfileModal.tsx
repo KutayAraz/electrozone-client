@@ -39,7 +39,7 @@ const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
               </Link>
               <Divider />
               <Link to="/my-account/profile" className="px-4">
-                Manage Address
+                Manage Profile
               </Link>
               <Divider />
               <Link to="/my-account/update-password" className="px-4">

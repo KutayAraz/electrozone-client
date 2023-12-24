@@ -35,19 +35,11 @@ const UpdatePassword = () => {
     reset,
   } = useForm<FormInputs>({
     resolver: yupResolver<FormInputs>(schema),
-    mode: "onBlur",
+    mode: "onChange",
   });
 
   const { fetchData } = useFetch();
   const dispatch = useDispatch<any>();
-
-  useEffect(() => {
-    if (isSubmitting) {
-      document.body.classList.add('loading-cursor');
-    } else {
-      document.body.classList.remove('loading-cursor');
-    }
-  }, [isSubmitting]);
 
   const handlePasswordChange = async (data: FormInputs) => {
     const result = await fetchData(
@@ -124,16 +116,16 @@ const UpdatePassword = () => {
           Confirm New Password*
         </label>
         <input
-          {...register("currentPassword")}
+          {...register("retypedNewPassword")}
           id="retypedNewPassword"
           type="password"
           className={inputClasses}
           aria-required="true"
           required
         />
-        {errors.currentPassword && (
+        {errors.retypedNewPassword && (
           <p className={errorMessageClasses}>
-            {errors.currentPassword.message}
+            {errors.retypedNewPassword.message}
           </p>
         )}
 
