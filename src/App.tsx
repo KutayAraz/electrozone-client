@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter, useNavigation } from "react-router-dom";
 import Layout, { loader as LayoutLoader } from "./common/Layout/index";
 import SubcategoryPage, {
   loader as subcategoryLoader,
@@ -174,7 +174,9 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return <div>
+    <RouterProvider router={router} />
+  </div>
 }
 
 export default App;

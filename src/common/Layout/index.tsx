@@ -1,4 +1,4 @@
-import { LoaderFunction, Outlet, useLocation } from "react-router-dom";
+import { LoaderFunction, Outlet, useLocation, useNavigation } from "react-router-dom";
 import Footer from "./Footer/index";
 import NavStrip from "./NavStrip";
 import Header from "./Header";
@@ -14,13 +14,14 @@ import { Alert } from "@mui/material";
 import { hideAlert } from "@/setup/slices/alert-slice";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
+import LoadingIndicator from "../LoadingBar";
 
 const Layout = () => {
   const dispatch = useDispatch();
   const alertState = useSelector((state: RootState) => state.alert);
   const headerRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-
+  const navigation = useNavigation()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,6 +46,7 @@ const Layout = () => {
         <NavStrip />
       </div>
       <UserLocation />
+      <LoadingIndicator />
       {alertState.isOpen && (
         <Alert
           severity={alertState.type}
@@ -92,7 +94,7 @@ const mergeCartsAndSetIntent = async () => {
     store.dispatch(setUserIntent(CheckoutIntent.Normal));
     store.dispatch(clearbuyNowCart());
     store.dispatch(clearLocalcart());
-    store.dispatch(updateCartItemCount({ cartItemCount:result.data.totalQuantity}))
+    store.dispatch(updateCartItemCount({ cartItemCount: result.data.totalQuantity }))
   }
 }
 
