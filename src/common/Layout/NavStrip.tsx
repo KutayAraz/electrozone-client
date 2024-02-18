@@ -14,7 +14,7 @@ const NavStrip = () => {
     { name: "Laptops", url: "/category/computers-and-accessories/laptops"},
     { name: "Top Rated", url: "/trending/top-rated" },
     { name: "Smartphones", url: "/category/smartphones-and-accessories/smartphones"},
-    { name: "Printers", url: "/category/printers-and-ink/printers"},
+    { name: "Laser Printers", url: "/category/printers-and-ink/laser-printers"},
   ];
 
   return (

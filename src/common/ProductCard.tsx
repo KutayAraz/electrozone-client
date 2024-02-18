@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { Divider, Rating } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +18,7 @@ export interface ProductCardProps {
   category: string;
 }
 
-const ProductCard = ({
+const ProductCard = forwardRef(({
   id,
   thumbnail,
   productName,
@@ -27,9 +27,8 @@ const ProductCard = ({
   price,
   subcategory,
   category,
-}: ProductCardProps) => {
+}: ProductCardProps, ref: any) => {
   const [isClicked, setIsClicked] = useState(false);
-  const navigate = useNavigate();
   const dispatch = useDispatch<any>();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const { fetchData } = useFetch();
@@ -65,7 +64,8 @@ const ProductCard = ({
   // };
 
   return (
-    <div className="w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-2">
+    <div className="w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-2" ref={ref} /// <reference path="" />
+    >
       <Link
         to={`/category/${category + "/" + subcategory + "/" + id}`}
         className="border-1 border-gray-300 rounded-md shadow-md hover:bg-gray-100 h-full px-2 xs:px-4 py-2 xs:pt-4 pb-2 flex xs:flex-col xs:justify-between"
@@ -105,6 +105,6 @@ const ProductCard = ({
       </Link>
     </div>
   );
-};
+});
 
 export default ProductCard;

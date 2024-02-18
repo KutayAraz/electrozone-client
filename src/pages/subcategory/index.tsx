@@ -1,20 +1,23 @@
 import {
   defer,
   useLoaderData,
+  useLocation,
   useParams,
   useSearchParams,
 } from "react-router-dom";
-import { Suspense, useCallback, useEffect, useState } from "react";
-import { Box, CircularProgress, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Box, CircularProgress, InputLabel, MenuItem, Select, SelectChangeEvent, Typography, useMediaQuery } from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import loaderFetch from "@/utils/loader-fetch";
 import ProductList from "./components/ProductList";
+import useScreenValue from "@/common/Hooks/use-screenValue";
+import { initialProductsToFetch } from "@/utils/initial-products-to-fetch";
+import FilterMenu from "./components/FilterMenu";
 
-const fetchProducts = async (subcategory: string, sort: string, page: number) => {
+const fetchProducts = async (subcategory: string, sort: string, page: number, limit: number = 6) => {
   const subcategoryUrl = subcategory.replace(/-/g, "_");
-  const limit = 5; // Define your page size here
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/subcategories/${subcategoryUrl}/${sort}?page=${page}&limit=${limit}`
+    `${import.meta.env.VITE_API_URL}/subcategories/${subcategoryUrl}/${sort}?skip=${page}&limit=${limit}`
   );
   if (response.ok) {
     return response.json();
@@ -23,55 +26,73 @@ const fetchProducts = async (subcategory: string, sort: string, page: number) =>
 };
 
 const SubcategoryPage = () => {
-  const { subcategoryData }: any = useLoaderData();
+  const { subcategoryData, skipped }: any = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const { subcategory }: any = useParams();
-  const [productsData, setProducts] = useState(subcategoryData);
-  const [page, setPage] = useState(1);
+  const [productsData, setProducts] = useState<any>(subcategoryData);
+  const [productsToSkip, setProductsToSkip] = useState<number>(skipped)
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const observerTarget = useRef<any>(null);
+  const location = useLocation();
+  const screenValue = useScreenValue();
 
-  const loadMoreProducts = useCallback(async () => {
-    if (loading || !hasMore) return;
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const fetchMoreProducts = async () => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && hasMore) {
+            try {
+              const products = await fetchProducts(subcategory, "featured", productsToSkip, screenValue);
+              if (products.length === screenValue) {
+                setProducts((prev: any) => [...prev, ...products]);
+                setProductsToSkip((prev: number) => prev + screenValue)
+              } else if (products.length < screenValue) {
+                setProducts((prev: any) => [...prev, ...products]);
+                setProductsToSkip((prev: number) => prev + screenValue)
+                setHasMore(false);
+              } else {
+                setHasMore(false);
+              }
+            } catch (error) {
+              console.error("Failed to fetch products:", error);
+            }
+          }
+        }
+      };
 
-    setLoading(true);
-    const sortMethod = searchParams.get("sort") || "featured";
-    try {
-      const newProducts = await fetchProducts(subcategory, sortMethod, page + 1);
-      if (newProducts.length === 0) {
-        setHasMore(false);
-      } else {
-        setProducts((prevProducts: any) => [...prevProducts, ...newProducts]);
-        setPage(prevPage => prevPage + 1);
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
+      fetchMoreProducts();
+    }, { threshold: 0.1 });
+
+    const currentElement = observerTarget.current;
+    if (currentElement) {
+      observer.observe(currentElement);
     }
-  }, [subcategory, searchParams, page, loading, hasMore]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || loading) return;
-      loadMoreProducts();
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
     };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [loadMoreProducts, loading]);
+  }, [location, productsData, screen, productsToSkip]);
 
   useEffect(() => {
-    const sortMethod = searchParams.get("sort") || "featured";
-    fetchProducts(subcategory, sortMethod, page)
-      .then((data) => setProducts(data))
-      .catch((error) => console.error(error));
-  }, [subcategory, searchParams]);
+    setProductsToSkip(initialProductsToFetch())
+    setProducts(subcategoryData)
+    setHasMore(true)
+  }, [location]);
 
-  const handleSortChange = (e: SelectChangeEvent) => {
-    setSearchParams({ sort: e.target.value });
+  const handleSortChange = async (e: SelectChangeEvent) => {
+    const newSortMethod = e.target.value;
+    setSearchParams({ sort: newSortMethod });
+
+    try {
+      const newData = await fetchProducts(subcategory, newSortMethod, 0, screenValue);
+      setProducts(newData);
+    } catch (error) {
+      console.error("Failed to fetch sorted products:", error);
+    }
   };
-
 
   return (
     <div>
@@ -108,9 +129,10 @@ const SubcategoryPage = () => {
         </Box>
       </div>
       <Suspense fallback={<p>Loading Products..</p>}>
-        <>
-          <ProductList products={productsData} />
-        </>
+        <div className="flex">
+          {/* <FilterMenu /> */}
+          <ProductList products={productsData} ref={observerTarget} />
+        </div>
       </Suspense>
       {loading && (
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
@@ -125,11 +147,13 @@ export default SubcategoryPage;
 
 export async function loader({ params }: any) {
   const subcategory = params.subcategory.replace(/-/g, "_");
+  const initProdCount = initialProductsToFetch()
   const result = await loaderFetch(
-    `${import.meta.env.VITE_API_URL}/subcategories/${subcategory}/featured`,
-    "GET"
+    `${import.meta.env.VITE_API_URL}/subcategories/${subcategory}/featured?skip=0&limit=${initProdCount}`,
+    "GET",
   );
   return defer({
     subcategoryData: result.data,
+    skipped: initProdCount
   });
 }
