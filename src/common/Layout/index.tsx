@@ -10,7 +10,7 @@ import { setUserIntent, updateCartItemCount } from "@/setup/slices/user-slice";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import UserLocation from "./UserLocation";
-import { Alert } from "@mui/material";
+import { Alert, Slide } from "@mui/material";
 import { hideAlert } from "@/setup/slices/alert-slice";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
@@ -21,7 +21,6 @@ const Layout = () => {
   const alertState = useSelector((state: RootState) => state.alert);
   const headerRef = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
-  const navigation = useNavigation()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,21 +40,23 @@ const Layout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="bg-theme-blue px-[2%] md:px-3" ref={headerRef}>
+      <div className="bg-theme-blue px-2 md:px-3" ref={headerRef}>
         <Header isScrolled={isScrolled} />
         <NavStrip />
       </div>
       <UserLocation />
       <LoadingIndicator />
       {alertState.isOpen && (
-        <Alert
-          severity={alertState.type}
-          onClose={() => dispatch(hideAlert())}
-          className="fixed w-full top-0 z-10 "
-          style={{ borderRadius: 0 }}
-        >
-          {alertState.message}
-        </Alert>
+        <Slide direction="right" in={alertState.isOpen} mountOnEnter unmountOnExit>
+          <Alert
+            severity={alertState.type}
+            onClose={() => dispatch(hideAlert())}
+            className="fixed w-auto left-0 top-2 z-10"
+            style={{ borderRadius: 0 }}
+          >
+            {alertState.message}
+          </Alert>
+        </Slide>
       )}
       <div className="flex-grow">
         <Outlet />

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const FooterMenu = () => {
   const elementClasses =
-    "underline hover:underline block mb-1 focus:text-gray-700 my-1";
+    "hover:underline block mb-1 focus:text-gray-700 my-1";
 
   return (
     <div className="flex justify-center items-center text-center mx-3 pt-4 xs:p-3 xs:space-x-4">      

@@ -244,7 +244,7 @@ const SubcategoryPage = () => {
                 label={brand}
               />
             ))}
-            <h4 className="text-xl text-gray-700 font-semibold my-4">Price Range</h4>
+            <h4 className="text-xl text-gray-700 font-semibold my-6">Price Range</h4>
             <Slider
               getAriaLabel={() => 'Price range'}
               value={priceRange}
@@ -255,11 +255,13 @@ const SubcategoryPage = () => {
               max={priceRangeData.max}
               getAriaValueText={(value) => `${value}`}
             />
-            <div className="flex"><TextField
+            <div className="flex mb-2">
+              <TextField
               name="minPrice"
               value={priceRange[0]}
               onChange={handleInputChange}
               onBlur={handleBlur}
+              size="small"
               inputProps={{
                 step: 10,
                 min: priceRangeData.min,
@@ -273,6 +275,7 @@ const SubcategoryPage = () => {
                 value={priceRange[1]}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
+                size="small"
                 inputProps={{
                   step: 10,
                   min: priceRangeData.min,

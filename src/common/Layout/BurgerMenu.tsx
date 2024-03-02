@@ -39,23 +39,22 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
     }
   }, [isOpen]);
   
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null); // Create a ref
-
-  useEffect(() => {
-    // When activeView changes, scroll to the top of the container
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = 0;
-    }
-  }, [activeView]);
+  // useEffect(() => {
+  //   // When activeView changes, scroll to the top of the container
+  //   if (scrollContainerRef.current) {
+  //     scrollContainerRef.current.scrollTop = 0;
+  //   }
+  // }, [activeView]);
 
   return (
     <div className="flex">
       <button
         className={`items-center border border-transparent hover:border-1 hover:border-white rounded ${className}`}
         onClick={() => {
-          setActiveView("main"); // Set the activeView to "main"
-          setIsOpen(true); // Open the modal
+          setActiveView("main");
+          setIsOpen(true);
         }}
       >
         <BurgerIcon width={32} height={32} />
@@ -63,7 +62,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       </button>
 
       <CustomizableModal
-        widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%]"
+        widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] xl:w-[25%]"
         heightClass={`${activeView === "main" ? "h-full overflow-y-auto" : "min-h-screen h-auto overflow-y-hidden"}`}
         topClass="top-0"
         leftClass="left-0"
@@ -334,7 +333,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       </CustomizableModal>
       {isOpen && (
         <button
-          className="absolute top-4 left-[calc(80%+10%)] sm:left-[calc(60%+30px)] md:left-[calc(40%+30px)] lg:left-[calc(30%+30px)] w-7 h-7 z-[40]"
+          className="absolute top-4 left-[calc(80%+10%)] sm:left-[calc(60%+30px)] md:left-[calc(40%+30px)] lg:left-[calc(30%+30px)] xl:left-[calc(25%+30px)] w-7 h-7 z-[40]"
           onClick={() => setIsOpen(false)}
         >
           <CloseButton width={32} height={32} className="text-red-500" />

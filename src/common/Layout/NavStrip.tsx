@@ -3,7 +3,7 @@ import BurgerMenu from "./BurgerMenu";
 
 const NavStrip = () => {
   const navContainerClass =
-    "flex bg-[#13193F] text-white items-center justify-between overflow-x-auto whitespace-nowrap scroll-snap-type-x-mandatory noScrollbar scroll-smooth py-1 sm:py-[2px]";
+    "flex bg-theme-blue text-white items-center justify-between overflow-x-auto whitespace-nowrap scroll-snap-type-x-mandatory noScrollbar scroll-smooth py-1 sm:py-[2px] flex-grow";
   const navStripElementClass =
     "flex-shrink-0 scroll-snap-align-start mx-2 sm:mx-0 border border-transparent hover:border-1 hover:border-white rounded px-3";
 
@@ -15,6 +15,7 @@ const NavStrip = () => {
     { name: "Top Rated", url: "/trending/top-rated" },
     { name: "Smartphones", url: "/category/smartphones-and-accessories/smartphones"},
     { name: "Laser Printers", url: "/category/printers-and-ink/laser-printers"},
+    { name: "PCs", url: "/category/computers-and-accessories/pcs"},
   ];
 
   return (

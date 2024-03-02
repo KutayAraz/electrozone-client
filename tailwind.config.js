@@ -16,13 +16,18 @@ export default {
         "theme-purple": "#A34393",
       },
       spacing: {
-        1: "1px",
+        1: "2px",
       },
       borderWidth: {
         1: "1px",
       },
       fontFamily: {
-        sans: ["Poppins", "sans-serif"],
+        sans: ['Nunito', 'sans-serif'],
+      },
+      fontWeight: {
+        normal: 400,
+        bold: 700,
+        // Add other custom weights as needed
       },
     },
   },

@@ -8,8 +8,6 @@ import Categories from "./components/Categories";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { useMediaQuery } from "@mui/material";
-
 
 const HomePage = () => {
   const {
@@ -17,8 +15,6 @@ const HomePage = () => {
     mostWishlistedProducts,
     bestSellingProducts,
   }: any = useLoaderData();
-
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const settings = {
     infinite: false,
