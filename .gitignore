@@ -29,3 +29,5 @@ dist-ssr
 # Environment variables
 .env.development
 .env.production
+
+notes.txt

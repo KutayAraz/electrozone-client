@@ -9,14 +9,14 @@ const Subcategory = ({
   id,
 }: SubcategoryProps) => {
   return (
-    <div className="m-[1%]" key={id}>
-      <h3 className="text-xl font-semibold text-gray-700 mb-3 m-[1%]">
+    <div className="" key={id}>
+      <h3 className="text-xl font-semibold text-center mb-3">
         Top Selling Products in{" "}
         <Link to={`${subcategory}`} className="underline">
           {subcategory.toUpperCase()}
         </Link>
       </h3>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap justify-center lg:justify-between">
         {topSelling.map((product: ProductCardProps) => (
           <ProductCard
             key={product.id}
@@ -28,17 +28,18 @@ const Subcategory = ({
             brand={product.brand}
             averageRating={product.averageRating}
             price={product.price}
+            className="w-1/2 xs:w-1/2 sm:w-1/4 md:w-1/4 lg:w-1/4"
           />
         ))}
       </div>
 
-      <h3 className="text-xl font-semibold text-gray-700 mb-4 m-[1%]">
+      <h3 className="text-xl font-semibold mb-3 text-center">
         Top Wishlisted Products in{" "}
         <Link to={`${subcategory}`} className="underline">
           {subcategory.toUpperCase()}
         </Link>
       </h3>
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap justify-center lg:justify-between">
         {topWishlisted.map((product: ProductCardProps) => (
           <ProductCard
             key={product.id}
@@ -50,6 +51,8 @@ const Subcategory = ({
             brand={product.brand}
             averageRating={product.averageRating}
             price={product.price}
+            className="w-1/2 xs:w-1/2 sm:w-1/4 md:w-1/4 lg:w-1/4"
+
           />
         ))}
       </div>

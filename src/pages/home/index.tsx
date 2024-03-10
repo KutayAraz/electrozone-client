@@ -53,7 +53,7 @@ const HomePage = () => {
 
   return (
     <div className="bg-gray-100">
-      <div className="flex flex-col max-w-screen-lg mx-[8%] xl:mx-auto text-center">
+      <div className="flex flex-col max-w-screen-xl mx-[8%] xl:mx-auto text-center">
         <Categories />
         <h2 className="text-xl font-semibold mt-6 mb-3 text-gray-700">
           Best Selling Products

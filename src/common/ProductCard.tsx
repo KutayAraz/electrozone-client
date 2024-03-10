@@ -6,6 +6,7 @@ import { addItemToCart } from "@/setup/slices/localCart-slice";
 import { RootState } from "@/setup/store";
 import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
+import { updateCartItemCount } from "@/setup/slices/user-slice";
 
 export interface ProductCardProps {
   id: number;
@@ -16,6 +17,7 @@ export interface ProductCardProps {
   price: number;
   subcategory: string;
   category: string;
+  className?: string;
 }
 
 const ProductCard = forwardRef(({
@@ -27,6 +29,7 @@ const ProductCard = forwardRef(({
   price,
   subcategory,
   category,
+  className,
 }: ProductCardProps, ref: any) => {
   const [isClicked, setIsClicked] = useState(false);
   const dispatch = useDispatch<any>();
@@ -42,11 +45,18 @@ const ProductCard = forwardRef(({
         `${import.meta.env.VITE_API_URL}/carts/user-cart`,
         "POST",
         { productId: id, quantity: 1 },
-        true
+        true,
+        false,
+        "addToCart"
       );
+      if (result?.response.ok)
+        dispatch(
+          updateCartItemCount({ cartItemCount: result.data.totalQuantity })
+        );
     } else {
       dispatch(addItemToCart({ id, quantity: 1 }));
     }
+
     dispatch(
       displayAlert({
         type: "success",
@@ -64,7 +74,7 @@ const ProductCard = forwardRef(({
   // };
 
   return (
-    <div className="w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-2" ref={ref} /// <reference path="" />
+    <div className={`w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-3 ${className}`} ref={ref}
     >
       <Link
         to={`/category/${category + "/" + subcategory + "/" + id}`}
@@ -94,7 +104,7 @@ const ProductCard = forwardRef(({
             className="mx-auto"
           />
 
-          <p>$ {price.toFixed(2)}</p>
+          <p className="text-lg">$ {price.toFixed(2)}</p>
           <button
             onClick={handleAddToCart}
             className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-900"

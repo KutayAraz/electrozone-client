@@ -54,59 +54,61 @@ const ProductPage = () => {
   };
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <Await
-        resolve={Promise.all([product, wishlisted])}
-        children={([productData, wishlist]) => (<Product
-          id={productData.id}
-          productName={productData.productName}
-          thumbnail={productData.thumbnail}
-          images={productData.productImages}
-          brand={productData.brand}
-          description={productData.description}
-          price={productData.price.toFixed(2)}
-          stock={productData.stock}
-          averageRating={productData.averageRating}
-          onRatingClick={scrollToReviews}
-          subcategory={productData.subcategory}
-          category={productData.category}
-          isInitiallyWishlisted={wishlisted}
-        />
-        )}
-      />
-      <Await
-        resolve={canCurrentUserReview}
-        children={(resolvedCanCurrentUserReview) => (
-          <ReviewForm
-            canCurrentUserReview={resolvedCanCurrentUserReview}
-            productId={productId}
-          />
-        )}
-      />
-      <section id="rating" className="max-w-screen-xl mx-[2%] xl:mx-auto">
-        <h4 className="underline text-lg font-[500] mb-6">Customer Reviews</h4>
+    <div className="page-spacing">
+      <Suspense fallback={<p>Loading...</p>}>
         <Await
-          resolve={reviews}
-          children={(resolvedReviews) =>
-            resolvedReviews.length === 0 ? (
-              <p className="italic mb-4">This product has no reviews yet.</p>
-            ) : (
-              <div className="mb-8">
-                {resolvedReviews.map((review: any) => (
-                  <Review
-                    key={review.id}
-                    id={review.id}
-                    reviewDate={review.reviewDate}
-                    rating={review.rating}
-                    comment={review.comment}
-                  />
-                ))}
-              </div>
-            )
-          }
+          resolve={Promise.all([product, wishlisted])}
+          children={([productData, wishlist]) => (<Product
+            id={productData.id}
+            productName={productData.productName}
+            thumbnail={productData.thumbnail}
+            images={productData.productImages}
+            brand={productData.brand}
+            description={productData.description}
+            price={productData.price.toFixed(2)}
+            stock={productData.stock}
+            averageRating={productData.averageRating}
+            onRatingClick={scrollToReviews}
+            subcategory={productData.subcategory}
+            category={productData.category}
+            isInitiallyWishlisted={wishlisted}
+          />
+          )}
         />
-      </section>
-    </Suspense>
+        <Await
+          resolve={canCurrentUserReview}
+          children={(resolvedCanCurrentUserReview) => (
+            <ReviewForm
+              canCurrentUserReview={resolvedCanCurrentUserReview}
+              productId={productId}
+            />
+          )}
+        />
+        <section id="rating" className="max-w-screen-xl mx-[2%] xl:mx-auto">
+          <h4 className="underline text-lg font-bold mb-6">Customer Reviews</h4>
+          <Await
+            resolve={reviews}
+            children={(resolvedReviews) =>
+              resolvedReviews.length === 0 ? (
+                <p className="italic mb-4">This product has no reviews yet.</p>
+              ) : (
+                <div className="mb-8">
+                  {resolvedReviews.map((review: any) => (
+                    <Review
+                      key={review.id}
+                      id={review.id}
+                      reviewDate={review.reviewDate}
+                      rating={review.rating}
+                      comment={review.comment}
+                    />
+                  ))}
+                </div>
+              )
+            }
+          />
+        </section>
+      </Suspense>
+    </div>
   );
 };
 

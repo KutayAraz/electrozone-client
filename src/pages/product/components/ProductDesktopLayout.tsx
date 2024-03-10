@@ -1,8 +1,10 @@
-import { Rating } from "@mui/material";
+import { Modal, Rating } from "@mui/material";
 import WishlistButton from "./WishlistButton";
 import { ProductLayoutProps } from "./models";
 import { useState } from "react";
 import { ReactComponent as NavigationButton } from "@assets/svg/navigation.svg";
+import { ReactComponent as CloseButton } from "@assets/svg/modal-close.svg";
+import { ReactComponent as NavigationArrow } from "@assets/svg/previous-arrow.svg";
 
 const ProductDesktopLayout = ({
   productId,
@@ -28,7 +30,10 @@ const ProductDesktopLayout = ({
   const allImages = [{ productImage: thumbnail }, ...images];
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [startIndex, setStartIndex] = useState<number>(0);
-  const [hoveredImage, setHoveredImage] = useState(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => setIsModalOpen(false);
 
   const nextImage = () => {
     const nextIndex = (selectedIndex + 1) % allImages.length;
@@ -53,9 +58,8 @@ const ProductDesktopLayout = ({
       setStartIndex(startIndex + 1);
     }
   };
-
   return (
-    <div className="flex w-full h-[700px]">
+    <div className="flex w-full h-[700px] my-2">
       {/* First Child Div - Image Thumbnails */}
       <div className="flex flex-col flex-shrink-0 items-center justify-center">
         {/* Scroll Up Button or Spacer */}
@@ -69,7 +73,6 @@ const ProductDesktopLayout = ({
 
         <div
           className="flex flex-col space-y-2 flex-grow"
-          onMouseLeave={() => setHoveredImage(null)}
         >
           {allImages
             .slice(startIndex, startIndex + 5)
@@ -78,15 +81,12 @@ const ProductDesktopLayout = ({
                 key={index}
                 src={image.productImage}
                 alt={`image for ${productName}`}
-                className={`object-contain cursor-pointer h-28 w-28 p-2 rounded-[10px] ${(hoveredImage ? hoveredImage : selectedImage) ===
+                className={`object-contain cursor-pointer h-28 w-28 p-2 rounded-[10px] ${selectedImage ===
                   image.productImage
                   ? "border-1 border-theme-blue"
                   : ""
                   }`}
-                onMouseOver={() => setHoveredImage(image.productImage)}
-                onClick={() => {
-                  setSelectedImage(image.productImage);
-                }}
+                onMouseOver={() => setSelectedImage(image.productImage)}
               />
             ))}
         </div>
@@ -102,24 +102,51 @@ const ProductDesktopLayout = ({
       </div>
 
       {/* Second Child Div - Large Selected Image */}
-      <div className="flex flex-grow items-center justify-center ml-2 lg:ml-0">
+      <div className="flex flex-grow items-center justify-center lg:ml-0">
         <button onClick={prevImage}>
           <NavigationButton className="w-6 h-16 rotate-180 m-2" />
         </button>
-        <div className="flex flex-grow items-center justify-center h-[640px] max-w-[640px] border-1 border-gray-300 rounded-md">
+        <div onClick={handleModalOpen} className="flex flex-grow items-center hover:cursor-pointer justify-center h-[640px] max-w-[640px] border-1 border-gray-300 rounded-md">
           <img
-            src={hoveredImage ? hoveredImage : selectedImage}
+            src={selectedImage}
             alt={`image for ${productName}`}
-            className="w-auto h-auto rounded-[6px] object-contain max-h-[640px] p-4"
+            className="w-auto h-auto rounded-[6px] object-contain max-h-[640px] p-2 lg:p-4"
           />
         </div>
         <button onClick={nextImage} className="m">
           <NavigationButton className="w-6 h-16 m-2" />
         </button>
+        <Modal
+          open={isModalOpen}
+          onClose={handleModalClose}
+          className="flex items-center justify-center p-4"
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <div className="relative bg-white rounded-lg w-[50vw] h-[90vh] overflow-auto">
+            {/* Container for navigation buttons */}
+            <button onClick={handleModalClose} className="absolute top-2 right-2 hover:cursor-pointer z-20">
+              <CloseButton className="w-8 h-auto" />
+            </button>
+            <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-between z-10">
+              <button onClick={prevImage} className="m-2">
+                <NavigationArrow className="w-14 h-14" />
+              </button>
+              <button onClick={nextImage} className="m-2">
+                <NavigationArrow className="w-14 h-14 rotate-180" />
+              </button>
+            </div>
+            <img
+              src={selectedImage}
+              alt={`image for ${productName}`}
+              className="h-full w-auto object-contain mx-auto py-4"
+            />
+          </div>
+        </Modal>
       </div>
 
       {/* Third Child Div - Product Details and Actions */}
-      <div className="flex flex-col w-[30%] text-center m-auto border-1 py-6 border-gray-300 rounded-md h-[640px] justify-evenly lg:justify-center lg:space-y-3 px-2 flex-shrink-0">
+      <div className="flex flex-col w-[25%] lg:w-[30%] text-center m-auto border-1 py-6 border-gray-300 rounded-md h-[640px] justify-evenly lg:justify-center lg:space-y-3 px-2 flex-shrink-0">
         <h2 className="text-lg">{productName}</h2>
         <p className="font-[500] ">Brand: {brand}</p>
         <div onClick={onRatingClick} className="mx-auto hover:cursor-pointer">
@@ -131,7 +158,7 @@ const ProductDesktopLayout = ({
             className="mt-4"
           />
         </div>
-        <p className="text-lg font-[500]">${price}</p>
+        <p className="text-lg font-bold">${price}</p>
         <div className="flex justify-center mb-4 items-center s">
           <button
             onClick={decrementQuantity}
@@ -183,13 +210,3 @@ const ProductDesktopLayout = ({
 };
 
 export default ProductDesktopLayout;
-
-{
-  /* <div className="flex-grow h-96 relative w-96">
-          <img
-            src={selectedImage}
-            alt={`image for ${productName}`}
-            className="object-contain absolute top-0 left-0 right-0 bottom-0 m-auto max-h-96 max-w-96 rounded-[5px]"
-          />
-        </div> */
-}

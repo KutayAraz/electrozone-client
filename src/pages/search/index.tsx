@@ -5,6 +5,7 @@ import { ProductType } from "./types";
 import ProductCard from "@/common/ProductCard";
 import FormControl from "@mui/material/FormControl";
 import { Box, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from "@mui/material";
+import useScreenValue from "@/common/Hooks/use-screenValue";
 
 const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
@@ -12,6 +13,7 @@ const SearchResultsPage = () => {
   const query = searchParams.get("query");
   const { fetchData, isLoading } = useFetch();
   const [sortKey, setSortKey] = useState('featured');
+  const screenValue = useScreenValue()
 
   const handleSortChange = (event: SelectChangeEvent) => {
     setSortKey(event.target.value as string);
@@ -59,8 +61,8 @@ const SearchResultsPage = () => {
 
 
   return (
-    <div>
-      <div className="flex my-4 mx-[1%] justify-between">
+    <div className="page-spacing">
+      <div className="flex my-4 justify-between">
         <h1 className="text-gray-700">
           Search Results for "{query}"
         </h1>
@@ -93,7 +95,7 @@ const SearchResultsPage = () => {
         </Box>
       </div>
 
-      <div className="flex flex-wrap mx-auto px-2">
+      <div className="flex flex-wrap">
         {isLoading("searchingQuery") ? <p className="text-gray-700 w-full italic">Loading...</p> :
           results.length > 0 ? (
             sortedResults.map((product: ProductType) => (

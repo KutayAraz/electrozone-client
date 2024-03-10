@@ -59,7 +59,7 @@ const WishlistProductCard = ({
         </div>
         <Link
           to={`/category/${category + "/" + subcategory + "/" + id}`}
-          className="h-full px-2 xs:px-4  xs:pt-4 pb-2 flex xs:flex-col xs:justify-between"
+          className="h-full px-2 xs:px-4 xs:pt-4 pb-2 flex xs:flex-col xs:justify-between"
         >
           {/* Wishlist button */}
 
@@ -71,7 +71,7 @@ const WishlistProductCard = ({
             />
           </div>
 
-          <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-2 justify-between">
+          <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto justify-between">
             <Divider
               orientation="vertical"
               className="self-stretch xs:hidden m-2"

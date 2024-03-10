@@ -11,8 +11,8 @@ const MyOrders = () => {
   const { orders }: any = useLoaderData();
 
   return (
-    <div className="max-w-screen-lg mx-auto">
-      <h2 className="text-xl font-[500] text-color-500 my-2 mx-[1%] md:mx-auto">Previous Orders</h2>
+    <div className="page-spacing">
+      <h2 className="text-2xl font-bold my-2">Previous Orders</h2>
       <Suspense fallback={<p>Loading..</p>}>
         <Await
           resolve={orders}

@@ -9,13 +9,13 @@ import {
 const OrderStatus = () => {
   const { order }: any = useLoaderData();
   return (
-    <div className="max-w-screen-lg mx-auto mt-2">
+    <div className="page-spacing">
       <Suspense fallback={<p>Loading Order...</p>}>
         <Await
           resolve={order}
           children={(resolvedOrder) => (
             <OrderCard
-              orderId={resolvedOrder.orderId}
+              orderId={resolvedOrder.id}
               orderTotal={resolvedOrder.orderTotal}
               orderDate={resolvedOrder.orderDate}
               user={resolvedOrder.user}

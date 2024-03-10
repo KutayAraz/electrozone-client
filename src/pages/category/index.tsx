@@ -3,12 +3,13 @@ import { Await, defer, useLoaderData } from "react-router-dom";
 import Subcategory from "./components/Subcategory";
 import loaderFetch from "@/utils/loader-fetch";
 import { SubcategoryProps } from "./components/models";
+import { trendingFetch } from "@/utils/trending-fetch";
 
 export const CategoryPage = () => {
   const { category }: any = useLoaderData();
 
   return (
-    <div>
+    <div className="page-spacing ">
       <Suspense fallback={<p>Loading Category..</p>}>
         <Await resolve={category}>
           {(loadedCategory) =>

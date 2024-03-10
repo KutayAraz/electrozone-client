@@ -55,41 +55,45 @@ const UserWishlist = () => {
           autoHide: true,
         })
       );
-      
+
     }
   };
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      <>
-        {wishlistProducts.length === 0 ? (
-          <p className="text-gray-500 italic m-4">
-            There's nothing in your wishlist.
-          </p>
-        ) : (
-          <div className="flex flex-wrap mx-auto px-2">
-            {wishlistProducts.map((product: any) => {
-              return (
-                <WishlistProductCard
-                  key={product.id}
-                  id={product.id}
-                  productName={product.productName}
-                  brand={product.brand}
-                  price={product.price}
-                  averageRating={product.averageRating}
-                  stock={product.stock}
-                  thumbnail={product.thumbnail}
-                  subcategory={product.subcategory}
-                  category={product.category}
-                  onAddToCart={handleAddToCart}
-                  onRemoveFromWishlist={() => handleRemove(product.id)}
-                />
-              );
-            })}
-          </div>
-        )}
-      </>
-    </Suspense>
+    <div className="page-spacing">
+      <Suspense fallback={<p>Loading...</p>}>
+        <>
+          <h4 className="font-bold text-xl">My Wishlist</h4>
+          {wishlistProducts.length === 0 ? (
+            <p className="text-gray-500 italic text-xl">
+              There's nothing in your wishlist.
+            </p>
+          ) : (
+            <div className="flex flex-wrap">
+              {wishlistProducts.map((product: any) => {
+                return (
+                  <WishlistProductCard
+                    key={product.id}
+                    id={product.id}
+                    productName={product.productName}
+                    brand={product.brand}
+                    price={product.price}
+                    averageRating={product.averageRating}
+                    stock={product.stock}
+                    thumbnail={product.thumbnail}
+                    subcategory={product.subcategory}
+                    category={product.category}
+                    onAddToCart={handleAddToCart}
+                    onRemoveFromWishlist={() => handleRemove(product.id)}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </>
+      </Suspense>
+    </div>
+
   );
 };
 

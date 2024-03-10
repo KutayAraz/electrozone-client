@@ -17,13 +17,13 @@ const OrderCard = ({
   return (
     <div
       key={orderId}
-      className="relative border-2 my-2 mx-[1%] md:mx-auto rounded-lg"
+      className="relative border-2 my-2 rounded-lg"
     >
       <div className="bg-gray-100 p-2">
-        <p>Order id: {orderId}</p>
-        <p>Order total: ${orderTotal}</p>
-        <p>Order quantity: {orderQuantity}</p>
-        <p>Date of order: {date}</p>
+        <p className="font-bold">Order id: <span className="font-semibold">{orderId}</span></p>
+        <p className="font-bold">Order total: $<span className="font-semibold">{orderTotal}</span></p>
+        <p className="font-bold">Order quantity: <span className="font-semibold">{orderQuantity}</span></p>
+        <p className="font-bold">Date of order: <span className="font-semibold">{date}</span></p>
         <p>
           {user.firstName} {user.lastName}
         </p>
@@ -44,7 +44,7 @@ const OrderCard = ({
       </div>
       <button
         onClick={() => navigate(`${orderId}`)}
-        className="absolute top-2 right-2 border-1 text-white bg-theme-blue hover:bg-black rounded-md p-[4px]"
+        className="absolute top-2 right-2 border-1 text-white bg-theme-blue hover:bg-blue-700 rounded-md p-[4px]"
       >
         Order Details
       </button>

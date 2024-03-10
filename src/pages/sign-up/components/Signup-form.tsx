@@ -24,7 +24,7 @@ const schema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters long"),
+    .min(6, "Password is too short"),
   retypedPassword: yup
     .string()
     .oneOf([yup.ref("password")], "Passwords must match")
@@ -37,13 +37,13 @@ const schema = yup.object().shape({
 
 const SignUpForm = () => {
   const dispatch = useDispatch<any>();
-  const { fetchData } = useFetch();
+  const { isLoading, fetchData } = useFetch();
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
+    formState: { errors, isValid },
   } = useForm<SignUpFormInputs>({
     resolver: yupResolver<SignUpFormInputs>(schema),
     mode: "onBlur",
@@ -85,7 +85,7 @@ const SignUpForm = () => {
   return (
     <form action="POST" onSubmit={handleSubmit(SignUpRequest)}>
       <div className="flex flex-col max-w-md mx-2 md:mx-auto p-6 bg-white shadow-md rounded-xl mb-4">
-        <h4 className="text-lg font-semibold text-gray-800">
+        <h4 className="text-lg font-bold text-gray-800">
           Account Information:
         </h4>
 
@@ -107,9 +107,6 @@ const SignUpForm = () => {
         <label htmlFor="password" className={labelClasses}>
           Password<span aria-hidden="true">*</span>
         </label>
-        <p className={"text-gray-600 text-sm"}>
-          Passwords must be at least 6 characters long.
-        </p>
         <input
           {...register("password")}
           type="password"
@@ -118,6 +115,9 @@ const SignUpForm = () => {
           aria-required="true"
           required
         />
+        <p className={"text-gray-600 text-sm"}>
+          Passwords must be at least 6 characters long.
+        </p>
         {errors.password && (
           <p className={errorMessageClasses}>{errors.password.message}</p>
         )}
@@ -139,7 +139,7 @@ const SignUpForm = () => {
           </p>
         )}
 
-        <h4 className="text-lg font-semibold mt-4 text-gray-800">
+        <h4 className="text-lg font-bold mt-4 text-gray-800">
           Personal Information:
         </h4>
         <label htmlFor="firstName" className={labelClasses}>
@@ -208,9 +208,9 @@ const SignUpForm = () => {
           className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
             isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
           } transition duration-300 ease-in-out`}
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid || isLoading("default")}
         >
-          {isSubmitting ? "Creating your account..." : "Sign Up"}
+          {isLoading("default") ? "Creating your account..." : "Sign Up"}
         </button>
       </div>
     </form>

@@ -94,7 +94,7 @@ const Product = ({
   };
 
   return (
-    <div className="mt-4 max-w-screen-xl mx-[2%] xl:mx-auto">
+    <div className="mt-4 max-w-screen-xl mx-auto">
       <div className="flex flex-col text-center">
         <div className="hidden sm:block text-left">
           <Link
@@ -160,7 +160,7 @@ const Product = ({
         />
       )}
       <Divider sx={{ borderBottomWidth: 1.5, marginY: 3 }} />
-      <h3 className="underline my-2 text-lg font-[500]">Product Description</h3>
+      <h3 className="underline my-2 text-lg font-bold">Product Description</h3>
       <ul className="max-w-screen-xl" id="rating">
         {description.map((bulletPoint: string, index: number) => (
           <li className="mb-2" key={index}>

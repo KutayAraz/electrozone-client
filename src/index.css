@@ -19,3 +19,15 @@
     @apply font-semibold
   }
 }
+
+.page-spacing {
+  padding: 0 8px;
+  max-width: 1280px;
+  margin: 16px auto;
+}
+
+@media (min-width: 769px) {
+  .page-spacing {
+    padding: 0 12px;
+  }
+}

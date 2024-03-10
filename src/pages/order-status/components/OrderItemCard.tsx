@@ -26,12 +26,12 @@ const OrderItemCard = ({
         />
       </div>
       <Divider />
-      <p className="text-gray-700 group-hover:text-theme-blue mt-2">
+      <p className="group-hover:text-theme-blue mt-2">
         {productName}
       </p>
-      <p className="text-gray-700 group-hover:text-theme-blue">{brand}</p>
-      <p className="text-gray-700 group-hover:text-theme-blue">Quantity: {quantity}</p>
-      <p className="text-gray-700 group-hover:text-theme-blue ">
+      <p className="group-hover:text-theme-blue">{brand}</p>
+      <p className="group-hover:text-theme-blue">Quantity: {quantity}</p>
+      <p className="group-hover:text-theme-blue ">
         Total: ${price.toFixed(2)}
       </p>
     </Link>

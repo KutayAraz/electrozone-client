@@ -367,8 +367,6 @@ export async function loader({ params, request }: any) {
     brands: searchParams.get('brands'),
   };
 
-  console.log("filters are ", filters)
-
   // Conditionally add max_price only if it exists
   const maxPrice = searchParams.get('max_price');
   if (maxPrice !== null) {

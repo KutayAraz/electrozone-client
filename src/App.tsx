@@ -34,6 +34,7 @@ import Trending, { loader as trendingLoader } from "./pages/trending/index.tsx";
 import Contact from "./pages/contact-us/index.tsx";
 import ProjectDetails from "./pages/project-details/index.tsx";
 import SignInForm from "./pages/sign-in/index.tsx";
+import Error from "./pages/error/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -157,9 +158,13 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        element: <Error />,
+        path: "*"
+      }
     ],
-  },
 
+  },
   {
     element: <ProtectedRoute />,
     children: [
@@ -171,6 +176,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+
 ]);
 
 function App() {

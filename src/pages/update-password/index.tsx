@@ -74,7 +74,7 @@ const UpdatePassword = () => {
   return (
     <form onSubmit={handleSubmit(handlePasswordChange)}>
       <div className="flex flex-col max-w-md mx-auto p-6 bg-white shadow-md rounded-xl mb-4">
-        <h4 className="text-lg font-semibold text-gray-800">
+        <h4 className="text-lg font-bold text-gray-800">
           Account Information:
         </h4>
 

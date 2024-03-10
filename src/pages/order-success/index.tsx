@@ -1,12 +1,25 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as SuccessIcon } from "@assets/svg/success.svg";
+import { useEffect } from "react";
 
 const OrderSuccess = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const orderId = location.state?.orderId;
 
+  useEffect(() => {
+    if (!orderId) {
+      navigate("/");
+    }
+  }, [orderId, navigate]);
+
+  if (!orderId) {
+    // Render nothing or a loading indicator until the redirect takes effect
+    return null; // or <LoadingIndicator />
+  }
+  
   return (
-    <div className="m-[2%]">
+    <div className="page-spacing">
       <h2 className="text-2xl text-gray-700 mb-2">
         Order Successful
         <SuccessIcon className="h-8 w-auto inline-block pl-2" />

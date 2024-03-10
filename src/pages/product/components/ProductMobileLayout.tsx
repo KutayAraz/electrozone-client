@@ -61,7 +61,7 @@ const ProductMobileLayout = ({
       </Slider>
 
       <div className="flex py-4 items-center justify-around fixed bottom-0 left-0 right-0 w-full bg-gray-100">
-        <p className="text-lg sm:text-xl ml-2">${price}</p>
+        <p className="text-lg sm:text-xl font-bold ml-2">${price}</p>
         <div className="flex">
           <button
             onClick={decrementQuantity}
