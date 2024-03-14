@@ -377,8 +377,8 @@ export async function loader({ params, request }: any) {
 
   return defer({
     subcategoryData: products,
-    brandsData: brandsData,
-    priceRangeData: priceRangeData,
+    brandsData,
+    priceRangeData,
     skipped: initProdCount
   });
 };

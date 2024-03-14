@@ -107,7 +107,7 @@ const ProductCard = forwardRef(({
           <p className="text-lg">$ {price.toFixed(2)}</p>
           <button
             onClick={handleAddToCart}
-            className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-900"
+            className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-800"
           >
             Add to Cart
           </button>

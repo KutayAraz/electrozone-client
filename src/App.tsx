@@ -18,7 +18,7 @@ import Checkout, { loader as checkoutLoader } from "./pages/checkout/index.tsx";
 import UserWishlist, {
   loader as wishlistLoader,
 } from "./pages/user-wishlist/index.tsx";
-import SearchResultsPage from "./pages/search/index.tsx";
+import SearchResultsPage, { loader as searchLoader } from "./pages/search/index.tsx";
 import MyOrders, { loader as ordersLoader } from "./pages/my-orders/index.tsx";
 import OrderSuccess from "./pages/order-success/index.tsx";
 import OrderStatus, {
@@ -114,6 +114,7 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <SearchResultsPage />,
+        loader: searchLoader,
       },
       {
         path: "/contact-us",

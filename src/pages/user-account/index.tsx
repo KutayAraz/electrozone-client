@@ -8,11 +8,11 @@ import InfoCard from "./components/InfoCard";
 
 const UserAccount = () => {
   return (
-    <>
-      <h2 className="text-2xl underline font-[500] ml-4 mt-4 mb-6 text-gray-700">
+    <div className="page-spacing">
+      <h2 className="text-2xl font-bold mt-4 mb-6">
         Your Account Information
       </h2>
-      <div className="flex flex-wrap gap-3 m-[2%]">
+      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3">
         <InfoCard to="profile" Icon={AddressCard}>
           Address
         </InfoCard>
@@ -32,7 +32,7 @@ const UserAccount = () => {
           Sign Out
         </InfoCard>
       </div>
-    </>
+    </div>
   );
 };
 

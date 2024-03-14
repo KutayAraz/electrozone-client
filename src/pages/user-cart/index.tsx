@@ -96,8 +96,8 @@ const UserCart = () => {
   };
 
   return (
-    <div className="max-w-screen-lg space-y-8 my-[2%] mx-[1%]">
-      <h2 className="text-2xl font-semibold text-gray-700">
+    <div className="page-spacing">
+      <h2 className="text-2xl font-bold py-3">
         Your Shopping Cart
       </h2>
       <Suspense fallback={<p className="text-gray-600">Loading..</p>}>
@@ -119,25 +119,31 @@ const UserCart = () => {
                   />
                 ))}
               </div>
-              <div>
-                <p className="text-xl text-gray-700 font-semibold mt-4">
-                  Cart Total: ${cartTotal.toFixed(2)}
-                </p>
-
-                <div className="flex space-x-4 mt-4">
-                  <button
-                    onClick={handleCheckoutButton}
-                    className="bg-theme-blue hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-200"
-                  >
-                    Proceed to Checkout
-                  </button>
-                  <button
-                    onClick={handleClearCartButton}
-                    className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-md transition duration-200"
-                    disabled={products.length === 0}
-                  >
-                    Clear Cart
-                  </button>
+              <div className="flex justify-end mt-4">
+                <div className="flex flex-col space-y-2">
+                  <div className="flex justify-between">
+                    <p className="text-lg font-bold">
+                      Cart Total:
+                    </p>
+                    <p className="text-lg font-bold">
+                      ${cartTotal.toFixed(2)}
+                    </p>
+                  </div>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={handleCheckoutButton}
+                      className="bg-theme-blue hover:bg-blue-700 text-white px-4 py-2 rounded-md transition duration-200"
+                    >
+                      Proceed to Checkout
+                    </button>
+                    <button
+                      onClick={handleClearCartButton}
+                      className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-md transition duration-200"
+                      disabled={products.length === 0}
+                    >
+                      Clear Cart
+                    </button>
+                  </div>
                 </div>
               </div>
             </>

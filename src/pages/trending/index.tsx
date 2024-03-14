@@ -9,12 +9,12 @@ const Trending = () => {
   const params = useParams();
 
   return (
-    <>
-      <h4 className="font-semibold text-gray-700 text-2xl mx-[2%] my-3">
+    <div className="page-spacing">
+      <h4 className="font-bold text-2xl ml-2 my-3">
         {capitalizeWords(params.type?.replace(/-/g, " ") || "")} Site-Wide
       </h4>
       <Suspense fallback={<p>Loading Products..</p>}>
-        <div className="mx-[1%] flex flex-wrap">
+        <div className="flex flex-wrap">
           <Await
             resolve={products}
             children={(resolvedProducts) => {
@@ -29,13 +29,14 @@ const Trending = () => {
                   brand={product.brand}
                   averageRating={product.averageRating}
                   price={product.price}
+                  className=""
                 />
               ));
             }}
           />
         </div>
       </Suspense>
-    </>
+    </div>
   );
 };
 

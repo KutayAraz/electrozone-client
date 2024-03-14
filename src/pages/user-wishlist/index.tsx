@@ -63,11 +63,11 @@ const UserWishlist = () => {
     <div className="page-spacing">
       <Suspense fallback={<p>Loading...</p>}>
         <>
-          <h4 className="font-bold text-xl">My Wishlist</h4>
+          <h4 className="font-bold text-2xl pl-2 pb-3">My Wishlist</h4>
           {wishlistProducts.length === 0 ? (
-            <p className="text-gray-500 italic text-xl">
+            <h4 className="text-gray-500 italic text-xl">
               There's nothing in your wishlist.
-            </p>
+            </h4>
           ) : (
             <div className="flex flex-wrap">
               {wishlistProducts.map((product: any) => {
