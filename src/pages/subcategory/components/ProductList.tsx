@@ -4,10 +4,9 @@ import { forwardRef } from "react";
 
 const ProductList = forwardRef(({ products }: ProductListProps, ref: any) => {
   return (
-    <div className="flex flex-wrap mx-auto px-2">
+    <div className="flex flex-wrap flex-grow  px-2">
       {products.map((product: Product, index: number) => {
         const isThirdToLast = index === products.length - 3;
-
         return (
           <ProductCard
             key={product.id}

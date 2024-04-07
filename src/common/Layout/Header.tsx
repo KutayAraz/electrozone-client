@@ -15,7 +15,7 @@ import CustomizableModal from "../Modal/CustomizableModal";
 import userSlice from "@/setup/slices/user-slice";
 import { useNavigate } from 'react-router-dom';
 
-const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
+const Header = () => {
   const firstName = useSelector((state: any) => state.user.firstName);
   const city = useSelector((state: any) => state.user.city);
   const dispatch = useDispatch();
@@ -50,7 +50,7 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
 
   return (
     <>
-      <div className="flex justify-between w-full text-white items-center py-2 sm:py-0">
+      <div className={`flex justify-between w-full text-white items-center px-2 py-2 sm:py-0 bg-theme-blue`}>
         <div className="flex">
           <BurgerMenu className="block sm:hidden"></BurgerMenu>
           <Link to={"/"} className="max-w-[80%] mb-1 flex items-center">
@@ -114,14 +114,10 @@ const Header = ({ isScrolled }: { isScrolled?: boolean }) => {
         </div>
       </div>
       <div
-        className={`px-1 ${
-          isScrolled ? "fixed top-0 left-0 right-0 z-10 bg-white" : ""
-        }`}
+        className={`px-2`}
       >
         <SearchBar
-          className={`md:hidden text-gray-700 h-10 w-full my-1 ${
-            isScrolled ? "shadow-md" : ""
-          }`}
+          className={`md:hidden text-gray-700 h-10 w-full my-1 `}
         />
       </div>
       <CustomizableModal

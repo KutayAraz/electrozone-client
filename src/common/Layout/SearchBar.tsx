@@ -1,10 +1,21 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as SearchIcon } from "@assets/svg/search.svg";
 
 const SearchBar = ({ className }: { className?: string }) => {
-  const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const getQueryFromLocation = () => {
+    return new URLSearchParams(location.search).get('query') || '';
+  };
+
+  const [query, setQuery] = useState(getQueryFromLocation());
+
+  // Update the query state when the location changes
+  useEffect(() => {
+    setQuery(getQueryFromLocation());
+  }, [location]);
 
   const handleSearch = () => {
     if (query) {
@@ -19,14 +30,14 @@ const SearchBar = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className={`relative flex ${className}`}>
+    <div className={`relative flex ${className} border-red`}>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search Electrozone"
-        className={`rounded-md w-full pl-3 pr-10 h-full focus:outline-none focus:ring-1 focus:ring-gray-500`}
+        className={`rounded-md w-full pl-3 pr-10 h-full  focus:outline-none focus:ring-1 focus:ring-gray-500`}
       />
       <button
         onClick={handleSearch}

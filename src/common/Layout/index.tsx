@@ -10,48 +10,66 @@ import { setUserIntent, updateCartItemCount } from "@/setup/slices/user-slice";
 import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
 import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import UserLocation from "./UserLocation";
-import { Alert, Slide } from "@mui/material";
+import { Alert, Slide, useMediaQuery } from "@mui/material";
 import { hideAlert } from "@/setup/slices/alert-slice";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
 import LoadingIndicator from "../LoadingBar";
+import { useScrollDirection } from "../Hooks/use-scrollDirection";
+import { debounce } from "@/utils/debounce";
 
 const Layout = () => {
   const dispatch = useDispatch();
   const alertState = useSelector((state: RootState) => state.alert);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const scrollDirection = useScrollDirection();
+  const divRef = useRef<any>(null);
+  const [divHeight, setDivHeight] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const location = useLocation();
+  const path = location.pathname;
+  const isMobile = useMediaQuery("(max-width: 768px)");
+
+  // Check if the path starts with '/category' and has more segments following it
+  const pathSegments = location.pathname.split('/').filter(Boolean); // Split path and remove empty segments
+
+  // Determine if you should show the nav strip
+  const showHeaderExtras = !(pathSegments[0] === 'category' && pathSegments.length >= 3) && !path.startsWith('/search');
 
   useEffect(() => {
+    // Handler to call on scroll
     const handleScroll = () => {
-      if (headerRef.current) {
-        const headerHeight = headerRef.current.offsetHeight;
-        const offset = window.scrollY;
-        setIsScrolled(offset > headerHeight);
-      }
+      setScrollY(window.scrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    // Debounced version of the scroll handler
+    const debouncedHandleScroll = debounce(handleScroll, 1000);
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    window.addEventListener('scroll', debouncedHandleScroll);
+
+    // Cleanup function to remove the event listener
+    return () => window.removeEventListener('scroll', debouncedHandleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (divRef.current) {
+      setDivHeight(divRef.current.offsetHeight);
+    }
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="bg-theme-blue px-2 md:px-3" ref={headerRef}>
-        <Header isScrolled={isScrolled} />
-        <NavStrip />
+      <div ref={divRef} className={`bg-theme-blue ${(!showHeaderExtras && isMobile) ? "pb-2" : ""} sticky z-20 ${scrollDirection === "down" ? "-top-48" : "top-0"} h-[${divHeight}px] transition-all duration-200`}>
+        <Header />
+        {(showHeaderExtras || !isMobile) && <NavStrip />}
+        {showHeaderExtras && <UserLocation />}
       </div>
-      <UserLocation />
       <LoadingIndicator />
       {alertState.isOpen && (
         <Slide direction="right" in={alertState.isOpen} mountOnEnter unmountOnExit>
           <Alert
             severity={alertState.type}
             onClose={() => dispatch(hideAlert())}
-            className="fixed w-auto left-0 top-2 z-10"
+            className="fixed w-auto left-0 top-2"
             style={{ borderRadius: 0 }}
           >
             {alertState.message}
@@ -113,3 +131,23 @@ export const loader: LoaderFunction = async ({ request }: any) => {
   }
   return null;
 }
+
+
+// const headerRef = useRef<HTMLDivElement>(null);
+// const [isScrolled, setIsScrolled] = useState<boolean>(false);
+
+// useEffect(() => {
+//   const handleScroll = () => {
+//     if (headerRef.current) {
+//       const headerHeight = headerRef.current.offsetHeight;
+//       const offset = window.scrollY;
+//       setIsScrolled(offset > headerHeight);
+//     }
+//   };
+
+//   window.addEventListener("scroll", handleScroll);
+
+//   return () => {
+//     window.removeEventListener("scroll", handleScroll);
+//   };
+// }, []);

@@ -261,6 +261,12 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             >
               Monitors
             </Link>
+            <Link
+              to={"/category/computers-and-accessories/computer-accessories"}
+              className="text-xl hover:bg-gray-100 p-4"
+            >
+              Computer Accessories
+            </Link>
           </div>
 
           <div

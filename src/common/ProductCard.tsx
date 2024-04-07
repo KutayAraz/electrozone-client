@@ -74,7 +74,7 @@ const ProductCard = forwardRef(({
   // };
 
   return (
-    <div className={`w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-3 ${className}`} ref={ref}
+    <div className={`w-full xs:w-1/2 md:w-1/3 lg:w-1/4 px-2 text-center items-center mb-3 ${className}`} ref={ref}
     >
       <Link
         to={`/category/${category + "/" + subcategory + "/" + id}`}
