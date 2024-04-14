@@ -16,9 +16,10 @@ import SortIcon from '@mui/icons-material/Sort';
 import CloseIcon from '@mui/icons-material/Close';
 import { formatString } from "@/utils/format-casing";
 import ProductList from "./ProductList";
+import { useScrollDirection } from "@/common/Hooks/use-scrollDirection";
 
 const SearchResultsPage = () => {
-  const { searchResults, brandsData, priceRangeData, skipped, subcategoryData }: any = useLoaderData();
+  const { searchResults, brandsData, priceRangeData, skipped, subcategoryData, productQuantity }: any = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const [productsData, setProducts] = useState<any>(searchResults);
   const [productsToSkip, setProductsToSkip] = useState<number>(skipped)
@@ -47,6 +48,8 @@ const SearchResultsPage = () => {
 
   const [sortingDrawer, setSortingDrawer] = useState(false);
   const [filterDrawer, setFilterDrawer] = useState(false);
+
+  const scrollDirection = useScrollDirection();
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -225,42 +228,7 @@ const SearchResultsPage = () => {
   };
 
   return (
-
     <div className="page-spacing">
-      <div className="flex justify-between items-center py-0 sm:py-4">
-        <h3 className="text-xl italic pl-2">
-          Search results for "{query}"
-        </h3>
-
-        {/* Sorting Menu */}
-        <div className="hidden sm:block pr-4">
-          <FormControl className="rounded-lg shadow-md">
-            <InputLabel id="sort-by" sx={{ fontSize: "1rem" }}>
-              Sort By
-            </InputLabel>
-            <Select
-              id="sort-by"
-              label="Sort By"
-              value={searchParams.get("sort") || "relevance"}
-              onChange={handleSortChange}
-              sx={{ padding: "2px", "& .MuiSelect-select": { padding: "4px" } }}
-            >
-              <MenuItem value={"relevance"}>
-                <Typography variant="body2">Relevance</Typography>
-              </MenuItem>
-              <MenuItem value={"rating"}>
-                <Typography variant="body2">Rating</Typography>
-              </MenuItem>
-              <MenuItem value={"price_ascending"}>
-                <Typography variant="body2">Price Ascending</Typography>
-              </MenuItem>
-              <MenuItem value={"price_descending"}>
-                <Typography variant="body2">Price Descending</Typography>
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-      </div>
       <div className="flex sm:hidden p-4 space-x-4">
         <Button
           variant="outlined"
@@ -357,7 +325,7 @@ const SearchResultsPage = () => {
         >
           <CloseIcon />
         </IconButton>
-        <div className="p-6 text-gray-700">
+        <div className="p-6">
           {/* Stock Status */}
           <Typography variant="h6" >Stock Status</Typography>
           <Box sx={{
@@ -464,8 +432,6 @@ const SearchResultsPage = () => {
               />
             </div>
           </div>
-
-
           {/* Filter Button */}
           <Button type="submit" variant="contained" onClick={(e) => { handleFiltering(e); setFilterDrawer(false) }} sx={{
             backgroundColor: '#13193F',
@@ -481,15 +447,14 @@ const SearchResultsPage = () => {
       </div>}>
         <div className="flex flex-row items-start">
           {/* FilterMenu */}
-          <div>
-            <div className="flex-col w-48 md:w-56 flex-shrink-0 px-2 hidden sm:flex  top-4 overflow-y-auto overflow-x-hidden " style={{ maxHeight: '70vh', overflowY: 'auto' }}
-            >
-              <h4 className="text-xl font-semibold mb-1">Stock Status</h4>
+          <div className={`flex-col sticky w-48 md:w-56 flex-shrink-0 ${scrollDirection === "up" ? "top-32 " : "top-4 dosth"} px-2 hidden sm:flex overflow-y-auto`} >
+            <div className="flex flex-col overflow-y-auto overflow-x-hidden" >
+              <h4 className="text-lg font-semibold mb-1">Stock Status</h4>
               <FormControlLabel
                 control={<Checkbox
                   sx={{
                     '& .MuiSvgIcon-root': {
-                      fontSize: '1.25rem',
+                      fontSize: '1.1rem',
                     },
                     '&.MuiButtonBase-root': {
                       paddingLeft: '10px',
@@ -504,7 +469,7 @@ const SearchResultsPage = () => {
                 control={<Checkbox
                   sx={{
                     '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
-                      fontSize: '1.25rem',
+                      fontSize: '1.1rem',
                     },
                     '&.MuiButtonBase-root': { // Targeting the ButtonBase root element of the checkbox
                       paddingLeft: '10px',
@@ -515,7 +480,7 @@ const SearchResultsPage = () => {
                   }} checked={stockStatus === 'in_stock'} onChange={handleStockChange} name="in_stock" />}
                 label="Only in Stock" className="text-sm"
               />
-              <h4 className="text-xl font-semibold mt-4 mb-1">Subcategories</h4>
+              <h4 className="text-lg font-semibold mt-4 mb-1">Subcategories</h4>
               {subcategoryData.map((subcategory: string, index: number) => (
                 <FormControlLabel
                   key={index}
@@ -523,7 +488,7 @@ const SearchResultsPage = () => {
                     <Checkbox
                       sx={{
                         '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
-                          fontSize: '1.25rem',
+                          fontSize: '1.1rem',
                         },
                         '&.MuiButtonBase-root': { // Targeting the ButtonBase root element of the checkbox
                           paddingLeft: '10px',
@@ -537,15 +502,9 @@ const SearchResultsPage = () => {
                     />
                   }
                   label={`${formatString(subcategory)}`}
-                  sx={{
-
-                    '& .MuiFormControlLabel-label': { // Targeting the label directly if you need to adjust its styling
-                      fontSize: '1.05rem',
-                    },
-                  }}
                 />
               ))}
-              <h4 className="text-xl font-semibold mt-4 mb-1">Brands</h4>
+              <h4 className="text-lg font-semibold mt-4 mb-1">Brands</h4>
               {brandsData.map((brand: string, index: number) => (
                 <FormControlLabel
                   key={index}
@@ -553,7 +512,7 @@ const SearchResultsPage = () => {
                     <Checkbox
                       sx={{
                         '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
-                          fontSize: '1.25rem',
+                          fontSize: '1.1rem',
                         },
                         '&.MuiButtonBase-root': { // Targeting the ButtonBase root element of the checkbox
                           paddingLeft: '10px',
@@ -567,27 +526,24 @@ const SearchResultsPage = () => {
                     />
                   }
                   label={brand}
-                  sx={{
-
-                    '& .MuiFormControlLabel-label': { // Targeting the label directly if you need to adjust its styling
-                      fontSize: '1.05rem',
-                    },
-                  }}
                 />
               ))}
-              <h4 className="text-xl font-semibold my-2">Price Range</h4>
+            </div>
+            <div className="mt-2 w-[95%] text-center">
+              <h4 className="text-lg font-semibold mt-2 mb-3">Price Range</h4>
               <Slider
                 getAriaLabel={() => 'Price range'}
                 value={priceRange}
                 onChange={handlePriceChange}
                 valueLabelDisplay="auto"
+
                 step={Math.floor((priceRangeData.max - priceRangeData.min) / 10)}
                 min={0}
                 max={priceRangeData.max}
                 getAriaValueText={(value) => `$${value}`} // Adds a "$" sign for screen readers
                 valueLabelFormat={(value) => `$${value}`} // Adds a "$" sign to the label
                 sx={{
-                  width: '90%', // Adjusts the width, effectively reducing it
+                  width: '75%',
                   mx: 'auto', // Optionally, add margin to center the slider if needed
                   '& .MuiSlider-thumb': {
                     color: '#13193F', // Changes the thumb color
@@ -597,7 +553,6 @@ const SearchResultsPage = () => {
                   },
                 }}
               />
-
               <div className="flex space-x-2 mb-2">
                 <TextField
                   name="minPrice"
@@ -617,7 +572,7 @@ const SearchResultsPage = () => {
                     sx: {
                       // Targeting the input text for font size adjustment
                       '.MuiInputBase-input': {
-                        fontSize: '0.875rem', // Adjust the font size as needed
+                        fontSize: '0.875rem',
                       },
                     },
                   }}
@@ -647,7 +602,7 @@ const SearchResultsPage = () => {
                     sx: {
                       // Targeting the input text for font size adjustment
                       '.MuiInputBase-input': {
-                        fontSize: '0.875rem', // Adjust the font size as needed
+                        fontSize: '0.875rem',
                       },
                     },
                   }}
@@ -659,9 +614,6 @@ const SearchResultsPage = () => {
                   }}
                 />
               </div>
-
-            </div>
-            <div className="px-2 mt-2">
               <button type="submit"
                 className="bg-theme-blue w-full hover:bg-[#1e40af] rounded-md py-2 text-white"
                 onClick={handleFiltering}>
@@ -670,6 +622,36 @@ const SearchResultsPage = () => {
             </div>
           </div>
           <div className="flex grow flex-wrap">
+            <div className="hidden sm:flex justify-between w-full px-4 mb-4">
+              <h3 className="text-lg self-end">
+                Listing {productQuantity} products for "{query}"
+              </h3>
+              <FormControl className="rounded-lg shadow-md">
+                <InputLabel id="sort-by" sx={{ fontSize: "1rem" }}>
+                  Sort By
+                </InputLabel>
+                <Select
+                  id="sort-by"
+                  label="Sort By"
+                  value={searchParams.get("sort") || "relevance"}
+                  onChange={handleSortChange}
+                  sx={{ padding: "2px", "& .MuiSelect-select": { padding: "4px" } }}
+                >
+                  <MenuItem value={"relevance"}>
+                    <Typography variant="body2">Relevance</Typography>
+                  </MenuItem>
+                  <MenuItem value={"rating"}>
+                    <Typography variant="body2">Rating</Typography>
+                  </MenuItem>
+                  <MenuItem value={"price_ascending"}>
+                    <Typography variant="body2">Price Ascending</Typography>
+                  </MenuItem>
+                  <MenuItem value={"price_descending"}>
+                    <Typography variant="body2">Price Descending</Typography>
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <ProductList productsData={productsData} ref={observerTarget} /></div>
         </div>
       </Suspense >
@@ -733,13 +715,14 @@ export async function loader({ params, request }: any) {
     filters.max_price = parseFloat(maxPrice);
   }
 
-  const { products, availableBrands, priceRange, availableSubcategories } = await searchProducts(query!, sort, 0, initProdCount, filters);
+  const { products, availableBrands, priceRange, availableSubcategories, productQuantity } = await searchProducts(query!, sort, 0, initProdCount, filters);
 
   return defer({
     searchResults: products,
     brandsData: availableBrands,
     skipped: initProdCount,
     priceRangeData: priceRange,
-    subcategoryData: availableSubcategories
+    subcategoryData: availableSubcategories,
+    productQuantity
   });
 };

@@ -53,11 +53,11 @@ const Header = () => {
       <div className={`flex justify-between w-full text-white items-center px-2 py-2 sm:py-0 bg-theme-blue`}>
         <div className="flex">
           <BurgerMenu className="block sm:hidden"></BurgerMenu>
-          <Link to={"/"} className="max-w-[80%] mb-1 flex items-center">
-            <Brand className="block sm:hidden" />
+          <Link to={"/"} className="max-w-[60%] mb-1 flex items-center min-w-[136px] sm:hidden">
+            <Brand className="" />
           </Link>
-          <Link to={"/"}>
-            <BrandLogo className="hidden sm:block " />
+          <Link to={"/"} className="hidden sm:block max-w-[256px]">
+            <BrandLogo />
           </Link>
           <div className="hidden sm:flex items-center px-6">
             <LocationPin
@@ -66,7 +66,7 @@ const Header = () => {
               className="mr-[4px] stroke-white"
             />
             {isSignedIn ? (
-              <div className="text-left">
+              <div className="text-left text-sm">
                 <p>Delivering to:</p>
                 <p>{city}</p>
               </div>
@@ -90,7 +90,7 @@ const Header = () => {
             )}
           </div>
         </div>
-        <SearchBar className="hidden md:flex text-gray-700 h-10 mx-[3%] md:flex-grow" />
+        <SearchBar className="hidden md:flex text-gray-700 h-10 mx-[3%] md:flex-grow max-w-[50%]" />
         <div className="flex items-center xs:pr-2 whitespace-nowrap">
           {isSignedIn ? (
             <button
@@ -108,7 +108,8 @@ const Header = () => {
           <button onClick={() => setIsProfileModalOpen(true)}>
             <UserIcon width={32} height={32} />
           </button>
-          <Link to={"/my-cart"} className="flex mt-auto">
+          <Link to={"/my-cart"} className="flex mt-auto ml-2">
+            <p className="self-center">Basket</p>
             <BasketWithBadge itemCount={itemCount} />
           </Link>
         </div>

@@ -11,8 +11,9 @@ const MyOrders = () => {
   const { orders }: any = useLoaderData();
 
   return (
-    <div className="page-spacing">
-      <h2 className="text-2xl font-bold my-2">Previous Orders</h2>
+    <div className="flex w-full">
+      <div className="grow w-full">
+      <h2 className="text-xl font-semibold my-2">Previous Orders</h2>
       <Suspense fallback={<p>Loading..</p>}>
         <Await
           resolve={orders}
@@ -31,6 +32,8 @@ const MyOrders = () => {
           }}
         />
       </Suspense>
+      </div>
+      
     </div>
   );
 };

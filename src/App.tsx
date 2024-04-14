@@ -35,6 +35,7 @@ import Contact from "./pages/contact-us/index.tsx";
 import ProjectDetails from "./pages/project-details/index.tsx";
 import SignInForm from "./pages/sign-in/index.tsx";
 import Error from "./pages/error/index.tsx";
+import UserProfileLayout from "./common/UserProfileLayout/UserProfileLayout.tsx";
 
 const router = createBrowserRouter([
   {
@@ -73,7 +74,7 @@ const router = createBrowserRouter([
         loader: trendingLoader,
       },
       {
-        element: <ProtectedRoute />,
+        element: <UserProfileLayout />,
         path: "/my-account",
         children: [
           {

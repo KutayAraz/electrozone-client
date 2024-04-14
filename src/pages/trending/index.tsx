@@ -10,7 +10,7 @@ const Trending = () => {
 
   return (
     <div className="page-spacing">
-      <h4 className="font-bold text-2xl ml-2 my-3">
+      <h4 className="font-bold text-xl ml-2 my-3">
         {capitalizeWords(params.type?.replace(/-/g, " ") || "")} Site-Wide
       </h4>
       <Suspense fallback={<p>Loading Products..</p>}>

@@ -35,6 +35,8 @@ const ProductCard = forwardRef(({
   const dispatch = useDispatch<any>();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const { fetchData } = useFetch();
+  const truncatedProductName = productName.length > 55 ? `${productName.substring(0, 55)}...` : productName;
+
 
   const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -84,7 +86,7 @@ const ProductCard = forwardRef(({
           <img
             src={thumbnail}
             alt={`image for ${productName}`}
-            className="min-w-[100px] w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto"
+            className="min-w-[100px] w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto hover:scale-[102%]"
           />
         </div>
         <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-2 justify-between">
@@ -93,7 +95,7 @@ const ProductCard = forwardRef(({
             className="self-stretch xs:hidden m-2"
           />
           <Divider className="self-stretch hidden xs:block" />
-          <p>{productName}</p>
+          <p className="text-sm" title={productName}>{truncatedProductName}</p>
           <p className="font-[500]">{brand}</p>
 
           <Rating

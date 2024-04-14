@@ -23,7 +23,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useScrollDirection } from "@/common/Hooks/use-scrollDirection";
 
 const SubcategoryPage = () => {
-  const { subcategoryData, brandsData, priceRangeData, skipped }: any = useLoaderData();
+  const { subcategoryData, brandsData, priceRangeData, skipped, productQuantity }: any = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const { subcategory }: any = useParams();
   const [productsData, setProducts] = useState<any>(subcategoryData);
@@ -213,40 +213,6 @@ const SubcategoryPage = () => {
 
   return (
     <div className="page-spacing">
-      <div className="flex justify-between items-center py-1 sm:py-2">
-        <h3 className="text-xl font-bold pl-2">
-          {subcategory ? subcategory.toUpperCase() : "Products"}
-        </h3>
-
-        {/* Sorting Menu */}
-        <div className="hidden sm:block pr-4">
-          <FormControl className="rounded-lg shadow-md">
-            <InputLabel id="sort-by" sx={{ fontSize: "1rem" }}>
-              Sort By
-            </InputLabel>
-            <Select
-              id="sort-by"
-              label="Sort By"
-              value={searchParams.get("sort") || "featured"}
-              onChange={handleSortChange}
-              sx={{ padding: "2px", "& .MuiSelect-select": { padding: "4px" } }}
-            >
-              <MenuItem value={"featured"}>
-                <Typography variant="body2">Featured</Typography>
-              </MenuItem>
-              <MenuItem value={"rating"}>
-                <Typography variant="body2">Rating</Typography>
-              </MenuItem>
-              <MenuItem value={"price_ascending"}>
-                <Typography variant="body2">Price Ascending</Typography>
-              </MenuItem>
-              <MenuItem value={"price_descending"}>
-                <Typography variant="body2">Price Descending</Typography>
-              </MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-      </div>
       <div className="flex sm:hidden p-4 space-x-4">
         <Button
           variant="outlined"
@@ -259,7 +225,6 @@ const SubcategoryPage = () => {
             justifyContent: 'center',
             py: 1,
             textTransform: 'none',
-
           }}
         >
           <Typography className="text-[#374151]">
@@ -453,14 +418,17 @@ const SubcategoryPage = () => {
       </div>}>
         <div className="flex flex-row items-start">
           {/* FilterMenu */}
-          <div className={`flex-col sticky w-48 md:w-56 flex-shrink-0 ${scrollDirection === "up" ? "top-32" : "top-4"} px-2 hidden sm:flex `} style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+          <div className={`flex-col sticky w-48 md:w-56 flex-shrink-0 ${scrollDirection === "up" ? "top-32 max-h-[85vh]" : "top-4 max-h-[calc(85vh + 4rem)]"} hidden sm:flex`} style={{ overflowY: 'auto' }}>
+            <h3 className="text-lg font-bold mb-2">
+              {subcategory ? subcategory.toUpperCase().replace(/-/g, " ") : "Products"}
+            </h3>
             <div className="flex flex-col overflow-y-auto overflow-x-hidden" >
-              <h4 className="text-xl font-semibold mb-1">Stock Status</h4>
+              <h4 className="text-lg font-semibold mb-1">Stock Status</h4>
               <FormControlLabel
                 control={<Checkbox
                   sx={{
                     '& .MuiSvgIcon-root': {
-                      fontSize: '1.25rem',
+                      fontSize: '1.1rem',
                     },
                     '&.MuiButtonBase-root': {
                       paddingLeft: '10px',
@@ -475,7 +443,7 @@ const SubcategoryPage = () => {
                 control={<Checkbox
                   sx={{
                     '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
-                      fontSize: '1.25rem', // Adjust icon size if necessary
+                      fontSize: '1.1rem', // Adjust icon size if necessary
                     },
                     '&.MuiButtonBase-root': { // Targeting the ButtonBase root element of the checkbox
                       paddingLeft: '10px', // Decreasing padding to 4px
@@ -486,7 +454,7 @@ const SubcategoryPage = () => {
                   }} checked={stockStatus === 'in_stock'} onChange={handleStockChange} name="in_stock" />}
                 label="Only in Stock" className="text-sm"
               />
-              <h4 className="text-xl font-semibold mt-4 mb-1">Brands</h4>
+              <h4 className="text-lg font-semibold mt-4 mb-1">Brands</h4>
               {brandsData.map((brand: string, index: number) => (
                 <FormControlLabel
                   key={index}
@@ -494,7 +462,7 @@ const SubcategoryPage = () => {
                     <Checkbox
                       sx={{
                         '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
-                          fontSize: '1.25rem', // Adjust icon size if necessary
+                          fontSize: '1.1rem', // Adjust icon size if necessary
                         },
                         '&.MuiButtonBase-root': { // Targeting the ButtonBase root element of the checkbox
                           paddingLeft: '10px', // Decreasing padding to 4px
@@ -516,7 +484,7 @@ const SubcategoryPage = () => {
                   }}
                 />
               ))}
-              <h4 className="text-xl font-semibold my-2">Price Range</h4>
+              <h4 className="text-lg font-semibold my-2">Price Range</h4>
               <Slider
                 getAriaLabel={() => 'Price range'}
                 value={priceRange}
@@ -528,8 +496,8 @@ const SubcategoryPage = () => {
                 getAriaValueText={(value) => `$${value}`} // Adds a "$" sign for screen readers
                 valueLabelFormat={(value) => `$${value}`} // Adds a "$" sign to the label
                 sx={{
-                  width: '90%', // Adjusts the width, effectively reducing it
-                  mx: 'auto', // Optionally, add margin to center the slider if needed
+                  maxWidth: '85%',
+                  mx: 'auto',
                   '& .MuiSlider-thumb': {
                     color: '#13193F', // Changes the thumb color
                   },
@@ -558,7 +526,7 @@ const SubcategoryPage = () => {
                     sx: {
                       // Targeting the input text for font size adjustment
                       '.MuiInputBase-input': {
-                        fontSize: '0.875rem', // Adjust the font size as needed
+                        fontSize: '0.875rem',
                       },
                     },
                   }}
@@ -601,7 +569,7 @@ const SubcategoryPage = () => {
                 />
               </div>
             </div>
-            <div className="px-2 mt-2">
+            <div className="mt-2">
               <button type="submit"
                 className="bg-theme-blue w-full hover:bg-[#1e40af] rounded-md py-2 text-white"
                 onClick={handleFiltering}>
@@ -610,6 +578,35 @@ const SubcategoryPage = () => {
             </div>
           </div>
           <div className="flex grow flex-wrap">
+            {/* Sorting Menu */}
+            <div className="hidden sm:flex justify-between w-full px-4 mb-4">
+              <h5 className="text-lg self-end">Listing {productQuantity} products for {subcategory}</h5>
+              <FormControl className="rounded-lg shadow-md">
+                <InputLabel id="sort-by" sx={{ fontSize: "1rem" }}>
+                  Sort By
+                </InputLabel>
+                <Select
+                  id="sort-by"
+                  label="Sort By"
+                  value={searchParams.get("sort") || "featured"}
+                  onChange={handleSortChange}
+                  sx={{ padding: "2px", "& .MuiSelect-select": { padding: "4px" } }}
+                >
+                  <MenuItem value={"featured"}>
+                    <Typography variant="body2">Featured</Typography>
+                  </MenuItem>
+                  <MenuItem value={"rating"}>
+                    <Typography variant="body2">Rating</Typography>
+                  </MenuItem>
+                  <MenuItem value={"price_ascending"}>
+                    <Typography variant="body2">Price Ascending</Typography>
+                  </MenuItem>
+                  <MenuItem value={"price_descending"}>
+                    <Typography variant="body2">Price Descending</Typography>
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </div>
             <ProductList products={productsData} ref={observerTarget} />
           </div>
         </div>
@@ -692,12 +689,13 @@ export async function loader({ params, request }: any) {
     filters.max_price = parseFloat(maxPrice);
   }
 
-  const products = await fetchProducts(subcategory, sort, 0, initProdCount, filters);
+  const { products, productQuantity } = await fetchProducts(subcategory, sort, 0, initProdCount, filters);
 
   return defer({
     subcategoryData: products,
     brandsData,
     priceRangeData,
-    skipped: initProdCount
+    skipped: initProdCount,
+    productQuantity
   });
 };
