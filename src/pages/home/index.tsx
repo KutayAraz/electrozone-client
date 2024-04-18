@@ -8,6 +8,8 @@ import Categories from "./components/Categories";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import SliderProductCard from "@/common/SliderProductCard/SliderProductCard";
+import { SliderProductCardProps } from "@/common/SliderProductCard/models";
 
 const HomePage = () => {
   const {
@@ -61,18 +63,20 @@ const HomePage = () => {
         <Suspense fallback={<p>Loading...</p>}>
           <Await
             resolve={bestSellingProducts}
-            children={(products: ProductCard[]) => (
+            children={(products: SliderProductCardProps[]) => (
               <Slider
                 {...settings}
                 lazyLoad="ondemand"
                 className="mb-5"
               >
-                {products.map((product: ProductCard) => (
-                  <ProductCard
+                {products.map((product: SliderProductCardProps) => (
+                  <SliderProductCard
                     key={product.id}
                     id={product.id}
                     productName={product.productName}
+                    brand={product.brand}
                     thumbnail={product.thumbnail}
+                    price={product.price}
                     subcategory={product.subcategory}
                     category={product.category}
                   />
@@ -88,18 +92,20 @@ const HomePage = () => {
         <Suspense fallback={<p>Loading..</p>}>
           <Await
             resolve={mostWishlistedProducts}
-            children={(products: ProductCard[]) => (
+            children={(products: SliderProductCardProps[]) => (
               <Slider
                 {...settings}
                 lazyLoad="ondemand"
                 className="mb-5"
               >
-                {products.map((product: ProductCard) => (
-                  <ProductCard
+                {products.map((product: SliderProductCardProps) => (
+                  <SliderProductCard
                     key={product.id}
                     id={product.id}
                     productName={product.productName}
+                    brand={product.brand}
                     thumbnail={product.thumbnail}
+                    price={product.price}
                     subcategory={product.subcategory}
                     category={product.category}
                   />
@@ -115,18 +121,20 @@ const HomePage = () => {
         <Suspense fallback={<p>Loading..</p>}>
           <Await
             resolve={bestRatedProducts}
-            children={(products: ProductCard[]) => (
+            children={(products: SliderProductCardProps[]) => (
               <Slider
                 {...settings}
                 lazyLoad="ondemand"
                 className="mb-5"
               >
-                {products.map((product: ProductCard) => (
-                  <ProductCard
+                {products.map((product: SliderProductCardProps) => (
+                  <SliderProductCard
                     key={product.id}
                     id={product.id}
                     productName={product.productName}
+                    brand={product.brand}
                     thumbnail={product.thumbnail}
+                    price={product.price}
                     subcategory={product.subcategory}
                     category={product.category}
                   />

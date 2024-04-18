@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
 import { SubcategoryProps } from "./models";
-import ProductCard, { ProductCardProps } from "@/common/ProductCard";
+import ProductCard from "@/pages/home/components/ProductCard";
+import { ReactComponent as PrevArrow } from "@assets/svg/prev-arrow.svg";
+import { ReactComponent as NextArrow } from "@assets/svg/next-arrow.svg";
+import Slider from "react-slick";
+import SliderProductCard from "@/common/SliderProductCard/SliderProductCard";
+import { formatString } from "@/utils/format-casing";
 
 const Subcategory = ({
   subcategory,
@@ -8,17 +13,54 @@ const Subcategory = ({
   topWishlisted,
   id,
 }: SubcategoryProps) => {
+  const settings = {
+    infinite: false,
+    speed: 700,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    initialSlide: 0,
+    draggable: true,
+    swipe: true,
+    nextArrow: <NextArrow className="w-10 h-10" />,
+    prevArrow: <PrevArrow className="w-10 h-10" />,
+    responsive: [
+      {
+        breakpoint: 1280,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+    ],
+  };
   return (
-    <div className="" key={id}>
-      <h3 className="text-xl font-semibold text-center mb-3">
+    <div className="px-4" key={id}>
+      <h3 className="text-lg font-semibold text-center mb-3">
         Top Selling Products in{" "}
-        <Link to={`${subcategory}`} className="underline">
-          {subcategory.toUpperCase()}
+        <Link to={`${subcategory}`} className="underline hover:text-blue-800">
+          {formatString(subcategory)}
         </Link>
       </h3>
-      <div className="flex flex-wrap justify-center lg:justify-between">
-        {topSelling.map((product: ProductCardProps) => (
-          <ProductCard
+      <Slider
+        {...settings}
+        className="mb-5"
+      >
+        {topSelling.products.map((product) => (
+          <SliderProductCard
             key={product.id}
             category={product.category}
             subcategory={product.subcategory}
@@ -26,22 +68,22 @@ const Subcategory = ({
             thumbnail={product.thumbnail}
             productName={product.productName}
             brand={product.brand}
-            averageRating={product.averageRating}
             price={product.price}
-            className="w-1/2 xs:w-1/2 sm:w-1/4 md:w-1/4 lg:w-1/4"
           />
-        ))}
-      </div>
+        ))}</Slider>
 
-      <h3 className="text-xl font-semibold mb-3 text-center">
+      <h3 className="text-lg font-semibold mb-3 text-center">
         Top Wishlisted Products in{" "}
-        <Link to={`${subcategory}`} className="underline">
-          {subcategory.toUpperCase()}
+        <Link to={`${subcategory}`} className="underline hover:text-blue-800">
+          {formatString(subcategory)}
         </Link>
       </h3>
-      <div className="flex flex-wrap justify-center lg:justify-between">
-        {topWishlisted.map((product: ProductCardProps) => (
-          <ProductCard
+      <Slider
+        {...settings}
+        className="mb-5"
+      >
+        {topWishlisted.products.map((product) => (
+          <SliderProductCard
             key={product.id}
             category={product.category}
             subcategory={product.subcategory}
@@ -49,13 +91,10 @@ const Subcategory = ({
             thumbnail={product.thumbnail}
             productName={product.productName}
             brand={product.brand}
-            averageRating={product.averageRating}
             price={product.price}
-            className="w-1/2 xs:w-1/2 sm:w-1/4 md:w-1/4 lg:w-1/4"
-
           />
         ))}
-      </div>
+      </Slider>
     </div>
   );
 };

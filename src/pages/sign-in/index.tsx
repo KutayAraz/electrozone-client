@@ -4,6 +4,7 @@ import { clearLocalcart } from "@/setup/slices/localCart-slice";
 import { CheckoutIntent } from "@/setup/slices/models";
 import { clearRedirectPath } from "@/setup/slices/redirect-slice";
 import { setCredentials } from "@/setup/slices/user-slice";
+import { setWishlist } from "@/setup/slices/wishlist-slice";
 import { RootState, store } from "@/setup/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CircularProgress } from "@mui/material";
@@ -71,6 +72,18 @@ const SignInForm = () => {
   const handleSuccessfulLogin = async (credentials: any) => {
     dispatch(setCredentials({ ...credentials }));
     dispatch(setAccessToken({ accessToken: credentials.access_token }));
+
+    const wishlistProducts = await fetchData(
+      `${import.meta.env.VITE_API_URL}/user/wishlist`,
+      "GET",
+      null,
+      true
+    );
+
+    if (wishlistProducts?.response.ok){
+      const productIds = wishlistProducts.data.map((product: any) => product.id);
+      dispatch(setWishlist(productIds))
+    }
 
     if (
       store.getState().user.userIntent === CheckoutIntent.Normal &&

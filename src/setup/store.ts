@@ -10,6 +10,7 @@ import buyNowCartSlice from "./slices/buyNowCart-slice";
 import hydrationSlice, { hydrationCompleted } from "./slices/hydration-slice";
 import sessionStorage from "redux-persist/es/storage/session";
 import redirectSlice from "./slices/redirect-slice";
+import wishlistSlice from "./slices/wishlist-slice";
 
 const userPersistConfig = {
   key: "user",
@@ -26,6 +27,11 @@ const buyNowCartPersistConfig = {
   storage,
 };
 
+const wishlistPersistConfig = {
+  key: "wishlist",
+  storage,
+};
+
 const redirectPersistConfig = {
   key: "redirect",
   storage: sessionStorage, // Store in session storage
@@ -36,10 +42,12 @@ const persistedUserReducer = persistReducer(
   userPersistConfig,
   userSlice.reducer
 );
+
 const persistedLocalCartReducer = persistReducer(
   localCartPersistConfig,
   localCartSlice.reducer
 );
+
 const persistedBuyNowCartReducer = persistReducer(
   buyNowCartPersistConfig,
   buyNowCartSlice.reducer
@@ -50,6 +58,12 @@ const persistedRedirectReducer = persistReducer(
   redirectSlice.reducer
 );
 
+const persistedWishlistReducer = persistReducer(
+  wishlistPersistConfig,
+  wishlistSlice.reducer
+);
+
+
 export const store = configureStore({
   reducer: {
     alert: alertReducer,
@@ -59,6 +73,7 @@ export const store = configureStore({
     localCart: persistedLocalCartReducer,
     buyNowCart: persistedBuyNowCartReducer,
     redirect: persistedRedirectReducer,
+    wishlist: persistedWishlistReducer
   },
   middleware: [thunk],
   devTools: true,

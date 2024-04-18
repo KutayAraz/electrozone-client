@@ -58,18 +58,18 @@ const Layout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div ref={divRef} className={`bg-theme-blue ${(!showHeaderExtras && isMobile) ? "pb-2" : ""} sticky z-20 ${scrollDirection === "down" ? "-top-48" : "top-0"} h-[${divHeight}px] transition-all duration-200`}>
+      <div ref={divRef} className={`bg-theme-blue ${(!showHeaderExtras && isMobile) ? "pb-2" : ""} sticky z-20 ${(scrollDirection === "down" && isMobile) ? "-top-48" : "top-0"} h-[${divHeight}px] transition-all duration-200`}>
         <Header />
         {(showHeaderExtras || !isMobile) && <NavStrip />}
         {showHeaderExtras && <UserLocation />}
       </div>
       <LoadingIndicator />
       {alertState.isOpen && (
-        <Slide direction="right" in={alertState.isOpen} mountOnEnter unmountOnExit>
+        <Slide direction="left" in={alertState.isOpen} mountOnEnter unmountOnExit>
           <Alert
             severity={alertState.type}
             onClose={() => dispatch(hideAlert())}
-            className="fixed w-auto left-0 top-2"
+            className="fixed w-auto right-0 top-28 z-[100]"
             style={{ borderRadius: 0 }}
           >
             {alertState.message}

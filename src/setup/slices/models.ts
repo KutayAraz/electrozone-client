@@ -36,6 +36,10 @@ export interface BuyNowCartState {
   quantity: number;
 }
 
+export interface WishlistState {
+  items: Array<number>;
+}
+
 export enum CheckoutIntent {
   Normal = "normalCheckout",
   Local = "localCheckout",
