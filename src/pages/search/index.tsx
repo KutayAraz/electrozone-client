@@ -447,14 +447,14 @@ const SearchResultsPage = () => {
       </div>}>
         <div className="flex flex-row items-start">
           {/* FilterMenu */}
-          <div className={`flex-col sticky w-48 md:w-56 flex-shrink-0 ${scrollDirection === "up" ? "top-32 " : "top-4 dosth"} px-2 hidden sm:flex overflow-y-auto`} >
+          <div className={`flex-col sticky w-48 md:w-60 flex-shrink-0 top-32 h-[calc(100vh-132px)] px-2 hidden sm:flex overflow-y-auto`} >
             <div className="flex flex-col overflow-y-auto overflow-x-hidden" >
               <h4 className="text-lg font-semibold mb-1">Stock Status</h4>
               <FormControlLabel
                 control={<Checkbox
                   sx={{
                     '& .MuiSvgIcon-root': {
-                      fontSize: '1.1rem',
+                      fontSize: '1rem',
                     },
                     '&.MuiButtonBase-root': {
                       paddingLeft: '10px',
@@ -469,7 +469,7 @@ const SearchResultsPage = () => {
                 control={<Checkbox
                   sx={{
                     '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
-                      fontSize: '1.1rem',
+                      fontSize: '1rem',
                     },
                     '&.MuiButtonBase-root': { // Targeting the ButtonBase root element of the checkbox
                       paddingLeft: '10px',
@@ -488,7 +488,7 @@ const SearchResultsPage = () => {
                     <Checkbox
                       sx={{
                         '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
-                          fontSize: '1.1rem',
+                          fontSize: '1rem',
                         },
                         '&.MuiButtonBase-root': { // Targeting the ButtonBase root element of the checkbox
                           paddingLeft: '10px',
@@ -499,9 +499,10 @@ const SearchResultsPage = () => {
                       checked={selectedSubcategories.includes(subcategory)}
                       onChange={() => handleSubcategoryChange(subcategory)}
                       name={subcategory}
+                      title={subcategory}
                     />
                   }
-                  label={`${formatString(subcategory)}`}
+                  label={`${formatString(subcategory.length > 15 ? `${subcategory.substring(0, 18)}...` : subcategory)}`}
                 />
               ))}
               <h4 className="text-lg font-semibold mt-4 mb-1">Brands</h4>
@@ -512,7 +513,7 @@ const SearchResultsPage = () => {
                     <Checkbox
                       sx={{
                         '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
-                          fontSize: '1.1rem',
+                          fontSize: '1rem',
                         },
                         '&.MuiButtonBase-root': { // Targeting the ButtonBase root element of the checkbox
                           paddingLeft: '10px',

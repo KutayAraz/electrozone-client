@@ -1,62 +1,20 @@
 import { Suspense, useState } from "react";
 import { defer, redirect, useLoaderData } from "react-router-dom";
-import WishlistProductCard from "./components/WishlistProductCard";
-import { useDispatch } from "react-redux";
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
 import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
+import ProductCard from "@/common/ProductCard";
 
 const UserWishlist = () => {
   const { wishlistedProducts }: any = useLoaderData();
   const [wishlistProducts, setWishlistProducts] =
     useState<any>(wishlistedProducts);
-  const { fetchData } = useFetch();
-  const dispatch = useDispatch<any>();
 
   const handleRemove = async (id: number) => {
-    const result = await fetchData(
-      `${import.meta.env.VITE_API_URL}/products/${id}/wishlist`,
-      "PATCH",
-      null,
-      true
+    setWishlistProducts((prevProducts: any) =>
+      prevProducts.filter((product: any) => product.id !== id)
     );
-
-    if (result?.response.ok) {
-      setWishlistProducts((prevProducts: any) =>
-        prevProducts.filter((product: any) => product.id !== id)
-      );
-      dispatch(
-        displayAlert({
-          type: "success",
-          message: "Product has been removed to your wishlist!",
-          autoHide: true,
-        })
-      );
-    }
-  };
-
-  const handleAddToCart = async (id: number, e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const result = await fetchData(
-      `${import.meta.env.VITE_API_URL}/carts/user-cart`,
-      "POST",
-      { productId: id, quantity: 1 },
-      true
-    );
-    if (result?.response.ok) {
-      dispatch(
-        displayAlert({
-          type: "success",
-          message: "Product has been added to your cart!",
-          autoHide: true,
-        })
-      );
-
-    }
   };
 
   return (
@@ -72,7 +30,7 @@ const UserWishlist = () => {
             <div className="flex flex-wrap">
               {wishlistProducts.map((product: any) => {
                 return (
-                  <WishlistProductCard
+                  <ProductCard
                     key={product.id}
                     id={product.id}
                     productName={product.productName}
@@ -83,7 +41,6 @@ const UserWishlist = () => {
                     thumbnail={product.thumbnail}
                     subcategory={product.subcategory}
                     category={product.category}
-                    onAddToCart={handleAddToCart}
                     onRemoveFromWishlist={() => handleRemove(product.id)}
                   />
                 );

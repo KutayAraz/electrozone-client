@@ -66,9 +66,10 @@ const SubcategoryPage = () => {
             let sort = searchParams.get("sort");
             if (!sort) sort = "featured"
             try {
-              const products = await fetchProducts(subcategory, sort, productsToSkip, screenValue, options);
-
+              const { products } = await fetchProducts(subcategory, sort, productsToSkip, screenValue, options);
+              
               if (products.length === screenValue) {
+                console.log("im here")
                 setProducts((prev: any) => [...prev, ...products]);
                 setProductsToSkip((prev: number) => prev + screenValue)
               } else if (products.length < screenValue) {
@@ -418,7 +419,7 @@ const SubcategoryPage = () => {
       </div>}>
         <div className="flex flex-row items-start">
           {/* FilterMenu */}
-          <div className={`flex-col sticky w-48 md:w-56 flex-shrink-0 ${scrollDirection === "up" ? "top-32 max-h-[85vh]" : "top-4 max-h-[calc(85vh + 4rem)]"} hidden sm:flex`} style={{ overflowY: 'auto' }}>
+          <div className={`flex-col sticky w-48 md:w-56 flex-shrink-0 top-32 h-[calc(100vh-132px)] hidden sm:flex`} style={{ overflowY: 'auto' }}>
             <h3 className="text-lg font-bold mb-2">
               {subcategory ? subcategory.toUpperCase().replace(/-/g, " ") : "Products"}
             </h3>
@@ -479,7 +480,7 @@ const SubcategoryPage = () => {
                   sx={{
 
                     '& .MuiFormControlLabel-label': { // Targeting the label directly if you need to adjust its styling
-                      fontSize: '1.05rem', // Adjust label font size if necessary
+                      fontSize: '1rem', // Adjust label font size if necessary
                     },
                   }}
                 />

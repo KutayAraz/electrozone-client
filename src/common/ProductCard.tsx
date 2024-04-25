@@ -17,8 +17,10 @@ export interface ProductCardProps {
   brand: string;
   averageRating: number;
   price: number;
+  stock: number;
   subcategory: string;
   category: string;
+  onRemoveFromWishlist?: (id: number) => void;
   className?: string;
 }
 
@@ -29,8 +31,10 @@ const ProductCard = forwardRef(({
   brand,
   averageRating,
   price,
+  stock,
   subcategory,
   category,
+  onRemoveFromWishlist,
   className,
 }: ProductCardProps, ref: any) => {
   const [isClicked, setIsClicked] = useState(false);
@@ -109,8 +113,8 @@ const ProductCard = forwardRef(({
             autoHide: true,
           })
         );
+        if (onRemoveFromWishlist) onRemoveFromWishlist(id);
       }
-
     }
   };
 
@@ -129,59 +133,56 @@ const ProductCard = forwardRef(({
   };
 
   return (
-    <div className={`w-full xs:w-1/2 md:w-1/3 lg:w-1/4 px-2 text-center items-center mb-3 ${className}`} ref={ref}
-    >
-      <Link
-        to={`/category/${category + "/" + subcategory + "/" + id}`}
-        className="border-1 border-gray-300 rounded-md shadow-md hover:bg-gray-100 h-full px-2 xs:px-4 py-2 xs:pt-4 pb-2 flex xs:flex-col xs:justify-between"
+    <div className={`w-full xs:w-1/2 md:w-1/3 lg:w-1/4 p-2 text-center items-center ${className}`} ref={ref}>
+  <Link
+    to={`/category/${category + "/" + subcategory + "/" + id}`}
+    className="border-1 border-gray-300 rounded-lg hover:shadow-md hover:bg-gray-100 px-2 py-2 xs:pt-4 pb-2 flex xs:flex-col xs:justify-between group"
+  >
+    <div className="ml-auto text-right pr-1">
+      <button
+        onClick={handleWishlistButtonClick}
+        aria-label="Remove from wishlist"
+        className="transition-transform duration-300 transform scale-100 group-hover:scale-110"
       >
-        <div className="ml-auto text-right pr-1">
-          <button
-            onClick={handleWishlistButtonClick}
-            aria-label="Remove from wishlist"
-            className="transition-transform duration-300 transform scale-100 group-hover:scale-110"
-          >
-            <HeartIcon
-              className={`w-7 h-auto inline-block hover:scale-125 ${isClicked ? "transform scale-125" : ""
-                }`}
-              fill={`${isWishlisted ? "#febd69" : "#ffffff"}`}
-            />
-          </button>
-        </div>
-        <div className="flex-1 px-2 xs:px-0 ">
-          <img
-            src={thumbnail}
-            alt={`image for ${productName}`}
-            className="min-w-[100px] w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto hover:scale-[102%]"
-          />
-        </div>
-        <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-2 justify-between">
-          <Divider
-            orientation="vertical"
-            className="self-stretch xs:hidden m-2"
-          />
-          <Divider className="self-stretch hidden xs:block" />
-          <p className="text-sm line-clamp-3 h-[3em]" title={productName}>{truncatedProductName}</p>
-          <p className="font-[500]">{brand}</p>
-
-          <Rating
-            name="half-rating-read"
-            value={averageRating}
-            precision={0.1}
-            readOnly
-            className="mx-auto"
-          />
-
-          <p className="text-lg">$ {price.toFixed(2)}</p>
-          <button
-            onClick={handleAddToCart}
-            className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-800"
-          >
-            Add to Cart
-          </button>
-        </div>
-      </Link>
+        <HeartIcon
+          className={`w-7 h-auto inline-block hover:scale-125 ${isClicked ? "transform scale-125" : ""}`}
+          fill={`${isWishlisted ? "#febd69" : "#ffffff"}`}
+        />
+      </button>
     </div>
+    <div className="flex-1 px-2 xs:px-0">
+      <img
+        src={thumbnail}
+        alt={`image for ${productName}`}
+        className="min-w-[120px] w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto group-hover:scale-[1.005]"
+      />
+    </div>
+    <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-[4px] justify-between">
+      <Divider
+        orientation="vertical"
+        className="self-stretch xs:hidden m-2"
+      />
+      <Divider className="self-stretch hidden xs:block" />
+      <p className="text-sm line-clamp-3 min-h-[3em]" title={productName}>{truncatedProductName}</p>
+      <p className="text-sm">{brand}</p>
+      <Rating
+        name="half-rating-read"
+        value={averageRating}
+        precision={0.1}
+        readOnly
+        className="mx-auto"
+      />
+      <p>$ {price.toFixed(2)}</p>
+      <button
+        onClick={handleAddToCart}
+        className="bg-theme-blue hover:bg-blue-800 text-white text-sm py-[6px] px-5 xs:px-6 rounded-lg shadow transition-colors duration-200 ease-in-out"
+      >
+        Add to Cart
+      </button>
+    </div>
+  </Link>
+</div>
+
   );
 });
 

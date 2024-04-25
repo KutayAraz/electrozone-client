@@ -24,15 +24,15 @@ const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
         onClose={() => onClose()}
       >
         <div className="flex flex-col h-full justify-between">
-          <div className="bg-[#13193F]">
+          <div className="bg-white">
             <Link
               to="/my-account"
-              className="text-2xl font-semibold py-4 text-white pt-8 px-4 block"
+              className="text-xl font-semibold  text-white bg-theme-blue py-6 px-4 block"
               onClick={() => onClose()}
             >
               My Account
             </Link>
-            <div className="flex flex-col space-y-4 mt-4 text-xl bg-white">
+            <div className="flex flex-col space-y-4 text-lg bg-white">
               <Divider />
               <Link to="/my-account/orders" className="px-4">
                 Previous Orders
@@ -60,7 +60,7 @@ const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
           <Link to="/sign-out">
             <Divider />
             {isSignedIn && (
-              <div className="text-xl px-4 pb-4 mt-4">
+              <div className="text-lg px-4 pb-4 mt-4">
                 Sign Out <ExitIcon className="w-[2rem] h-auto inline" />
               </div>
             )}

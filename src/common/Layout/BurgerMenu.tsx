@@ -62,7 +62,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       </button>
 
       <CustomizableModal
-        widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%] xl:w-[25%]"
+        widthClass="w-[320px] xs:w-[432px]"
         heightClass={`${activeView === "main" ? "h-full overflow-y-auto" : "min-h-screen h-auto overflow-y-hidden"}`}
         topClass="top-0"
         leftClass="left-0"
@@ -79,7 +79,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
               to={"/my-account"}
               className="flex items-center justify-between w-full p-4"
             >
-              <span className="text-3xl">Hello, {firstName}</span>
+              <span className="text-xl">Hello, {firstName}</span>
               <UserIcon className="h-8 w-auto" />
             </Link>
           ) : (
@@ -87,7 +87,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
               to={"/sign-in"}
               className="flex items-center justify-between w-full p-4"
             >
-              <span className="text-3xl">Hello, Sign In</span>
+              <span className="text-xl">Hello, Sign In</span>
               <UserIcon className="h-8 w-auto" />
             </Link>
           )}
@@ -100,32 +100,32 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             }`}
           >
             <div className="flex flex-col ">
-              <label className="text-2xl font-semibold px-4 py-4">
+              <label className="text-xl font-semibold px-4 py-4">
                 Trending
               </label>
               <Divider />
               <Link
                 to={"/trending/best-sellers"}
-                className="text-xl hover:bg-gray-100 px-4 py-3"
+                className="text-lg hover:bg-gray-100 px-4 py-3"
               >
                 Best Sellers
               </Link>
               <Link
                 to={"/trending/most-wishlisted"}
-                className="text-xl hover:bg-gray-100 px-4 py-3"
+                className="text-lg hover:bg-gray-100 px-4 py-3"
               >
                 Most Wishlisted
               </Link>
               <Link
                 to={"/trending/best-rated"}
-                className="text-xl hover:bg-gray-100 px-4 py-3"
+                className="text-lg hover:bg-gray-100 px-4 py-3"
               >
                 Best Rated
               </Link>
             </div>
             <Divider />
             <div className="px-4 py-4">
-              <Link to={"/category"} className="text-2xl font-semibold ">
+              <Link to={"/category"} className="text-xl font-semibold ">
                 Shop By Department
               </Link>
             </div>
@@ -134,64 +134,64 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
               onClick={() => setActiveView("tvsAndSoundbars")}
               className="hover:bg-gray-100 w-full text-left flex"
             >
-              <h4 className="text-xl px-4 py-4">TVs & Soundbars</h4>
+              <h4 className="text-lg px-4 py-4">TVs & Soundbars</h4>
               <Arrow className="h-4 w-auto ml-auto pr-3 fill-white my-auto" />
             </button>
             <button
               onClick={() => setActiveView("pcAndLaptops")}
               className="hover:bg-gray-100 w-full text-left flex"
             >
-              <h4 className="text-xl px-4 py-4">Computers & Accessories</h4>
+              <h4 className="text-lg px-4 py-4">Computers & Accessories</h4>
               <Arrow className="h-4 w-auto ml-auto pr-3 fill-white my-auto" />
             </button>
             <button
               onClick={() => setActiveView("smartphonesAndAccessories")}
               className="hover:bg-gray-100 w-full text-left flex"
             >
-              <h4 className="text-xl px-4 py-4">Smartphones & Accessories</h4>
+              <h4 className="text-lg px-4 py-4">Smartphones & Accessories</h4>
               <Arrow className="h-4 w-auto ml-auto pr-3 fill-white my-auto" />
             </button>
             <button
               onClick={() => setActiveView("printersAndInk")}
               className="hover:bg-gray-100 w-full text-left flex"
             >
-              <h4 className="text-xl px-4 py-4">Printers & Ink</h4>
+              <h4 className="text-lg px-4 py-4">Printers & Ink</h4>
               <Arrow className="h-4 w-auto ml-auto pr-3 fill-white my-auto" />
             </button>
             <Divider />
             <div className="flex flex-col">
-              <label className="text-2xl font-semibold px-4 py-4">
+              <label className="text-xl font-semibold px-4 py-4">
                 Help & Settings
               </label>
               <Divider />
               {isSignedIn && (
                 <Link
                   to={"/my-account"}
-                  className="text-xl px-4 py-4 hover:bg-gray-100"
+                  className="text-lg px-4 py-4 hover:bg-gray-100"
                 >
                   Your Account
                 </Link>
               )}
               {city && (
-                <p className="text-xl px-4 py-4">Delivery Location: {city}</p>
+                <p className="text-lg px-4 py-4">Delivery Location: {city}</p>
               )}
               <Link
                 to={"/contact"}
-                className="text-xl px-4 py-4 hover:bg-gray-100"
+                className="text-lg px-4 py-4 hover:bg-gray-100"
               >
                 Contact
               </Link>
               {isSignedIn ? (
                 <Link
                   to={"/sign-out"}
-                  className="text-xl hover:bg-gray-100 px-4 py-4"
+                  className="text-lg hover:bg-gray-100 px-4 py-4"
                 >
                   Sign Out <ExitIcon className="w-6 h-6 mr-4 inline" />
                 </Link>
               ) : (
                 <Link
                   to={"/sign-in"}
-                  className="text-xl hover:bg-gray-100 px-4 py-4"
+                  className="text-lg hover:bg-gray-100 px-4 py-4"
                 >
                   Sign In
                 </Link>
@@ -339,7 +339,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       </CustomizableModal>
       {isOpen && (
         <button
-          className="absolute top-4 left-[calc(80%+10%)] sm:left-[calc(60%+30px)] md:left-[calc(40%+30px)] lg:left-[calc(30%+30px)] xl:left-[calc(25%+30px)] w-7 h-7 z-[40]"
+          className="absolute top-4 left-[340px] xs:left-[452px] w-7 h-7 z-[40]"
           onClick={() => setIsOpen(false)}
         >
           <CloseButton width={32} height={32} className="text-red-500" />

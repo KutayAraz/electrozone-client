@@ -14,6 +14,7 @@ import { RootState } from "@/setup/store";
 import CustomizableModal from "../Modal/CustomizableModal";
 import userSlice from "@/setup/slices/user-slice";
 import { useNavigate } from 'react-router-dom';
+import { useMediaQuery } from "@mui/material";
 
 const Header = () => {
   const firstName = useSelector((state: any) => state.user.firstName);
@@ -24,6 +25,7 @@ const Header = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const navigate = useNavigate()
+  const smallScreenDevice = useMediaQuery("(max-width: 400px)"); 
 
   const localCartQuantity = useSelector(
     (state: RootState) => state.localCart.totalQuantity
@@ -109,7 +111,7 @@ const Header = () => {
             <UserIcon width={32} height={32} />
           </button>
           <Link to={"/my-cart"} className="flex mt-auto ml-2">
-            <p className="self-center">Basket</p>
+            {!smallScreenDevice && <p className="self-center">Basket</p>}
             <BasketWithBadge itemCount={itemCount} />
           </Link>
         </div>
