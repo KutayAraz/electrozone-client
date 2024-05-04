@@ -79,7 +79,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
               to={"/my-account"}
               className="flex items-center justify-between w-full p-4"
             >
-              <span className="text-xl">Hello, {firstName}</span>
+              <span className="text-2xl">Hello, {firstName}</span>
               <UserIcon className="h-8 w-auto" />
             </Link>
           ) : (
@@ -208,7 +208,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-2xl hover:bg-gray-100 w-full p-4"
+              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4"
             >
               <BackArrow className="h-6 w-auto inline my-auto" />
               Main Menu
@@ -216,13 +216,13 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             <Divider />
             <Link
               to={"/category/tvs-and-soundbars/tvs"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               TVs
             </Link>
             <Link
               to={"/category/tvs-and-soundbars/soundbars"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Soundbars
             </Link>
@@ -237,33 +237,33 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-2xl hover:bg-gray-100 w-full p-4"
+              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4"
             >
-              <BackArrow className="h-6 w-auto inline my-auto" />
+              <BackArrow className="h-6 w-auto inline my-auto pr-2" />
               Main Menu
             </button>
             <Divider />
             <Link
               to={"/category/computers-and-accessories/computers"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               PCs
             </Link>
             <Link
               to={"/category/computers-and-accessories/laptops"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Laptops
             </Link>
             <Link
               to={"/category/computers-and-accessories/monitors"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Monitors
             </Link>
             <Link
               to={"/category/computers-and-accessories/computer-accessories"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Computer Accessories
             </Link>
@@ -278,7 +278,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-2xl hover:bg-gray-100 w-full p-4"
+              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4"
             >
               <BackArrow className="h-6 w-auto inline my-auto" />
               Main Menu
@@ -286,7 +286,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             <Divider />
             <Link
               to={"/category/smartphones-and-accessories/smartphones"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Smartphones
             </Link>
@@ -294,7 +294,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
               to={
                 "/category/smartphones-and-accessories/smartphone-accessories"
               }
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Smartphone Accessories
             </Link>
@@ -310,7 +310,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-2xl hover:bg-gray-100 w-full p-4"
+              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4"
             >
               <BackArrow className="h-6 w-auto inline my-auto" />
               Main Menu
@@ -318,19 +318,19 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             <Divider />
             <Link
               to={"/category/printers-and-ink/laser-printers"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Laser Printers
             </Link>
             <Link
               to={"/category/printers-and-ink/inkjet-printers"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Inkjet Printers
             </Link>
             <Link
               to={"/category/printers-and-ink/ink"}
-              className="text-xl hover:bg-gray-100 p-4"
+              className="text-lg hover:bg-gray-100 p-4"
             >
               Ink
             </Link>

@@ -120,7 +120,7 @@ const Header = () => {
         className={`px-2`}
       >
         <SearchBar
-          className={`md:hidden text-gray-700 h-10 w-full my-1 `}
+          className={`md:hidden text-gray-700 h-9 w-full my-1 `}
         />
       </div>
       <CustomizableModal

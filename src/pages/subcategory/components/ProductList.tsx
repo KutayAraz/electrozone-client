@@ -4,7 +4,7 @@ import { forwardRef } from "react";
 
 const ProductList = forwardRef(({ products }: ProductListProps, ref: any) => {
   return (
-    <div className="flex flex-wrap flex-grow  px-2">
+    <div className="flex flex-wrap flex-grow">
       {products.map((product: Product, index: number) => {
         const isThirdToLast = index === products.length - 3;
         return (
@@ -17,6 +17,7 @@ const ProductList = forwardRef(({ products }: ProductListProps, ref: any) => {
             brand={product.brand}
             averageRating={product.averageRating}
             price={product.price}
+            stock={product.stock}
             subcategory={product.subcategory}
             category={product.category}
           />

@@ -11,6 +11,7 @@ import hydrationSlice, { hydrationCompleted } from "./slices/hydration-slice";
 import sessionStorage from "redux-persist/es/storage/session";
 import redirectSlice from "./slices/redirect-slice";
 import wishlistSlice from "./slices/wishlist-slice";
+import uiReducer from "./slices/ui-slice";
 
 const userPersistConfig = {
   key: "user",
@@ -63,17 +64,17 @@ const persistedWishlistReducer = persistReducer(
   wishlistSlice.reducer
 );
 
-
 export const store = configureStore({
   reducer: {
     alert: alertReducer,
+    ui: uiReducer,
     auth: authSlice.reducer,
     hydration: hydrationSlice.reducer,
     user: persistedUserReducer,
     localCart: persistedLocalCartReducer,
     buyNowCart: persistedBuyNowCartReducer,
     redirect: persistedRedirectReducer,
-    wishlist: persistedWishlistReducer
+    wishlist: persistedWishlistReducer,
   },
   middleware: [thunk],
   devTools: true,

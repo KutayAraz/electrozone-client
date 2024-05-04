@@ -5,6 +5,7 @@ export interface Product {
   thumbnail: string;
   description: string;
   price: number;
+  stock:number;
   averageRating: number;
   subcategory: string;
   category: string;
@@ -21,6 +22,7 @@ export interface ProductCardProps {
   brand: string;
   averageRating: number;
   price: number;
+  stock:number;
   subcategory: string;
   category: string;
 }

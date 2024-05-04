@@ -9,6 +9,7 @@ import { displayAlert } from "@/setup/slices/alert-slice";
 import { updateCartItemCount } from "@/setup/slices/user-slice";
 import { addToWishlist, removeFromWishlist } from "@/setup/slices/wishlist-slice";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
+import { truncateString } from "@/utils/truncate-string";
 
 export interface ProductCardProps {
   id: number;
@@ -40,7 +41,6 @@ const ProductCard = forwardRef(({
   const [isClicked, setIsClicked] = useState(false);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const { fetchData } = useFetch();
-  const truncatedProductName = productName.length > 55 ? `${productName.substring(0, 55)}...` : productName;
   const dispatch = useDispatch<any>();
   const navigate = useNavigate()
 
@@ -133,56 +133,58 @@ const ProductCard = forwardRef(({
   };
 
   return (
-    <div className={`w-full xs:w-1/2 md:w-1/3 lg:w-1/4 p-2 text-center items-center ${className}`} ref={ref}>
-  <Link
-    to={`/category/${category + "/" + subcategory + "/" + id}`}
-    className="border-1 border-gray-300 rounded-lg hover:shadow-md hover:bg-gray-100 px-2 py-2 xs:pt-4 pb-2 flex xs:flex-col xs:justify-between group"
-  >
-    <div className="ml-auto text-right pr-1">
-      <button
-        onClick={handleWishlistButtonClick}
-        aria-label="Remove from wishlist"
-        className="transition-transform duration-300 transform scale-100 group-hover:scale-110"
+    <div className={`w-full xs:w-1/2 md:w-1/3 lg:w-1/4 p-2 ${className}`} ref={ref}>
+      <Link
+        to={`/category/${category + "/" + subcategory + "/" + id}`}
+        className="border-1 border-gray-300 rounded-lg hover:shadow-md px-1 flex xs:flex-col xs:justify-between group py-2 xs:pt-2 "
       >
-        <HeartIcon
-          className={`w-7 h-auto inline-block hover:scale-125 ${isClicked ? "transform scale-125" : ""}`}
-          fill={`${isWishlisted ? "#febd69" : "#ffffff"}`}
-        />
-      </button>
+        <div className="absolute right-4 z-[10] xs:relative xs:ml-auto">
+          <button
+            onClick={handleWishlistButtonClick}
+            aria-label="Remove from wishlist"
+            className="transition-transform duration-300 transform scale-100 hover:scale-110"
+          >
+            <HeartIcon
+              className={`w-7 h-auto inline-block  ${isClicked ? "transform scale-125" : ""}`}
+              fill={`${isWishlisted ? "#febd69" : "#ffffff"}`}
+              stroke={`${isWishlisted ? "#ffffff" : "#ffffff"}`}
+            />
+          </button>
+        </div>
+        <div className="flex-1">
+          <img
+            src={thumbnail}
+            alt={`image for ${productName}`}
+            className="min-w-[120px] w-56 h-56 object-contain mx-auto group-hover:scale-[1.005] pr-1 xs:mb-4"
+          />
+        </div>
+        <div>
+          <Divider
+            orientation="vertical"
+            className="flex-item self-stretch block xs:hidden m-2"
+          />
+          <Divider className="self-stretch hidden xs:block" />
+        </div>
+        <div className="xs:mt-2 flex-1 flex flex-col justify-between pt-8 pb-2 xs:pt-2 xs:space-y-2 text-center [&_p]:text-sm [&_p]:px-2">
+          <p className="line-clamp-3 xs:min-h-[3em]" title={productName}>{truncateString(productName, 50, 50)}</p>
+          <p className="">{brand}</p>
+          <Rating
+            name="half-rating-read"
+            value={averageRating}
+            precision={0.1}
+            readOnly
+            className="mx-auto"
+          />
+          <p className="pr-2">$ {price.toFixed(2)}</p>
+          <button
+            onClick={handleAddToCart}
+            className="bg-theme-blue hover:bg-blue-800 text-white text-sm py-[6px] xs:px-6 rounded-lg shadow transition-colors duration-200 ease-in-out w-[80%] mx-auto"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </Link>
     </div>
-    <div className="flex-1 px-2 xs:px-0">
-      <img
-        src={thumbnail}
-        alt={`image for ${productName}`}
-        className="min-w-[120px] w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto group-hover:scale-[1.005]"
-      />
-    </div>
-    <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-[4px] justify-between">
-      <Divider
-        orientation="vertical"
-        className="self-stretch xs:hidden m-2"
-      />
-      <Divider className="self-stretch hidden xs:block" />
-      <p className="text-sm line-clamp-3 min-h-[3em]" title={productName}>{truncatedProductName}</p>
-      <p className="text-sm">{brand}</p>
-      <Rating
-        name="half-rating-read"
-        value={averageRating}
-        precision={0.1}
-        readOnly
-        className="mx-auto"
-      />
-      <p>$ {price.toFixed(2)}</p>
-      <button
-        onClick={handleAddToCart}
-        className="bg-theme-blue hover:bg-blue-800 text-white text-sm py-[6px] px-5 xs:px-6 rounded-lg shadow transition-colors duration-200 ease-in-out"
-      >
-        Add to Cart
-      </button>
-    </div>
-  </Link>
-</div>
-
   );
 });
 

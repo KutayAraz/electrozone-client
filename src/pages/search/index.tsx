@@ -17,6 +17,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { formatString } from "@/utils/format-casing";
 import ProductList from "./ProductList";
 import { useScrollDirection } from "@/common/Hooks/use-scrollDirection";
+import { truncateString } from "@/utils/truncate-string";
 
 const SearchResultsPage = () => {
   const { searchResults, brandsData, priceRangeData, skipped, subcategoryData, productQuantity }: any = useLoaderData();
@@ -229,7 +230,7 @@ const SearchResultsPage = () => {
 
   return (
     <div className="page-spacing">
-      <div className="flex sm:hidden p-4 space-x-4">
+      <div className="flex sm:hidden space-x-4">
         <Button
           variant="outlined"
           className="flex-1"
@@ -445,9 +446,9 @@ const SearchResultsPage = () => {
       <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <p>Loading Products.. <CircularProgress /></p>
       </div>}>
-        <div className="flex flex-row items-start">
+        <div className="flex flex-row items-start space-x-2">
           {/* FilterMenu */}
-          <div className={`flex-col sticky w-48 md:w-60 flex-shrink-0 top-32 h-[calc(100vh-132px)] px-2 hidden sm:flex overflow-y-auto`} >
+          <div className={`flex-col sticky w-48 md:w-60 flex-shrink-0 top-32 h-[calc(100vh-145px)] px-2 hidden sm:flex overflow-y-auto`} >
             <div className="flex flex-col overflow-y-auto overflow-x-hidden" >
               <h4 className="text-lg font-semibold mb-1">Stock Status</h4>
               <FormControlLabel
@@ -462,7 +463,8 @@ const SearchResultsPage = () => {
                       paddingTop: '5px',
                       paddingBottom: '5px'
                     },
-                  }} checked={stockStatus === 'all'} onChange={handleStockChange} name="all" />}
+                  }}
+                  checked={stockStatus === 'all'} onChange={handleStockChange} name="all" />}
                 label="Include All"
               />
               <FormControlLabel
@@ -499,10 +501,10 @@ const SearchResultsPage = () => {
                       checked={selectedSubcategories.includes(subcategory)}
                       onChange={() => handleSubcategoryChange(subcategory)}
                       name={subcategory}
-                      title={subcategory}
                     />
                   }
-                  label={`${formatString(subcategory.length > 15 ? `${subcategory.substring(0, 18)}...` : subcategory)}`}
+                  label={`${formatString(truncateString(subcategory, 18, 18))}`}
+                  title={`${formatString(subcategory)}`}
                 />
               ))}
               <h4 className="text-lg font-semibold mt-4 mb-1">Brands</h4>
@@ -526,7 +528,8 @@ const SearchResultsPage = () => {
                       name={brand}
                     />
                   }
-                  label={brand}
+                  label={truncateString(brand, 18, 18)}
+                  title={brand}
                 />
               ))}
             </div>
@@ -623,7 +626,7 @@ const SearchResultsPage = () => {
             </div>
           </div>
           <div className="flex grow flex-wrap">
-            <div className="hidden sm:flex justify-between w-full px-4 mb-4">
+            <div className="hidden sm:flex justify-between w-full px-2 mb-4">
               <h3 className="text-lg self-end">
                 Listing {productQuantity} products for "{query}"
               </h3>

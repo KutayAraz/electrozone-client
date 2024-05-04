@@ -5,6 +5,7 @@ export interface ProductType {
   brand: string;
   thumbnail: string;
   price: number;
+  stock: number;
   averageRating: number;
   subcategory: string;
   category: string;

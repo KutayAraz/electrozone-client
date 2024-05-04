@@ -6,7 +6,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { Suspense, useEffect, useRef, useState } from "react";
-import { Box, Button, Checkbox, CircularProgress, Drawer, FormControlLabel, IconButton, InputLabel, ListItemIcon, MenuItem, Select, SelectChangeEvent, Slider, TextField, Typography, useMediaQuery } from "@mui/material";
+import { Box, Button, Checkbox, CircularProgress, Divider, Drawer, FormControlLabel, IconButton, InputLabel, ListItemIcon, MenuItem, Select, SelectChangeEvent, Slider, TextField, Typography, useMediaQuery } from "@mui/material";
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from "@mui/material/FormControl";
 import loaderFetch from "@/utils/loader-fetch";
@@ -17,10 +17,12 @@ import StarBorderIcon from '@mui/icons-material/StarBorder';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SortIcon from '@mui/icons-material/Sort';
 import CloseIcon from '@mui/icons-material/Close';
 import { useScrollDirection } from "@/common/Hooks/use-scrollDirection";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/setup/store";
+import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice";
 
 const SubcategoryPage = () => {
   const { subcategoryData, brandsData, priceRangeData, skipped, productQuantity }: any = useLoaderData();
@@ -40,9 +42,10 @@ const SubcategoryPage = () => {
   const observerTarget = useRef<any>(null);
   const location = useLocation();
   const screenValue = useScreenValue();
-  const [sortingDrawer, setSortingDrawer] = useState(false);
-  const [filterDrawer, setFilterDrawer] = useState(false);
-  const scrollDirection = useScrollDirection();
+  const dispatch = useDispatch<any>();
+
+  const filterDrawer = useSelector((state: RootState) => state.ui.filterDrawer)
+  const sortingDrawer = useSelector((state: RootState) => state.ui.sortingDrawer)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -67,9 +70,8 @@ const SubcategoryPage = () => {
             if (!sort) sort = "featured"
             try {
               const { products } = await fetchProducts(subcategory, sort, productsToSkip, screenValue, options);
-              
+
               if (products.length === screenValue) {
-                console.log("im here")
                 setProducts((prev: any) => [...prev, ...products]);
                 setProductsToSkip((prev: number) => prev + screenValue)
               } else if (products.length < screenValue) {
@@ -131,7 +133,6 @@ const SubcategoryPage = () => {
     // Update the search parameters in the URL
     setSearchParams(currentParams);
   };
-
 
   const handlePriceChange = (event: any, newValue: any) => {
     setPriceRange(newValue);
@@ -204,102 +205,63 @@ const SubcategoryPage = () => {
     setSearchParams(newSearchParams);
   };
 
-  const toggleSortingDrawer = (newOpen: boolean) => () => {
-    setSortingDrawer(newOpen);
-  };
-
-  const toggleFilterDrawer = (newOpen: boolean) => () => {
-    setFilterDrawer(newOpen);
-  };
-
   return (
     <div className="page-spacing">
-      <div className="flex sm:hidden p-4 space-x-4">
-        <Button
-          variant="outlined"
-          className="flex-1"
-          startIcon={<FilterAltIcon style={{ color: '#374151' }} />}
-          onClick={toggleFilterDrawer(true)}
-          sx={{
-            borderColor: '#d1d5db',
-            fontSize: '12px',
-            justifyContent: 'center',
-            py: 1,
-            textTransform: 'none',
-          }}
-        >
-          <Typography className="text-[#374151]">
-            Filters
-          </Typography>
-        </Button>
-        <Button
-          variant="outlined"
-          className="flex-1"
-          startIcon={<SortIcon style={{ color: '#374151' }} />}
-          onClick={toggleSortingDrawer(true)}
-          sx={{
-            borderColor: '#d1d5db',
-            fontSize: '12px',
-            textTransform: 'none',
-            justifyContent: 'center',
-            py: 1,
-          }}
-        >
-          <Typography className="text-theme-blue">
-            Sort By
-          </Typography>
-        </Button>
-      </div>
-      <Drawer open={sortingDrawer} onClose={toggleSortingDrawer(false)} anchor="bottom" >
-        <IconButton
-          onClick={toggleSortingDrawer(false)}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            zIndex: 15,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <div className="pt-12 pb-4 [&_li]:px-6 [&_li]:py-3">
-          <MenuItem value={"featured"} onClick={() => { handleSortChange("featured"); setSortingDrawer(false) }}>
+      <Drawer open={sortingDrawer} onClose={() => dispatch(toggleSortingDrawer(false))} anchor="bottom" >
+        <div className="pt- pb-2 [&_li]:px-6 [&_li]:py-3">
+          <div className="flex justify-between px-6 items-center py-[8px]">
+            <div className="flex space-x-3">
+              <SortIcon style={{ color: '#757575' }} />
+              <Typography variant="body1" sx={{ color: "#373D51" }}>Sort By</Typography>
+            </div>
+            <div className="">
+              <IconButton
+                onClick={() => dispatch(toggleSortingDrawer(false))}
+                sx={{
+                  color: (theme) => theme.palette.grey[500],
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+          <Divider />
+          <MenuItem value={"featured"} onClick={() => { handleSortChange("featured"), dispatch(toggleSortingDrawer(false)) }}>
             <ListItemIcon >
               <StarBorderIcon />
             </ListItemIcon>
-            <Typography variant="body1">Featured</Typography>
+            <Typography variant="body1" sx={{ color: "#373D51" }}>Featured</Typography>
           </MenuItem>
-          <MenuItem value={"rating"} onClick={() => { handleSortChange("rating"); setSortingDrawer(false) }}>
+          <MenuItem value={"rating"} onClick={() => { handleSortChange("rating"), dispatch(toggleSortingDrawer(false)) }}>
             <ListItemIcon >
               <TrendingUpIcon />
             </ListItemIcon>
-            <Typography variant="body1">Ratings</Typography>
+            <Typography variant="body1" sx={{ color: "#373D51" }}>Ratings</Typography>
           </MenuItem>
-          <MenuItem value={"price_ascending"} onClick={() => { handleSortChange("price_ascending"); setSortingDrawer(false) }}>
+          <MenuItem value={"price_ascending"} onClick={() => { handleSortChange("price_ascending"), dispatch(toggleSortingDrawer(false)) }}>
             <ListItemIcon >
               <ArrowUpwardIcon />
             </ListItemIcon>
-            <Typography variant="body1">Price Ascending</Typography>
+            <Typography variant="body1" sx={{ color: "#373D51" }}>Price Ascending</Typography>
           </MenuItem>
-          <MenuItem value={"price_descending"} onClick={() => { handleSortChange("price_descending"); setSortingDrawer(false) }}>
+          <MenuItem value={"price_descending"} onClick={() => { handleSortChange("price_descending"), dispatch(toggleSortingDrawer(false)) }}>
             <ListItemIcon >
               <ArrowDownwardIcon />
             </ListItemIcon>
-            <Typography variant="body1">Price Descending</Typography>
+            <Typography variant="body1" sx={{ color: "#373D51" }}>Price Descending</Typography>
           </MenuItem>
         </div>
       </Drawer>
       <Drawer
         anchor="bottom"
         open={filterDrawer}
-        onClose={toggleFilterDrawer(false)}
+        onClose={() => dispatch(toggleFilterDrawer(false))}
         sx={{
           '& .MuiDrawer-paper': { maxHeight: '80%', overflow: 'auto' },
         }}
       >
         <IconButton
-          onClick={toggleFilterDrawer(false)}
+          onClick={() => dispatch(toggleFilterDrawer(false))}
           sx={{
             position: 'absolute',
             right: 8,
@@ -309,41 +271,57 @@ const SubcategoryPage = () => {
         >
           <CloseIcon />
         </IconButton>
-        <div className="p-6 text-gray-700">
+        <div className="p-6 pb-3">
           {/* Stock Status */}
-          <Typography variant="h6" >Stock Status</Typography>
+          <p className="text-lg">Stock Status</p>
           <Box sx={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Creates columns with a minimum width of 200px
-            gap: 1, // Adjusts the space between grid items
-          }}><FormControlLabel
-              control={<Checkbox checked={stockStatus === 'all'} onChange={handleStockChange} name="all" />}
+            gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', // Creates columns with a minimum width of 200px
+            gap: 0, // Adjusts the space between grid items
+          }}>
+            <FormControlLabel
+              control={<Checkbox checked={stockStatus === 'all'} onChange={handleStockChange} name="all " />}
               label="Include All"
+              sx={{
+                '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
+                  fontSize: '1rem', // Adjust icon size if necessary
+                },
+              }}
             />
             <FormControlLabel
               control={<Checkbox checked={stockStatus === 'in_stock'} onChange={handleStockChange} name="in_stock" />}
               label="Only in Stock"
+              sx={{
+                '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
+                  fontSize: '1rem', // Adjust icon size if necessary
+                },
+              }}
             />
           </Box>
           {/* Brands */}
-          <Typography variant="h6" sx={{ mt: 2 }}>Brands</Typography>
+          <p className="text-lg mt-1">Brands</p>
           <Box sx={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Creates columns with a minimum width of 200px
-            gap: 1, // Adjusts the space between grid items
+            gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', // Creates columns with a minimum width of 200px
+            gap: 0, // Adjusts the space between grid items
           }}>
             {brandsData.map((brand: any, index: number) => (
               <FormControlLabel
                 key={index}
                 control={<Checkbox checked={selectedBrands.includes(brand)} onChange={() => handleBrandChange(brand)} name={brand} />}
                 label={brand}
-                sx={{ justifyContent: "start" }} // Aligns the FormControlLabel contents to the start, ensuring checkboxes are aligned
+                sx={{
+                  justifyContent: "start",
+                  '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
+                    fontSize: '1rem', // Adjust icon size if necessary
+                  },
+                }} // Aligns the FormControlLabel contents to the start, ensuring checkboxes are aligned
               />
             ))}
           </Box>
 
           {/* Price Range */}
-          <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>Price Range</Typography>
+          <p className="mt-2 text-lg">Price Range</p>
           <Slider
             getAriaLabel={() => 'Price range'}
             value={priceRange}
@@ -361,7 +339,9 @@ const SubcategoryPage = () => {
               '& .MuiSlider-track': {
                 color: '#13193F', // Changes the track color
               },
-              maxWidth: '98%'
+              maxWidth: '95%',
+              mx: 'auto',
+              display: "flex"
             }}
           />
 
@@ -402,10 +382,8 @@ const SubcategoryPage = () => {
               />
             </div>
           </div>
-
-
           {/* Filter Button */}
-          <Button type="submit" variant="contained" onClick={(e) => { handleFiltering(e); setFilterDrawer(false) }} sx={{
+          <Button type="submit" variant="contained" onClick={(e) => { handleFiltering(e), dispatch(toggleFilterDrawer(false)) }} sx={{
             backgroundColor: '#13193F', // Replace with your desired background color
             '&:hover': {
               backgroundColor: '#1e40af', // Replace with your desired hover color
@@ -417,9 +395,9 @@ const SubcategoryPage = () => {
       <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <p>Loading Products.. <CircularProgress /></p>
       </div>}>
-        <div className="flex flex-row items-start">
+        <div className="flex flex-row items-start sm:space-x-2">
           {/* FilterMenu */}
-          <div className={`flex-col sticky w-48 md:w-56 flex-shrink-0 top-32 h-[calc(100vh-132px)] hidden sm:flex`} style={{ overflowY: 'auto' }}>
+          <div className={`flex-col sticky w-48 md:w-56 ml-2 md:ml-0 flex-shrink-0 top-32 h-[calc(100vh-145px)] hidden sm:flex`} style={{ overflowY: 'auto' }}>
             <h3 className="text-lg font-bold mb-2">
               {subcategory ? subcategory.toUpperCase().replace(/-/g, " ") : "Products"}
             </h3>
@@ -578,9 +556,9 @@ const SubcategoryPage = () => {
               </button>
             </div>
           </div>
-          <div className="flex grow flex-wrap">
+          <div className="flex grow flex-wrap ">
             {/* Sorting Menu */}
-            <div className="hidden sm:flex justify-between w-full px-4 mb-4">
+            <div className="hidden sm:flex justify-between w-full px-2 mb-4">
               <h5 className="text-lg self-end">Listing {productQuantity} products for {subcategory}</h5>
               <FormControl className="rounded-lg shadow-md">
                 <InputLabel id="sort-by" sx={{ fontSize: "1rem" }}>
