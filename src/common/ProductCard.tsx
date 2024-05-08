@@ -9,7 +9,6 @@ import { displayAlert } from "@/setup/slices/alert-slice";
 import { updateCartItemCount } from "@/setup/slices/user-slice";
 import { addToWishlist, removeFromWishlist } from "@/setup/slices/wishlist-slice";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
-import { truncateString } from "@/utils/truncate-string";
 
 export interface ProductCardProps {
   id: number;
@@ -165,9 +164,9 @@ const ProductCard = forwardRef(({
           />
           <Divider className="self-stretch hidden xs:block" />
         </div>
-        <div className="xs:mt-2 flex-1 flex flex-col justify-between pt-8 pb-2 xs:pt-2 xs:space-y-2 text-center [&_p]:text-sm [&_p]:px-2">
-          <p className="line-clamp-3 xs:min-h-[3em]" title={productName}>{truncateString(productName, 50, 50)}</p>
-          <p className="">{brand}</p>
+        <div className="xs:mt-2 flex-1 flex flex-col justify-between pt-8 pb-2 xs:pt-2 xs:space-y-2 text-center [&_p]:text-sm [&_p]:px-6">
+          <p className="line-clamp-2 xs:min-h-[3em] xs:" title={productName}>{productName}</p>
+          <p className="font-[700]">{brand}</p>
           <Rating
             name="half-rating-read"
             value={averageRating}

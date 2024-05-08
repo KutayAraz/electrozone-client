@@ -4,7 +4,7 @@ import useFetch from "@/common/Hooks/use-fetch";
 import { ProductType } from "./types";
 import ProductCard from "@/common/ProductCard";
 import FormControl from "@mui/material/FormControl";
-import { Box, Button, Checkbox, CircularProgress, Drawer, FormControlLabel, IconButton, InputAdornment, InputLabel, ListItemIcon, MenuItem, Select, SelectChangeEvent, Slider, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, CircularProgress, Divider, Drawer, FormControlLabel, IconButton, InputAdornment, InputLabel, ListItemIcon, MenuItem, Select, SelectChangeEvent, Slider, TextField, Typography } from "@mui/material";
 import useScreenValue from "@/common/Hooks/use-screenValue";
 import { initialProductsToFetch } from "@/utils/initial-products-to-fetch";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
@@ -18,6 +18,9 @@ import { formatString } from "@/utils/format-casing";
 import ProductList from "./ProductList";
 import { useScrollDirection } from "@/common/Hooks/use-scrollDirection";
 import { truncateString } from "@/utils/truncate-string";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/setup/store";
+import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice";
 
 const SearchResultsPage = () => {
   const { searchResults, brandsData, priceRangeData, skipped, subcategoryData, productQuantity }: any = useLoaderData();
@@ -47,10 +50,9 @@ const SearchResultsPage = () => {
   const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(subcategoriesArray);
   const [stockStatus, setStockStatus] = useState<any>(stockStatusParam);
 
-  const [sortingDrawer, setSortingDrawer] = useState(false);
-  const [filterDrawer, setFilterDrawer] = useState(false);
-
-  const scrollDirection = useScrollDirection();
+  const dispatch = useDispatch<any>()
+  const filterDrawer = useSelector((state: RootState) => state.ui.filterDrawer)
+  const sortingDrawer = useSelector((state: RootState) => state.ui.sortingDrawer)
 
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
@@ -220,103 +222,63 @@ const SearchResultsPage = () => {
     setSearchParams(newSearchParams);
   };
 
-  const toggleSortingDrawer = (newOpen: boolean) => () => {
-    setSortingDrawer(newOpen);
-  };
-
-  const toggleFilterDrawer = (newOpen: boolean) => () => {
-    setFilterDrawer(newOpen);
-  };
-
   return (
     <div className="page-spacing">
-      <div className="flex sm:hidden space-x-4">
-        <Button
-          variant="outlined"
-          className="flex-1"
-          startIcon={<FilterAltIcon style={{ color: '#374151' }} />}
-          onClick={toggleFilterDrawer(true)}
-          sx={{
-            borderColor: '#d1d5db',
-            fontSize: '12px',
-            justifyContent: 'center',
-            py: 1,
-            textTransform: 'none',
-
-          }}
-        >
-          <Typography className="text-[#374151]">
-            Filters
-          </Typography>
-        </Button>
-        <Button
-          variant="outlined"
-          className="flex-1"
-          startIcon={<SortIcon style={{ color: '#374151' }} />}
-          onClick={toggleSortingDrawer(true)}
-          sx={{
-            borderColor: '#d1d5db',
-            fontSize: '12px',
-            textTransform: 'none',
-            justifyContent: 'center',
-            py: 1,
-          }}
-        >
-          <Typography className="text-theme-blue">
-            Sort By
-          </Typography>
-        </Button>
-      </div>
-      <Drawer open={sortingDrawer} onClose={toggleSortingDrawer(false)} anchor="bottom" >
-        <IconButton
-          onClick={toggleSortingDrawer(false)}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            zIndex: 15,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <div className="pt-12 pb-4 [&_li]:px-6 [&_li]:py-3">
-          <MenuItem value={"relevance"} onClick={() => { handleSortChange("relevance"); setSortingDrawer(false) }}>
+      <Drawer open={sortingDrawer} onClose={() => dispatch(toggleSortingDrawer(false))} anchor="bottom" >
+        <div className="pb-2 [&_li]:px-6 [&_li]:py-3">
+          <div className="flex justify-between px-6 items-center py-[8px]">
+            <div className="flex space-x-3">
+              <SortIcon style={{ color: '#757575' }} />
+              <Typography variant="body1" sx={{ color: "#373D51" }}>Sort By</Typography>
+            </div>
+            <div className="">
+              <IconButton
+                onClick={() => dispatch(toggleSortingDrawer(false))}
+                sx={{
+                  color: (theme) => theme.palette.grey[500],
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+          <Divider />
+          <MenuItem value={"featured"} onClick={() => { handleSortChange("featured"), dispatch(toggleSortingDrawer(false)) }}>
             <ListItemIcon >
               <StarBorderIcon />
             </ListItemIcon>
-            <Typography variant="body1">Relevance</Typography>
+            <Typography variant="body1" sx={{ color: "#373D51" }}>Featured</Typography>
           </MenuItem>
-          <MenuItem value={"rating"} onClick={() => { handleSortChange("rating"); setSortingDrawer(false) }}>
+          <MenuItem value={"rating"} onClick={() => { handleSortChange("rating"), dispatch(toggleSortingDrawer(false)) }}>
             <ListItemIcon >
               <TrendingUpIcon />
             </ListItemIcon>
-            <Typography variant="body1">Ratings</Typography>
+            <Typography variant="body1" sx={{ color: "#373D51" }}>Ratings</Typography>
           </MenuItem>
-          <MenuItem value={"price_ascending"} onClick={() => { handleSortChange("price_ascending"); setSortingDrawer(false) }}>
+          <MenuItem value={"price_ascending"} onClick={() => { handleSortChange("price_ascending"), dispatch(toggleSortingDrawer(false)) }}>
             <ListItemIcon >
               <ArrowUpwardIcon />
             </ListItemIcon>
-            <Typography variant="body1">Price Ascending</Typography>
+            <Typography variant="body1" sx={{ color: "#373D51" }}>Price Ascending</Typography>
           </MenuItem>
-          <MenuItem value={"price_descending"} onClick={() => { handleSortChange("price_descending"); setSortingDrawer(false) }}>
+          <MenuItem value={"price_descending"} onClick={() => { handleSortChange("price_descending"), dispatch(toggleSortingDrawer(false)) }}>
             <ListItemIcon >
               <ArrowDownwardIcon />
             </ListItemIcon>
-            <Typography variant="body1">Price Descending</Typography>
+            <Typography variant="body1" sx={{ color: "#373D51" }}>Price Descending</Typography>
           </MenuItem>
         </div>
       </Drawer>
       <Drawer
         anchor="bottom"
         open={filterDrawer}
-        onClose={toggleFilterDrawer(false)}
+        onClose={() => dispatch(toggleFilterDrawer(false))}
         sx={{
           '& .MuiDrawer-paper': { maxHeight: '80%', overflow: 'auto' },
         }}
       >
         <IconButton
-          onClick={toggleFilterDrawer(false)}
+          onClick={() => dispatch(toggleFilterDrawer(false))}
           sx={{
             position: 'absolute',
             right: 8,
@@ -326,55 +288,57 @@ const SearchResultsPage = () => {
         >
           <CloseIcon />
         </IconButton>
-        <div className="p-6">
+        <div className="p-6 pb-3">
           {/* Stock Status */}
-          <Typography variant="h6" >Stock Status</Typography>
+          <p className="text-lg">Stock Status</p>
           <Box sx={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Creates columns with a minimum width of 200px
-            gap: 1, // Adjusts the space between grid items
-          }}><FormControlLabel
-              control={<Checkbox checked={stockStatus === 'all'} onChange={handleStockChange} name="all" />}
+            gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', // Creates columns with a minimum width of 200px
+            gap: 0, // Adjusts the space between grid items
+          }}>
+            <FormControlLabel
+              control={<Checkbox checked={stockStatus === 'all'} onChange={handleStockChange} name="all " />}
               label="Include All"
+              sx={{
+                '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
+                  fontSize: '1rem', // Adjust icon size if necessary
+                },
+              }}
             />
             <FormControlLabel
               control={<Checkbox checked={stockStatus === 'in_stock'} onChange={handleStockChange} name="in_stock" />}
               label="Only in Stock"
+              sx={{
+                '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
+                  fontSize: '1rem', // Adjust icon size if necessary
+                },
+              }}
             />
           </Box>
           {/* Brands */}
-          <Typography variant="h6">Subcategories</Typography>
+          <p className="text-lg mt-1">Brands</p>
           <Box sx={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Creates columns with a minimum width of 200px
-            gap: 1, // Adjusts the space between grid items
-          }}>
-            {subcategoryData.map((subcategory: any, index: number) => (
-              <FormControlLabel
-                key={index}
-                control={<Checkbox checked={selectedSubcategories.includes(subcategory)} onChange={() => handleSubcategoryChange(subcategory)} name={subcategory} />}
-                label={`${formatString(subcategory)}`}
-                sx={{ justifyContent: "start" }} // Aligns the FormControlLabel contents to the start, ensuring checkboxes are aligned
-              />
-            ))}</Box>
-          <Typography variant="h6" sx={{ mt: 2 }}>Brands</Typography>
-          <Box sx={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', // Creates columns with a minimum width of 200px
-            gap: 1, // Adjusts the space between grid items
+            gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', // Creates columns with a minimum width of 200px
+            gap: 0, // Adjusts the space between grid items
           }}>
             {brandsData.map((brand: any, index: number) => (
               <FormControlLabel
                 key={index}
                 control={<Checkbox checked={selectedBrands.includes(brand)} onChange={() => handleBrandChange(brand)} name={brand} />}
                 label={brand}
-                sx={{ justifyContent: "start" }} // Aligns the FormControlLabel contents to the start, ensuring checkboxes are aligned
+                sx={{
+                  justifyContent: "start",
+                  '& .MuiSvgIcon-root': { // Targeting the icon inside the checkbox
+                    fontSize: '1rem', // Adjust icon size if necessary
+                  },
+                }} // Aligns the FormControlLabel contents to the start, ensuring checkboxes are aligned
               />
             ))}
           </Box>
 
           {/* Price Range */}
-          <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>Price Range</Typography>
+          <p className="mt-2 text-lg">Price Range</p>
           <Slider
             getAriaLabel={() => 'Price range'}
             value={priceRange}
@@ -392,7 +356,9 @@ const SearchResultsPage = () => {
               '& .MuiSlider-track': {
                 color: '#13193F', // Changes the track color
               },
-              maxWidth: '98%'
+              maxWidth: '95%',
+              mx: 'auto',
+              display: "flex"
             }}
           />
 
@@ -434,10 +400,10 @@ const SearchResultsPage = () => {
             </div>
           </div>
           {/* Filter Button */}
-          <Button type="submit" variant="contained" onClick={(e) => { handleFiltering(e); setFilterDrawer(false) }} sx={{
-            backgroundColor: '#13193F',
+          <Button type="submit" variant="contained" onClick={(e) => { handleFiltering(e), dispatch(toggleFilterDrawer(false)) }} sx={{
+            backgroundColor: '#13193F', // Replace with your desired background color
             '&:hover': {
-              backgroundColor: '#1e40af',
+              backgroundColor: '#1e40af', // Replace with your desired hover color
             },
             width: '100%'
           }}>Filter</Button>
@@ -446,9 +412,9 @@ const SearchResultsPage = () => {
       <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <p>Loading Products.. <CircularProgress /></p>
       </div>}>
-        <div className="flex flex-row items-start space-x-2">
+        <div className="flex flex-row items-start space-x-2 -mt-4">
           {/* FilterMenu */}
-          <div className={`flex-col sticky w-48 md:w-60 flex-shrink-0 top-32 h-[calc(100vh-145px)] px-2 hidden sm:flex overflow-y-auto`} >
+          <div className={`flex-col sticky w-48 md:w-60 flex-shrink-0 sm:top-[150px] md:top-28 h-[calc(100vh-135px)] hidden sm:flex overflow-y-auto`}>
             <div className="flex flex-col overflow-y-auto overflow-x-hidden" >
               <h4 className="text-lg font-semibold mb-1">Stock Status</h4>
               <FormControlLabel
@@ -482,7 +448,8 @@ const SearchResultsPage = () => {
                   }} checked={stockStatus === 'in_stock'} onChange={handleStockChange} name="in_stock" />}
                 label="Only in Stock" className="text-sm"
               />
-              <h4 className="text-lg font-semibold mt-4 mb-1">Subcategories</h4>
+              <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+              <h4 className="text-lg font-semibold">Subcategories</h4>
               {subcategoryData.map((subcategory: string, index: number) => (
                 <FormControlLabel
                   key={index}
@@ -503,11 +470,22 @@ const SearchResultsPage = () => {
                       name={subcategory}
                     />
                   }
-                  label={`${formatString(truncateString(subcategory, 18, 18))}`}
-                  title={`${formatString(subcategory)}`}
+                  label={formatString(subcategory)}
+                  title={formatString(subcategory)}
+                  sx={{
+                    '& .MuiFormControlLabel-label': { // Targeting the label of the FormControlLabel
+                      maxWidth: '100%', // Ensures label does not exceed its parent width
+                      whiteSpace: 'nowrap', // Keeps the text on a single line
+                      overflow: 'hidden', // Ensures overflow text is not visible
+                      textOverflow: 'ellipsis', // Adds ellipsis to overflow text
+                    }
+                  }}
                 />
               ))}
-              <h4 className="text-lg font-semibold mt-4 mb-1">Brands</h4>
+
+              <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+              
+              <h4 className="text-lg font-semibold">Brands</h4>
               {brandsData.map((brand: string, index: number) => (
                 <FormControlLabel
                   key={index}
@@ -533,7 +511,7 @@ const SearchResultsPage = () => {
                 />
               ))}
             </div>
-            <div className="mt-2 w-[95%] text-center">
+            <div className="mt-2 w-[95%]">
               <h4 className="text-lg font-semibold mt-2 mb-3">Price Range</h4>
               <Slider
                 getAriaLabel={() => 'Price range'}
@@ -547,8 +525,9 @@ const SearchResultsPage = () => {
                 getAriaValueText={(value) => `$${value}`} // Adds a "$" sign for screen readers
                 valueLabelFormat={(value) => `$${value}`} // Adds a "$" sign to the label
                 sx={{
-                  width: '75%',
+                  width: '85%',
                   mx: 'auto', // Optionally, add margin to center the slider if needed
+                  marginLeft: "12px",
                   '& .MuiSlider-thumb': {
                     color: '#13193F', // Changes the thumb color
                   },
@@ -625,7 +604,7 @@ const SearchResultsPage = () => {
               </button>
             </div>
           </div>
-          <div className="flex grow flex-wrap">
+          <div className="flex grow flex-wrap sm:mt-4">
             <div className="hidden sm:flex justify-between w-full px-2 mb-4">
               <h3 className="text-lg self-end">
                 Listing {productQuantity} products for "{query}"

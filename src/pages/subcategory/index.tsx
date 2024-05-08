@@ -201,14 +201,15 @@ const SubcategoryPage = () => {
     if (stockStatus !== "") {
       newSearchParams.set('stock_status', stockStatus);
     }
-
     setSearchParams(newSearchParams);
   };
+
+  const scrollDirection = useScrollDirection();
 
   return (
     <div className="page-spacing">
       <Drawer open={sortingDrawer} onClose={() => dispatch(toggleSortingDrawer(false))} anchor="bottom" >
-        <div className="pt- pb-2 [&_li]:px-6 [&_li]:py-3">
+        <div className="pb-2 [&_li]:px-6 [&_li]:py-3">
           <div className="flex justify-between px-6 items-center py-[8px]">
             <div className="flex space-x-3">
               <SortIcon style={{ color: '#757575' }} />
@@ -395,9 +396,9 @@ const SubcategoryPage = () => {
       <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <p>Loading Products.. <CircularProgress /></p>
       </div>}>
-        <div className="flex flex-row items-start sm:space-x-2">
+        <div className="flex flex-row items-start sm:space-x-2 -mt-4">
           {/* FilterMenu */}
-          <div className={`flex-col sticky w-48 md:w-56 ml-2 md:ml-0 flex-shrink-0 top-32 h-[calc(100vh-145px)] hidden sm:flex`} style={{ overflowY: 'auto' }}>
+          <div className={`flex-col sticky w-48 md:w-60 flex-shrink-0 sm:top-[150px] md:top-28 h-[calc(100vh-135px)] hidden sm:flex overflow-y-auto`}>
             <h3 className="text-lg font-bold mb-2">
               {subcategory ? subcategory.toUpperCase().replace(/-/g, " ") : "Products"}
             </h3>
@@ -433,7 +434,9 @@ const SubcategoryPage = () => {
                   }} checked={stockStatus === 'in_stock'} onChange={handleStockChange} name="in_stock" />}
                 label="Only in Stock" className="text-sm"
               />
-              <h4 className="text-lg font-semibold mt-4 mb-1">Brands</h4>
+              <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+
+              <h4 className="text-lg font-semibold">Brands</h4>
               {brandsData.map((brand: string, index: number) => (
                 <FormControlLabel
                   key={index}
@@ -463,17 +466,17 @@ const SubcategoryPage = () => {
                   }}
                 />
               ))}
-              <h4 className="text-lg font-semibold my-2">Price Range</h4>
+              <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+
+              <h4 className="text-lg font-semibold mb-2">Price Range</h4>
               <Slider
                 getAriaLabel={() => 'Price range'}
                 value={priceRange}
                 onChange={handlePriceChange}
-                valueLabelDisplay="auto"
-                step={Math.floor((priceRangeData.max - priceRangeData.min) / 10)}
+                step={Math.floor((priceRangeData.max - priceRangeData.min) / 100)}
                 min={0}
                 max={priceRangeData.max}
                 getAriaValueText={(value) => `$${value}`} // Adds a "$" sign for screen readers
-                valueLabelFormat={(value) => `$${value}`} // Adds a "$" sign to the label
                 sx={{
                   maxWidth: '85%',
                   mx: 'auto',
@@ -556,7 +559,7 @@ const SubcategoryPage = () => {
               </button>
             </div>
           </div>
-          <div className="flex grow flex-wrap ">
+          <div className="flex grow flex-wrap sm:mt-4">
             {/* Sorting Menu */}
             <div className="hidden sm:flex justify-between w-full px-2 mb-4">
               <h5 className="text-lg self-end">Listing {productQuantity} products for {subcategory}</h5>
