@@ -64,7 +64,7 @@ const Contact = () => {
       <p className="mb-4">
         Any feedback or suggestions on the project would be greatly appreciated!
       </p>
-      <form onSubmit={handleSubmit(sendMessage)} className="space-y-6">
+      <form onSubmit={handleSubmit(sendMessage)} className="space-y-4">
         <div>
           <input
             type="hidden"
@@ -73,7 +73,7 @@ const Contact = () => {
           />
           <label
             htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm"
           >
             Name (Optional)
           </label>
@@ -89,7 +89,7 @@ const Contact = () => {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm "
           >
             Email (Optional)
           </label>
@@ -108,7 +108,7 @@ const Contact = () => {
         <div>
           <label
             htmlFor="message"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-sm"
           >
             Message<span aria-hidden="true">*</span>
           </label>
@@ -128,11 +128,10 @@ const Contact = () => {
           <button
             type="submit"
             aria-label="Send Message"
-            className={`${
-              isLoading("default")
+            className={`${isLoading("default")
                 ? "bg-gray-200"
                 : "bg-theme-blue hover:bg-theme-purple"
-            }  rounded-lg font-[500] text-white max-w-[50%] mb-2 px-10 py-2`}
+              }  rounded-lg font-[500] text-white max-w-[50%] mb-2 px-10 py-2`}
             disabled={isLoading("default")}
           >
             {isLoading("default") ? "Sending" : "Send"}

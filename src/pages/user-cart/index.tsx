@@ -14,6 +14,9 @@ import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
+import { Divider } from "@mui/material";
+import { ReactComponent as Bin } from "@assets/svg/bin.svg";
+import { ReactComponent as RightArrow } from "@assets/svg/right-arrow.svg";
 
 const RefetchCart = (isSignedIn: boolean, fetchData: any) => {
   const productsInLocalCart = store
@@ -73,7 +76,7 @@ const UserCart = () => {
     }
     dispatch(
       displayAlert({
-        type: "success",
+        type: "info",
         message: "Your cart has been cleared",
         autoHide: true,
       })
@@ -97,18 +100,18 @@ const UserCart = () => {
 
   return (
     <div className="page-spacing">
-      <h2 className="text-2xl font-bold py-3">
+      <h2 className="text-lg md:text-xl font-bold py-2">
         Your Shopping Cart
       </h2>
-      <Suspense fallback={<p className="text-gray-600">Loading..</p>}>
-        <div>
+      <Suspense fallback={<p>Loading..</p>}>
+        <div className="sm:flex sm:w-full sm:justify-between">
           {products.length === 0 ? (
             <p className="text-gray-500 italic">
               There's nothing in your cart.
             </p>
           ) : (
             <>
-              <div className="space-y-4">
+              <div className="space-y-2 md:flex-grow md:mr-6">
                 {products.map((product: any) => (
                   <CartItemCard
                     {...product}
@@ -119,28 +122,43 @@ const UserCart = () => {
                   />
                 ))}
               </div>
-              <div className="flex justify-end mt-4">
-                <div className="flex flex-col space-y-2">
+              <div className="flex mt-4 w-full">
+                <div className="flex flex-col space-y-1 w-full">
+                  <p className="font-bold">Cart Summary: </p>
+                  <Divider />
                   <div className="flex justify-between">
-                    <p className="text-lg font-bold">
+                    <p>
+                      Product Quantity:
+                    </p>
+                    <p>
+                      {cart.totalQuantity}
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p>
                       Cart Total:
                     </p>
-                    <p className="text-lg font-bold">
+                    <p>
                       ${cartTotal.toFixed(2)}
                     </p>
                   </div>
-                  <div className="flex space-x-2">
+                  <div className="flex space-x-2 pt-2 justify-around">
                     <button
                       onClick={handleCheckoutButton}
-                      className="bg-theme-blue hover:bg-blue-700 text-white px-4 py-2 rounded-md transition duration-200"
+                      className="bg-theme-blue hover:bg-blue-700 text-white px-3 py-[5px] rounded-md transition duration-200 flex items-center"
                     >
+                      <RightArrow className="w-6 h-auto" />
+
                       Proceed to Checkout
                     </button>
                     <button
                       onClick={handleClearCartButton}
-                      className="bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-md transition duration-200"
+                      className="bg-red-700 hover:bg-red-800 text-white px-6 rounded-md transition duration-200 flex items-center"
                       disabled={products.length === 0}
                     >
+                      <span>
+                        <Bin className="w-6 h-auto fill-white" />
+                      </span>
                       Clear Cart
                     </button>
                   </div>

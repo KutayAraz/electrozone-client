@@ -13,27 +13,26 @@ const MyOrders = () => {
   return (
     <div className="flex w-full">
       <div className="grow w-full">
-      <h2 className="text-xl font-semibold my-2">Previous Orders</h2>
-      <Suspense fallback={<p>Loading..</p>}>
-        <Await
-          resolve={orders}
-          children={(resolvedOrders) => {
-            return resolvedOrders.map((order: OrderCardProps) => (
-              <OrderCard
-                key={order.orderId}
-                orderId={order.orderId}
-                orderTotal={order.orderTotal}
-                user={order.user}
-                orderQuantity={order.orderQuantity}
-                orderDate={order.orderDate}
-                orderItems={order.orderItems}
-              />
-            ));
-          }}
-        />
-      </Suspense>
+        <h2 className="text-xl font-semibold mb-2">Previous Orders</h2>
+        <Suspense fallback={<p>Loading..</p>}>
+          <Await
+            resolve={orders}
+            children={(resolvedOrders) => {
+              return resolvedOrders.map((order: OrderCardProps) => (
+                <OrderCard
+                  key={order.orderId}
+                  orderId={order.orderId}
+                  orderTotal={order.orderTotal}
+                  user={order.user}
+                  orderQuantity={order.orderQuantity}
+                  orderDate={order.orderDate}
+                  orderItems={order.orderItems}
+                />
+              ));
+            }}
+          />
+        </Suspense>
       </div>
-      
     </div>
   );
 };

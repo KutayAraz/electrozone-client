@@ -107,7 +107,7 @@ const ProductCard = forwardRef(({
         dispatch(removeFromWishlist(id))
         dispatch(
           displayAlert({
-            type: "success",
+            type: "info",
             message: "Product has been removed to your wishlist!",
             autoHide: true,
           })

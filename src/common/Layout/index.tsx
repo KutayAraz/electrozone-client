@@ -29,6 +29,7 @@ const Layout = () => {
   const location = useLocation();
   const path = location.pathname;
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const notifications = useSelector((state: RootState) => state.alert.notifications);
 
   // Check if the path starts with '/category' and has more segments following it
   const pathSegments = location.pathname.split('/').filter(Boolean); // Split path and remove empty segments
@@ -66,18 +67,26 @@ const Layout = () => {
         {isMobile && <SearchControls />}
       </div>
       <LoadingIndicator />
-      {alertState.isOpen && (
-        <Slide direction="left" in={alertState.isOpen} mountOnEnter unmountOnExit>
-          <Alert
-            severity={alertState.type}
-            onClose={() => dispatch(hideAlert())}
-            className="fixed w-auto right-0 top-2 sm:top-28 z-[100]"
-            style={{ borderRadius: 0 }}
+      <div className="fixed right-0 top-2 sm:top-28 z-[100]">
+        {notifications.map((alert) => (
+          <Slide
+            key={alert.id}
+            direction="left"
+            in={true}
+            mountOnEnter
+            unmountOnExit
           >
-            {alertState.message}
-          </Alert>
-        </Slide>
-      )}
+            <Alert
+              severity={alert.type}
+              onClose={() => dispatch(hideAlert(alert.id))}
+              className="mb-2"
+              style={{ borderRadius: 0 }}
+            >
+              {alert.message}
+            </Alert>
+          </Slide>
+        ))}
+      </div>
       <div className="flex-grow">
         <Outlet />
       </div>

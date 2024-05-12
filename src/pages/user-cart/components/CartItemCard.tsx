@@ -106,16 +106,16 @@ const CartItemCard = ({
 
       <div className="flex-grow space-y-3 lg:space-y-4">
         <Link to={`/category/${category}/${subcategory}/${id}`}>
-          <p className="text-gray-700 hover:text-blue-500 transition duration-200">
+          <p className="hover:text-blue-800 transition duration-200 text-sm sm:text-base">
             {productName}
           </p>
         </Link>
-        <p className="text-gray-700">${price.toFixed(2)}</p>
+        <p className="text-sm sm:text-base">${price.toFixed(2)}</p>
         <div className="flex items-center space-x-2">
           <select
             value={selectedQuantity}
             onChange={(event) => handleQuantityChange(event)}
-            className="border rounded-md p-2"
+            className="border rounded-md p-2 text-sm sm:text-base"
           >
             {Array.from({ length: 10 }, (_, index) => (
               <option key={index + 1} value={index + 1}>
@@ -130,7 +130,7 @@ const CartItemCard = ({
             <Bin className="w-6 h-auto" />
           </button>
         </div>
-        <p className="text-lg text-gray-700">Total: ${amount.toFixed(2)}</p>
+        <p className="text-sm sm:text-base font-[600]">Total: ${amount.toFixed(2)}</p>
       </div>
     </div>
   );

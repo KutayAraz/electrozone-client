@@ -1,29 +1,36 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+interface Notification {
+  id: number;
+  type: AlertType;
+  message: string;
+}
+
 interface DisplayAlertPayload {
   type: AlertType;
   message: string;
   autoHide?: boolean; // autoHide is optional and defaults to false
 }
 
-// Async thunk for showing the alert and potentially hiding it
-let alertTimeout: ReturnType<typeof setTimeout> | undefined;
+// Generate unique IDs for notifications
+let nextNotificationId = 0;
 
+// Async thunk for showing the alert and potentially hiding it
 export const displayAlert = createAsyncThunk(
   "alert/display",
   async (payload: DisplayAlertPayload, { dispatch }) => {
-    // If there's an existing timeout, clear it
-    if (alertTimeout !== undefined) {
-      clearTimeout(alertTimeout);
-    }
+    const notification = {
+      id: nextNotificationId++,
+      type: payload.type,
+      message: payload.message,
+    };
 
-    // Show the alert
-    dispatch(showAlert(payload));
+    dispatch(showAlert(notification));
 
     // If autoHide is true, hide the alert after 3 seconds
     if (payload.autoHide) {
-      alertTimeout = setTimeout(() => {
-        dispatch(hideAlert());
+      setTimeout(() => {
+        dispatch(hideAlert(notification.id));
       }, 3000);
     }
   }
@@ -32,15 +39,11 @@ export const displayAlert = createAsyncThunk(
 type AlertType = "error" | "info" | "success" | "warning" | undefined;
 
 interface AlertState {
-  type: AlertType;
-  message: string;
-  isOpen: boolean;
+  notifications: Notification[];
 }
 
 const initialState: AlertState = {
-  type: undefined,
-  message: "",
-  isOpen: false,
+  notifications: [],
 };
 
 export const alertSlice = createSlice({
@@ -48,16 +51,19 @@ export const alertSlice = createSlice({
   initialState,
   reducers: {
     showAlert: (state, action) => {
-      state.type = action.payload.type;
-      state.message = action.payload.message;
-      state.isOpen = true;
+      state.notifications.splice(0, 0, action.payload);
     },
-    hideAlert: (state) => {
-      state.isOpen = false;
+    hideAlert: (state, action) => {
+      state.notifications = state.notifications.filter(
+        (notification) => notification.id !== action.payload
+      );
+    },
+    clearAlerts: (state) => {
+      state.notifications = [];
     },
   },
 });
 
-export const { showAlert, hideAlert } = alertSlice.actions;
+export const { showAlert, hideAlert, clearAlerts } = alertSlice.actions;
 
 export default alertSlice.reducer;

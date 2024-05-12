@@ -9,7 +9,7 @@ export const CategoryPage = () => {
   const { category }: any = useLoaderData();
 
   return (
-    <div className="page-spacing ">
+    <div className="page-spacing">
       <Suspense fallback={<p>Loading Category..</p>}>
         <Await resolve={category}>
           {(loadedCategory) =>

@@ -48,7 +48,7 @@ const Subcategory = ({
     ],
   };
   return (
-    <div className="px-4" key={id}>
+    <div className="px-6 md:px-8 xl:px-0" key={id}>
       <h3 className="text-lg font-semibold text-center mb-3">
         Top Selling Products in{" "}
         <Link to={`${subcategory}`} className="underline hover:text-blue-800">

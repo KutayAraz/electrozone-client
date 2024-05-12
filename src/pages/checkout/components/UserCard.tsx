@@ -6,7 +6,7 @@ const UserCard = ({
   city,
 }: UserCardProps) => {
   return (
-    <div className="bg-white p-4 rounded-md shadow-md mb-6 max-w-screen-lg text-gray-700">
+    <div className="bg-white px-4 py-2 rounded-md shadow-md mb-6">
       <p className="text-xl font-semibold">
         {firstName} {lastName}
       </p>
