@@ -204,10 +204,9 @@ const SubcategoryPage = () => {
     setSearchParams(newSearchParams);
   };
 
-  const scrollDirection = useScrollDirection();
 
   return (
-    <div className="page-spacing">
+    <div className="max-w-screen-lg mx-auto my-2 sm:px-2 max-[1296px]:px-0">
       <Drawer open={sortingDrawer} onClose={() => dispatch(toggleSortingDrawer(false))} anchor="bottom" >
         <div className="pb-2 [&_li]:px-6 [&_li]:py-3">
           <div className="flex justify-between px-6 items-center py-[8px]">
@@ -396,7 +395,8 @@ const SubcategoryPage = () => {
       <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <p>Loading Products.. <CircularProgress /></p>
       </div>}>
-        <div className="flex flex-row items-start sm:space-x-2 -mt-4">
+        <div className="flex flex-row items-start sm:space-x-2">
+
           {/* FilterMenu */}
           <div className={`flex-col sticky w-48 md:w-60 flex-shrink-0 sm:top-[150px] md:top-28 h-[calc(100vh-135px)] hidden sm:flex overflow-y-auto`}>
             <h3 className="text-lg font-bold mb-2">
@@ -559,7 +559,9 @@ const SubcategoryPage = () => {
               </button>
             </div>
           </div>
+
           <div className="flex grow flex-wrap sm:mt-4">
+            <h5 className="sm:hidden text-lg self-end px-2">Listing {productQuantity} products for {subcategory}</h5>
             {/* Sorting Menu */}
             <div className="hidden sm:flex justify-between w-full px-2 mb-4">
               <h5 className="text-lg self-end">Listing {productQuantity} products for {subcategory}</h5>

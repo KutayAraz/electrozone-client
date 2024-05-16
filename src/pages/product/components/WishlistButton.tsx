@@ -6,8 +6,9 @@ import { RootState } from "@/setup/store";
 import useFetch from "@/common/Hooks/use-fetch";
 import { useDispatch, useSelector } from "react-redux";
 import { displayAlert } from "@/setup/slices/alert-slice";
+import { truncateString } from "@/utils/truncate-string";
 
-const WishlistButton = ({ productId, isInitiallyWishlisted }: WishlistButtonProps) => {
+const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: WishlistButtonProps) => {
   const [isWishlisted, setIsWishlisted] = useState(isInitiallyWishlisted);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const WishlistButton = ({ productId, isInitiallyWishlisted }: WishlistButtonProp
         dispatch(
           displayAlert({
             type: "success",
-            message: "Product has been added to your wishlist!",
+            message: `${truncateString(productName, 0, 20)} has been added to your wishlist!`,
             autoHide: true,
           })
         );
@@ -48,8 +49,8 @@ const WishlistButton = ({ productId, isInitiallyWishlisted }: WishlistButtonProp
         setIsWishlisted(false);
         dispatch(
           displayAlert({
-            type: "success",
-            message: "Product has been removed to your wishlist!",
+            type: "info",
+            message: `${truncateString(productName, 0, 20)} has been removed to your wishlist!`,
             autoHide: true,
           })
         );

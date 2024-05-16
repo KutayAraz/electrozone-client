@@ -223,7 +223,7 @@ const SearchResultsPage = () => {
   };
 
   return (
-    <div className="page-spacing">
+    <div className="max-w-screen-lg mx-auto my-2 sm:px-2 max-[1296px]:px-0">
       <Drawer open={sortingDrawer} onClose={() => dispatch(toggleSortingDrawer(false))} anchor="bottom" >
         <div className="pb-2 [&_li]:px-6 [&_li]:py-3">
           <div className="flex justify-between px-6 items-center py-[8px]">

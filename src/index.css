@@ -25,18 +25,6 @@
   margin: 8px auto;
 }
 
-/* @media (max-width: 1024px) {
-  .page-spacing {
-    padding: 0 8px;
-  }
-}
-
-@media (max-width: 1296px) {
-  .page-spacing {
-    padding: 0 8px;
-  }
-} */
-
 @media (max-width: 1296px) {
   .page-spacing {
     padding: 0 8px;

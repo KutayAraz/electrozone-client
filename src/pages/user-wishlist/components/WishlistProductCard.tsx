@@ -10,6 +10,7 @@ import { displayAlert } from "@/setup/slices/alert-slice";
 import { addItemToCart } from "@/setup/slices/localCart-slice";
 import { updateCartItemCount } from "@/setup/slices/user-slice";
 import { ref } from "yup";
+import { truncateString } from "@/utils/truncate-string";
 
 const WishlistProductCard = ({
   id,
@@ -55,7 +56,7 @@ const WishlistProductCard = ({
     dispatch(
       displayAlert({
         type: "success",
-        message: "Product has been added to your cart!",
+        message: `${truncateString(productName, 0, 20)} has been added to your cart!`,
         autoHide: true,
       })
     );

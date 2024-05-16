@@ -27,6 +27,7 @@ export interface ReviewType {
 
 export interface WishlistButtonProps {
   productId: number;
+  productName: string;
   isInitiallyWishlisted: boolean;
 }
 

@@ -15,6 +15,7 @@ import { capitalizeWords } from "@/utils/capitalize-words";
 import { Divider, useMediaQuery } from "@mui/material";
 import ProductMobileLayout from "./ProductMobileLayout";
 import ProductDesktopLayout from "./ProductDesktopLayout";
+import { truncateString } from "@/utils/truncate-string";
 
 const Product = ({
   id,
@@ -77,7 +78,7 @@ const Product = ({
     dispatch(
       displayAlert({
         type: "success",
-        message: "Product has been added to your cart!",
+        message: `${truncateString(productName, 0, 20)} has been added to your cart!`,
         autoHide: true,
       })
     );

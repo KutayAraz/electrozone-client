@@ -32,14 +32,14 @@ const UserLocation = () => {
       {isSignedIn ? (
         <label
           htmlFor="userLocation"
-          className="text-white pl-[2%] flex w-full"
+          className="text-white pl-[10px] flex w-full"
         >
           Currently delivering to {userLocation}
         </label>
       ) : (
         <button
           onClick={() => setIsModalOpen(true)}
-          className="text-white pl-[2%] flex w-full"
+          className="text-white pl-[10px] flex w-full"
         >
           <LocationIcon className="w-6 h-6 stroke-white" />
           Select your location

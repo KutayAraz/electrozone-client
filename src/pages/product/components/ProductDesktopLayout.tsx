@@ -202,7 +202,7 @@ const ProductDesktopLayout = ({
           <p className="text-red-500">This product is currently out of stock</p>
         )}
         <div className="flex flex-col justify-center items-center">
-          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} />
+          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName}/>
         </div>
       </div>
     </div>

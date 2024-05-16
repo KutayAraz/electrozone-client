@@ -114,7 +114,7 @@ const ProductMobileLayout = ({
           Buy now
         </button>
         <div className="flex flex-col justify-center items-center mb-4">
-          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} />
+          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName}/>
         </div>
       </div>
     </>

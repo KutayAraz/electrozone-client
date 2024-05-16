@@ -8,6 +8,7 @@ import useFetch from "@/common/Hooks/use-fetch";
 import { displayAlert } from "@/setup/slices/alert-slice";
 import { Divider } from "@mui/material";
 import { updateCartItemCount } from "@/setup/slices/user-slice";
+import { truncateString } from "@/utils/truncate-string";
 
 const CartItemCard = ({
   id,
@@ -78,8 +79,8 @@ const CartItemCard = ({
     }
     dispatch(
       displayAlert({
-        type: "success",
-        message: "Product has been removed from to your cart!",
+        type: "info",
+        message: `${truncateString(productName, 0, 20)} has been removed from to your cart!`,
         autoHide: true,
       })
     );
@@ -87,7 +88,7 @@ const CartItemCard = ({
 
   return (
     <div
-      className="border rounded-md p-2 sm:p-4 flex items-start space-x-4"
+      className="border rounded-md p-2 flex space-x-4"
       key={id}
     >
       <Link
@@ -98,24 +99,24 @@ const CartItemCard = ({
           <img
             src={thumbnail}
             alt={productName}
-            className="w-32 h-32 md:w-40 md:h-40 object-contain rounded-md"
+            className="w-32 h-32 md:w-36 md:h-36 object-contain rounded-md"
           />
         </div>
       </Link>
       <Divider orientation="vertical" flexItem />
 
-      <div className="flex-grow space-y-3 lg:space-y-4">
+      <div className="text-sm flex flex-col justify-around">
         <Link to={`/category/${category}/${subcategory}/${id}`}>
-          <p className="hover:text-blue-800 transition duration-200 text-sm sm:text-base">
+          <p className="hover:text-blue-800 transition duration-200">
             {productName}
           </p>
         </Link>
-        <p className="text-sm sm:text-base">${price.toFixed(2)}</p>
+        <p className="text-sm">${price.toFixed(2)}</p>
         <div className="flex items-center space-x-2">
           <select
             value={selectedQuantity}
             onChange={(event) => handleQuantityChange(event)}
-            className="border rounded-md p-2 text-sm sm:text-base"
+            className="border rounded-md p-[5px]"
           >
             {Array.from({ length: 10 }, (_, index) => (
               <option key={index + 1} value={index + 1}>
@@ -130,7 +131,7 @@ const CartItemCard = ({
             <Bin className="w-6 h-auto" />
           </button>
         </div>
-        <p className="text-sm sm:text-base font-[600]">Total: ${amount.toFixed(2)}</p>
+        <p className="font-[600]">Total: ${amount.toFixed(2)}</p>
       </div>
     </div>
   );

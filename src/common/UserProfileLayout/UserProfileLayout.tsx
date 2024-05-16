@@ -52,7 +52,7 @@ const UserProfileLayout = () => {
             <div className="w-full">
                 <Outlet />
             </div>
-            <div className={`hidden sm:flex sticky flex-col shrink-0 border-1 border-[#13193F] rounded-md bg-gray-100 top-32`}>
+            <div className={`hidden sm:flex sticky flex-col shrink-0 border-1 border-[#13193F] rounded-md bg-gray-100 top-40`}>
                 <h3 className="px-8 bg-theme-blue text-white py-2">My Account</h3>
                 {menuItems.map((item) => (
                     <Link

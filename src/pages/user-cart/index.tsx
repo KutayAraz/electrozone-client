@@ -100,18 +100,18 @@ const UserCart = () => {
 
   return (
     <div className="page-spacing">
-      <h2 className="text-lg md:text-xl font-bold py-2">
+      <h2 className="text-lg md:text-xl font-bold pb-2">
         Your Shopping Cart
       </h2>
       <Suspense fallback={<p>Loading..</p>}>
-        <div className="sm:flex sm:w-full sm:justify-between">
+        <div className="sm:flex sm:w-full sm:justify-between sm:space-x-4">
           {products.length === 0 ? (
             <p className="text-gray-500 italic">
               There's nothing in your cart.
             </p>
           ) : (
             <>
-              <div className="space-y-2 md:flex-grow md:mr-6">
+              <div className="space-y-2 md:flex-grow ">
                 {products.map((product: any) => (
                   <CartItemCard
                     {...product}
@@ -122,8 +122,8 @@ const UserCart = () => {
                   />
                 ))}
               </div>
-              <div className="flex mt-4 w-full">
-                <div className="flex flex-col space-y-1 w-full">
+              <div className="flex mt-4 sm:mt-0 sm:max-w-6 md:max-w-10 bg-gray-100 h-fit p-4 rounded-md">
+                <div className="flex flex-col space-y-1 w-full md:mr-4">
                   <p className="font-bold">Cart Summary: </p>
                   <Divider />
                   <div className="flex justify-between">
@@ -142,15 +142,9 @@ const UserCart = () => {
                       ${cartTotal.toFixed(2)}
                     </p>
                   </div>
-                  <div className="flex space-x-2 pt-2 justify-around">
-                    <button
-                      onClick={handleCheckoutButton}
-                      className="bg-theme-blue hover:bg-blue-700 text-white px-3 py-[5px] rounded-md transition duration-200 flex items-center"
-                    >
-                      <RightArrow className="w-6 h-auto" />
+                  <Divider />
 
-                      Proceed to Checkout
-                    </button>
+                  <div className="flex space-x-2 pt-2 justify-around">
                     <button
                       onClick={handleClearCartButton}
                       className="bg-red-700 hover:bg-red-800 text-white px-6 rounded-md transition duration-200 flex items-center"
@@ -161,6 +155,15 @@ const UserCart = () => {
                       </span>
                       Clear Cart
                     </button>
+                    <button
+                      onClick={handleCheckoutButton}
+                      className="bg-theme-blue hover:bg-blue-700 text-white px-3 py-[5px] rounded-md transition duration-200 flex items-center"
+                    >
+                      <RightArrow className="w-6 h-auto" />
+
+                      Proceed to Checkout
+                    </button>
+
                   </div>
                 </div>
               </div>

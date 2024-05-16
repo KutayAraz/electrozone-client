@@ -45,7 +45,7 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
         displayAlert({
           type: "success",
           message:
-            "Your review has been added to the product. Thank you for your review.",
+            "Your review has been added. Thank you for your review.",
           autoHide: true,
         })
       );

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { displayAlert } from "@/setup/slices/alert-slice";
 import { RootState } from "@/setup/store";
 import { addToWishlist, removeFromWishlist } from "@/setup/slices/wishlist-slice";
+import { truncateString } from "@/utils/truncate-string";
 
 const SliderProductCard = ({
   id,
@@ -59,7 +60,7 @@ const SliderProductCard = ({
         dispatch(
           displayAlert({
             type: "success",
-            message: "Product has been added to your wishlist!",
+            message: `${truncateString(productName, 0, 20)} has been added to your wishlist`,
             autoHide: true,
           })
         );
@@ -67,8 +68,8 @@ const SliderProductCard = ({
         dispatch(removeFromWishlist(id))
         dispatch(
           displayAlert({
-            type: "success",
-            message: "Product has been removed to your wishlist!",
+            type: "info",
+            message: `${truncateString(productName, 0, 20)} has been removed to your wishlist!`,
             autoHide: true,
           })
         );

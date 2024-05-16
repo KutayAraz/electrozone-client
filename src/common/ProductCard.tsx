@@ -9,6 +9,7 @@ import { displayAlert } from "@/setup/slices/alert-slice";
 import { updateCartItemCount } from "@/setup/slices/user-slice";
 import { addToWishlist, removeFromWishlist } from "@/setup/slices/wishlist-slice";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
+import { truncateString } from "@/utils/truncate-string";
 
 export interface ProductCardProps {
   id: number;
@@ -69,7 +70,7 @@ const ProductCard = forwardRef(({
     dispatch(
       displayAlert({
         type: "success",
-        message: "Product has been added to your cart!",
+        message: `${truncateString(productName, 0, 20)} has been added to your cart!`,
         autoHide: true,
       })
     );
@@ -99,7 +100,7 @@ const ProductCard = forwardRef(({
         dispatch(
           displayAlert({
             type: "success",
-            message: "Product has been added to your wishlist!",
+            message: `${truncateString(productName, 0, 20)} has been added to your wishlist!`,
             autoHide: true,
           })
         );
@@ -108,7 +109,7 @@ const ProductCard = forwardRef(({
         dispatch(
           displayAlert({
             type: "info",
-            message: "Product has been removed to your wishlist!",
+            message: `${truncateString(productName, 0, 20)} has been removed to your wishlist!`,
             autoHide: true,
           })
         );
