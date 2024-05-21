@@ -138,7 +138,7 @@ const ProductCard = forwardRef(({
         to={`/category/${category + "/" + subcategory + "/" + id}`}
         className="border-1 border-gray-300 rounded-lg hover:shadow-md px-1 flex xs:flex-col xs:justify-between group py-2 xs:pt-2 "
       >
-        <div className="absolute right-4 z-[10] xs:relative xs:ml-auto">
+        <div className="absolute right-4 z-[2] xs:relative xs:ml-auto">
           <button
             onClick={handleWishlistButtonClick}
             aria-label="Remove from wishlist"

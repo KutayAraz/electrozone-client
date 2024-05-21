@@ -7,7 +7,7 @@ import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
 import { ReactComponent as LocationPin } from "@assets/svg/location.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 import ProfileModal from "./ProfileModal";
 import BasketWithBadge from "../UI/BasketWithBadge";
 import { RootState } from "@/setup/store";
@@ -16,7 +16,7 @@ import userSlice from "@/setup/slices/user-slice";
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from "@mui/material";
 
-const Header = () => {
+const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) => {
   const firstName = useSelector((state: any) => state.user.firstName);
   const city = useSelector((state: any) => state.user.city);
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Header = () => {
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const navigate = useNavigate()
-  const smallScreenDevice = useMediaQuery("(max-width: 400px)"); 
+  const smallScreenDevice = useMediaQuery("(max-width: 400px)");
 
   const localCartQuantity = useSelector(
     (state: RootState) => state.localCart.totalQuantity
@@ -51,8 +51,8 @@ const Header = () => {
   };
 
   return (
-    <>
-      <div className={`flex justify-between w-full text-white items-center px-2 py-2 sm:py-0 bg-theme-blue`}>
+    <div ref={ref} className={props.className}>
+      <div className={`flex justify-between w-full text-white items-center px-2 py-2 sm:py-0 bg-theme-blue `}>
         <div className="flex">
           <BurgerMenu className="block sm:hidden"></BurgerMenu>
           <Link to={"/"} className="max-w-[60%] mb-1 flex items-center min-w-[136px] sm:hidden">
@@ -92,7 +92,7 @@ const Header = () => {
             )}
           </div>
         </div>
-        <SearchBar className="hidden md:flex text-gray-700 h-10 mx-[3%] md:flex-grow max-w-[50%]" />
+        <SearchBar className="hidden md:flex h-10 mx-[3%] md:flex-grow max-w-[50%]" />
         <div className="flex items-center xs:pr-2 whitespace-nowrap">
           {isSignedIn ? (
             <button
@@ -102,7 +102,7 @@ const Header = () => {
               {firstName}
             </button>
           ) : (
-            <button onClick={() => navigate("/sign-in")}  className="pl-2 xs:pl-4">
+            <button onClick={() => navigate("/sign-in")} className="pl-2 xs:pl-4">
               Sign in
             </button>
           )}
@@ -120,7 +120,7 @@ const Header = () => {
         className={`px-2`}
       >
         <SearchBar
-          className={`md:hidden text-gray-700 h-9 w-full my-1 `}
+          className={`md:hidden h-9 w-full my-1`}
         />
       </div>
       <CustomizableModal
@@ -173,8 +173,8 @@ const Header = () => {
         isSignedIn={isSignedIn}
         onClose={() => setIsProfileModalOpen(false)}
       />
-    </>
+    </div>
   );
-};
+});
 
 export default Header;

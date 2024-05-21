@@ -52,7 +52,7 @@ const Categories = () => {
           to={"/category/printers-and-ink"}
           className="w-1/2 md:w-1/4 p-2 flex flex-col justify-between"
         >
-          <h4 className="text-lg font-[500] text-gray-700">TVs & Soundbars</h4>
+          <h4 className="text-lg font-[500] text-gray-700">Printers & Ink</h4>
           <img
             src={PrintersAndInk}
             className="w-64 h-auto object-contain mx-auto"

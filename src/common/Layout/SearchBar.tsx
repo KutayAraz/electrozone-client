@@ -30,14 +30,14 @@ const SearchBar = ({ className }: { className?: string }) => {
   };
 
   return (
-    <div className={`relative flex ${className} border-red`}>
+    <div className={`relative flex ${className}`}>
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search Electrozone"
-        className={`rounded-md w-full pl-3 pr-10 h-full  focus:outline-none focus:ring-1 focus:ring-gray-500`}
+        className={`rounded-md w-full pl-3 pr-10 h-full focus:outline-none focus:ring-1 focus:ring-gray-500`}
       />
       <button
         onClick={handleSearch}
