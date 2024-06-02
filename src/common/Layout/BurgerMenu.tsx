@@ -32,13 +32,13 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
     if (isOpen) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
       document.body.style.overflowX = "hidden"; // Prevent x-axis scrolling
-  
+
       return () => {
         document.body.style.overflow = originalStyle;
       };
     }
   }, [isOpen]);
-  
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // useEffect(() => {
@@ -95,12 +95,11 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
 
         <div className="flex flex-col text-gray-700 justify-between relative h-fit">
           <div
-            className={`transition-transform duration-300 ease-in-out ${
-              activeView !== "main" ? "-translate-x-full" : ""
-            }`}
+            className={`transition-transform duration-300 ease-in-out ${activeView !== "main" ? "-translate-x-full" : ""
+              }`}
           >
             <div className="flex flex-col ">
-              <label className="text-xl font-semibold px-4 py-4">
+              <label className="text-xl font-bold px-4 py-4">
                 Trending
               </label>
               <Divider />
@@ -125,7 +124,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             </div>
             <Divider />
             <div className="px-4 py-4">
-              <Link to={"/category"} className="text-xl font-semibold ">
+              <Link to={"/category"} className="text-xl font-bold ">
                 Shop By Department
               </Link>
             </div>
@@ -160,7 +159,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
             </button>
             <Divider />
             <div className="flex flex-col">
-              <label className="text-xl font-semibold px-4 py-4">
+              <label className="text-xl font-bold px-4 py-4">
                 Help & Settings
               </label>
               <Divider />
@@ -200,17 +199,16 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           </div>
 
           <div
-            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${
-              activeView !== "tvsAndSoundbars"
-                ? "translate-x-full overflow-hidden "
-                : ""
-            }`}
+            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${activeView !== "tvsAndSoundbars"
+              ? "translate-x-full overflow-hidden "
+              : ""
+              }`}
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4"
+              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4 font-bold"
             >
-              <BackArrow className="h-6 w-auto inline my-auto" />
+              <BackArrow className="h-6 w-auto inline pr-2 my-auto " />
               Main Menu
             </button>
             <Divider />
@@ -229,17 +227,16 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           </div>
 
           <div
-            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${
-              activeView !== "pcAndLaptops"
-                ? "translate-x-full overflow-hidden "
-                : ""
-            }`}
+            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${activeView !== "pcAndLaptops"
+              ? "translate-x-full overflow-hidden "
+              : ""
+              }`}
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4"
+              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4 font-bold"
             >
-              <BackArrow className="h-6 w-auto inline my-auto pr-2" />
+              <BackArrow className="h-6 w-auto inline my-auto pr-2 " />
               Main Menu
             </button>
             <Divider />
@@ -270,15 +267,14 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           </div>
 
           <div
-            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${
-              activeView !== "smartphonesAndAccessories"
-                ? "translate-x-full overflow-hidden "
-                : ""
-            }`}
+            className={`absolute top-0 transition-transform duration-300 ease-in-out w-full h-full flex flex-col ${activeView !== "smartphonesAndAccessories"
+              ? "translate-x-full overflow-hidden "
+              : ""
+              }`}
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4"
+              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4 font-bold"
             >
               <BackArrow className="h-6 w-auto inline my-auto" />
               Main Menu
@@ -301,16 +297,15 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
           </div>
 
           <div
-            className={`absolute top-0 transition-transform overflow-none duration-300 ease-in-out w-full h-fit flex flex-col ${
-              activeView !== "printersAndInk"
-                ? "translate-x-full overflow-hidden"
-                : ""
-            }`}
+            className={`absolute top-0 transition-transform overflow-none duration-300 ease-in-out w-full h-fit flex flex-col ${activeView !== "printersAndInk"
+              ? "translate-x-full overflow-hidden"
+              : ""
+              }`}
             ref={scrollContainerRef}
           >
             <button
               onClick={() => setActiveView("main")}
-              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4"
+              className="flex items-center mr-auto text-xl hover:bg-gray-100 w-full p-4 font-bold"
             >
               <BackArrow className="h-6 w-auto inline my-auto" />
               Main Menu

@@ -45,30 +45,3 @@ input[type='number'] {
   animation: sticky-transition-show .2s forwards linear;
 }
 
-.navstrip-show {
-  animation: sticky-transition-show .2s forwards linear;
-}
-
-.navstrip-hide {
-  animation: sticky-transition-hide .2s forwards linear;
-}
-
-@keyframes sticky-transition-show {
-  from {
-      transform: translateY(-100%)
-  }
-
-  to {
-      transform: translateY(0)
-  }
-}
-
-@keyframes sticky-transition-hide {
-  from {
-      transform: translateY(0)
-  }
-
-  to {
-      transform: translateY(100%)
-  }
-}

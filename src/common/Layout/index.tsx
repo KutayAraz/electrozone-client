@@ -2,7 +2,7 @@ import { LoaderFunction, Outlet, useLocation, useNavigation } from "react-router
 import Footer from "./Footer/index";
 import NavStrip from "./NavStrip";
 import Header from "./Header";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, store } from "@/setup/store";
 import { CheckoutIntent } from "@/setup/slices/models";
@@ -15,7 +15,6 @@ import { hideAlert } from "@/setup/slices/alert-slice";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
 import LoadingIndicator from "../LoadingBar";
-import { useScrollDirection } from "../Hooks/use-scrollDirection";
 import { debounce } from "@/utils/debounce";
 import { SearchControls } from "./SearchControls";
 
@@ -28,7 +27,10 @@ const Layout = () => {
 
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
-  const [isSticky, setIsSticky] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);  
+
+  const [lastScrollY, setLastScrollY] = useState(window.scrollY);
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
 
   const theme = createTheme({
     breakpoints: {
@@ -47,50 +49,53 @@ const Layout = () => {
   // Determine if you should show the nav strip
   const showHeaderExtras = !(pathSegments[0] === 'category' && pathSegments.length >= 3) && !path.startsWith('/search');
 
-  const checkScroll = () => {
-    if (!headerRef.current) {
-      console.log("here")
-      return;
-    }
-    setHeaderHeight(headerRef.current.offsetHeight - 1);
-    const shouldBeSticky = window.scrollY > headerHeight + 75;
-
-    setIsSticky(shouldBeSticky);
+  const throttle = (func: () => void, limit: number) => {
+    let inThrottle: boolean;
+    return function() {
+      if (!inThrottle) {
+        func();
+        inThrottle = true;
+        setTimeout(() => inThrottle = false, limit);
+      }
+    };
   };
 
+  const handleScroll = useCallback(throttle(() => {
+    const currentScrollY = window.scrollY;
+
+    // Calculate and update header height only if needed
+    if (headerRef.current && headerHeight !== headerRef.current.offsetHeight) {
+      setHeaderHeight(headerRef.current.offsetHeight - 2);
+    }
+
+    // Calculate and update stickiness only if needed
+    const shouldBeSticky = currentScrollY > headerHeight + 75;
+    if (isSticky !== shouldBeSticky) {
+      setIsSticky(shouldBeSticky);
+    }
+
+    // Determine scroll direction only if changed
+    const newScrollDirection = currentScrollY > lastScrollY ? 'down' : 'up';
+    if (newScrollDirection !== scrollDirection) {
+      setScrollDirection(newScrollDirection);
+    }
+
+    // Update last scroll position
+    setLastScrollY(currentScrollY);
+  }, 1), [lastScrollY, headerHeight, isSticky, scrollDirection]);
+
   useEffect(() => {
-    window.addEventListener('scroll', checkScroll);
-    return () => {
-      window.removeEventListener('scroll', checkScroll);
-    };
-  }, []);
-
-  const [lastScrollY, setLastScrollY] = useState(window.scrollY);
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY) {
-        setScrollDirection('down');
-      } else if (currentScrollY < lastScrollY) {
-        setScrollDirection('up');
-      }
-      setLastScrollY(currentScrollY); // Update the last scroll position
-    };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
-
-  console.log("headerheight", headerHeight)
+  }, [handleScroll]);
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header ref={headerRef} className={` bg-theme-blue ${isSticky ? "sticky-header top-0 right-0 sticky z-10" : ""}`} />
+      <Header ref={headerRef} className={`bg-theme-blue z-[3] ${isSticky ? "sticky top-0 transition-all duration-200" : "block top-[-64px]"}`} />
 
       {(showHeaderExtras || !isMobile) && <NavStrip
-        className={`${isSticky && scrollDirection === "up" ? "navstrip-show sticky z-[9] right-0" : "navstrip"}`}
+        className={` transition-all duration-200 z-[2] ${!isSticky ? "block" : "sticky"}`}
+        style={isSticky && scrollDirection === "up" ? { top: `${headerHeight}px` } : {top: "-64px"}}
       />}
       <div>
         {showHeaderExtras && <UserLocation />}
@@ -98,7 +103,7 @@ const Layout = () => {
       </div>
 
       <LoadingIndicator />
-      <div className="fixed right-0 top-0 xs:top-2 sm:top-28 z-[100]">
+      <div className="fixed right-0 top-0 xs:top-2 sm:top-28 z-[20]">
         {notifications.map((alert) => (
           <Slide
             key={alert.id}
