@@ -160,16 +160,7 @@ const Product = ({
           onRatingClick={onRatingClick}
         />
       )}
-      <Divider sx={{ borderBottomWidth: 1.5, marginY: 3 }} />
-      <h3 className="underline my-2 text-lg font-bold">Product Description</h3>
-      <ul className="max-w-screen-xl" id="rating">
-        {description.map((bulletPoint: string, index: number) => (
-          <li className="mb-2" key={index}>
-            - {bulletPoint}
-          </li>
-        ))}
-      </ul>
-      <Divider sx={{ borderBottomWidth: 1.5, marginY: 3 }} />
+      <Divider sx={{ borderBottomWidth: 1.5, marginTop: 3 }} />
     </div>
   );
 };

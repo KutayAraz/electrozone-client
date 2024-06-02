@@ -623,7 +623,6 @@ const fetchProducts = async (subcategory: string, sort: string, skip: number, li
   throw new Error("Failed to fetch data");
 };
 
-
 export async function loader({ params, request }: any) {
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);

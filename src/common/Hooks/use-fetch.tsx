@@ -55,6 +55,7 @@ const useFetch = () => {
           response = await doFetch(newToken);
         }
       }
+      const responseMessage = await response.json()
 
       if (!response.ok) {
         switch (response.status) {
@@ -69,13 +70,24 @@ const useFetch = () => {
             break;
           case 401:
             navigate("/sign-in", { state: { from: location } });
-            dispatch(
-              displayAlert({
-                type: "error",
-                message: "Your session has timed out. Please login again.",
-                autoHide: true,
-              })
-            );
+            if (responseMessage.message === "Invalid credentials") {
+              dispatch(
+                displayAlert({
+                  type: "error",
+                  message: "Invalid credentials. Please enter correct login information.",
+                  autoHide: true,
+                })
+              );
+            } else {
+              dispatch(
+                displayAlert({
+                  type: "error",
+                  message: "Your session has timed out. Please login again.",
+                  autoHide: true,
+                })
+              );
+            }
+
             break;
           case 404:
             dispatch(

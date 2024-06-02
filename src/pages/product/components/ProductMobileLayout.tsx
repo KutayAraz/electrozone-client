@@ -27,8 +27,8 @@ const ProductMobileLayout = ({
 }: ProductLayoutProps) => {
   return (
     <>
-      <h2 className="text sm:text-xl text-center">{productName}</h2>
-      <p className="font-[500] sm:text-lg mb-4 text-center">Brand: {brand}</p>
+      <h2 className="text text-center">{productName}</h2>
+      <p className="font-[400] mb-4 text-center">Brand: {brand}</p>
       <Slider
         dots={true}
         dotsClass="slick-dots"
@@ -60,8 +60,8 @@ const ProductMobileLayout = ({
         ))}
       </Slider>
 
-      <div className="flex py-4 items-center justify-around fixed bottom-0 left-0 right-0 w-full bg-gray-100">
-        <p className="text-lg sm:text-xl font-bold ml-2">${price}</p>
+      <div className="flex py-4 items-center justify-around fixed bottom-0 left-0 right-0 w-full bg-gray-100 z-10">
+        <p className="text-lg font-bold ml-2">${price}</p>
         <div className="flex">
           <button
             onClick={decrementQuantity}
@@ -88,7 +88,7 @@ const ProductMobileLayout = ({
           <button
             onClick={handleAddToCart}
             disabled={addingToCart}
-            className={`${addingToCart ? "bg-gray-400" : "bg-theme-blue"} sm:w-auto px-4 py-2 text-white rounded-md`}
+            className={`${addingToCart ? "bg-gray-400" : "bg-theme-blue"} px-4 py-2 text-white rounded-md`}
           >
             {addingToCart ? "Adding To Cart.." : "Add to Cart"}
           </button>
@@ -97,7 +97,7 @@ const ProductMobileLayout = ({
         )}
       </div>
 
-      <div className="flex flex-col text-left sm:text-center w-full sm:w-auto">
+      <div className="flex flex-col text-left w-full ">
         <div onClick={onRatingClick} className="mt-10 mx-auto">
           <Rating
             name="half-rating-read"
@@ -109,11 +109,11 @@ const ProductMobileLayout = ({
         </div>
         <button
           onClick={handleBuyNow}
-          className="w-[80%] mx-auto my-2 sm:w-auto px-4 py-2 bg-theme-orange text-white rounded-md"
+          className="w-[80%] mx-auto my-2 px-4 py-2 bg-theme-orange text-white rounded-md"
         >
           Buy now
         </button>
-        <div className="flex flex-col justify-center items-center mb-4">
+        <div className="flex flex-col justify-center items-center mb-0">
           <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName}/>
         </div>
       </div>

@@ -8,21 +8,17 @@ import {
 import { Suspense, useState } from "react";
 import Product from "./components/Product";
 import { store } from "@/setup/store";
-import Review from "./components/Review";
-import ReviewForm from "./components/ReviewForm";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
 import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
+import ProductTabs from "./components/ProductTabs";
 
 const ProductPage = () => {
-  const { product, reviews, wishlisted, canCurrentUserReview }: any =
+  const { product, reviewsData, wishlisted, canCurrentUserReview }: any =
     useLoaderData();
-
-  const params = useParams();
-  const productId = params.productId as string;
 
   // This code is for being able to scroll to reviews outside of this component 
   // const location = useLocation();
@@ -47,7 +43,7 @@ const ProductPage = () => {
   // }, [location.hash]);
 
   const scrollToReviews = () => {
-    const reviewsSection = document.getElementById("rating");
+    const reviewsSection = document.getElementById("reviews");
     if (reviewsSection) {
       reviewsSection.scrollIntoView({ behavior: "smooth" });
     }
@@ -75,38 +71,13 @@ const ProductPage = () => {
           />
           )}
         />
-        <Await
-          resolve={canCurrentUserReview}
-          children={(resolvedCanCurrentUserReview) => (
-            <ReviewForm
-              canCurrentUserReview={resolvedCanCurrentUserReview}
-              productId={productId}
-            />
-          )}
+        <ProductTabs
+          productDescription={product.description}
+          canCurrentUserReview={canCurrentUserReview}
+          productId={product.id}
+          reviews={reviewsData.reviews}
+          ratingsDistribution={reviewsData.ratingsDistribution}
         />
-        <section id="rating" className="max-w-screen-xl mx-[2%] xl:mx-auto">
-          <h4 className="underline text-lg font-bold mb-6">Customer Reviews</h4>
-          <Await
-            resolve={reviews}
-            children={(resolvedReviews) =>
-              resolvedReviews.length === 0 ? (
-                <p className="italic mb-4">This product has no reviews yet.</p>
-              ) : (
-                <div className="mb-8">
-                  {resolvedReviews.map((review: any) => (
-                    <Review
-                      key={review.id}
-                      id={review.id}
-                      reviewDate={review.reviewDate}
-                      rating={review.rating}
-                      comment={review.comment}
-                    />
-                  ))}
-                </div>
-              )
-            }
-          />
-        </section>
       </Suspense>
     </div>
   );
@@ -195,19 +166,17 @@ export const loader = async ({ request, params }: any) => {
       canReviewPromise = canCurrentUserReview({ request, productId });
     }
 
-    const [product, reviews, wishlisted, canReview] = await Promise.all([
+    const [product, reviewsData, wishlisted, canReview] = await Promise.all([
       productPromise,
       reviewsPromise,
       wishlistedPromise,
       canReviewPromise,
     ]);
 
-
-
     return defer({
       product,
       wishlisted,
-      reviews,
+      reviewsData,
       canCurrentUserReview: canReview,
     });
   } catch (error: unknown) {

@@ -1,20 +1,33 @@
 import { useMediaQuery } from '@mui/material';
 
-const useScreenValue = () => {
-  // Define media queries directly
+interface ScreenValueConfig {
+  xsmall: number;
+  small: number;
+  medium: number;
+  large: number;
+  default: number;
+}
+
+const defaultConfig: ScreenValueConfig = {
+  xsmall: 2,
+  small: 4,
+  medium: 6,
+  large: 8,
+  default: 10,
+};
+
+const useScreenValue = (config: ScreenValueConfig = defaultConfig) => {
   const isXSmall = useMediaQuery('(max-width:480px)');
   const isSmall = useMediaQuery('(max-width:768px)');
   const isMedium = useMediaQuery('(max-width:1024px)');
   const isLarge = useMediaQuery('(max-width:1280px)');
 
-  // Assign values based on the matching media query
-  if (isXSmall) return 2; // Assuming these values are aligned with your design requirements
-  if (isSmall) return 4;
-  if (isMedium) return 6;
-  if (isLarge) return 8;
+  if (isXSmall) return config.xsmall;
+  if (isSmall) return config.small;
+  if (isMedium) return config.medium;
+  if (isLarge) return config.large;
 
-  // Default value for screens larger than 1280px
-  return 10;
+  return config.default;
 };
 
 export default useScreenValue;
