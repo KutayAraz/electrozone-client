@@ -3,21 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
 import OrderItemCard from "./OrderItemCard";
 import { OrderCardProps, Product } from "./types";
+import { forwardRef } from "react";
 
-const OrderCard = ({
+const OrderCard = forwardRef(({
   orderId,
   orderTotal,
   orderQuantity,
   orderDate,
   user,
   orderItems,
-}: OrderCardProps) => {
+}: OrderCardProps, ref: any) => {
   const navigate = useNavigate();
   const date = formatDateTime(orderDate);
   return (
     <div
       key={orderId}
-      className="relative border-2 my-2 rounded-lg"
+      className="relative border border-gray-300 my-2 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
+      ref={ref}
     >
       <div className="bg-gray-100 p-3">
         <p className="font-semibold">Order id: <span>{orderId}</span></p>
@@ -44,12 +46,12 @@ const OrderCard = ({
       </div>
       <button
         onClick={() => navigate(`${orderId}`)}
-        className="absolute top-2 right-2 border-1 text-white bg-theme-blue hover:bg-blue-800 rounded-md p-[4px]"
+        className="absolute top-2 right-2 border-1 text-white bg-theme-blue hover:bg-blue-800 rounded-md p-[4px] transition-colors duration-200"
       >
         Order Details
       </button>
     </div>
   );
-};
+});
 
 export default OrderCard;

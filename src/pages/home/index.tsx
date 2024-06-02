@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
 import { ReactComponent as PrevArrow } from "@assets/svg/prev-arrow.svg";
 import { ReactComponent as NextArrow } from "@assets/svg/next-arrow.svg";
-import ProductCard from "./components/ProductCard";
 import loaderFetch from "@/utils/loader-fetch";
 import Categories from "./components/Categories";
 import "slick-carousel/slick/slick.css";
