@@ -5,6 +5,7 @@ const uiSlice = createSlice({
   initialState: {
     filterDrawer: false,
     sortingDrawer: false,
+    activeTab: 0, // Default active tab index
   },
   reducers: {
     toggleFilterDrawer: (state, action) => {
@@ -13,9 +14,12 @@ const uiSlice = createSlice({
     toggleSortingDrawer: (state, action) => {
       state.sortingDrawer = action.payload;
     },
+    setActiveTab: (state, action) => {
+      state.activeTab = action.payload;
+    },
   },
 });
 
-export const { toggleFilterDrawer, toggleSortingDrawer } = uiSlice.actions;
+export const { toggleFilterDrawer, toggleSortingDrawer, setActiveTab } = uiSlice.actions;
 
 export default uiSlice.reducer;

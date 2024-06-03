@@ -5,7 +5,7 @@ import {
   useLoaderData,
   useParams,
 } from "react-router-dom";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Product from "./components/Product";
 import { store } from "@/setup/store";
 import { checkHydration } from "@/utils/check-hydration";
@@ -15,10 +15,13 @@ import {
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
 import ProductTabs from "./components/ProductTabs";
+import { useDispatch } from "react-redux";
+import { setActiveTab } from "@/setup/slices/ui-slice";
 
 const ProductPage = () => {
   const { product, reviewsData, wishlisted, canCurrentUserReview }: any =
     useLoaderData();
+  const dispatch = useDispatch();
 
   // This code is for being able to scroll to reviews outside of this component 
   // const location = useLocation();
@@ -42,11 +45,18 @@ const ProductPage = () => {
   //   }
   // }, [location.hash]);
 
+  useEffect(() => {
+    dispatch(setActiveTab(0));
+  }, [dispatch, product.id]); 
+
   const scrollToReviews = () => {
-    const reviewsSection = document.getElementById("reviews");
-    if (reviewsSection) {
-      reviewsSection.scrollIntoView({ behavior: "smooth" });
-    }
+    dispatch(setActiveTab(1));
+    setTimeout(() => {
+      const reviewsSection = document.getElementById("reviews");
+      if (reviewsSection) {
+        reviewsSection.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100)
   };
 
   return (

@@ -4,6 +4,9 @@ import { Await } from 'react-router-dom';
 import ReviewForm from './ReviewForm';
 import Review from './Review';
 import { ReviewType, ReviewsProps } from './models';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/setup/store';
+import { setActiveTab } from '@/setup/slices/ui-slice';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -48,13 +51,15 @@ const ProductTabs = ({ productDescription, canCurrentUserReview, reviews, produc
     productId: string;
     ratingsDistribution: any;
 }) => {
-    const [value, setValue] = useState(0)
     const [selectedRatings, setSelectedRatings] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState(0); // Pagination state
     const reviewsPerPage = 6; // Max number of reviews per page
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-        setValue(newValue);
+    const dispatch = useDispatch();
+    const value = useSelector((state: RootState) => state.ui.activeTab);  // Access the activeTab state from ui slice
+  
+    const handleChange = (event: any, newValue: number) => {
+      dispatch(setActiveTab(newValue));  // Dispatch action to change the active tab
     };
 
     const toggleRating = (rating: number) => {
