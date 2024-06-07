@@ -4,7 +4,7 @@ import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice
 import { Typography, Divider, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
-export const SearchControls = () => {
+export const SearchControls = ({ className, style = {} }: { className?: string, style?: React.CSSProperties }) => {
     const dispatch = useDispatch<any>();
     const path = location.pathname;
 
@@ -14,7 +14,7 @@ export const SearchControls = () => {
     const showSearchControls = (pathSegments[0] === 'category' && pathSegments.length >= 3) || path.startsWith('/search');
 
     return showSearchControls && (
-        <div className="flex sm:hidden">
+        <div className={`flex sm:hidden bg-theme-blue ${className}`} style={style}>
             <Button
                 className="flex-1"
                 startIcon={<FilterAltIcon style={{ color: 'white' }} />}
@@ -24,11 +24,15 @@ export const SearchControls = () => {
                     justifyContent: 'center',
                     textTransform: 'none',
                     borderRadius: '0px',
+                    paddingTop: '0px',
+                    paddingBottom: '6px',
                     '&:active': {
-                        backgroundColor: '#e0e0e0', // Light gray on tap
+                        backgroundColor: '#fffff', // Light gray on tap
                     },
                     borderRight: "1px solid white",
-                    borderColor: "#ffffff"
+                    borderBottom: "1px solid white",
+                    borderColor: "#ffffff",
+                    color: "white"
                 }}
             >
                 <Typography className="text-white">
@@ -44,8 +48,12 @@ export const SearchControls = () => {
                     fontSize: '12px',
                     textTransform: 'none',
                     borderRadius: '0px',
+                    paddingTop: '0px',
+                    paddingBottom: '6px',
                     justifyContent: 'center',
                     borderLeft: "1px solid white",
+                    borderBottom: "1px solid white",
+
                     '&:active': {
                         backgroundColor: '#e0e0e0', // Light gray on tap
                     },

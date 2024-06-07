@@ -152,7 +152,7 @@ const router = createBrowserRouter([
                 loader: subcategoryLoader,
               },
               {
-                path: ":productId",
+                path: ":productSlug",
                 element: <ProductPage />,
                 loader: productLoader,
               },

@@ -47,7 +47,7 @@ const ProductPage = () => {
 
   useEffect(() => {
     dispatch(setActiveTab(0));
-  }, [dispatch, product.id]); 
+  }, [dispatch, product.id]);
 
   const scrollToReviews = () => {
     dispatch(setActiveTab(1));
@@ -161,7 +161,8 @@ async function isUserSignedIn() {
 
 export const loader = async ({ request, params }: any) => {
   try {
-    const productId = params.productId;
+    const { productSlug } = params;
+    const [productId, ...slugParts] = productSlug.split('-');
 
     await checkHydration(store);
 
