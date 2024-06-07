@@ -3,7 +3,7 @@ import BurgerMenu from "./BurgerMenu";
 
 const NavStrip = ({ className, style = {} }: { className?: string, style?: React.CSSProperties }) => {
   const navContainerClass =
-    "flex bg-theme-blue text-white items-center justify-between overflow-x-auto whitespace-nowrap scroll-snap-type-x-mandatory noScrollbar scroll-smooth px-2 py-1 sm:py-[0px] flex-grow ";
+    "flex bg-theme-blue text-white items-center justify-between overflow-x-auto whitespace-nowrap scroll-snap-type-x-mandatory noScrollbar scroll-smooth px-2 pb-[6px] sm:py-[0px]";
   const navStripElementClass =
     "flex-shrink-0 scroll-snap-align-start mx-2 sm:mx-0 border border-transparent hover:border-1 hover:border-white rounded px-3";
 

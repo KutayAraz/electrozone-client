@@ -1,4 +1,4 @@
-import { LoaderFunction, Outlet, useLocation, useNavigation } from "react-router-dom";
+import { LoaderFunction, Outlet, useLocation, useNavigation, useParams } from "react-router-dom";
 import Footer from "./Footer/index";
 import NavStrip from "./NavStrip";
 import Header from "./Header";
@@ -27,7 +27,7 @@ const Layout = () => {
 
   const [headerHeight, setHeaderHeight] = useState(0);
   const headerRef = useRef<HTMLDivElement>(null);
-  const [isSticky, setIsSticky] = useState(false);  
+  const [isSticky, setIsSticky] = useState(false);
 
   const [lastScrollY, setLastScrollY] = useState(window.scrollY);
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
@@ -47,11 +47,11 @@ const Layout = () => {
   const pathSegments = location.pathname.split('/').filter(Boolean); // Split path and remove empty segments
 
   // Determine if you should show the nav strip
-  const showHeaderExtras = !(pathSegments[0] === 'category' && pathSegments.length >= 3) && !path.startsWith('/search');
+  const showHeaderExtras = !isMobile || !(pathSegments[0] === 'category' && pathSegments.length >= 3) && !path.startsWith('/search');
 
   const throttle = (func: () => void, limit: number) => {
     let inThrottle: boolean;
-    return function() {
+    return function () {
       if (!inThrottle) {
         func();
         inThrottle = true;
@@ -91,16 +91,17 @@ const Layout = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Header ref={headerRef} className={`bg-theme-blue z-[3] ${isSticky ? "sticky top-0 transition-all duration-200" : "block top-[-64px]"}`} />
-
-      {(showHeaderExtras || !isMobile) && <NavStrip
-        className={` transition-all duration-200 z-[2] ${!isSticky ? "block" : "sticky"}`}
-        style={isSticky && scrollDirection === "up" ? { top: `${headerHeight}px` } : {top: "-64px"}}
+      <Header ref={headerRef}
+        className={`bg-theme-blue z-[4] ${isSticky ? "sticky top-0 transition-all duration-200" : "block top-[-64px]"}`}
+      />
+      {(showHeaderExtras) ? <NavStrip
+        className={`transition-all duration-200 z-[3] ${!isSticky ? "block" : "sticky"}`}
+        style={isSticky && scrollDirection === "up" ? { top: `${headerHeight}px` } : { top: "-64px" }}
+      /> : <SearchControls
+        className={`transition-all duration-200 z-[3] ${!isSticky ? "block" : "sticky"}`}
+        style={isSticky && scrollDirection === "up" ? { top: `${headerHeight}px` } : { top: "-64px" }}
       />}
-      <div>
-        {showHeaderExtras && <UserLocation />}
-        {isMobile && <SearchControls />}
-      </div>
+      {showHeaderExtras && <UserLocation />}
 
       <LoadingIndicator />
       <div className="fixed right-0 top-0 xs:top-2 sm:top-28 z-[20]">
@@ -183,23 +184,3 @@ export const loader: LoaderFunction = async ({ request }: any) => {
   }
   return null;
 }
-
-
-// const headerRef = useRef<HTMLDivElement>(null);
-// const [isScrolled, setIsScrolled] = useState<boolean>(false);
-
-// useEffect(() => {
-//   const handleScroll = () => {
-//     if (headerRef.current) {
-//       const headerHeight = headerRef.current.offsetHeight;
-//       const offset = window.scrollY;
-//       setIsScrolled(offset > headerHeight);
-//     }
-//   };
-
-//   window.addEventListener("scroll", handleScroll);
-
-//   return () => {
-//     window.removeEventListener("scroll", handleScroll);
-//   };
-// }, []);

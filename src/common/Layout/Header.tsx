@@ -52,7 +52,7 @@ const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) =>
 
   return (
     <div ref={ref} className={props.className}>
-      <div className={`flex justify-between w-full text-white items-center px-2 py-2 sm:py-0 bg-theme-blue `}>
+      <div className={`flex justify-between w-full text-white items-center px-2 py-[5px] sm:py-0 bg-theme-blue `}>
         <div className="flex">
           <BurgerMenu className="block sm:hidden z-20"></BurgerMenu>
           <Link to={"/"} className="max-w-[60%] mb-1 flex items-center min-w-[136px] sm:hidden">
@@ -120,7 +120,7 @@ const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) =>
         className={`px-2`}
       >
         <SearchBar
-          className={`md:hidden h-9 w-full my-1 text-gray-700`}
+          className={`md:hidden h-8 w-full mb-2 my-1 text-gray-700`}
         />
       </div>
       <CustomizableModal
