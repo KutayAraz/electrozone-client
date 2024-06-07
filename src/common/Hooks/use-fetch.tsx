@@ -48,14 +48,27 @@ const useFetch = () => {
     try {
       let response = await doFetch(accessToken);
 
-      // If the response is 401, try refreshing the token and retry the request
+      // If the response is 401, check the message and if isn't due to invalid credentials 
+      // try refreshing the token and retry the request
       if (response.status === 401) {
-        const newToken = await fetchNewAccessToken();
-        if (newToken) {
-          response = await doFetch(newToken);
+        const result = await response.json()
+        if (result.message === "Invalid credentials") {
+          setLoadingStates((prev) => ({ ...prev, [identifier]: false }));
+          dispatch(
+            displayAlert({
+              type: "error",
+              message: "Invalid credentials. Please enter correct login information.",
+              autoHide: true,
+            })
+          );
+          return;
+        } else {
+          const newToken = await fetchNewAccessToken();
+          if (newToken) {
+            response = await doFetch(newToken);
+          }
         }
       }
-      const responseMessage = await response.json()
 
       if (!response.ok) {
         switch (response.status) {
@@ -70,24 +83,13 @@ const useFetch = () => {
             break;
           case 401:
             navigate("/sign-in", { state: { from: location } });
-            if (responseMessage.message === "Invalid credentials") {
-              dispatch(
-                displayAlert({
-                  type: "error",
-                  message: "Invalid credentials. Please enter correct login information.",
-                  autoHide: true,
-                })
-              );
-            } else {
-              dispatch(
-                displayAlert({
-                  type: "error",
-                  message: "Your session has timed out. Please login again.",
-                  autoHide: true,
-                })
-              );
-            }
-
+            dispatch(
+              displayAlert({
+                type: "error",
+                message: "Your session has timed out. Please login again.",
+                autoHide: true,
+              })
+            );
             break;
           case 404:
             dispatch(
@@ -109,6 +111,7 @@ const useFetch = () => {
     } catch (err: any) {
       setLoadingStates((prev) => ({ ...prev, [identifier]: false }));
       setError(err.message);
+      console.log("error is ", err)
       dispatch(
         displayAlert({
           type: "error",
