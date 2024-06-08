@@ -148,7 +148,7 @@ const ProductDesktopLayout = ({
       {/* Third Child Div - Product Details and Actions */}
       <div className="flex flex-col w-[25%] lg:w-[30%] text-center m-auto border-1 py-6 border-gray-300 rounded-md h-[640px] justify-evenly lg:justify-center lg:space-y-3 px-2 flex-shrink-0">
         <h2 className="text-lg">{productName}</h2>
-        <p className="font-[500] ">Brand: {brand}</p>
+        <p className="font-[500]">Brand: {brand}</p>
         <div onClick={onRatingClick} className="mx-auto hover:cursor-pointer">
           <Rating
             name="half-rating-read"
@@ -187,19 +187,19 @@ const ProductDesktopLayout = ({
               onClick={handleAddToCart}
               disabled={addingToCart}
               className={`${addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-900"
-                } w-full px-4 py-2  text-white rounded-xl my-4`}
+                } w-full px-4 py-2 text-white rounded-xl my-4`}
             >
               {addingToCart ? "Adding To Cart.." : "Add to Cart"}
             </button>
             <button
               onClick={handleBuyNow}
-              className="w-full px-4 py-2 bg-orange-300 hover:bg-orange-400  rounded-xl"
+              className="w-full px-4 py-2 bg-orange-300 hover:bg-orange-400 rounded-xl"
             >
               Buy now
             </button>
           </div>
         ) : (
-          <p className="text-red-500">This product is currently out of stock</p>
+          <label className="text-red-500 border-1 rounded-xl">This product is currently out of stock</label>
         )}
         <div className="flex flex-col justify-center items-center">
           <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName}/>

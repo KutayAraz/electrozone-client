@@ -60,7 +60,7 @@ const ProductMobileLayout = ({
         ))}
       </Slider>
 
-      <div className="flex py-4 items-center justify-around fixed bottom-0 left-0 right-0 w-full bg-gray-100 z-10">
+      <div className="flex py-3 items-center justify-around fixed bottom-0 left-0 right-0 w-full bg-gray-100 z-10">
         <p className="text-lg font-bold ml-2">${price}</p>
         <div className="flex">
           <button
@@ -88,12 +88,12 @@ const ProductMobileLayout = ({
           <button
             onClick={handleAddToCart}
             disabled={addingToCart}
-            className={`${addingToCart ? "bg-gray-400" : "bg-theme-blue"} px-4 py-2 text-white rounded-md`}
+            className={`${addingToCart ? "bg-gray-400" : "bg-theme-blue"} border-1 border-transparent px-4 py-2 text-white rounded-lg`}
           >
             {addingToCart ? "Adding To Cart.." : "Add to Cart"}
           </button>
         ) : (
-          <p className="text-red-500">Out of stock</p>
+          <p className="text-red-500 border-1 border-gray px-4 py-2 shadow-sm rounded-lg">Out of stock</p>
         )}
       </div>
 

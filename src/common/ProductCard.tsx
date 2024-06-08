@@ -179,9 +179,10 @@ const ProductCard = forwardRef(({
           <p className="pr-2">$ {price.toFixed(2)}</p>
           <button
             onClick={handleAddToCart}
-            className="bg-theme-blue hover:bg-blue-800 text-white text-sm py-[6px] xs:px-6 rounded-lg shadow transition-colors duration-200 ease-in-out w-[80%] mx-auto"
+            disabled={stock < 1}
+            className={`${stock > 0 ? "bg-theme-blue hover:bg-blue-800" : "bg-gray-500"} text-white text-sm py-[6px] xs:px-6 rounded-lg shadow transition-colors duration-200 ease-in-out w-[80%] mx-auto`}
           >
-            Add to Cart
+            {stock > 0 ? "Add to Cart" : "Out of Stock"}
           </button>
         </div>
       </Link>
