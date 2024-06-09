@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const uiSlice = createSlice({
   name: "ui",
   initialState: {
+    menuDrawer: false,
     filterDrawer: false,
     sortingDrawer: false,
     activeTab: 0, // Default active tab index
@@ -17,9 +18,12 @@ const uiSlice = createSlice({
     setActiveTab: (state, action) => {
       state.activeTab = action.payload;
     },
+    toggleMenuDrawer: (state, action) => {
+      state.menuDrawer = action.payload;
+    }
   },
 });
 
-export const { toggleFilterDrawer, toggleSortingDrawer, setActiveTab } = uiSlice.actions;
+export const { toggleMenuDrawer, toggleFilterDrawer, toggleSortingDrawer, setActiveTab } = uiSlice.actions;
 
 export default uiSlice.reducer;

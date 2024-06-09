@@ -82,7 +82,7 @@ const Layout = () => {
 
     // Update last scroll position
     setLastScrollY(currentScrollY);
-  }, 1), [lastScrollY, headerHeight, isSticky, scrollDirection]);
+  }, 100), [lastScrollY, headerHeight, isSticky, scrollDirection]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);

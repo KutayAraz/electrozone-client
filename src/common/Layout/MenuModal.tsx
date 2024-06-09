@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import { ReactComponent as BurgerIcon } from "@assets/svg/burger.svg";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { RootState } from "@/setup/store";
@@ -10,22 +9,23 @@ import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow-black.svg";
 import { ReactComponent as BackArrow } from "@assets/svg/go-back.svg";
 import { Divider } from "@mui/material";
+import { toggleMenuDrawer } from "@/setup/slices/ui-slice";
 
 interface BurgerMenuProps {
-  className: string;
   children?: React.ReactNode;
+  isOpen: boolean
 }
 
-const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+const BurgerMenu = ({ children, isOpen }: BurgerMenuProps) => {
   const location = useLocation();
   const [activeView, setActiveView] = useState("main");
   const city = useSelector((state: RootState) => state.user.city);
   const firstName = useSelector((state: RootState) => state.user.firstName);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    setIsOpen(false);
+    dispatch(toggleMenuDrawer(false));
   }, [location]);
 
   useEffect(() => {
@@ -50,17 +50,6 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
 
   return (
     <div className="flex">
-      <button
-        className={`items-center border border-transparent hover:border-1 hover:border-white rounded ${className}`}
-        onClick={() => {
-          setActiveView("main");
-          setIsOpen(true);
-        }}
-      >
-        <BurgerIcon width={32} height={32} />
-        <p className="hidden sm:flex my-auto px-2">All</p>
-      </button>
-
       <CustomizableModal
         widthClass="w-[320px] xs:w-[432px]"
         heightClass={`${activeView === "main" ? "h-full overflow-y-auto" : "min-h-screen h-auto overflow-y-hidden"}`}
@@ -70,7 +59,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
         transitionType="slide"
         transitionDuration={300}
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={() => { dispatch(toggleMenuDrawer(false)); setTimeout((() => setActiveView("main")), 300) }}
         className="overflow-x-hidden"
       >
         <div className="bg-theme-blue shadow-md text-white w-full flex items-center justify-between ">
@@ -335,7 +324,7 @@ const BurgerMenu = ({ className, children }: BurgerMenuProps) => {
       {isOpen && (
         <button
           className="absolute top-4 left-[340px] xs:left-[452px] w-7 h-7 z-[40]"
-          onClick={() => setIsOpen(false)}
+          onClick={() => { dispatch(toggleMenuDrawer(false)); setTimeout((() => setActiveView("main")), 300) }}
         >
           <CloseButton width={32} height={32} className="text-red-500" />
         </button>

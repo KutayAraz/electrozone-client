@@ -2,7 +2,7 @@ import { ReactComponent as BrandLogo } from "@assets/brand/brand-logo.svg";
 import { ReactComponent as Brand } from "@assets/brand/brand.svg";
 import SearchBar from "./SearchBar";
 import { useDispatch, useSelector } from "react-redux";
-import BurgerMenu from "./BurgerMenu";
+import BurgerMenu from "./MenuModal";
 import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
 import { ReactComponent as LocationPin } from "@assets/svg/location.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
@@ -15,11 +15,15 @@ import CustomizableModal from "../Modal/CustomizableModal";
 import userSlice from "@/setup/slices/user-slice";
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from "@mui/material";
+import MenuModal from "./MenuModal";
+import { toggleMenuDrawer } from "@/setup/slices/ui-slice";
+import { ReactComponent as BurgerIcon } from "@assets/svg/burger.svg";
 
 const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) => {
   const firstName = useSelector((state: any) => state.user.firstName);
   const city = useSelector((state: any) => state.user.city);
   const dispatch = useDispatch();
+  const isMenuDrawerOpen = useSelector((state: RootState) => state.ui.menuDrawer)
   const isSignedIn = firstName && city;
   const locationInput = useRef<HTMLInputElement>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -53,8 +57,8 @@ const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) =>
   return (
     <div ref={ref} className={props.className}>
       <div className={`flex justify-between w-full text-white items-center px-2 py-[5px] sm:py-0 bg-theme-blue `}>
-        <div className="flex">
-          <BurgerMenu className="block sm:hidden z-20"></BurgerMenu>
+        <div className="flex items-center">
+          <BurgerIcon className="block sm:hidden z-20" width={32} height={32} onClick={() => dispatch(toggleMenuDrawer(true))}/>
           <Link to={"/"} className="max-w-[60%] mb-1 flex items-center min-w-[136px] sm:hidden">
             <Brand className="" />
           </Link>
@@ -116,12 +120,8 @@ const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) =>
           </Link>
         </div>
       </div>
-      <div
-        className={`px-2`}
-      >
-        <SearchBar
-          className={`md:hidden h-8 w-full mb-2 my-1 text-gray-700`}
-        />
+      <div className={`px-2`}>
+        <SearchBar className={`md:hidden h-8 w-full mb-2 my-1 text-gray-700`} />
       </div>
       <CustomizableModal
         isOpen={isLocationModalOpen}
@@ -173,6 +173,7 @@ const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) =>
         isSignedIn={isSignedIn}
         onClose={() => setIsProfileModalOpen(false)}
       />
+      <MenuModal isOpen={isMenuDrawerOpen} />
     </div>
   );
 });

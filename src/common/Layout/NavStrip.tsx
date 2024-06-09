@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
-import BurgerMenu from "./BurgerMenu";
+import { useDispatch } from "react-redux";
+import { toggleMenuDrawer } from "@/setup/slices/ui-slice";
+import { ReactComponent as BurgerIcon } from "@assets/svg/burger.svg";
 
 const NavStrip = ({ className, style = {} }: { className?: string, style?: React.CSSProperties }) => {
+  const dispatch = useDispatch()
   const navContainerClass =
     "flex bg-theme-blue text-white items-center justify-between overflow-x-auto whitespace-nowrap scroll-snap-type-x-mandatory noScrollbar scroll-smooth px-2 pb-[6px] sm:py-[0px]";
   const navStripElementClass =
@@ -20,9 +23,17 @@ const NavStrip = ({ className, style = {} }: { className?: string, style?: React
 
   return (
     <div className={`${navContainerClass} ${className}`} style={style}>
-      <BurgerMenu className="flex-shrink-0 hidden sm:flex scroll-snap-align-start">
-        <Link to={"/"} className="flex sm:hidden sm:my-auto border border-transparent hover:border-1 hover:border-white rounded px-1">Home</Link>
-      </BurgerMenu>
+      <button
+        className={`items-center border border-transparent hover:border-1 hover:border-white rounded flex-shrink-0 hidden sm:flex scroll-snap-align-start`}
+        onClick={() => {
+          dispatch(toggleMenuDrawer(true));
+        }}
+      >
+        <BurgerIcon width={32} height={32} />
+        <p className="hidden sm:flex my-auto px-2">All</p>
+      </button>
+      <Link to={"/"} className="flex sm:hidden sm:my-auto border border-transparent hover:border-1 hover:border-white rounded px-1">Home</Link>
+      
       {menuItems.map((item, index) => (
         <Link to={item.url} key={index} className={navStripElementClass}>
           {item.name}
