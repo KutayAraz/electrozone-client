@@ -162,7 +162,7 @@ async function isUserSignedIn() {
 export const loader = async ({ request, params }: any) => {
   try {
     const { productSlug } = params;
-    const [productId, ...slugParts] = productSlug.split('-');
+    const [slugParts, productId] = productSlug.split('-p-');
 
     await checkHydration(store);
 

@@ -9,6 +9,7 @@ import { displayAlert } from "@/setup/slices/alert-slice";
 import { Divider } from "@mui/material";
 import { updateCartItemCount } from "@/setup/slices/user-slice";
 import { truncateString } from "@/utils/truncate-string";
+import { createUrlSlug } from "@/utils/create-url-slug";
 
 const CartItemCard = ({
   id,
@@ -92,7 +93,7 @@ const CartItemCard = ({
       key={id}
     >
       <Link
-        to={`/category/${category}/${subcategory}/${id}`}
+        to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
         className="my-auto flex-shrink-0"
       >
         <div className="">

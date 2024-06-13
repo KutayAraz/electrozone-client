@@ -81,7 +81,7 @@ const SliderProductCard = ({
   return (
     <div className="relative mx-[4px] xs:mx-2 sm:mx-3">
       <Link
-        to={`/category/${category}/${subcategory}/${id}-${createUrlSlug(productName)}`}
+        to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
         className="flex flex-col bg-white items-center p-2 hover:bg-gray-100 border-2 rounded-md shadow-sm"
         key={id}
       >

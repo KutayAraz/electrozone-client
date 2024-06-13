@@ -1,6 +1,7 @@
 import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
 import { OrderItemCardProps } from "./types";
+import { createUrlSlug } from "@/utils/create-url-slug";
 
 const OrderItemCard = ({
   id,
@@ -14,7 +15,7 @@ const OrderItemCard = ({
 }: OrderItemCardProps) => {
   return (
     <Link
-      to={`/category/${category}/${subcategory}/${id}`}
+      to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
       key={id}
       className="group border px-4 py-2 rounded-md hover:shadow-md hover:border-gray-400"
     >

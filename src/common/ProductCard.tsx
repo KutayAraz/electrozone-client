@@ -136,7 +136,7 @@ const ProductCard = forwardRef(({
   return (
     <div className={`w-full xs:w-1/2 md:w-1/3 lg:w-1/4 p-2 ${className}`} ref={ref}>
       <Link
-        to={`/category/${category + "/" + subcategory + "/" + id + "-" + createUrlSlug(productName)}`}
+        to={`/category/${category + "/" + subcategory + "/" + createUrlSlug(productName) + "-p-" + id}`}
         className="border-1 border-gray-300 rounded-lg hover:shadow-md px-1 flex xs:flex-col xs:justify-between group py-2 xs:pt-2 "
       >
         <div className="absolute right-4 z-[2] xs:relative xs:ml-auto">
