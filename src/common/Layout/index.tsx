@@ -1,4 +1,4 @@
-import { LoaderFunction, Outlet, useLocation, useNavigation, useParams } from "react-router-dom";
+import { LoaderFunction, Outlet, ScrollRestoration, useLocation, useNavigation, useParams } from "react-router-dom";
 import Footer from "./Footer/index";
 import NavStrip from "./NavStrip";
 import Header from "./Header";
@@ -133,6 +133,7 @@ const Layout = () => {
         <Outlet />
       </div>
       <Footer />
+      <ScrollRestoration />
     </div>
   );
 };

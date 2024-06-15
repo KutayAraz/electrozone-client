@@ -52,7 +52,7 @@ const Subcategory = ({
       <h3 className="text-lg font-semibold text-center mb-3">
         Top Selling Products in{" "}
         <Link to={`${subcategory}`} className="underline hover:text-blue-800">
-          {formatString(subcategory)}
+          {formatString(subcategory, "_")}
         </Link>
       </h3>
       <Slider
@@ -75,7 +75,7 @@ const Subcategory = ({
       <h3 className="text-lg font-semibold mb-3 text-center">
         Top Wishlisted Products in{" "}
         <Link to={`${subcategory}`} className="underline hover:text-blue-800">
-          {formatString(subcategory)}
+          {formatString(subcategory, "_")}
         </Link>
       </h3>
       <Slider

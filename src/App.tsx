@@ -36,6 +36,7 @@ import ProjectDetails from "./pages/project-details/index.tsx";
 import SignInForm from "./pages/sign-in/index.tsx";
 import Error from "./pages/error/index.tsx";
 import UserProfileLayout from "./common/UserProfileLayout/UserProfileLayout.tsx";
+import PageHelmet from "./common/PageHelmet.tsx";
 
 const router = createBrowserRouter([
   {
@@ -45,32 +46,60 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element:
+          <>
+            <PageHelmet title="Electrozone | Everything Electronics" description="Explore a wide variety of electronics from TVs to printers. Discover great deals and the latest technology at Electrozone." />
+            <HomePage />
+          </>,
         loader: homePageLoader,
       },
       {
         path: "/sign-up",
-        element: <SignUp />,
+        element:
+          <>
+            <PageHelmet title="Sign Up | Electrozone" description="Create a new account at Electrozone to enjoy personalized services, faster checkout, and special offers." />
+            <SignUp />
+          </>,
       },
       {
         path: "/sign-in",
-        element: <SignInForm />,
+        element:
+          <>
+            <PageHelmet title="Sign In | Electrozone" description="Access your Electrozone account to manage your purchases, track orders, and update your preferences." />
+            <SignInForm />
+          </>,
       },
       {
         path: "/sign-out",
-        element: <SignOut />,
+        element:
+          <>
+            <PageHelmet title="Sign Out | Electrozone" description="Securely log out of your Electrozone account." />
+            <SignOut />
+          </>,
       },
       {
         path: "/contact",
-        element: <Contact />,
+        element:
+          <>
+            <PageHelmet title="Contact Us | Electrozone" description="Have questions or suggestions? Send an e-mail." />
+            <Contact />
+          </>,
       },
       {
         path: "/project-details",
-        element: <ProjectDetails />,
+        element:
+          <>
+            <PageHelmet title="Project Details | Electrozone" description="Discover the technologies, libraries and methods used in creating Electrozone." />
+            <ProjectDetails />
+          </>,
       },
       {
         path: "/trending/:type",
-        element: <Trending />,
+        element:
+          <>
+
+            <Trending />
+          </>,
         loader: trendingLoader,
       },
       {
@@ -79,35 +108,59 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <UserAccount />,
+            element:
+              <>
+                <PageHelmet title="My Account | Electrozone" description="Manage your Electrozone account details, preferences, and settings." />
+                <UserAccount />
+              </>,
           },
           {
             path: "profile",
-            element: <UserProfile />,
+            element:
+              <>
+                <PageHelmet title="Profile | Electrozone" description="Update your personal information and contact details to keep your Electrozone profile up-to-date." />
+                <UserProfile />
+              </>,
             loader: profileLoader,
           },
           {
             path: "update-password",
-            element: <UpdatePassword />,
+            element:
+              <>
+                <PageHelmet title="Update Password | Electrozone" description="Change your password to ensure your Electrozone account remains secure." />
+                <UpdatePassword />
+              </>,
           },
           {
             path: "orders",
             children: [
               {
                 index: true,
-                element: <MyOrders />,
+                element:
+                  <>
+                    <PageHelmet title="My Orders | Electrozone" description="View and manage your Electrozone orders, track shipping, and handle returns." />
+                    <MyOrders />
+                  </>,
                 loader: ordersLoader,
               },
               {
                 path: ":orderId",
-                element: <OrderStatus />,
+                element:
+                  <>
+                    <PageHelmet title="Order Details | Electrozone" description="Check the status and details of your specific order at Electrozone." />
+                    <OrderStatus />
+                  </>,
                 loader: orderDetailLoader,
               },
             ],
           },
           {
             path: "wishlist",
-            element: <UserWishlist />,
+            element:
+              <>
+                <PageHelmet title="My Wishlist | Electrozone" description="Keep track of your favorite products and upcoming purchases in your Electrozone wishlist." />
+                <UserWishlist />
+              </>,
             loader: wishlistLoader,
           },
         ],
@@ -119,28 +172,36 @@ const router = createBrowserRouter([
       },
       {
         path: "/contact-us",
-        element: <ContactUs />,
+        element:
+          <>
+            <PageHelmet title="Contact Electrozone" description="Reach out to Electrozone for inquiries, support, and customer service." />
+            <ContactUs />
+          </>,
       },
       {
         path: "/my-cart",
         children: [
           {
             index: true,
-            element: <UserCart />,
+            element: <><PageHelmet title="My Cart | Electrozone" description="Review and manage the items in your shopping cart at Electrozone." /><UserCart /></>,
             loader: cartLoader,
           },
         ],
       },
       {
         path: "/order-success",
-        element: <OrderSuccess />,
+        element:
+          <>
+            <PageHelmet title="Order Successful | Electrozone" description="Your mock order has been placed successfully! Thank you for trying Electrozone." />
+            <OrderSuccess />
+          </>,
       },
       {
         path: "/category/:category",
         children: [
           {
             index: true,
-            element: <CategoryPage />,
+            element: <><CategoryPage /></>,
             loader: categoryLoader,
           },
           {
@@ -148,12 +209,12 @@ const router = createBrowserRouter([
             children: [
               {
                 index: true,
-                element: <SubcategoryPage />,
+                element: <><SubcategoryPage /></>,
                 loader: subcategoryLoader,
               },
               {
                 path: ":productSlug",
-                element: <ProductPage />,
+                element: <><ProductPage /></>,
                 loader: productLoader,
               },
             ],
@@ -161,11 +222,14 @@ const router = createBrowserRouter([
         ],
       },
       {
-        element: <Error />,
-        path: "*"
+        path: "*",
+        element:
+          <>
+            <PageHelmet title="404 Not Found | Electrozone" description="The page you are looking for does not exist. Please check the URL or return to the homepage." />
+            <Error />
+          </>,
       }
     ],
-
   },
   {
     element: <ProtectedRoute />,
@@ -173,12 +237,15 @@ const router = createBrowserRouter([
       {
         index: true,
         path: "/checkout",
-        element: <Checkout />,
+        element:
+          <>
+            <PageHelmet title="Checkout | Electrozone" description="Secure and streamlined checkout process to finalize your purchases at Electrozone." />
+            <Checkout />
+          </>,
         loader: checkoutLoader,
       },
     ],
   },
-
 ]);
 
 function App() {

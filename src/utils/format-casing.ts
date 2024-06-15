@@ -1,6 +1,6 @@
-export const formatString = (inputString: string): string => {
+export const formatString = (inputString: string, delimiter: string): string => {
     return inputString
-        .split('_')
+        .split(delimiter)
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
 };

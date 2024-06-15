@@ -17,6 +17,7 @@ import {
 import ProductTabs from "./components/ProductTabs";
 import { useDispatch } from "react-redux";
 import { setActiveTab } from "@/setup/slices/ui-slice";
+import PageHelmet from "@/common/PageHelmet";
 
 const ProductPage = () => {
   const { product, reviewsData, wishlisted, canCurrentUserReview }: any =
@@ -60,36 +61,40 @@ const ProductPage = () => {
   };
 
   return (
-    <div className="page-spacing">
-      <Suspense fallback={<p>Loading...</p>}>
-        <Await
-          resolve={Promise.all([product, wishlisted])}
-          children={([productData, wishlist]) => (<Product
-            id={productData.id}
-            productName={productData.productName}
-            thumbnail={productData.thumbnail}
-            images={productData.productImages}
-            brand={productData.brand}
-            description={productData.description}
-            price={productData.price.toFixed(2)}
-            stock={productData.stock}
-            averageRating={productData.averageRating}
-            onRatingClick={scrollToReviews}
-            subcategory={productData.subcategory}
-            category={productData.category}
-            isInitiallyWishlisted={wishlisted}
+    <>
+      <PageHelmet title={`${product.productName}`} description="Get in-depth information about products, read reviews, and compare features at Electrozone." />
+      <div className="page-spacing">
+        <Suspense fallback={<p>Loading...</p>}>
+          <Await
+            resolve={Promise.all([product, wishlisted])}
+            children={([productData, wishlist]) => (<Product
+              id={productData.id}
+              productName={productData.productName}
+              thumbnail={productData.thumbnail}
+              images={productData.productImages}
+              brand={productData.brand}
+              description={productData.description}
+              price={productData.price.toFixed(2)}
+              stock={productData.stock}
+              averageRating={productData.averageRating}
+              onRatingClick={scrollToReviews}
+              subcategory={productData.subcategory}
+              category={productData.category}
+              isInitiallyWishlisted={wishlisted}
+            />
+            )}
           />
-          )}
-        />
-        <ProductTabs
-          productDescription={product.description}
-          canCurrentUserReview={canCurrentUserReview}
-          productId={product.id}
-          reviews={reviewsData.reviews}
-          ratingsDistribution={reviewsData.ratingsDistribution}
-        />
-      </Suspense>
-    </div>
+          <ProductTabs
+            productDescription={product.description}
+            canCurrentUserReview={canCurrentUserReview}
+            productId={product.id}
+            reviews={reviewsData.reviews}
+            ratingsDistribution={reviewsData.ratingsDistribution}
+          />
+        </Suspense>
+      </div>
+    </>
+
   );
 };
 

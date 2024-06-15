@@ -6,6 +6,7 @@ import { persistor, store } from "./setup/store";
 import { PersistGate } from "redux-persist/integration/react";
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
+import { HelmetProvider } from "react-helmet-async";
 
 const theme = createTheme({
   typography: {
@@ -15,12 +16,14 @@ const theme = createTheme({
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
+    <HelmetProvider>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
           <PersistGate loading={<p>Loading...</p>} persistor={persistor}>
             <App />
           </PersistGate>
-      </Provider>
-    </ThemeProvider>
+        </Provider>
+      </ThemeProvider>
+    </HelmetProvider>
   </React.StrictMode>
 );
