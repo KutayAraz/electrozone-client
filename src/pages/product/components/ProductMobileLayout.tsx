@@ -1,9 +1,10 @@
-import Slider from "react-slick";
 import WishlistButton from "./WishlistButton";
 import { Rating } from "@mui/material";
 import { ProductLayoutProps } from "./models";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const ProductMobileLayout = ({
   productId,
@@ -29,36 +30,35 @@ const ProductMobileLayout = ({
     <>
       <h2 className="text text-center">{productName}</h2>
       <p className="font-[400] mb-4 text-center">Brand: {brand}</p>
-      <Slider
-        dots={true}
-        dotsClass="slick-dots"
-        arrows={false}
-        infinite={true}
+      <Swiper
         speed={500}
-        lazyLoad={"ondemand"}
-        slidesToShow={1}
-        slidesToScroll={1}
-        className=""
+        slidesPerView={1}
+        pagination={{
+          clickable: true,
+          dynamicBullets: true,
+        }}
+        modules={[Pagination]}
+        className="h-[45vh]"
       >
-        <div>
+        <SwiperSlide key={thumbnail}>
           <img
             src={thumbnail}
             alt={`thumbnail image for ${productName}`}
             className="object-contain h-[40vh] w-auto mx-auto"
           />
-        </div>
+        </SwiperSlide>
 
         {images?.map((image: any) => (
-          <div key={image.id}>
+          <SwiperSlide key={image.id}>
             <img
               src={image.productImage}
               alt={`image for ${productName}`}
               className="object-contain h-[40vh] w-auto mx-auto"
               onClick={() => setSelectedImage(image.productImage)}
             />
-          </div>
+          </SwiperSlide>
         ))}
-      </Slider>
+      </Swiper>
 
       <div className="flex py-3 items-center justify-around fixed bottom-0 left-0 right-0 w-full bg-gray-100 z-10">
         <p className="text-lg font-bold ml-2">${price}</p>
@@ -98,7 +98,7 @@ const ProductMobileLayout = ({
       </div>
 
       <div className="flex flex-col text-left w-full ">
-        <div onClick={onRatingClick} className="mt-10 mx-auto">
+        <div onClick={onRatingClick} className="mx-auto">
           <Rating
             name="half-rating-read"
             value={averageRating}
@@ -114,7 +114,7 @@ const ProductMobileLayout = ({
           Buy now
         </button>
         <div className="flex flex-col justify-center items-center mb-0">
-          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName}/>
+          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName} />
         </div>
       </div>
     </>

@@ -6,7 +6,6 @@ import { useRef, useEffect } from 'react';
 import { ReactComponent as PrevArrow } from "@assets/svg/prev-arrow.svg";
 import { ReactComponent as NextArrow } from "@assets/svg/next-arrow.svg";
 import { SliderProductCardProps } from './SwiperProductCard/models';
-import { Swiper as SwiperClass } from "swiper/types";
 
 const ProductCarousel = ({ products, className }: { products: SliderProductCardProps[], className?: string }) => {
     const prevRef = useRef<HTMLDivElement>(null);

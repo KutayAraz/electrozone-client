@@ -44,30 +44,3 @@ input[type='number'] {
 .sticky-header {
   animation: sticky-transition-show .2s forwards linear;
 }
-
-.carousel-outer-container {
-  overflow: hidden;  /* Prevents horizontal scrollbar due to overflow */
-  padding: 0 20px;  /* Adjust padding to prevent buttons from overflowing */
-}
-
-.carousel-container {
-  position: relative;
-  width: 100%; /* Ensure the container spans the full width */
-  margin: auto;
-  padding: 0 10px;
-}
-
-.swiper-custom-button {
-  position: absolute;
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%);
-  z-index: 10; /* Ensure they are clickable above the swiper layer */
-}
-
-.swiper-button-prev {
-  left: -20px; /* Adjust as needed */
-}
-
-.swiper-button-next {
-  right: -20px; /* Adjust as needed */
-}
