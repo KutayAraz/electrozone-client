@@ -1,4 +1,3 @@
-import { Divider } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { SliderProductCardProps } from "./models";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
@@ -29,6 +28,13 @@ const SliderProductCard = ({
 
   const wishlist = useSelector((state: RootState) => state.wishlist);
   const isWishlisted = wishlist.items.includes(id);
+
+  const [imageLoaded, setImageLoaded] = useState(false); // State to manage image load
+
+  // Image load event handler
+  const handleImageLoad = () => {
+    setImageLoaded(true); // Set image as loaded
+  };
 
   const handleWishlistButtonClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -103,6 +109,7 @@ const SliderProductCard = ({
             src={thumbnail}
             alt={`Image for ${productName}`}
             className="w-full h-full object-contain"
+            loading="lazy"
           />
         </div>
         <p className="mt-2 text-center text-sm line-clamp-3 h-[3em]">{productName}</p>

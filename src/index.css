@@ -44,4 +44,3 @@ input[type='number'] {
 .sticky-header {
   animation: sticky-transition-show .2s forwards linear;
 }
-
