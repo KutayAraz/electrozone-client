@@ -1,4 +1,4 @@
-export interface SliderProductCardProps {
+export interface SwiperProductCardProps {
     id: number;
     productName: string;
     brand: string;

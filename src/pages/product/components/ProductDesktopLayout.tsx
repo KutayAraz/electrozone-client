@@ -2,7 +2,7 @@ import { Modal, Rating } from "@mui/material";
 import WishlistButton from "./WishlistButton";
 import { ProductLayoutProps } from "./models";
 import { useState } from "react";
-import { ReactComponent as NavigationButton } from "@assets/svg/navigation.svg";
+import { ReactComponent as NavigationButton } from "@assets/svg/arrow-black.svg";
 import { ReactComponent as CloseButton } from "@assets/svg/modal-close.svg";
 import { ReactComponent as NavigationArrow } from "@assets/svg/previous-arrow.svg";
 

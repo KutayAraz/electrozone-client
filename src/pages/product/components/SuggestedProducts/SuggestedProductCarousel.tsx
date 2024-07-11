@@ -1,37 +1,38 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
+import { Navigation, Scrollbar, A11y } from "swiper/modules"
 import 'swiper/css';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { ReactComponent as NavButton } from "@assets/svg/carousel-nav-button.svg";
-import { SwiperProductCardProps } from './SwiperProductCard/models';
-import SwiperProductCard from './SwiperProductCard';
+import SwiperProductCard from '@/common/SwiperProductCard';
+import { SwiperProductCardProps } from '@/common/SwiperProductCard/models';
+import { Swiper as SwiperType } from 'swiper/types';
 
-const ProductCarousel = ({ products, className }: { products: SwiperProductCardProps[], className?: string }) => {
+const SuggestedProductCarousel = ({ products, className }: { products: SwiperProductCardProps[], className?: string }) => {
     const prevRef = useRef<HTMLDivElement>(null);
     const nextRef = useRef<HTMLDivElement>(null);
+    const [isBeginning, setIsBeginning] = useState(true);
+    const [isEnd, setIsEnd] = useState(false);
+
+    const onSwiperUpdate = (swiper: SwiperType) => {
+        setIsBeginning(swiper.isBeginning);
+        setIsEnd(swiper.isEnd);
+    };
 
     return (
         <div className="relative overflow-hidden px-5">
             <div className="relative mx-auto">
-                <div ref={prevRef} className="absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 cursor-pointer">
+                <div ref={prevRef} className={`absolute top-1/2 -left-4 transform -translate-y-1/2 z-10 cursor-pointer ${isBeginning ? 'opacity-50 cursor-not-allowed' : ''}`}>
                     <NavButton className="w-5 h-5 rotate-180" />
                 </div>
                 <Swiper
                     modules={[Navigation, Scrollbar, A11y]}
-                    onBeforeInit={(swiper: any) => {
-                        swiper.params.navigation.prevEl = prevRef.current;
-                        swiper.params.navigation.nextEl = nextRef.current;
-                      }}
                     spaceBetween={0}
                     slidesPerView={2}
-                    slidesPerGroup={2}
-                    loop={true}
+                    onSlideChange={(swiper) => onSwiperUpdate(swiper)}
                     navigation={{
                         prevEl: prevRef.current,
                         nextEl: nextRef.current
                     }}
-                    loopAddBlankSlides={false}
-                    pagination={{ clickable: true }}
                     scrollbar={{ draggable: true }}
                     breakpoints={{
                         1280: {
@@ -67,7 +68,7 @@ const ProductCarousel = ({ products, className }: { products: SwiperProductCardP
                         </SwiperSlide>
                     ))}
                 </Swiper>
-                <div ref={nextRef} className="absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 cursor-pointer">
+                <div ref={nextRef} className={`absolute top-1/2 -right-4 transform -translate-y-1/2 z-10 cursor-pointer ${isEnd ? 'opacity-30 cursor-not-allowed' : ''}`}>
                     <NavButton className="w-5 h-5 " />
                 </div>
             </div>
@@ -75,4 +76,4 @@ const ProductCarousel = ({ products, className }: { products: SwiperProductCardP
     );
 };
 
-export default ProductCarousel;
+export default SuggestedProductCarousel;

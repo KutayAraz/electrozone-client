@@ -28,7 +28,7 @@ function TabPanel(props: TabPanelProps) {
         >
             {value === index && (
                 <div className={className}>
-                    <Typography>{children}</Typography>
+                    {children}
                 </div>
             )}
         </div>
@@ -80,7 +80,7 @@ const ProductTabs = ({ productDescription, canCurrentUserReview, reviews, produc
                 <Tab label="Reviews" {...a11yProps(1)} />
                 <Tab label="Payment Options" {...a11yProps(2)} />
             </Tabs>
-            <TabPanel value={value} index={0} id={"productDescription"} className='mt-2'>
+            <TabPanel value={value} index={0} id={"productDescription"} className='mt-2 font-normal'>
                 <ul>
                     {productDescription.map((bulletPoint: string, index: number) => (
                         <li className="mb-2" key={index}>

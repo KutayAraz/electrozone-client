@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
 import loaderFetch from "@/utils/loader-fetch";
 import Categories from "./components/Categories";
-import { SliderProductCardProps } from "@/common/SwiperProductCard/models";
 import ProductCarousel from "@/common/ProductCarousel";
+import { SwiperProductCardProps } from "@/common/SwiperProductCard/models";
 
 const HomePage = () => {
   const {
@@ -23,7 +23,7 @@ const HomePage = () => {
           <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={bestSellingProducts}
-              children={(products: SliderProductCardProps[]) => (
+              children={(products: SwiperProductCardProps[]) => (
                 <ProductCarousel products={products} />
               )}
             />
@@ -35,7 +35,7 @@ const HomePage = () => {
           <Suspense fallback={<p>Loading..</p>}>
             <Await
               resolve={mostWishlistedProducts}
-              children={(products: SliderProductCardProps[]) => (
+              children={(products: SwiperProductCardProps[]) => (
                 <ProductCarousel products={products} />
               )}
             />
@@ -47,7 +47,7 @@ const HomePage = () => {
           <Suspense fallback={<p>Loading..</p>}>
             <Await
               resolve={bestRatedProducts}
-              children={(products: SliderProductCardProps[]) => (
+              children={(products: SwiperProductCardProps[]) => (
                 <ProductCarousel products={products} />
               )}
             />

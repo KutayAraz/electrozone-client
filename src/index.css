@@ -44,3 +44,7 @@ input[type='number'] {
 .sticky-header {
   animation: sticky-transition-show .2s forwards linear;
 }
+
+:root {
+    --swiper-theme-color: #13193F;
+}

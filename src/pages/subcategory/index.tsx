@@ -477,7 +477,7 @@ const SubcategoryPage = () => {
                   getAriaLabel={() => 'Price range'}
                   value={priceRange}
                   onChange={handlePriceChange}
-                  step={Math.floor((priceRangeData.max - priceRangeData.min) / 100)}
+                  step={Math.floor((priceRangeData.max) / 8)}
                   min={0}
                   max={priceRangeData.max}
                   getAriaValueText={(value) => `$${value}`} // Adds a "$" sign for screen readers

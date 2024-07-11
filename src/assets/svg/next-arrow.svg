@@ -1,7 +1,0 @@
-<svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-    <!-- Circle -->
-    <circle cx="25" cy="25" r="24" stroke="#707070" fill="none" stroke-width="1"/>
-    <!-- Right Arrow -->
-    <path d="M30 25L20 35M30 25L20 15" stroke="#707070" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  

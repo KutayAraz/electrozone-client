@@ -3,9 +3,8 @@ import {
   defer,
   redirect,
   useLoaderData,
-  useParams,
 } from "react-router-dom";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 import Product from "./components/Product";
 import { store } from "@/setup/store";
 import { checkHydration } from "@/utils/check-hydration";
@@ -18,6 +17,10 @@ import ProductTabs from "./components/ProductTabs";
 import { useDispatch } from "react-redux";
 import { setActiveTab } from "@/setup/slices/ui-slice";
 import PageHelmet from "@/common/PageHelmet";
+import React from "react";
+import { Divider } from "@mui/material";
+
+const SuggestedProducts = React.lazy(() => import('./components/SuggestedProducts'));
 
 const ProductPage = () => {
   const { product, reviewsData, wishlisted, canCurrentUserReview }: any =
@@ -91,6 +94,10 @@ const ProductPage = () => {
             reviews={reviewsData.reviews}
             ratingsDistribution={reviewsData.ratingsDistribution}
           />
+        </Suspense>
+        <Divider />
+        <Suspense>
+          <SuggestedProducts productId={product.id} />
         </Suspense>
       </div>
     </>

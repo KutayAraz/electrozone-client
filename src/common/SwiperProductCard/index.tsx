@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { SliderProductCardProps } from "./models";
+import { SwiperProductCardProps } from "./models";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
 import { useState } from "react";
 import useFetch from "../Hooks/use-fetch";
@@ -10,7 +10,7 @@ import { addToWishlist, removeFromWishlist } from "@/setup/slices/wishlist-slice
 import { truncateString } from "@/utils/truncate-string";
 import { createUrlSlug } from "@/utils/create-url-slug";
 
-const SliderProductCard = ({
+const SwiperProductCard = ({
   id,
   productName,
   brand,
@@ -18,7 +18,7 @@ const SliderProductCard = ({
   thumbnail,
   subcategory,
   category,
-}: SliderProductCardProps) => {
+}: SwiperProductCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const dispatch = useDispatch<any>();
   const { fetchData } = useFetch();
@@ -120,4 +120,4 @@ const SliderProductCard = ({
   );
 };
 
-export default SliderProductCard;
+export default SwiperProductCard;
