@@ -85,6 +85,6 @@ npm run dev
 Please note, this project requires a backend and a MySQL database to function properly. Ensure you have set up both and configured them according to the project requirements. Refer to the backend repository for setup instructions and details.
 
 ### Contact
-Kutay Araz - kutayaraz@gmail.com
+Kutay Araz - kutayaraz7@gmail.com
 
 Project Link: https://github.com/KutayAraz/electrozone-client
