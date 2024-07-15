@@ -1,7 +1,6 @@
 import loaderFetch from "@/utils/loader-fetch";
 import { Suspense } from "react";
 import { Await, defer, useLoaderData, useParams } from "react-router-dom";
-import { capitalizeWords } from "@/utils/capitalize-words";
 import ProductCard from "@/common/ProductCard";
 import PageHelmet from "@/common/PageHelmet";
 import { formatString } from "@/utils/format-casing";

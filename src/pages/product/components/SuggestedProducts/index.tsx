@@ -1,7 +1,6 @@
 import useFetch from '@/common/Hooks/use-fetch';
 import { useState, useEffect } from 'react';
 import SuggestedProductCarousel from './SuggestedProductCarousel';
-import ProductCarousel from '@/common/ProductCarousel';
 
 const SuggestedProducts = ({ productId }: { productId: number }) => {
     const [suggestedProducts, setSuggestedProducts] = useState<any>([]);

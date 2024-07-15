@@ -19,7 +19,6 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SortIcon from '@mui/icons-material/Sort';
 import CloseIcon from '@mui/icons-material/Close';
-import { useScrollDirection } from "@/common/Hooks/use-scrollDirection";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/setup/store";
 import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice";
