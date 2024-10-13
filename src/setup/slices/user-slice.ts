@@ -5,7 +5,7 @@ const initialState: User = {
   firstName: null,
   city: null,
   isSignedIn: false,
-  userIntent: CheckoutIntent.Normal,
+  userIntent: CheckoutIntent.NORMAL,
   cartItemCount: null,
 };
 

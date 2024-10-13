@@ -18,7 +18,8 @@ const loaderFetch = async <T = any>(
   method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
   body?: any,
   withAuth: boolean = false,
-  retry: boolean = true
+  retry: boolean = true,
+  withCredentials: boolean = false,
 ): Promise<FetchResponse<T>> => {
   const accessToken = store.getState().auth.accessToken;
   const headers: HeadersInit = {
@@ -39,6 +40,7 @@ const loaderFetch = async <T = any>(
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
+      credentials: withCredentials ? "include" : "same-origin",
     });
 
     if (response.status === 401 && retry) {

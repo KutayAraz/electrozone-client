@@ -13,9 +13,10 @@ export const loaderFetchProtected = async (
   url: string,
   method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
   request: any,
-  body?: any
+  body?: any,
+  withCredentials = false
 ): Promise<any> => {
-  const result = await loaderFetch(url, method, body, true);
+  const result = await loaderFetch(url, method, body, true, withCredentials);
 
   if (result.error && "status" in result.error && result.error.status === 401) {
     const urlObj = new URL(request.url);

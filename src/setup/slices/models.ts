@@ -41,7 +41,7 @@ export interface WishlistState {
 }
 
 export enum CheckoutIntent {
-  Normal = "normalCheckout",
-  Local = "localCheckout",
-  Instant = "instantCheckout",
+  NORMAL = 'normal',
+  SESSION = 'session',
+  BUY_NOW = 'buyNow',
 }
