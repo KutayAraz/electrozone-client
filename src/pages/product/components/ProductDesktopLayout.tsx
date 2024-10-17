@@ -171,7 +171,7 @@ const ProductDesktopLayout = ({
             value={quantity}
             onChange={handleQuantityChange}
             min={1}
-            max={10}
+            max={25}
             className="text-center w-16 mx-2 border rounded"
           />
           <button

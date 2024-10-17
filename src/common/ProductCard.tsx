@@ -18,7 +18,7 @@ export interface ProductCardProps {
   productName: string;
   brand: string;
   averageRating: number;
-  price: string;
+  price: number;
   stock: number;
   subcategory: string;
   category: string;
@@ -133,8 +133,6 @@ const ProductCard = forwardRef(({
     }, 300);
   };
 
-  console.log("price", typeof price)
-
   return (
     <div className={`w-full xs:w-1/2 md:w-1/3 lg:w-1/4 p-2 ${className}`} ref={ref}>
       <Link
@@ -178,7 +176,7 @@ const ProductCard = forwardRef(({
             readOnly
             className="mx-auto"
           />
-          <p className="pr-2">$ {Number(price).toFixed(2)}</p>
+          <p className="pr-2">$ {price}</p>
           <button
             onClick={handleAddToCart}
             disabled={stock < 1}

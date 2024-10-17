@@ -22,8 +22,6 @@ const Review = ({ id, rating, comment, reviewDate, reviewerInitials }: ReviewTyp
         <p className="font-bold">&middot;</p>
         <p className="">{date}</p>
       </div>
-
-      
       <p className="text-gray-800">{comment}</p>
     </div>
   );

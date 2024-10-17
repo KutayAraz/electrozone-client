@@ -3,7 +3,7 @@ interface CartItemCardProps {
   productName: string;
   thumbnail: string;
   quantity: number;
-  price: number;
+  price: string;
   amount: number;
   category: string;
   subcategory: string;

@@ -1,12 +1,11 @@
 import { Suspense, useEffect, useRef, useState } from "react";
-import { Await, defer, redirect, useLoaderData } from "react-router-dom";
+import { defer, redirect, useLoaderData } from "react-router-dom";
 import OrderCard from "./components/OrderCard";
 import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
 import { OrderCardProps } from "./components/types";
-import { initialProductsToFetch } from "@/utils/initial-products-to-fetch";
 import useScreenValue from "@/common/Hooks/use-screenValue";
 import useFetch from "@/common/Hooks/use-fetch";
 import { initialOrdersToFetch } from "@/utils/initial-orders-to-fetch";
@@ -63,7 +62,6 @@ const MyOrders = () => {
                 setOrdersToSkip((prev: number) => prev + screenValue)
                 setHasMore(false);
               } else {
-                console.log("why")
                 setHasMore(false);
               }
             } catch (error) {

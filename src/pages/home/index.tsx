@@ -61,13 +61,13 @@ const HomePage = () => {
 export default HomePage;
 const fetchProducts = async (url: string) => {
   const result = await loaderFetch(
-    `${import.meta.env.VITE_API_URL}/products/${url}`,
+    `${import.meta.env.VITE_API_URL}/product/${url}`,
     "GET"
   );
   return result.data;
 };
 
-const loadBestRatedProducts = () => fetchProducts("top-rated");
+const loadBestRatedProducts = () => fetchProducts("best-rated");
 const loadMostWishlistedProducts = () => fetchProducts("most-wishlisted");
 const loadMostSoldProducts = () => fetchProducts("best-sellers");
 

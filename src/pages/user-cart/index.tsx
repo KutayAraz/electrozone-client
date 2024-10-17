@@ -27,8 +27,8 @@ const RefetchCart = (isSignedIn: boolean, fetchData: any) => {
     }));
 
   const endpoint = isSignedIn
-    ? `${import.meta.env.VITE_API_URL}/carts/user-cart`
-    : `${import.meta.env.VITE_API_URL}/carts/local-cart`;
+    ? `${import.meta.env.VITE_API_URL}/cart/user`
+    : `${import.meta.env.VITE_API_URL}/cart/session`;
   const method = isSignedIn ? "GET" : "POST";
   const body = isSignedIn ? null : productsInLocalCart;
 
@@ -39,8 +39,10 @@ const UserCart = () => {
   const navigate = useNavigate();
   const dispatch: any = useDispatch();
   const { cart }: any = useLoaderData();
-  const [products, setProducts] = useState<any>(cart.products);
+  console.log("cart in comp", cart)
+  const [products, setProducts] = useState<any>(cart.cartItems);
   const [cartTotal, setCartTotal] = useState<any>(cart.cartTotal);
+  const [totalQuantity, setTotalQuantity] = useState<number>(cart.totalQuantity)
 
   const [refetchTrigger, setRefetchTrigger] = useState(false);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
@@ -48,7 +50,7 @@ const UserCart = () => {
 
   const handleCheckoutButton = () => {
     if (!isSignedIn) {
-      dispatch(setUserIntent(CheckoutIntent.Local));
+      dispatch(setUserIntent(CheckoutIntent.SESSION));
       navigate("/sign-in", { state: { from: { pathname: "/checkout" } } });
     } else {
       navigate("/checkout", { replace: true });
@@ -83,16 +85,17 @@ const UserCart = () => {
     );
   };
 
-  useEffect(() => {
-    async function refetchCart() {
-      const result = await RefetchCart(isSignedIn, fetchData);
-      if (result?.response.ok) {
-        setProducts(result.data.products);
-        setCartTotal(result.data.cartTotal);
-      }
-    }
-    refetchCart();
-  }, [refetchTrigger]);
+  // useEffect(() => {
+  //   async function refetchCart() {
+  //     const result = await RefetchCart(isSignedIn, fetchData);
+  //     if (result?.response.ok) {
+  //       setProducts(result.data.products);
+  //       setCartTotal(result.data.cartTotal);
+  //       setTotalQuantity(result.data.totalQuantity)
+  //     }
+  //   }
+  //   refetchCart();
+  // }, [refetchTrigger]);
 
   const triggerRefetch = () => {
     setRefetchTrigger(!refetchTrigger);
@@ -131,7 +134,7 @@ const UserCart = () => {
                       Product Quantity:
                     </p>
                     <p>
-                      {cart.totalQuantity}
+                      {totalQuantity}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -139,7 +142,7 @@ const UserCart = () => {
                       Cart Total:
                     </p>
                     <p>
-                      ${cartTotal.toFixed(2)}
+                      ${Number(cartTotal).toFixed(2)}
                     </p>
                   </div>
                   <Divider />
@@ -191,17 +194,25 @@ export const loader = async (request: any) => {
       };
     });
 
-    const cart = await loaderFetch(
-      `${import.meta.env.VITE_API_URL}/carts/local-cart`,
-      "POST",
-      productsToOrder
+    const cart = await fetch(
+      `${import.meta.env.VITE_API_URL}/cart/session`,
+      { credentials: "include" }
     );
 
-    return defer({ cart: cart.data });
+    if (cart.ok) {
+      const data = await cart.json()
+      console.log("data is ", data)
+      return defer({ cart: data });
+
+    } else {
+      console.log("error")
+    }
+
+
   } else {
     try {
       const cart = await loaderFetchProtected(
-        `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+        `${import.meta.env.VITE_API_URL}/cart/user`,
         "GET",
         request.request
       );

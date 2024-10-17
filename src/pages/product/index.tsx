@@ -77,7 +77,7 @@ const ProductPage = () => {
               images={productData.productImages}
               brand={productData.brand}
               description={productData.description}
-              price={productData.price.toFixed(2)}
+              price={productData.price}
               stock={productData.stock}
               averageRating={productData.averageRating}
               onRatingClick={scrollToReviews}
@@ -109,7 +109,7 @@ export default ProductPage;
 
 async function loadProduct(productId: string) {
   const result = await loaderFetch(
-    `${import.meta.env.VITE_API_URL}/products/${productId}`,
+    `${import.meta.env.VITE_API_URL}/product/${productId}`,
     "GET"
   );
   return result.data;
@@ -123,7 +123,7 @@ async function checkWishlist({ request, productId }: any) {
   }
 
   return await loaderFetchProtected(
-    `${import.meta.env.VITE_API_URL}/products/${productId}/wishlist`,
+    `${import.meta.env.VITE_API_URL}/wishlist/${productId}/check`,
     "GET",
     request
   );
@@ -131,7 +131,7 @@ async function checkWishlist({ request, productId }: any) {
 
 async function loadReviews(productId: string) {
   const response = await loaderFetch(
-    `${import.meta.env.VITE_API_URL}/reviews/${productId}/reviews`,
+    `${import.meta.env.VITE_API_URL}/review/${productId}`,
     "GET"
   );
 
@@ -146,7 +146,7 @@ async function canCurrentUserReview({ request, productId }: any) {
   }
   try {
     const result = await loaderFetchProtected(
-      `${import.meta.env.VITE_API_URL}/reviews/${productId}/canReview`,
+      `${import.meta.env.VITE_API_URL}/review/${productId}/eligibility`,
       "GET",
       request
     );
@@ -203,7 +203,6 @@ export const loader = async ({ request, params }: any) => {
       canCurrentUserReview: canReview,
     });
   } catch (error: unknown) {
-    console.log("err", error);
     if (error instanceof UnauthorizedError) {
       return redirect("/sign-in");
     }

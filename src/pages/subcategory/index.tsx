@@ -620,7 +620,7 @@ const fetchProducts = async (subcategory: string, sort: string, skip: number, li
   if (filters.brands) queryParams.set('brands', filters.brands);
 
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/subcategories/${subcategoryUrl}/${sort}?${queryParams}`
+    `${import.meta.env.VITE_API_URL}/subcategory/${subcategoryUrl}?sort_by=${sort}?${queryParams}`
   );
   if (response.ok) {
     return response.json();
@@ -646,13 +646,13 @@ export async function loader({ params, request }: any) {
 
   // Only fetch if not already cached for the current subcategory
   if (!brandsData) {
-    const brandsResponse = await loaderFetch(`${import.meta.env.VITE_API_URL}/subcategories/${subcategory}/brands`, "GET");
+    const brandsResponse = await loaderFetch(`${import.meta.env.VITE_API_URL}/subcategory/${subcategory}/brands`, "GET");
     brandsData = brandsResponse.data;
     sessionStorage.setItem(`${subcategoryKey}-brandsData`, JSON.stringify(brandsData));
   }
 
   if (!priceRangeData) {
-    const priceRangeResponse = await loaderFetch(`${import.meta.env.VITE_API_URL}/subcategories/${subcategory}/price-range`, "GET");
+    const priceRangeResponse = await loaderFetch(`${import.meta.env.VITE_API_URL}/subcategory/${subcategory}/price-range`, "GET");
     priceRangeData = priceRangeResponse.data;
     sessionStorage.setItem(`${subcategoryKey}-priceRangeData`, JSON.stringify(priceRangeData));
   }

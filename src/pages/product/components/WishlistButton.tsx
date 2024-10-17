@@ -27,7 +27,7 @@ const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: Wishl
       return navigate("/sign-in", { state: { from: location.pathname } });
     }
     const result = await fetchData(
-      `${import.meta.env.VITE_API_URL}/products/${productId}/wishlist`,
+      `${import.meta.env.VITE_API_URL}/wishlist/${productId}`,
       "PATCH",
       null,
       true,

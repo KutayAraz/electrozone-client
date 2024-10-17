@@ -93,7 +93,7 @@ const CartItemCard = ({
       key={id}
     >
       <Link
-        to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
+        to={`/category/${category + "/" + subcategory + "/" + createUrlSlug(productName) + "-p-" + id}`}
         className="my-auto flex-shrink-0"
       >
         <div className="">
@@ -107,12 +107,12 @@ const CartItemCard = ({
       <Divider orientation="vertical" flexItem />
 
       <div className="text-sm flex flex-col justify-around">
-        <Link to={`/category/${category}/${subcategory}/${id}`}>
+        <Link to={`/category/${category + "/" + subcategory + "/" + createUrlSlug(productName) + "-p-" + id}`}>
           <p className="hover:text-blue-800 transition duration-200">
             {productName}
           </p>
         </Link>
-        <p className="text-sm">${price.toFixed(2)}</p>
+        <p className="text-sm">${price}</p>
         <div className="flex items-center space-x-2">
           <select
             value={selectedQuantity}
@@ -132,7 +132,7 @@ const CartItemCard = ({
             <Bin className="w-6 h-auto" />
           </button>
         </div>
-        <p className="font-[600]">Total: ${amount.toFixed(2)}</p>
+        <p className="font-[600]">Total: ${Number(amount).toFixed(2)}</p>
       </div>
     </div>
   );

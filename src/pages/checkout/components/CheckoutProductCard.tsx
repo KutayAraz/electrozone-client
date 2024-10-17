@@ -23,7 +23,7 @@ const CheckoutProductCard = ({
       <div className="flex flex-col justify-around h-full space-y-2">
         <p>{productName}</p>
         <p>Quantity: {quantity}</p>
-        <p>${price.toFixed(2)}</p>
+        <p>${price}</p>
       </div>
     </div>
   );

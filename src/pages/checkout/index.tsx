@@ -35,7 +35,7 @@ const Checkout = () => {
   const { fetchData, isLoading } = useFetch();
 
   const addToCartAndNavigate = async () => {
-    const productsToOrder = checkoutItems.products.map((item: any) => ({
+    const productsToOrder = checkoutItems.cartItems.map((item: any) => ({
       productId: item.id,
       quantity: item.quantity,
     }));
@@ -50,7 +50,7 @@ const Checkout = () => {
     if (result?.response.ok) {
       dispatch(clearbuyNowCart());
       dispatch(clearLocalcart());
-      dispatch(setUserIntent(CheckoutIntent.Normal));
+      dispatch(setUserIntent(CheckoutIntent.NORMAL));
     }
 
     setShowModal(false);
@@ -63,17 +63,17 @@ const Checkout = () => {
   };
 
   const handleOrderPlacement = async () => {
-    const productsToOrder = checkoutItems.products.map((item: any) => ({
+    const productsToOrder = checkoutItems.cartItems.map((item: any) => ({
       productId: item.id,
       quantity: item.quantity,
     }));
 
     const result = await fetchData(
-      `${import.meta.env.VITE_API_URL}/orders`,
+      `${import.meta.env.VITE_API_URL}/order/process-order`,
       "POST",
-      { orderItems: productsToOrder },
+      null,
       true,
-      false
+      true
     );
 
     if (result?.response.ok) {
@@ -85,8 +85,8 @@ const Checkout = () => {
           autoHide: true,
         })
       );
-      if (userIntent !== CheckoutIntent.Normal) {
-        dispatch(setUserIntent(CheckoutIntent.Normal));
+      if (userIntent !== CheckoutIntent.NORMAL) {
+        dispatch(setUserIntent(CheckoutIntent.NORMAL));
       }
 
       navigate("/order-success", { state: { orderId } });
@@ -94,11 +94,11 @@ const Checkout = () => {
   };
 
   const handleBackToHome = async () => {
-    if (userIntent === CheckoutIntent.Local) {
-      dispatch(setUserIntent(CheckoutIntent.Normal));
+    if (userIntent === CheckoutIntent.SESSION) {
+      dispatch(setUserIntent(CheckoutIntent.NORMAL));
       addToCartAndNavigate();
-    } else if (userIntent === CheckoutIntent.Instant) {
-      dispatch(setUserIntent(CheckoutIntent.Normal));
+    } else if (userIntent === CheckoutIntent.BUY_NOW) {
+      dispatch(setUserIntent(CheckoutIntent.NORMAL));
       setShowModal(true);
     } else {
       navigate("/my-cart");
@@ -161,7 +161,7 @@ const Checkout = () => {
                 )}
               />
               <div className="space-y-4 mt-6 max-w-screen-md flex-grow">
-                {checkoutItems.products.map(
+                {checkoutItems.cartItems.map(
                   (product: CheckoutProductCardProps) => {
                     return (
                       <CheckoutProductCard
@@ -189,7 +189,7 @@ const Checkout = () => {
                 </tr>
                 <tr>
                   <td>Shipping:</td>
-                  <td className="italic font-normal text-right">
+                  <td className="italic font-NORMAL text-right">
                     Free Shipping
                   </td>
                 </tr>
@@ -231,36 +231,13 @@ async function getCartInfo(request: any) {
   const state = store.getState();
   const userIntent = state.user.userIntent;
 
-  if (userIntent === CheckoutIntent.Normal) {
-    return await loaderFetchProtected(
-      `${import.meta.env.VITE_API_URL}/carts/user-cart`,
-      "GET",
-      request
-    );
-  } else if (userIntent === CheckoutIntent.Instant) {
-    const buyNowCart = state.buyNowCart;
-    return await loaderFetchProtected(
-      `${import.meta.env.VITE_API_URL}/carts/buynow-cart`,
-      "POST",
-      request,
-      {
-        productId: buyNowCart.productId,
-        quantity: buyNowCart.quantity,
-      }
-    );
-  } else {
-    const localCart = state.localCart.items;
-    const productsToOrder = localCart.map((item: any) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-    return await loaderFetchProtected(
-      `${import.meta.env.VITE_API_URL}/carts/local-cart`,
-      "POST",
-      request,
-      productsToOrder
-    );
-  }
+  return await loaderFetchProtected(
+    `${import.meta.env.VITE_API_URL}/order/initiate-checkout`,
+    "POST",
+    request,
+    { checkoutType: CheckoutIntent.NORMAL },
+    true
+  );
 }
 
 async function getUserInfo(request: any) {
@@ -275,10 +252,8 @@ async function getUserInfo(request: any) {
 export async function loader({ request }: any) {
   try {
     const cartData = await getCartInfo(request);
-    if (cartData.products.length === 0) {
-      return redirect("/my-cart");
-    }
     const user = await getUserInfo(request);
+
     return defer({
       cartData,
       user,

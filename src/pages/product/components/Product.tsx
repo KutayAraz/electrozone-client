@@ -53,14 +53,14 @@ const Product = ({
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
     if (!isNaN(value)) {
-      setQuantity(value > 10 ? 10 : value);
+      setQuantity(value > 25 ? 25 : value);
     }
   };
 
   const handleAddToCart = async () => {
     if (isSignedIn) {
       const result = await fetchData(
-        `${import.meta.env.VITE_API_URL}/carts/user-cart`,
+        `${import.meta.env.VITE_API_URL}/cart/user/item`,
         "POST",
         { productId: id, quantity },
         true,
@@ -72,7 +72,15 @@ const Product = ({
           updateCartItemCount({ cartItemCount: result.data.totalQuantity })
         );
     } else {
-      dispatch(addItemToCart({ id, quantity }));
+      // dispatch(addItemToCart({ id, quantity }));
+      const result = await fetchData(
+        `${import.meta.env.VITE_API_URL}/cart/session`,
+        "POST",
+        { productId: id, quantity },
+        false,
+        true,
+        "addToCart"
+      );
     }
 
     dispatch(
@@ -86,7 +94,7 @@ const Product = ({
 
   const handleBuyNow = async () => {
     dispatch(addtoBuyNowCart({ id, quantity }));
-    dispatch(setUserIntent(CheckoutIntent.Instant));
+    dispatch(setUserIntent(CheckoutIntent.BUY_NOW));
     if (!isSignedIn) {
       navigate("/sign-in", { state: { from: "/checkout" } });
     } else {

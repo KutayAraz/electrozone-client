@@ -9,7 +9,7 @@ const SuggestedProducts = ({ productId }: { productId: number }) => {
 
     useEffect(() => {
         const fetchFrequentlyBoughtTogether = async () => {
-            const response = await fetchData(`${import.meta.env.VITE_API_URL}/products/${productId}/suggested-products`);
+            const response = await fetchData(`${import.meta.env.VITE_API_URL}/product/${productId}/suggested-products`);
             if (response?.response.ok) {
                 setSuggestedProducts(response.data.products)
                 setSuggestionHeader(response.data.suggestionType)
