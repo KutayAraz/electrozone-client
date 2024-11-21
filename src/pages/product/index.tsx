@@ -16,7 +16,7 @@ import {
 import ProductTabs from "./components/ProductTabs";
 import { useDispatch } from "react-redux";
 import { setActiveTab } from "@/setup/slices/ui-slice";
-import PageHelmet from "@/common/PageHelmet";
+import PageHelmet from "@/components/page-helmet";
 import React from "react";
 import { Divider } from "@mui/material";
 

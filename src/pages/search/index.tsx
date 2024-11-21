@@ -17,7 +17,7 @@ import { truncateString } from "@/utils/truncate-string";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/setup/store";
 import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice";
-import PageHelmet from "@/common/PageHelmet";
+import PageHelmet from "@/components/page-helmet";
 
 const SearchResultsPage = () => {
   const { searchResults, brandsData, priceRangeData, skipped, subcategoryData, productQuantity }: any = useLoaderData();

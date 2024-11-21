@@ -22,7 +22,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/setup/store";
 import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice";
-import PageHelmet from "@/common/PageHelmet";
+import PageHelmet from "@/components/page-helmet";
 import { formatString } from "@/utils/format-casing";
 
 const SubcategoryPage = () => {

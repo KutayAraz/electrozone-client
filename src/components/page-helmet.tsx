@@ -1,4 +1,4 @@
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { Helmet } from 'react-helmet-async';
 
 const PageHelmet = ({ title, description }: { title: string, description: string }) => (
     <Helmet>

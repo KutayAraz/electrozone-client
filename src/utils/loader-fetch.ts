@@ -4,13 +4,13 @@ import fetchNewAccessToken from "./renew-token";
 export type FetchResponse<T = any> = {
   data: T | null;
   error:
-  | Error
-  | {
-    status: number;
-    reason: string;
-    originalError?: any;
-  }
-  | null;
+    | Error
+    | {
+        status: number;
+        reason: string;
+        originalError?: any;
+      }
+    | null;
 };
 
 const loaderFetch = async <T = any>(

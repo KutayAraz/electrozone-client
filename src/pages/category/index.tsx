@@ -4,7 +4,7 @@ import Subcategory from "./components/Subcategory";
 import loaderFetch from "@/utils/loader-fetch";
 import { SubcategoryProps } from "./components/models";
 import { trendingFetch } from "@/utils/trending-fetch";
-import PageHelmet from "@/common/PageHelmet";
+import PageHelmet from "@/components/page-helmet";
 import { formatString } from "@/utils/format-casing";
 
 export const CategoryPage = () => {
