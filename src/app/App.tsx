@@ -1,42 +1,42 @@
 import { RouterProvider, createBrowserRouter, useNavigation } from "react-router-dom";
-import Layout, { loader as LayoutLoader } from "./common/Layout/index";
+import Layout, { loader as LayoutLoader } from "../common/Layout/index";
 import SubcategoryPage, {
   loader as subcategoryLoader,
-} from "./pages/subcategory/index.tsx";
+} from "../pages/subcategory/index.tsx";
 import ProductPage, {
   loader as productLoader,
-} from "./pages/product/index.tsx";
+} from "../pages/product/index.tsx";
 import CategoryPage, {
   loader as categoryLoader,
-} from "./pages/category/index.tsx";
-import UserCart, { loader as cartLoader } from "./pages/user-cart/index.tsx";
-import HomePage, { loader as homePageLoader } from "./pages/home/index.tsx";
-import SignOut from "./pages/sign-out/index.tsx";
-import SignUp from "./pages/sign-up/index.tsx";
-import ProtectedRoute from "./common/ProtectedRoute.tsx";
-import Checkout, { loader as checkoutLoader } from "./pages/checkout/index.tsx";
+} from "../pages/category/index.tsx";
+import UserCart, { loader as cartLoader } from "../pages/user-cart/index.tsx";
+import HomePage, { loader as homePageLoader } from "../pages/home/index.tsx";
+import SignOut from "../pages/sign-out/index.tsx";
+import SignUp from "../pages/sign-up/index.tsx";
+import ProtectedRoute from "../common/ProtectedRoute.tsx";
+import Checkout, { loader as checkoutLoader } from "../pages/checkout/index.tsx";
 import UserWishlist, {
   loader as wishlistLoader,
-} from "./pages/user-wishlist/index.tsx";
-import SearchResultsPage, { loader as searchLoader } from "./pages/search/index.tsx";
-import MyOrders, { loader as ordersLoader } from "./pages/my-orders/index.tsx";
-import OrderSuccess from "./pages/order-success/index.tsx";
+} from "../pages/user-wishlist/index.tsx";
+import SearchResultsPage, { loader as searchLoader } from "../pages/search/index.tsx";
+import MyOrders, { loader as ordersLoader } from "../pages/my-orders/index.tsx";
+import OrderSuccess from "../pages/order-success/index.tsx";
 import OrderStatus, {
   loader as orderDetailLoader,
-} from "./pages/order-status/index.tsx";
-import ContactUs from "./pages/contact-us/index.tsx";
-import UserAccount from "./pages/user-account/index.tsx";
+} from "../pages/order-status/index.tsx";
+import ContactUs from "../pages/contact-us/index.tsx";
+import UserAccount from "../pages/user-account/index.tsx";
 import UserProfile, {
   loader as profileLoader,
-} from "./pages/user-profile/index.tsx";
-import UpdatePassword from "./pages/update-password/index.tsx";
-import Trending, { loader as trendingLoader } from "./pages/trending/index.tsx";
-import Contact from "./pages/contact-us/index.tsx";
-import ProjectDetails from "./pages/project-details/index.tsx";
-import SignInForm from "./pages/sign-in/index.tsx";
-import Error from "./pages/error/index.tsx";
-import UserProfileLayout from "./common/UserProfileLayout/UserProfileLayout.tsx";
-import PageHelmet from "./common/PageHelmet.tsx";
+} from "../pages/user-profile/index.tsx";
+import UpdatePassword from "../pages/update-password/index.tsx";
+import Trending, { loader as trendingLoader } from "../pages/trending/index.tsx";
+import Contact from "../pages/contact-us/index.tsx";
+import ProjectDetails from "../pages/project-details/index.tsx";
+import SignInForm from "../pages/sign-in/index.tsx";
+import Error from "../pages/error/index.tsx";
+import UserProfileLayout from "../common/UserProfileLayout/UserProfileLayout.tsx";
+import PageHelmet from "../common/PageHelmet.tsx";
 
 const router = createBrowserRouter([
   {
