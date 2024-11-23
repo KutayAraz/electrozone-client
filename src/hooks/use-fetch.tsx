@@ -1,5 +1,5 @@
 import { displayAlert } from "@/setup/slices/alert-slice";
-import { RootState, store } from "@/setup/store";
+import { RootState } from "@/setup/store";
 import fetchNewAccessToken from "@/utils/renew-token";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
