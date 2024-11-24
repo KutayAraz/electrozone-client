@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { HelmetProvider } from 'react-helmet-async';
-import { persistor, store } from '@/setup/store';
+import { persistor, store } from '@/stores/store';
 
 interface AppProviderProps {
     children: React.ReactNode;
