@@ -1,18 +1,15 @@
-import React from 'react';
-
-interface RatingStarsProps {
-  rating: number; 
+type RatingProps = {
+  rating: number;
 }
 
-export const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
-
+export const Rating = ({ rating }: RatingProps) => {
   const stars = [];
 
   for (let i = 1; i <= 5; i++) {
     stars.push(
-      <svg 
-        key={i} 
-        viewBox="0 0 24 24" 
+      <svg
+        key={i}
+        viewBox="0 0 24 24"
         fill={i <= rating ? 'yellow' : 'none'}
         stroke={i <= rating ? 'yellow' : 'gray'}
         strokeWidth={1}
@@ -31,5 +28,3 @@ export const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
   );
 
 };
-
-export default RatingStars;

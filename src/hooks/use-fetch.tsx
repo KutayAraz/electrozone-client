@@ -1,11 +1,11 @@
-import { displayAlert } from "@/setup/slices/alert-slice";
-import { RootState } from "@/setup/store";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { RootState } from "@/stores/store";
 import fetchNewAccessToken from "@/utils/renew-token";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const useFetch = () => {
+export const useFetch = () => {
   const dispatch = useDispatch<any>();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
@@ -127,5 +127,3 @@ const useFetch = () => {
 
   return { fetchData, isLoading, error };
 };
-
-export default useFetch;

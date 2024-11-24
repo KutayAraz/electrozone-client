@@ -1,6 +1,6 @@
 import { ReactComponent as BasketSVG } from "@assets/svg/basket.svg";
 
-const BasketWithBadge = ({ itemCount }: any) => {
+export const Basket = ({ itemCount }: any) => {
   return (
     <div className="relative inline-block">
       <BasketSVG className="w-9 h-9" />
@@ -15,5 +15,3 @@ const BasketWithBadge = ({ itemCount }: any) => {
     </div>
   );
 };
-
-export default BasketWithBadge;

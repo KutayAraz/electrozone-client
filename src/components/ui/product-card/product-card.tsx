@@ -2,17 +2,17 @@ import { forwardRef, useState } from "react";
 import { Divider, Rating } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart } from "@/setup/slices/localCart-slice";
-import { RootState } from "@/setup/store";
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
-import { updateCartItemCount } from "@/setup/slices/user-slice";
-import { addToWishlist, removeFromWishlist } from "@/setup/slices/wishlist-slice";
+import { addItemToCart } from "@/stores/slices/local-cart-slice";
+import { RootState } from "@/stores/store";
+import useFetch from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { updateCartItemCount } from "@/stores/slices/user-slice";
+import { addToWishlist, removeFromWishlist } from "@/stores/slices/wishlist-slice";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
 import { truncateString } from "@/utils/truncate-string";
 import { createUrlSlug } from "@/utils/create-url-slug";
 
-export interface ProductCardProps {
+type ProductCardProps = {
   id: number;
   thumbnail: string;
   productName: string;
@@ -26,7 +26,7 @@ export interface ProductCardProps {
   className?: string;
 }
 
-const ProductCard = forwardRef(({
+export const ProductCard = forwardRef(({
   id,
   thumbnail,
   productName,
@@ -189,5 +189,3 @@ const ProductCard = forwardRef(({
     </div>
   );
 });
-
-export default ProductCard;

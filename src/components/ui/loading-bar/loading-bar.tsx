@@ -1,7 +1,7 @@
 import { LinearProgress } from '@mui/material';
 import { useNavigation } from 'react-router-dom';
 
-const LoadingIndicator = () => {
+export const LoadingIndicator = () => {
   const navigation = useNavigation();
   const isLoading = navigation.state === 'loading';
 
@@ -15,5 +15,3 @@ const LoadingIndicator = () => {
     </div>
   );
 };
-
-export default LoadingIndicator

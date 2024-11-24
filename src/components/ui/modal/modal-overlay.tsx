@@ -1,13 +1,27 @@
 import { CSSTransition } from "react-transition-group";
 import styles from "./CustomModal.module.scss";
-import { ModalOverlayProps, ModalStyleType } from "./models";
 
-export function ModalOverlay({
+type ModalOverlayProps = {
+  children: React.ReactNode;
+  isOpen: boolean;
+  widthClass: string;
+  heightClass: string;
+  topClass?: string;
+  bottomClass?: string;
+  leftClass?: string;
+  rightClass?: string;
+  direction: string;
+  transitionDuration: number;
+  transitionType: string;
+  className?: string;
+}
+
+export const ModalOverlay = ({
   children,
   isOpen,
-  widthClass = '', 
+  widthClass = '',
   topClass = '',
-  bottomClass = '', 
+  bottomClass = '',
   leftClass = '',
   rightClass = '',
   heightClass = '',
@@ -15,7 +29,7 @@ export function ModalOverlay({
   transitionDuration,
   transitionType,
   className,
-}: ModalOverlayProps) {
+}: ModalOverlayProps) => {
 
   const classNames = {
     enter: styles[`modal-enter-${direction}-${transitionType}`],
@@ -31,7 +45,7 @@ export function ModalOverlay({
       classNames={classNames}
       unmountOnExit
     >
-      <div 
+      <div
         className={` 
           ${styles.modal} 
           ${widthClass} 

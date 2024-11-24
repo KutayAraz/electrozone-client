@@ -3,10 +3,14 @@ import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules"
 import 'swiper/css';
 import { useRef } from 'react';
 import { ReactComponent as NavButton } from "@assets/svg/carousel-nav-button.svg";
-import { SwiperProductCardProps } from './SwiperProductCard/models';
-import SwiperProductCard from './SwiperProductCard';
+import { CarouselCard, CarouselCardProps } from './carousel-card';
 
-const ProductCarousel = ({ products, className }: { products: SwiperProductCardProps[], className?: string }) => {
+type CarouselProps = {
+    products: CarouselCardProps[],
+    className?: string
+}
+
+export const Carousel = ({ products, className }: CarouselProps) => {
     const prevRef = useRef<HTMLDivElement>(null);
     const nextRef = useRef<HTMLDivElement>(null);
 
@@ -21,7 +25,7 @@ const ProductCarousel = ({ products, className }: { products: SwiperProductCardP
                     onBeforeInit={(swiper: any) => {
                         swiper.params.navigation.prevEl = prevRef.current;
                         swiper.params.navigation.nextEl = nextRef.current;
-                      }}
+                    }}
                     spaceBetween={0}
                     slidesPerView={2}
                     slidesPerGroup={2}
@@ -53,9 +57,9 @@ const ProductCarousel = ({ products, className }: { products: SwiperProductCardP
                     }}
                     className={`${className}`}
                 >
-                    {products.map((product: SwiperProductCardProps) => (
+                    {products.map((product: CarouselCardProps) => (
                         <SwiperSlide key={product.id}>
-                            <SwiperProductCard
+                            <CarouselCard
                                 id={product.id}
                                 productName={product.productName}
                                 brand={product.brand}
@@ -74,5 +78,3 @@ const ProductCarousel = ({ products, className }: { products: SwiperProductCardP
         </div>
     );
 };
-
-export default ProductCarousel;

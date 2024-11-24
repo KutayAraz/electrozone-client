@@ -1,16 +1,25 @@
 import { Link, useNavigate } from "react-router-dom";
-import { SwiperProductCardProps } from "./models";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
 import { useState } from "react";
-import useFetch from "../Hooks/use-fetch";
 import { useDispatch, useSelector } from "react-redux";
-import { displayAlert } from "@/setup/slices/alert-slice";
-import { RootState } from "@/setup/store";
-import { addToWishlist, removeFromWishlist } from "@/setup/slices/wishlist-slice";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { RootState } from "@/stores/store";
+import { addToWishlist, removeFromWishlist } from "@/stores/slices/wishlist-slice";
 import { truncateString } from "@/utils/truncate-string";
 import { createUrlSlug } from "@/utils/create-url-slug";
+import { useFetch } from "@/hooks";
 
-const SwiperProductCard = ({
+export type CarouselCardProps = {
+  id: number;
+  productName: string;
+  brand: string;
+  price: number;
+  thumbnail: string;
+  subcategory: string;
+  category: string;
+}
+
+export const CarouselCard = ({
   id,
   productName,
   brand,
@@ -18,7 +27,7 @@ const SwiperProductCard = ({
   thumbnail,
   subcategory,
   category,
-}: SwiperProductCardProps) => {
+}: CarouselCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const dispatch = useDispatch<any>();
   const { fetchData } = useFetch();
@@ -119,5 +128,3 @@ const SwiperProductCard = ({
     </div>
   );
 };
-
-export default SwiperProductCard;
