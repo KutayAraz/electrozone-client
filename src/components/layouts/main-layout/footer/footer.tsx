@@ -1,7 +1,7 @@
 import { ReactComponent as BrandSlogan } from "@assets/brand/brand-slogan.svg";
-import FooterMenu from "./FooterMenu";
+import FooterMenu from "./footer-menu";
 
-const Footer = () => {
+export const Footer = () => {
   return (
     <footer className="bg-theme-blue text-white py-0">
       <FooterMenu />
@@ -12,5 +12,3 @@ const Footer = () => {
     </footer>
   );
 };
-
-export default Footer;

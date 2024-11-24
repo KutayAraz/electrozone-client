@@ -1,6 +1,6 @@
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SortIcon from '@mui/icons-material/Sort';
-import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice";
+import { toggleFilterDrawer, toggleSortingDrawer } from "@/stores/slices/ui-slice";
 import { Typography, Divider, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 

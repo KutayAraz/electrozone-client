@@ -1,11 +1,11 @@
 import { ReactComponent as LocationIcon } from "@assets/svg/location.svg";
 import { useRef, useState } from "react";
-import CustomizableModal from "../Modal/CustomizableModal";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import userSlice from "@/setup/slices/user-slice";
-import { RootState } from "@/setup/store";
+import userSlice from "@/stores/slices/user-slice";
+import { RootState } from "@/stores/store";
 import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
+import { CustomModal } from "@/components/ui/modal/custom-modal";
 
 const UserLocation = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,7 +46,7 @@ const UserLocation = () => {
         </button>
       )}
 
-      <CustomizableModal
+      <CustomModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         widthClass="w-full"
@@ -86,7 +86,7 @@ const UserLocation = () => {
             Apply
           </button>
         </div>
-      </CustomizableModal>
+      </CustomModal>
     </div>
   );
 };

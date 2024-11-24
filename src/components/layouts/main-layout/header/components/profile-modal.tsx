@@ -1,19 +1,19 @@
 import { Link } from "react-router-dom";
-import CustomizableModal from "../Modal/CustomizableModal";
 import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
 import { Divider } from "@mui/material";
 import { ReactComponent as ExitIcon } from "@assets/svg/exit.svg";
+import { CustomModal } from "@/components/ui/modal";
 
-export interface ProfileModalProps {
+type ProfileModalProps = {
   isOpen: boolean;
   isSignedIn: boolean;
   onClose: () => void;
 }
 
-const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
+export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
   return (
     <>
-      <CustomizableModal
+      <CustomModal
         heightClass="h-screen"
         widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%]"
         rightClass="right-0"
@@ -66,7 +66,7 @@ const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
             )}
           </Link>
         </div>
-      </CustomizableModal>
+      </CustomModal>
       {isOpen && (
         <button
           className="absolute top-6 right-[calc(80%+40px)] sm:right-[calc(60%+30px)] md:right-[calc(40%+30px)] lg:right-[calc(30%+30px)] w-7 h-7 z-[35]"
@@ -78,5 +78,3 @@ const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
     </>
   );
 };
-
-export default ProfileModal;

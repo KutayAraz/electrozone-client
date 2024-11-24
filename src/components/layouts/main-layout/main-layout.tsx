@@ -1,24 +1,23 @@
-import { LoaderFunction, Outlet, ScrollRestoration, useLocation, useNavigation, useParams } from "react-router-dom";
-import Footer from "./Footer/index";
-import NavStrip from "./NavStrip";
-import Header from "./Header";
+import { LoaderFunction, LoaderFunctionArgs, Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, store } from "@/setup/store";
-import { CheckoutIntent } from "@/setup/slices/models";
-import { setUserIntent, updateCartItemCount } from "@/setup/slices/user-slice";
-import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
-import { clearLocalcart } from "@/setup/slices/localCart-slice";
-import UserLocation from "./UserLocation";
+import { RootState, store } from "@/stores/store";
+import { CheckoutIntent } from "@/stores/slices/models";
+import { setUserIntent, updateCartItemCount } from "@/stores/slices/user-slice";
+import { clearbuyNowCart } from "@/stores/slices/buynow-cart-slice";
+import { clearLocalcart } from "@/stores/slices/local-cart-slice";
+import UserLocation from "./header/components/user-location";
 import { Alert, Slide, createTheme, useMediaQuery } from "@mui/material";
-import { hideAlert } from "@/setup/slices/alert-slice";
+import { hideAlert } from "@/stores/slices/alert-slice";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
-import LoadingIndicator from "../LoadingBar";
-import { debounce } from "@/utils/debounce";
-import { SearchControls } from "./SearchControls";
+import { SearchControls } from "./header/components/search-controls";
+import { Header } from "./header/header";
+import { LoadingIndicator } from "@/components/ui/loading-bar/loading-bar";
+import { NavigationStrip } from "./header/components";
+import { Footer } from "./footer";
 
-const Layout = () => {
+export const Layout = () => {
   const dispatch = useDispatch<any>();
   const location = useLocation();
   const path = location.pathname;
@@ -94,7 +93,7 @@ const Layout = () => {
       <Header ref={headerRef}
         className={`bg-theme-blue z-[4] ${isSticky ? "sticky top-0 transition-all duration-200" : "block top-[-64px]"}`}
       />
-      {(showHeaderExtras) ? <NavStrip
+      {(showHeaderExtras) ? <NavigationStrip
         className={`transition-all duration-200 z-[3] ${!isSticky ? "block" : "sticky"}`}
         style={isSticky && scrollDirection === "up" ? { top: `${headerHeight}px` } : { top: "-64px" }}
       /> : <SearchControls
@@ -138,8 +137,6 @@ const Layout = () => {
   );
 };
 
-export default Layout;
-
 const mergeCartsAndSetIntent = async () => {
   const state = store.getState();
   let productsToOrder;
@@ -149,9 +146,9 @@ const mergeCartsAndSetIntent = async () => {
 
   if (!state.user.isSignedIn) return;
 
-  if (userIntent === CheckoutIntent.Instant) {
+  if (userIntent === CheckoutIntent.BUY_NOW) {
     productsToOrder = [buyNowCart];
-  } else if (userIntent === CheckoutIntent.Local) {
+  } else if (userIntent === CheckoutIntent.SESSION) {
     const localCartItems = state.localCart.items;
     productsToOrder = localCartItems.map((item: any) => ({
       productId: item.id,
@@ -159,19 +156,19 @@ const mergeCartsAndSetIntent = async () => {
     }));
   }
 
-  const result = await loaderFetch(`${import.meta.env.VITE_API_URL} /carts/merge-carts`,
+  const result = await loaderFetch(`${import.meta.env.VITE_API_URL}/carts/merge-carts`,
     "PATCH",
     productsToOrder,
     true)
   if (result?.data) {
-    store.dispatch(setUserIntent(CheckoutIntent.Normal));
+    store.dispatch(setUserIntent(CheckoutIntent.NORMAL));
     store.dispatch(clearbuyNowCart());
     store.dispatch(clearLocalcart());
     store.dispatch(updateCartItemCount({ cartItemCount: result.data.totalQuantity }))
   }
 }
 
-export const loader: LoaderFunction = async ({ request }: any) => {
+export const loader: LoaderFunction = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const currentPath = url.pathname;
   await checkHydration(store)
@@ -179,8 +176,8 @@ export const loader: LoaderFunction = async ({ request }: any) => {
 
   if (currentPath !== "/checkout" &&
     currentPath !== "/sign-in" &&
-    (userIntent == CheckoutIntent.Instant ||
-      userIntent === CheckoutIntent.Local)) {
+    (userIntent == CheckoutIntent.BUY_NOW ||
+      userIntent === CheckoutIntent.SESSION)) {
     mergeCartsAndSetIntent()
   }
   return null;

@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { RootState } from "@/setup/store";
+import { RootState } from "@/stores/store";
 import { ReactComponent as ExitIcon } from "@assets/svg/exit.svg";
-import CustomizableModal from "../Modal/CustomizableModal";
 import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
 import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
 import { ReactComponent as Arrow } from "@assets/svg/arrow-black.svg";
 import { ReactComponent as BackArrow } from "@assets/svg/go-back.svg";
 import { Divider } from "@mui/material";
-import { toggleMenuDrawer } from "@/setup/slices/ui-slice";
+import { toggleMenuDrawer } from "@/stores/slices/ui-slice";
+import { CustomModal } from "@/components/ui/modal";
 
 interface BurgerMenuProps {
   children?: React.ReactNode;
@@ -50,7 +50,7 @@ const BurgerMenu = ({ children, isOpen }: BurgerMenuProps) => {
 
   return (
     <div className="flex">
-      <CustomizableModal
+      <CustomModal
         widthClass="w-[320px] xs:w-[432px]"
         heightClass={`${activeView === "main" ? "h-full overflow-y-auto" : "min-h-screen h-auto overflow-y-hidden"}`}
         topClass="top-0"
@@ -320,7 +320,7 @@ const BurgerMenu = ({ children, isOpen }: BurgerMenuProps) => {
             </Link>
           </div>
         </div>
-      </CustomizableModal>
+      </CustomModal>
       {isOpen && (
         <button
           className="absolute top-4 left-[340px] xs:left-[452px] w-7 h-7 z-[40]"
