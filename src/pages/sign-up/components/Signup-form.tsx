@@ -1,5 +1,5 @@
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
+import useFetch from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -205,9 +205,8 @@ const SignUpForm = () => {
         <button
           type="submit"
           aria-label="Sign up"
-          className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
-            isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
-          } transition duration-300 ease-in-out`}
+          className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
+            } transition duration-300 ease-in-out`}
           disabled={!isValid || isLoading("default")}
         >
           {isLoading("default") ? "Creating your account..." : "Sign Up"}

@@ -3,7 +3,7 @@ import { Navigation, Scrollbar, A11y } from "swiper/modules"
 import 'swiper/css';
 import { useRef, useState } from 'react';
 import { ReactComponent as NavButton } from "@assets/svg/carousel-nav-button.svg";
-import SwiperProductCard from '@/common/SwiperProductCard';
+import SwiperProductCard from '@/components/ui/carousel/carousel-card';
 import { SwiperProductCardProps } from '@/common/SwiperProductCard/models';
 import { Swiper as SwiperType } from 'swiper/types';
 

@@ -17,7 +17,7 @@ import { LoadingIndicator } from "@/components/ui/loading-bar/loading-bar";
 import { NavigationStrip } from "./header/components";
 import { Footer } from "./footer";
 
-export const Layout = () => {
+export const MainLayout = () => {
   const dispatch = useDispatch<any>();
   const location = useLocation();
   const path = location.pathname;

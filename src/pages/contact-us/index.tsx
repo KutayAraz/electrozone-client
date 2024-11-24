@@ -1,5 +1,5 @@
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
+import useFetch from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -129,8 +129,8 @@ const Contact = () => {
             type="submit"
             aria-label="Send Message"
             className={`${isLoading("default")
-                ? "bg-gray-200"
-                : "bg-theme-blue hover:bg-theme-purple"
+              ? "bg-gray-200"
+              : "bg-theme-blue hover:bg-theme-purple"
               }  rounded-lg font-[500] text-white max-w-[50%] mb-2 px-10 py-2`}
             disabled={isLoading("default")}
           >

@@ -1,5 +1,5 @@
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
+import useFetch from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -129,16 +129,15 @@ const UpdatePassword = () => {
           </p>
         )}
 
-      <button
-        type="submit"
-        aria-label="Update Password"
-        className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
-          isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
-        } transition duration-300 ease-in-out`}
-        disabled={!isValid || isSubmitting}
-      >
-        {isSubmitting ? "Changing your password..." : "Change password"}
-      </button>
+        <button
+          type="submit"
+          aria-label="Update Password"
+          className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
+            } transition duration-300 ease-in-out`}
+          disabled={!isValid || isSubmitting}
+        >
+          {isSubmitting ? "Changing your password..." : "Change password"}
+        </button>
       </div>
     </form>
   );

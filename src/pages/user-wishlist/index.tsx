@@ -4,7 +4,7 @@ import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
-import ProductCard from "@/common/ProductCard";
+import ProductCard from "@/components/ui/product-card/product-card";
 
 const UserWishlist = () => {
   const { wishlistedProducts }: any = useLoaderData();

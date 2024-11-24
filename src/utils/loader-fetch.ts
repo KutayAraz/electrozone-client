@@ -1,4 +1,4 @@
-import { store } from "@/setup/store";
+import { store } from "@/stores/store";
 import fetchNewAccessToken from "./renew-token";
 
 export type FetchResponse<T = any> = {

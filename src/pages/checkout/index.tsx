@@ -1,5 +1,5 @@
-import { CheckoutIntent } from "@/setup/slices/models";
-import { RootState, store } from "@/setup/store";
+import { CheckoutIntent } from "@/stores/slices/models";
+import { RootState, store } from "@/stores/store";
 import { checkHydration } from "@/utils/check-hydration";
 import { Suspense, useState } from "react";
 import {
@@ -12,20 +12,20 @@ import {
 import CheckoutProductCard from "./components/CheckoutProductCard";
 import UserCard from "./components/UserCard";
 import { useDispatch, useSelector } from "react-redux";
-import { clearbuyNowCart } from "@/setup/slices/buyNowCart-slice";
-import { clearLocalcart } from "@/setup/slices/localCart-slice";
-import { setUserIntent } from "@/setup/slices/user-slice";
+import { clearbuyNowCart } from "@/stores/slices/buynow-cart-slice";
+import { clearLocalcart } from "@/stores/slices/local-cart-slice";
+import { setUserIntent } from "@/stores/slices/user-slice";
 import { ReactComponent as BrandIcon } from "@assets/brand/brand.svg";
 import { ReactComponent as BackButton } from "@assets/svg/backbutton.svg";
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
+import useFetch from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
 import { Divider } from "@mui/material";
 
-const Checkout = () => {
+export const Checkout = () => {
   const { cartData, user }: any = useLoaderData();
   const [showModal, setShowModal] = useState(false);
   const [checkoutItems, setCheckoutItems] = useState<any>(cartData);
@@ -223,8 +223,6 @@ const Checkout = () => {
     </div>
   );
 };
-
-export default Checkout;
 
 async function getCartInfo(request: any) {
   await checkHydration(store);

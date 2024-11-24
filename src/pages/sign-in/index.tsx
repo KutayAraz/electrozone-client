@@ -1,11 +1,11 @@
-import useFetch from "@/common/Hooks/use-fetch";
-import { setAccessToken } from "@/setup/slices/auth-slice";
-import { clearLocalcart } from "@/setup/slices/localCart-slice";
-import { CheckoutIntent } from "@/setup/slices/models";
-import { clearRedirectPath } from "@/setup/slices/redirect-slice";
-import { setCredentials } from "@/setup/slices/user-slice";
-import { setWishlist } from "@/setup/slices/wishlist-slice";
-import { RootState, store } from "@/setup/store";
+import { useFetch } from "@/hooks";
+import { setAccessToken } from "@/stores/slices/auth-slice";
+import { clearLocalcart } from "@/stores/slices/local-cart-slice";
+import { CheckoutIntent } from "@/stores/slices/models";
+import { clearRedirectPath } from "@/stores/slices/redirect-slice";
+import { setCredentials } from "@/stores/slices/user-slice";
+import { setWishlist } from "@/stores/slices/wishlist-slice";
+import { RootState, store } from "@/stores/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -32,7 +32,7 @@ const schema = yup.object().shape({
     ),
 });
 
-const SignInForm = () => {
+export const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -80,13 +80,13 @@ const SignInForm = () => {
       true
     );
 
-    if (wishlistProducts?.response.ok){
+    if (wishlistProducts?.response.ok) {
       const productIds = wishlistProducts.data.map((product: any) => product.id);
       dispatch(setWishlist(productIds))
     }
 
     if (
-      store.getState().user.userIntent === CheckoutIntent.Normal &&
+      store.getState().user.userIntent === CheckoutIntent.NORMAL &&
       store.getState().localCart.items.length > 0
     ) {
       await mergeCartsAndNavigate();
@@ -190,5 +190,3 @@ const SignInForm = () => {
     </form>
   );
 };
-
-export default SignInForm;

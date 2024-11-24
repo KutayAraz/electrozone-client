@@ -1,10 +1,10 @@
-import CustomizableModal from "@/common/Modal/CustomizableModal";
+import CustomizableModal from "@/components/ui/modal/custom-modal";
 import StarIcon from "@mui/icons-material/Star";
 import { Box, Rating } from "@mui/material";
 import { useRef, useState } from "react";
-import useFetch from "@/common/Hooks/use-fetch";
+import useFetch from "@/hooks/use-fetch";
 import { useDispatch } from "react-redux";
-import { displayAlert } from "@/setup/slices/alert-slice";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
 
 interface ReviewFormProps {
@@ -118,9 +118,8 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
           />
           <button
             type="button"
-            className={`mt-4 ${
-              isLoading("default") ? "bg-gray-600" : "bg-theme-blue"
-            } hover:bg-blue-700 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline`}
+            className={`mt-4 ${isLoading("default") ? "bg-gray-600" : "bg-theme-blue"
+              } hover:bg-blue-700 text-white py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline`}
             onClick={handleSubmitReview}
             disabled={isLoading("default")}
           >

@@ -1,9 +1,9 @@
 import loaderFetch from "@/utils/loader-fetch";
 import { Suspense } from "react";
 import { Await, defer, useLoaderData, useParams } from "react-router-dom";
-import ProductCard from "@/common/ProductCard";
+import ProductCard from "@/components/ui/product-card/product-card";
 import { formatString } from "@/utils/format-casing";
-import PageHelmet from "@/components/page-helmet";
+import PageHelmet from "@/components/seo/page-helmet";
 
 const Trending = () => {
   const { products }: any = useLoaderData();

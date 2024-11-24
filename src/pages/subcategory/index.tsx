@@ -11,7 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from "@mui/material/FormControl";
 import loaderFetch from "@/utils/loader-fetch";
 import ProductList from "./components/ProductList";
-import useScreenValue from "@/common/Hooks/use-screenValue";
+import useScreenValue from "@/hooks/use-screen-value";
 import { initialProductsToFetch } from "@/utils/initial-products-to-fetch";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -20,12 +20,12 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import SortIcon from '@mui/icons-material/Sort';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/setup/store";
-import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice";
-import PageHelmet from "@/components/page-helmet";
+import { RootState } from "@/stores/store";
+import { toggleFilterDrawer, toggleSortingDrawer } from "@/stores/slices/ui-slice";
+import PageHelmet from "@/components/seo/page-helmet";
 import { formatString } from "@/utils/format-casing";
 
-const SubcategoryPage = () => {
+export const SubcategoryPage = () => {
   const { subcategoryData, brandsData, priceRangeData, skipped, productQuantity }: any = useLoaderData();
   const [searchParams, setSearchParams] = useSearchParams();
   const { subcategory }: any = useParams();

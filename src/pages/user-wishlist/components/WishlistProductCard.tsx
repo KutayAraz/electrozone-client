@@ -4,11 +4,11 @@ import { useState } from "react";
 import { Divider, Rating } from "@mui/material";
 import { WishlistProductCardProps } from "./models";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/setup/store";
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
-import { addItemToCart } from "@/setup/slices/localCart-slice";
-import { updateCartItemCount } from "@/setup/slices/user-slice";
+import { RootState } from "@/stores/store";
+import useFetch from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { addItemToCart } from "@/stores/slices/local-cart-slice";
+import { updateCartItemCount } from "@/stores/slices/user-slice";
 import { ref } from "yup";
 import { truncateString } from "@/utils/truncate-string";
 

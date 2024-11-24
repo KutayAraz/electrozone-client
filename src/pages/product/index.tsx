@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import { Suspense, useEffect } from "react";
 import Product from "./components/Product";
-import { store } from "@/setup/store";
+import { store } from "@/stores/store";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
 import {
@@ -15,14 +15,14 @@ import {
 } from "@/utils/loader-fetch-protected";
 import ProductTabs from "./components/ProductTabs";
 import { useDispatch } from "react-redux";
-import { setActiveTab } from "@/setup/slices/ui-slice";
-import PageHelmet from "@/components/page-helmet";
+import { setActiveTab } from "@/stores/slices/ui-slice";
 import React from "react";
 import { Divider } from "@mui/material";
+import PageHelmet from "@/components/seo/page-helmet";
 
 const SuggestedProducts = React.lazy(() => import('./components/SuggestedProducts'));
 
-const ProductPage = () => {
+export const ProductPage = () => {
   const { product, reviewsData, wishlisted, canCurrentUserReview }: any =
     useLoaderData();
   const dispatch = useDispatch();
@@ -104,8 +104,6 @@ const ProductPage = () => {
 
   );
 };
-
-export default ProductPage;
 
 async function loadProduct(productId: string) {
   const result = await loaderFetch(

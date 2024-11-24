@@ -5,8 +5,8 @@ import ReviewForm from './ReviewForm';
 import Review from './Review';
 import { ReviewType, ReviewsProps } from './models';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/setup/store';
-import { setActiveTab } from '@/setup/slices/ui-slice';
+import { RootState } from '@/stores/store';
+import { setActiveTab } from '@/stores/slices/ui-slice';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -57,9 +57,9 @@ const ProductTabs = ({ productDescription, canCurrentUserReview, reviews, produc
 
     const dispatch = useDispatch();
     const value = useSelector((state: RootState) => state.ui.activeTab);  // Access the activeTab state from ui slice
-  
+
     const handleChange = (event: any, newValue: number) => {
-      dispatch(setActiveTab(newValue));  // Dispatch action to change the active tab
+        dispatch(setActiveTab(newValue));  // Dispatch action to change the active tab
     };
 
     const toggleRating = (rating: number) => {

@@ -1,7 +1,6 @@
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
-import { updateUserInfo } from "@/setup/slices/user-slice";
-import { RootState } from "@/setup/store";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { updateUserInfo } from "@/stores/slices/user-slice";
+import { RootState } from "@/stores/store";
 import {
   UnauthorizedError,
   loaderFetchProtected,
@@ -12,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
+import { useFetch } from "@/hooks";
 
 interface UpdateProfileInputs {
   email?: string | null;
@@ -41,7 +41,7 @@ const schema = yup.object({
     ),
 });
 
-const UserProfile = () => {
+export const UserProfile = () => {
   const dispatch = useDispatch<any>();
   const { userInfo }: any = useLoaderData();
   const cityFromStore = useSelector((state: RootState) => state.user.city);
@@ -123,7 +123,7 @@ const UserProfile = () => {
           type="text"
           placeholder={emailPlaceholder}
           className={inputClasses}
-          
+
         />
         {errors.email && (
           <p className={errorMessageClasses}>{errors.email.message}</p>
@@ -169,8 +169,6 @@ const UserProfile = () => {
     </form>
   );
 };
-
-export default UserProfile;
 
 export const loader = async (request: any) => {
   try {

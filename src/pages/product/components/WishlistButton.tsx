@@ -2,10 +2,10 @@ import { useState } from "react";
 import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
 import { WishlistButtonProps } from "./models";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "@/setup/store";
-import useFetch from "@/common/Hooks/use-fetch";
+import { RootState } from "@/stores/store";
+import useFetch from "@/hooks/use-fetch";
 import { useDispatch, useSelector } from "react-redux";
-import { displayAlert } from "@/setup/slices/alert-slice";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import { truncateString } from "@/utils/truncate-string";
 
 const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: WishlistButtonProps) => {

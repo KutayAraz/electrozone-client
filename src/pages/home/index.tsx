@@ -2,10 +2,9 @@ import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
 import loaderFetch from "@/utils/loader-fetch";
 import Categories from "./components/Categories";
-import ProductCarousel from "@/common/ProductCarousel";
-import { SwiperProductCardProps } from "@/common/SwiperProductCard/models";
+import { Carousel, CarouselCardProps } from "@/components/ui/carousel";
 
-const HomePage = () => {
+export const HomePage = () => {
   const {
     bestRatedProducts,
     mostWishlistedProducts,
@@ -23,8 +22,8 @@ const HomePage = () => {
           <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={bestSellingProducts}
-              children={(products: SwiperProductCardProps[]) => (
-                <ProductCarousel products={products} />
+              children={(products: CarouselCardProps[]) => (
+                <Carousel products={products} />
               )}
             />
           </Suspense>
@@ -35,8 +34,8 @@ const HomePage = () => {
           <Suspense fallback={<p>Loading..</p>}>
             <Await
               resolve={mostWishlistedProducts}
-              children={(products: SwiperProductCardProps[]) => (
-                <ProductCarousel products={products} />
+              children={(products: CarouselCardProps[]) => (
+                <Carousel products={products} />
               )}
             />
           </Suspense>
@@ -47,8 +46,8 @@ const HomePage = () => {
           <Suspense fallback={<p>Loading..</p>}>
             <Await
               resolve={bestRatedProducts}
-              children={(products: SwiperProductCardProps[]) => (
-                <ProductCarousel products={products} />
+              children={(products: CarouselCardProps[]) => (
+                <Carousel products={products} />
               )}
             />
           </Suspense>
@@ -58,7 +57,6 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
 const fetchProducts = async (url: string) => {
   const result = await loaderFetch(
     `${import.meta.env.VITE_API_URL}/product/${url}`,

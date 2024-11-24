@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ReactComponent as BackArrow } from "@assets/svg/backbutton.svg"
 import { Divider } from "@mui/material";
 
-const Error = () => {
+export const Error = () => {
   const navigate = useNavigate();
 
   return (
@@ -23,4 +23,3 @@ const Error = () => {
 
   );
 };
-export default Error;

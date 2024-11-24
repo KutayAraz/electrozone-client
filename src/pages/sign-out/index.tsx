@@ -1,7 +1,7 @@
-import { displayAlert } from "@/setup/slices/alert-slice";
-import { clearAccessToken } from "@/setup/slices/auth-slice";
-import { clearLocalcart } from "@/setup/slices/localCart-slice";
-import { clearCredentials } from "@/setup/slices/user-slice";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { clearAccessToken } from "@/stores/slices/auth-slice";
+import { clearLocalcart } from "@/stores/slices/local-cart-slice";
+import { clearCredentials } from "@/stores/slices/user-slice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +22,7 @@ const SignOut = (): null => {
             Accept: "application/json",
           },
           credentials: "include",
-        });        
+        });
 
         if (isMounted) {
           dispatch(clearCredentials());

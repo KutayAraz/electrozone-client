@@ -1,4 +1,4 @@
-import ProductCard from "@/common/ProductCard";
+import ProductCard from "@/components/ui/product-card/product-card";
 import { Product, ProductListProps } from "./models";
 import { forwardRef } from "react";
 

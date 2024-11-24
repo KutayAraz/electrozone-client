@@ -6,7 +6,7 @@ import { ReactComponent as Contact } from "@assets/svg/contact.svg";
 import { ReactComponent as Exit } from "@assets/svg/exit.svg";
 import InfoCard from "./components/InfoCard";
 
-const UserAccount = () => {
+export const UserAccount = () => {
   return (
     <div className="page-spacing">
       <h2 className="text-xl font-bold mb-6">
@@ -35,5 +35,3 @@ const UserAccount = () => {
     </div>
   );
 };
-
-export default UserAccount;

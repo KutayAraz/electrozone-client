@@ -1,9 +1,9 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { defer, useLoaderData, useLocation, useSearchParams } from "react-router-dom";
-import useFetch from "@/common/Hooks/use-fetch";
+import useFetch from "@/hooks/use-fetch";
 import FormControl from "@mui/material/FormControl";
 import { Box, Button, Checkbox, CircularProgress, Divider, Drawer, FormControlLabel, IconButton, InputAdornment, InputLabel, ListItemIcon, MenuItem, Select, SelectChangeEvent, Slider, TextField, Typography } from "@mui/material";
-import useScreenValue from "@/common/Hooks/use-screenValue";
+import useScreenValue from "@/hooks/use-screen-value";
 import { initialProductsToFetch } from "@/utils/initial-products-to-fetch";
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
@@ -15,9 +15,9 @@ import { formatString } from "@/utils/format-casing";
 import ProductList from "./ProductList";
 import { truncateString } from "@/utils/truncate-string";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/setup/store";
-import { toggleFilterDrawer, toggleSortingDrawer } from "@/setup/slices/ui-slice";
-import PageHelmet from "@/components/page-helmet";
+import { RootState } from "@/stores/store";
+import { toggleFilterDrawer, toggleSortingDrawer } from "@/stores/slices/ui-slice";
+import PageHelmet from "@/components/seo/page-helmet";
 
 const SearchResultsPage = () => {
   const { searchResults, brandsData, priceRangeData, skipped, subcategoryData, productQuantity }: any = useLoaderData();

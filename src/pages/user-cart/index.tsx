@@ -1,14 +1,14 @@
-import { RootState, store } from "@/setup/store";
+import { RootState, store } from "@/stores/store";
 import { Suspense, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { defer, redirect, useLoaderData, useNavigate } from "react-router-dom";
 import CartItemCard from "./components/CartItemCard";
-import { setUserIntent, updateCartItemCount } from "@/setup/slices/user-slice";
-import { CheckoutIntent } from "@/setup/slices/models";
+import { setUserIntent, updateCartItemCount } from "@/stores/slices/user-slice";
+import { CheckoutIntent } from "@/stores/slices/models";
 import { checkHydration } from "@/utils/check-hydration";
-import { clearLocalcart } from "@/setup/slices/localCart-slice";
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
+import { clearLocalcart } from "@/stores/slices/local-cart-slice";
+import useFetch from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import loaderFetch from "@/utils/loader-fetch";
 import {
   UnauthorizedError,

@@ -1,13 +1,13 @@
-import cartSlice from "@/setup/slices/localCart-slice";
-import { store } from "@/setup/store";
+import cartSlice from "@/stores/slices/local-cart-slice";
+import { store } from "@/stores/store";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { ReactComponent as Bin } from "@assets/svg/bin.svg";
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
+import useFetch from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import { Divider } from "@mui/material";
-import { updateCartItemCount } from "@/setup/slices/user-slice";
+import { updateCartItemCount } from "@/stores/slices/user-slice";
 import { truncateString } from "@/utils/truncate-string";
 import { createUrlSlug } from "@/utils/create-url-slug";
 

@@ -6,7 +6,7 @@ import {
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
 
-const OrderStatus = () => {
+export const OrderStatus = () => {
   const { order }: any = useLoaderData();
   return (
     <div className="page-spacing">
@@ -28,8 +28,6 @@ const OrderStatus = () => {
     </div>
   );
 };
-
-export default OrderStatus;
 
 export const loader = async (request: any) => {
   try {

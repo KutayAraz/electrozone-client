@@ -6,12 +6,12 @@ import {
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
 import { OrderCardProps } from "./components/types";
-import useScreenValue from "@/common/Hooks/use-screenValue";
-import useFetch from "@/common/Hooks/use-fetch";
+import useScreenValue from "@/hooks/use-screen-value";
 import { initialOrdersToFetch } from "@/utils/initial-orders-to-fetch";
 import { CircularProgress } from "@mui/material";
+import { useFetch } from "@/hooks";
 
-const MyOrders = () => {
+export const MyOrders = () => {
   const { ordersData, skipped }: any = useLoaderData();
   const [orders, setOrders] = useState(ordersData)
   const [ordersToSkip, setOrdersToSkip] = useState<number>(skipped)
@@ -113,9 +113,6 @@ const MyOrders = () => {
     </div>
   );
 };
-
-export default MyOrders;
-
 
 export const loader = async ({ request }: any) => {
   const initOrderCount = initialOrdersToFetch();

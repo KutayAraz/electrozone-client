@@ -3,8 +3,7 @@ import { Await, defer, useLoaderData, useParams } from "react-router-dom";
 import Subcategory from "./components/Subcategory";
 import loaderFetch from "@/utils/loader-fetch";
 import { SubcategoryProps } from "./components/models";
-import { trendingFetch } from "@/utils/trending-fetch";
-import PageHelmet from "@/components/page-helmet";
+import PageHelmet from "@/components/seo/page-helmet";
 import { formatString } from "@/utils/format-casing";
 
 export const CategoryPage = () => {
@@ -35,8 +34,6 @@ export const CategoryPage = () => {
 
   );
 };
-
-export default CategoryPage;
 
 export const loader = async ({ params }: any) => {
   const categoryName = params.category.replace(/-/g, "_");

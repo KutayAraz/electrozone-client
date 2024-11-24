@@ -1,4 +1,4 @@
-import useFetch from '@/common/Hooks/use-fetch';
+import useFetch from '@/hooks/use-fetch';
 import { useState, useEffect } from 'react';
 import SuggestedProductCarousel from './SuggestedProductCarousel';
 

@@ -1,6 +1,6 @@
-import { setRedirectPath } from "@/setup/slices/redirect-slice";
+import { setRedirectPath } from "@/stores/slices/redirect-slice";
 import loaderFetch from "./loader-fetch";
-import { store } from "@/setup/store";
+import { store } from "@/stores/store";
 
 export class UnauthorizedError extends Error {
   constructor(message?: string) {
@@ -14,7 +14,7 @@ export const loaderFetchProtected = async (
   method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
   request: any,
   body?: any,
-  withCredentials = false
+  withCredentials = false,
 ): Promise<any> => {
   const result = await loaderFetch(url, method, body, true, withCredentials);
 
