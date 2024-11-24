@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const redirectSlice = createSlice({
+export const redirectSlice = createSlice({
   name: "redirect",
   initialState: {
     path: null,
@@ -16,5 +16,3 @@ const redirectSlice = createSlice({
 });
 
 export const { setRedirectPath, clearRedirectPath } = redirectSlice.actions;
-
-export default redirectSlice;

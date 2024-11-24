@@ -6,7 +6,7 @@ const initialState: BuyNowCartState = {
   quantity: 0,
 };
 
-const buyNowCartSlice = createSlice({
+export const buyNowCartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
@@ -24,5 +24,3 @@ const buyNowCartSlice = createSlice({
 });
 
 export const { addtoBuyNowCart, clearbuyNowCart } = buyNowCartSlice.actions;
-
-export default buyNowCartSlice;

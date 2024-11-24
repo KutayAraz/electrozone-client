@@ -9,7 +9,7 @@ const initialState: User = {
   cartItemCount: null,
 };
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -44,5 +44,3 @@ export const {
   setUserIntent,
   updateCartItemCount,
 } = userSlice.actions;
-
-export default userSlice;

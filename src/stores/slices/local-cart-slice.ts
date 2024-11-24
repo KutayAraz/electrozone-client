@@ -6,7 +6,7 @@ const initialState: LocalCartState = {
   totalQuantity: 0,
 };
 
-const localCartSlice = createSlice({
+export const localCartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
@@ -24,10 +24,7 @@ const localCartSlice = createSlice({
         existingItem.quantity += newItem.quantity;
       }
     },
-    changeItemQuantity(
-      state,
-      action: PayloadAction<{ id: number; quantity: number }>
-    ) {
+    changeItemQuantity(state, action: PayloadAction<{ id: number; quantity: number }>) {
       const { id, quantity } = action.payload;
       const item = state.items.find((item) => item.id === id);
 
@@ -39,9 +36,7 @@ const localCartSlice = createSlice({
     removeItemFromCart(state, action: PayloadAction<number>) {
       const id = action.payload;
 
-      state.totalQuantity -= state.items.find(
-        (item) => item.id === id
-      )!.quantity;
+      state.totalQuantity -= state.items.find((item) => item.id === id)!.quantity;
 
       state.items = state.items.filter((item) => item.id !== id);
     },
@@ -52,11 +47,5 @@ const localCartSlice = createSlice({
   },
 });
 
-export const {
-  addItemToCart,
-  changeItemQuantity,
-  removeItemFromCart,
-  clearLocalcart,
-} = localCartSlice.actions;
-
-export default localCartSlice;
+export const { addItemToCart, changeItemQuantity, removeItemFromCart, clearLocalcart } =
+  localCartSlice.actions;

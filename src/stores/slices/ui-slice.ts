@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const uiSlice = createSlice({
+export const uiSlice = createSlice({
   name: "ui",
   initialState: {
     menuDrawer: false,
@@ -20,10 +20,9 @@ const uiSlice = createSlice({
     },
     toggleMenuDrawer: (state, action) => {
       state.menuDrawer = action.payload;
-    }
+    },
   },
 });
 
-export const { toggleMenuDrawer, toggleFilterDrawer, toggleSortingDrawer, setActiveTab } = uiSlice.actions;
-
-export default uiSlice.reducer;
+export const { toggleMenuDrawer, toggleFilterDrawer, toggleSortingDrawer, setActiveTab } =
+  uiSlice.actions;

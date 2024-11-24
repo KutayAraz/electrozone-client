@@ -33,7 +33,7 @@ export const displayAlert = createAsyncThunk(
         dispatch(hideAlert(notification.id));
       }, 3000);
     }
-  }
+  },
 );
 
 type AlertType = "error" | "info" | "success" | "warning" | undefined;
@@ -55,7 +55,7 @@ export const alertSlice = createSlice({
     },
     hideAlert: (state, action) => {
       state.notifications = state.notifications.filter(
-        (notification) => notification.id !== action.payload
+        (notification) => notification.id !== action.payload,
       );
     },
     clearAlerts: (state) => {
@@ -65,5 +65,3 @@ export const alertSlice = createSlice({
 });
 
 export const { showAlert, hideAlert, clearAlerts } = alertSlice.actions;
-
-export default alertSlice.reducer;

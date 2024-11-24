@@ -1,17 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import alertReducer from "./slices/alert-slice";
-import userSlice from "./slices/user-slice";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
-import authSlice from "./slices/auth-slice";
-import localCartSlice from "./slices/localCart-slice";
-import buyNowCartSlice from "./slices/buyNowCart-slice";
-import hydrationSlice, { hydrationCompleted } from "./slices/hydration-slice";
-import sessionStorage from "redux-persist/es/storage/session";
-import redirectSlice from "./slices/redirect-slice";
-import wishlistSlice from "./slices/wishlist-slice";
-import uiReducer from "./slices/ui-slice";
+import {
+  alertSlice,
+  authSlice,
+  buyNowCartSlice,
+  hydrationCompleted,
+  hydrationSlice,
+  localCartSlice,
+  redirectSlice,
+  uiSlice,
+  userSlice,
+  wishlistSlice,
+} from "./slices";
 
 const userPersistConfig = {
   key: "user",
@@ -39,35 +41,20 @@ const redirectPersistConfig = {
   whitelist: ["path"], // Only persist the 'path' key
 };
 
-const persistedUserReducer = persistReducer(
-  userPersistConfig,
-  userSlice.reducer
-);
+const persistedUserReducer = persistReducer(userPersistConfig, userSlice.reducer);
 
-const persistedLocalCartReducer = persistReducer(
-  localCartPersistConfig,
-  localCartSlice.reducer
-);
+const persistedLocalCartReducer = persistReducer(localCartPersistConfig, localCartSlice.reducer);
 
-const persistedBuyNowCartReducer = persistReducer(
-  buyNowCartPersistConfig,
-  buyNowCartSlice.reducer
-);
+const persistedBuyNowCartReducer = persistReducer(buyNowCartPersistConfig, buyNowCartSlice.reducer);
 
-const persistedRedirectReducer = persistReducer(
-  redirectPersistConfig,
-  redirectSlice.reducer
-);
+const persistedRedirectReducer = persistReducer(redirectPersistConfig, redirectSlice.reducer);
 
-const persistedWishlistReducer = persistReducer(
-  wishlistPersistConfig,
-  wishlistSlice.reducer
-);
+const persistedWishlistReducer = persistReducer(wishlistPersistConfig, wishlistSlice.reducer);
 
 export const store = configureStore({
   reducer: {
-    alert: alertReducer,
-    ui: uiReducer,
+    alert: alertSlice.reducer,
+    ui: uiSlice.reducer,
     auth: authSlice.reducer,
     hydration: hydrationSlice.reducer,
     user: persistedUserReducer,
