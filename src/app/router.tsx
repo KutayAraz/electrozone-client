@@ -1,21 +1,20 @@
-import { useMemo } from 'react';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { paths } from '@/config/paths';
-import ProtectedRoute from '@/lib/auth';
+import { useMemo } from "react";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { paths } from "@/config/paths";
+import ProtectedRoute from "@/lib/auth";
+import { MainLayout, loader as mainLayoutLoader } from "@/components/layouts";
 
 export const createAppRouter = () =>
     createBrowserRouter([
         {
             path: paths.home.path,
-            lazy: async () => {
-                const { MainLayout, loader } = await import('@components/layouts/main-layout');
-                return { Component: MainLayout, loader };
-            },
+            element: <MainLayout />,
+            loader: mainLayoutLoader,
             children: [
                 {
                     index: true,
                     lazy: async () => {
-                        const { HomePage, loader } = await import('@pages/home');
+                        const { HomePage, loader } = await import("@pages/home");
                         return {
                             Component: HomePage,
                             loader,
@@ -25,14 +24,14 @@ export const createAppRouter = () =>
                 {
                     path: paths.auth.login.path,
                     lazy: async () => {
-                        const { SignIn } = await import('@pages/sign-in');
+                        const { SignIn } = await import("@pages/sign-in");
                         return { Component: SignIn };
                     },
                 },
                 {
                     path: paths.auth.register.path,
                     lazy: async () => {
-                        const { SignUp } = await import('@pages/sign-up');
+                        const { SignUp } = await import("@pages/sign-up");
                         return { Component: SignUp };
                     },
                 },
@@ -42,7 +41,7 @@ export const createAppRouter = () =>
                         {
                             index: true,
                             lazy: async () => {
-                                const { CategoryPage, loader } = await import('@pages/category');
+                                const { CategoryPage, loader } = await import("@pages/category");
                                 return {
                                     Component: CategoryPage,
                                     loader,
@@ -55,7 +54,7 @@ export const createAppRouter = () =>
                                 {
                                     index: true,
                                     lazy: async () => {
-                                        const { SubcategoryPage, loader } = await import('@pages/subcategory');
+                                        const { SubcategoryPage, loader } = await import("@pages/subcategory");
                                         return {
                                             Component: SubcategoryPage,
                                             loader,
@@ -63,9 +62,9 @@ export const createAppRouter = () =>
                                     },
                                 },
                                 {
-                                    path: ':productSlug',
+                                    path: ":productSlug",
                                     lazy: async () => {
-                                        const { ProductPage, loader } = await import('@pages/product');
+                                        const { ProductPage, loader } = await import("@pages/product");
                                         return {
                                             Component: ProductPage,
                                             loader,
@@ -76,7 +75,6 @@ export const createAppRouter = () =>
                         },
                     ],
                 },
-
             ],
         },
         {
@@ -85,7 +83,7 @@ export const createAppRouter = () =>
                 {
                     path: paths.checkout.path,
                     lazy: async () => {
-                        const { Checkout, loader } = await import('@pages/checkout');
+                        const { Checkout, loader } = await import("@pages/checkout");
                         return {
                             Component: Checkout,
                             loader,
@@ -95,14 +93,14 @@ export const createAppRouter = () =>
                 {
                     index: true,
                     lazy: async () => {
-                        const { UserAccount } = await import('@pages/user-account');
+                        const { UserAccount } = await import("@pages/user-account");
                         return { Component: UserAccount };
                     },
                 },
                 {
-                    path: 'profile',
+                    path: "profile",
                     lazy: async () => {
-                        const { UserProfile, loader } = await import('@pages/user-profile');
+                        const { UserProfile, loader } = await import("@pages/user-profile");
                         return {
                             Component: UserProfile,
                             loader,
@@ -110,12 +108,12 @@ export const createAppRouter = () =>
                     },
                 },
                 {
-                    path: 'orders',
+                    path: "orders",
                     children: [
                         {
                             index: true,
                             lazy: async () => {
-                                const { MyOrders, loader } = await import('@pages/my-orders');
+                                const { MyOrders, loader } = await import("@pages/my-orders");
                                 return {
                                     Component: MyOrders,
                                     loader,
@@ -123,9 +121,9 @@ export const createAppRouter = () =>
                             },
                         },
                         {
-                            path: ':orderId',
+                            path: ":orderId",
                             lazy: async () => {
-                                const { OrderStatus, loader } = await import('@pages/order-status');
+                                const { OrderStatus, loader } = await import("@pages/order-status");
                                 return {
                                     Component: OrderStatus,
                                     loader,
@@ -137,12 +135,11 @@ export const createAppRouter = () =>
             ],
         },
         {
-            path: '*',
+            path: "*",
             lazy: async () => {
-                const { Error } = await import('@pages/error');
+                const { Error } = await import("@pages/error");
                 return { Component: Error };
             },
-
         },
     ]);
 
