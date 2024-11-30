@@ -10,12 +10,12 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { RootState } from "@/stores/store";
-import useFetch from "@/hooks/use-fetch";
 import { capitalizeWords } from "@/utils/capitalize-words";
 import { Divider, useMediaQuery } from "@mui/material";
 import ProductMobileLayout from "./ProductMobileLayout";
 import ProductDesktopLayout from "./ProductDesktopLayout";
 import { truncateString } from "@/utils/truncate-string";
+import { useFetch } from "@/hooks";
 
 const Product = ({
   id,

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { ReactComponent as UserIcon } from "@assets/svg/user.svg";
-import { ReactComponent as Arrow } from "@assets/svg/arrow.svg";
+import { ReactComponent as UserIcon } from "@assets/svgs/user.svg";
+import { ReactComponent as Arrow } from "@assets/svgs/arrow.svg";
 import { Basket } from "@/components/ui/basket";
 
 type UserSectionProps = {

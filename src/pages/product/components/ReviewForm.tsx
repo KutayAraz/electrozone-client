@@ -1,11 +1,11 @@
-import CustomizableModal from "@/components/ui/modal/custom-modal";
 import StarIcon from "@mui/icons-material/Star";
 import { Box, Rating } from "@mui/material";
 import { useRef, useState } from "react";
-import useFetch from "@/hooks/use-fetch";
 import { useDispatch } from "react-redux";
 import { displayAlert } from "@/stores/slices/alert-slice";
-import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
+import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
+import { useFetch } from "@/hooks";
+import { CustomModal } from "@/components/ui/modal";
 
 interface ReviewFormProps {
   canCurrentUserReview: boolean;
@@ -63,7 +63,7 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
           Leave a review
         </button>
       )}
-      <CustomizableModal
+      <CustomModal
         direction="center"
         transitionType="slide"
         transitionDuration={300}
@@ -126,7 +126,7 @@ const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps) => {
             {isLoading("default") ? "Submitting" : "Submit Review"}
           </button>
         </div>
-      </CustomizableModal>
+      </CustomModal>
     </div>
   );
 };

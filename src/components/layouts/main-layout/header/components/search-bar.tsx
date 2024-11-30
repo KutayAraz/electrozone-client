@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ReactComponent as SearchIcon } from "@assets/svg/search.svg";
+import { ReactComponent as SearchIcon } from "@assets/svgs/search.svg";
 
 const SearchBar = ({ className }: { className?: string }) => {
   const navigate = useNavigate();

@@ -1,10 +1,10 @@
 import OrderItemCard from "./OrderItemCard";
 import { useNavigate } from "react-router-dom";
 import { formatDateTime } from "@/utils/format-time";
-import useFetch from "@/hooks/use-fetch";
 import { useDispatch } from "react-redux";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { OrderCardProps } from "./types";
+import { useFetch } from "@/hooks";
 
 const OrderCard = ({
   orderId,

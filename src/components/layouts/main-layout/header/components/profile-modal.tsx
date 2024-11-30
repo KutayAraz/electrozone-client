@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
+import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 import { Divider } from "@mui/material";
-import { ReactComponent as ExitIcon } from "@assets/svg/exit.svg";
+import { ReactComponent as ExitIcon } from "@assets/svgs/exit.svg";
 import { CustomModal } from "@/components/ui/modal";
 
 type ProfileModalProps = {

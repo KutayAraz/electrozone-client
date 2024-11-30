@@ -1,4 +1,4 @@
-import { ReactComponent as BrandSlogan } from "@assets/brand/brand-slogan.svg";
+import { ReactComponent as BrandSlogan } from "@assets/brand-images/brand-slogan.svg";
 import FooterMenu from "./footer-menu";
 
 export const Footer = () => {

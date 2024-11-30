@@ -1,8 +1,8 @@
-import useFetch from '@/hooks/use-fetch';
+import { useFetch } from '@/hooks';
 import { useState, useEffect } from 'react';
-import SuggestedProductCarousel from './SuggestedProductCarousel';
+import { SuggestedProductCarousel } from './suggested-products-carousel';
 
-const SuggestedProducts = ({ productId }: { productId: number }) => {
+export const SuggestedProducts = ({ productId }: { productId: number }) => {
     const [suggestedProducts, setSuggestedProducts] = useState<any>([]);
     const [suggestionHeader, setSuggestionHeader] = useState<string>("");
     const { isLoading, fetchData } = useFetch()
@@ -31,4 +31,3 @@ const SuggestedProducts = ({ productId }: { productId: number }) => {
     );
 };
 
-export default SuggestedProducts;

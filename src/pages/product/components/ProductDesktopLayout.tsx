@@ -2,9 +2,9 @@ import { Modal, Rating } from "@mui/material";
 import WishlistButton from "./WishlistButton";
 import { ProductLayoutProps } from "./models";
 import { useState } from "react";
-import { ReactComponent as NavigationButton } from "@assets/svg/arrow-black.svg";
-import { ReactComponent as CloseButton } from "@assets/svg/modal-close.svg";
-import { ReactComponent as NavigationArrow } from "@assets/svg/previous-arrow.svg";
+import { ReactComponent as NavigationButton } from "@assets/svgs/arrow-black.svg";
+import { ReactComponent as CloseButton } from "@assets/svgs/modal-close.svg";
+import { ReactComponent as NavigationArrow } from "@assets/svgs/previous-arrow.svg";
 
 const ProductDesktopLayout = ({
   productId,
@@ -202,7 +202,7 @@ const ProductDesktopLayout = ({
           <label className="text-red-500 border-1 rounded-xl">This product is currently out of stock</label>
         )}
         <div className="flex flex-col justify-center items-center">
-          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName}/>
+          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName} />
         </div>
       </div>
     </div>

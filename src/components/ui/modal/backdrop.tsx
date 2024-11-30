@@ -1,4 +1,4 @@
-import styles from "./CustomModal.module.scss";
+import styles from "./custom-modal.module.scss";
 
 type BackdropProps = {
     onClose: () => void;

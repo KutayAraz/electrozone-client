@@ -71,7 +71,6 @@ export const SignIn = () => {
 
   const handleSuccessfulLogin = async (credentials: any) => {
     dispatch(setCredentials({ ...credentials }));
-    dispatch(setAccessToken({ accessToken: credentials.access_token }));
 
     const wishlistProducts = await fetchData(
       `${import.meta.env.VITE_API_URL}/user/wishlist`,

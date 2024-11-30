@@ -1,9 +1,9 @@
-import { ReactComponent as AddressCard } from "@assets/svg/address-card.svg";
-import { ReactComponent as OrderComplete } from "@assets/svg/order-complete.svg";
-import { ReactComponent as WishlistHeart } from "@assets/svg/wishlist-heart.svg";
-import { ReactComponent as Security } from "@assets/svg/security.svg";
-import { ReactComponent as Contact } from "@assets/svg/contact.svg";
-import { ReactComponent as Exit } from "@assets/svg/exit.svg";
+import { ReactComponent as AddressCard } from "@assets/svgs/address-card.svg";
+import { ReactComponent as OrderComplete } from "@assets/svgs/order-complete.svg";
+import { ReactComponent as WishlistHeart } from "@assets/svgs/wishlist-heart.svg";
+import { ReactComponent as Security } from "@assets/svgs/security.svg";
+import { ReactComponent as Contact } from "@assets/svgs/contact.svg";
+import { ReactComponent as Exit } from "@assets/svgs/exit.svg";
 import InfoCard from "./components/InfoCard";
 
 export const UserAccount = () => {

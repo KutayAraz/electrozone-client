@@ -1,11 +1,11 @@
-import { ReactComponent as LocationIcon } from "@assets/svg/location.svg";
+import { ReactComponent as LocationIcon } from "@assets/svgs/location.svg";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import userSlice from "@/stores/slices/user-slice";
 import { RootState } from "@/stores/store";
-import { ReactComponent as CloseButton } from "@assets/svg/close-button.svg";
+import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 import { CustomModal } from "@/components/ui/modal/custom-modal";
+import { userSlice } from "@/stores/slices";
 
 const UserLocation = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

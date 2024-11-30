@@ -7,7 +7,6 @@ import { setUserIntent, updateCartItemCount } from "@/stores/slices/user-slice";
 import { CheckoutIntent } from "@/stores/slices/models";
 import { checkHydration } from "@/utils/check-hydration";
 import { clearLocalcart } from "@/stores/slices/local-cart-slice";
-import useFetch from "@/hooks/use-fetch";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import loaderFetch from "@/utils/loader-fetch";
 import {
@@ -15,8 +14,9 @@ import {
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
 import { Divider } from "@mui/material";
-import { ReactComponent as Bin } from "@assets/svg/bin.svg";
-import { ReactComponent as RightArrow } from "@assets/svg/right-arrow.svg";
+import { ReactComponent as Bin } from "@assets/svgs/bin.svg";
+import { ReactComponent as RightArrow } from "@assets/svgs/right-arrow.svg";
+import { useFetch } from "@/hooks";
 
 const RefetchCart = (isSignedIn: boolean, fetchData: any) => {
   const productsInLocalCart = store

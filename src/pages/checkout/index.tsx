@@ -15,15 +15,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearbuyNowCart } from "@/stores/slices/buynow-cart-slice";
 import { clearLocalcart } from "@/stores/slices/local-cart-slice";
 import { setUserIntent } from "@/stores/slices/user-slice";
-import { ReactComponent as BrandIcon } from "@assets/brand/brand.svg";
-import { ReactComponent as BackButton } from "@assets/svg/backbutton.svg";
-import useFetch from "@/hooks/use-fetch";
+import { ReactComponent as BrandIcon } from "@assets/brand-images/brand.svg";
+import { ReactComponent as BackButton } from "@assets/svgs/backbutton.svg";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import {
   UnauthorizedError,
   loaderFetchProtected,
 } from "@/utils/loader-fetch-protected";
 import { Divider } from "@mui/material";
+import { useFetch } from "@/hooks";
 
 export const Checkout = () => {
   const { cartData, user }: any = useLoaderData();

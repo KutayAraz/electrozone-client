@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
-import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
+import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
 import { useState } from "react";
 import { Divider, Rating } from "@mui/material";
 import { WishlistProductCardProps } from "./models";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/stores/store";
-import useFetch from "@/hooks/use-fetch";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { addItemToCart } from "@/stores/slices/local-cart-slice";
 import { updateCartItemCount } from "@/stores/slices/user-slice";
 import { ref } from "yup";
 import { truncateString } from "@/utils/truncate-string";
+import { useFetch } from "@/hooks";
 
 const WishlistProductCard = ({
   id,

@@ -1,15 +1,15 @@
-import cartSlice from "@/stores/slices/local-cart-slice";
 import { store } from "@/stores/store";
 import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { ReactComponent as Bin } from "@assets/svg/bin.svg";
-import useFetch from "@/hooks/use-fetch";
+import { ReactComponent as Bin } from "@assets/svgs/bin.svg";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { Divider } from "@mui/material";
 import { updateCartItemCount } from "@/stores/slices/user-slice";
 import { truncateString } from "@/utils/truncate-string";
 import { createUrlSlug } from "@/utils/create-url-slug";
+import { useFetch } from "@/hooks";
+import { localCartSlice } from "@/stores/slices";
 
 const CartItemCard = ({
   id,
@@ -49,7 +49,7 @@ const CartItemCard = ({
       }
     } else {
       dispatch(
-        cartSlice.actions.changeItemQuantity({
+        localCartSlice.actions.changeItemQuantity({
           id,
           quantity: parseInt(event.target.value),
         })
@@ -75,7 +75,7 @@ const CartItemCard = ({
         );
       }
     } else {
-      dispatch(cartSlice.actions.removeItemFromCart(id));
+      dispatch(localCartSlice.actions.removeItemFromCart(id));
       onRemoveItem();
     }
     dispatch(

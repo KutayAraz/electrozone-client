@@ -4,13 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addItemToCart } from "@/stores/slices/local-cart-slice";
 import { RootState } from "@/stores/store";
-import useFetch from "@/hooks/use-fetch";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { updateCartItemCount } from "@/stores/slices/user-slice";
 import { addToWishlist, removeFromWishlist } from "@/stores/slices/wishlist-slice";
-import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
+import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
 import { truncateString } from "@/utils/truncate-string";
 import { createUrlSlug } from "@/utils/create-url-slug";
+import { useFetch } from "@/hooks";
 
 type ProductCardProps = {
   id: number;

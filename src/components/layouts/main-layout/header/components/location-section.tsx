@@ -1,4 +1,4 @@
-import { ReactComponent as LocationPin } from "@assets/svg/location.svg";
+import { ReactComponent as LocationPin } from "@assets/svgs/location.svg";
 type LocationSectionProps = {
     city: string | null;
     isSignedIn: boolean;

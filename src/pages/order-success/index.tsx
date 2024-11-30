@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ReactComponent as SuccessIcon } from "@assets/svg/success.svg";
+import { ReactComponent as SuccessIcon } from "@assets/svgs/success.svg";
 import { useEffect } from "react";
 
 const OrderSuccess = () => {
@@ -17,7 +17,7 @@ const OrderSuccess = () => {
     // Render nothing or a loading indicator until the redirect takes effect
     return null; // or <LoadingIndicator />
   }
-  
+
   return (
     <div className="page-spacing">
       <h2 className="text-2xl text-gray-700 mb-2">

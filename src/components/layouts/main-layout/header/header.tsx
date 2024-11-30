@@ -1,18 +1,18 @@
-import { ReactComponent as BrandLogo } from "@assets/brand/brand-logo.svg";
-import { ReactComponent as Brand } from "@assets/brand/brand.svg";
+import { ReactComponent as BrandLogo } from "@assets/brand-images/brand-logo.svg";
+import { ReactComponent as Brand } from "@assets/brand-images/brand.svg";
 import SearchBar from "./components/search-bar";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { forwardRef, useState } from "react";
 import { RootState } from "@/stores/store";
-import userSlice from "@/stores/slices/user-slice";
 import { useNavigate } from 'react-router-dom';
 import { useMediaQuery } from "@mui/material";
 import MenuModal from "./components/menu-modal";
 import { toggleMenuDrawer } from "@/stores/slices/ui-slice";
-import { ReactComponent as BurgerIcon } from "@assets/svg/burger.svg";
+import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
 import { LocationModal, LocationSection, UserSection } from "./components";
 import { ProfileModal } from "./components/profile-modal";
+import { userSlice } from "@/stores/slices";
 
 export const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) => {
   const firstName = useSelector((state: any) => state.user.firstName);

@@ -1,4 +1,4 @@
-import useFetch from "@/hooks/use-fetch";
+import { useFetch } from "@/hooks";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as BackArrow } from "@assets/svg/backbutton.svg"
+import { ReactComponent as BackArrow } from "@assets/svgs/backbutton.svg"
 import { Divider } from "@mui/material";
 
 export const Error = () => {

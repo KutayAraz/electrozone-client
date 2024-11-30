@@ -1,4 +1,4 @@
-import { ReactComponent as BasketSVG } from "@assets/svg/basket.svg";
+import { ReactComponent as BasketSVG } from "@assets/svgs/basket.svg";
 
 export const Basket = ({ itemCount }: any) => {
   return (

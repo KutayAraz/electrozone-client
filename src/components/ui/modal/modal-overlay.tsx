@@ -1,5 +1,5 @@
 import { CSSTransition } from "react-transition-group";
-import styles from "./CustomModal.module.scss";
+import styles from "./custom-modal.module.scss";
 
 type ModalOverlayProps = {
   children: React.ReactNode;

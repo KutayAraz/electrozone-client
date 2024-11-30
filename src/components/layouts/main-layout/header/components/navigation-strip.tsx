@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toggleMenuDrawer } from "@/stores/slices/ui-slice";
-import { ReactComponent as BurgerIcon } from "@assets/svg/burger.svg";
+import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
 
 export const NavigationStrip = ({ className, style = {} }: { className?: string, style?: React.CSSProperties }) => {
   const dispatch = useDispatch()

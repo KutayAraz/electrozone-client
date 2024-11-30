@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ReactComponent as HeartIcon } from "@assets/svg/wishlist-heart.svg";
+import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { displayAlert } from "@/stores/slices/alert-slice";

@@ -2,12 +2,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Scrollbar, A11y } from "swiper/modules"
 import 'swiper/css';
 import { useRef, useState } from 'react';
-import { ReactComponent as NavButton } from "@assets/svg/carousel-nav-button.svg";
-import SwiperProductCard from '@/components/ui/carousel/carousel-card';
-import { SwiperProductCardProps } from '@/common/SwiperProductCard/models';
+import { ReactComponent as NavButton } from "@assets/svgs/carousel-nav-button.svg";
 import { Swiper as SwiperType } from 'swiper/types';
+import { CarouselCard, CarouselCardProps } from '@/components/ui/carousel';
 
-const SuggestedProductCarousel = ({ products, className }: { products: SwiperProductCardProps[], className?: string }) => {
+export const SuggestedProductCarousel = ({ products, className }: { products: CarouselCardProps[], className?: string }) => {
     const prevRef = useRef<HTMLDivElement>(null);
     const nextRef = useRef<HTMLDivElement>(null);
     const [isBeginning, setIsBeginning] = useState(true);
@@ -54,9 +53,9 @@ const SuggestedProductCarousel = ({ products, className }: { products: SwiperPro
                     }}
                     className={`${className}`}
                 >
-                    {products.map((product: SwiperProductCardProps) => (
+                    {products.map((product: CarouselCardProps) => (
                         <SwiperSlide key={product.id}>
-                            <SwiperProductCard
+                            <CarouselCard
                                 id={product.id}
                                 productName={product.productName}
                                 brand={product.brand}
@@ -75,5 +74,3 @@ const SuggestedProductCarousel = ({ products, className }: { products: SwiperPro
         </div>
     );
 };
-
-export default SuggestedProductCarousel;

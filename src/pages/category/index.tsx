@@ -5,6 +5,7 @@ import loaderFetch from "@/utils/loader-fetch";
 import { SubcategoryProps } from "./components/models";
 import PageHelmet from "@/components/seo/page-helmet";
 import { formatString } from "@/utils/format-casing";
+import { Spinner } from "@/components/ui/spinner";
 
 export const CategoryPage = () => {
   const { category }: any = useLoaderData();
@@ -14,7 +15,7 @@ export const CategoryPage = () => {
     <>
       <PageHelmet title={`${formatString(params.category, "-")} | Electrozone`} description="Browse products by category to find exactly what you're looking for at Electrozone." />
       <div className="page-spacing">
-        <Suspense fallback={<p>Loading Category..</p>}>
+        <Suspense fallback={<Spinner />}>
           <Await resolve={category}>
             {(loadedCategory) =>
               loadedCategory.map((subcategory: SubcategoryProps, index: number) => (

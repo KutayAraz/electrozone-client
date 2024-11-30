@@ -20,7 +20,7 @@ import React from "react";
 import { Divider } from "@mui/material";
 import PageHelmet from "@/components/seo/page-helmet";
 
-const SuggestedProducts = React.lazy(() => import('./components/SuggestedProducts'));
+const SuggestedProducts = React.lazy(() => import("./components/suggested-products/"));
 
 export const ProductPage = () => {
   const { product, reviewsData, wishlisted, canCurrentUserReview }: any =
