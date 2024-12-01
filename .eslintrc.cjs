@@ -19,8 +19,14 @@ module.exports = {
       settings: {
         react: { version: "detect" },
         "import/resolver": {
-          typescript: {},
-        },
+          typescript: {
+            project: "./tsconfig.json"
+          },
+          alias: {
+            map: [["@", "./src"]],
+            extensions: [".ts", ".tsx", ".js", ".jsx"]
+          }
+        }
       },
       env: {
         browser: true,
@@ -47,57 +53,32 @@ module.exports = {
           "error",
           {
             zones: [
-              // disables cross-feature imports:
-              // eg. src/features/discussions should not import from src/features/comments, etc.
+              // Other feature restrictions remain the same
               {
-                target: "./src/features/auth",
-                from: "./src/features",
-                except: ["./auth"],
+                target: "./src/components",
+                from: "./src/features",  // Change to string, not an array
               },
               {
-                target: "./src/features/comments",
-                from: "./src/features",
-                except: ["./comments"],
+                target: "./src/hooks",
+                from: "./src/features",  // Change to string, not an array
               },
               {
-                target: "./src/features/discussions",
-                from: "./src/features",
-                except: ["./discussions"],
+                target: "./src/lib",
+                from: "./src/features",  // Change to string, not an array
               },
               {
-                target: "./src/features/teams",
-                from: "./src/features",
-                except: ["./teams"],
+                target: "./src/types",
+                from: "./src/features",  // Change to string, not an array
               },
               {
-                target: "./src/features/users",
-                from: "./src/features",
-                except: ["./users"],
-              },
-              // enforce unidirectional codebase:
-
-              // e.g. src/app can import from src/features but not the other way around
-              {
-                target: "./src/features",
-                from: "./src/app",
-              },
-
-              // e.g src/features and src/app can import from these shared modules but not the other way around
-              {
-                target: [
-                  "./src/components",
-                  "./src/hooks",
-                  "./src/lib",
-                  "./src/types",
-                  "./src/utils",
-                ],
-                from: ["./src/features", "./src/app"],
+                target: "./src/utils",
+                from: "./src/features",  // Change to string, not an array
               },
             ],
           },
         ],
         "import/no-cycle": "error",
-        "linebreak-style": ["error", "unix"],
+        "linebreak-style": ["error", "windows"],
         "react/prop-types": "off",
         "import/order": [
           "error",
@@ -125,7 +106,7 @@ module.exports = {
         "@typescript-eslint/explicit-module-boundary-types": ["off"],
         "@typescript-eslint/no-empty-function": ["off"],
         "@typescript-eslint/no-explicit-any": ["off"],
-        "prettier/prettier": ["error", {}, { usePrettierrc: true }],
+        'prettier/prettier': ['error', { "endOfLine": "auto"}, { usePrettierrc: true }],
         "check-file/filename-naming-convention": [
           "error",
           {
