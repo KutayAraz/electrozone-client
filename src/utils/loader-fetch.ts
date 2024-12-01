@@ -1,4 +1,5 @@
 import { store } from "@/stores/store";
+
 import fetchNewAccessToken from "./renew-token";
 
 export type FetchResponse<T = any> = {
@@ -17,9 +18,9 @@ const loaderFetch = async <T = any>(
   url: string,
   method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
   body?: any,
-  withAuth: boolean = false,
-  retry: boolean = true,
-  withCredentials: boolean = false,
+  withAuth = false,
+  retry = true,
+  withCredentials = false,
 ): Promise<FetchResponse<T>> => {
   const accessToken = store.getState().auth.accessToken;
   const headers: HeadersInit = {

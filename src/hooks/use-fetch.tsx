@@ -1,16 +1,15 @@
-import { displayAlert } from "@/stores/slices/alert-slice";
-import { RootState } from "@/stores/store";
-import fetchNewAccessToken from "@/utils/renew-token";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { RootState } from "@/stores/store";
+import fetchNewAccessToken from "@/utils/renew-token";
+
 export const useFetch = () => {
   const dispatch = useDispatch<any>();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>(
-    {}
-  );
+  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
 
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -19,9 +18,9 @@ export const useFetch = () => {
     url: string,
     method: "GET" | "POST" | "PATCH" | "DELETE" = "GET",
     body?: any,
-    withAuth: boolean = false,
-    withCredentials: boolean = false,
-    identifier: string = "default"
+    withAuth = false,
+    withCredentials = false,
+    identifier = "default",
   ) => {
     setLoadingStates((prev) => ({ ...prev, [identifier]: true }));
     setError(null);
@@ -48,10 +47,10 @@ export const useFetch = () => {
     try {
       let response = await doFetch(accessToken);
 
-      // If the response is 401, check the message and if isn't due to invalid credentials 
+      // If the response is 401, check the message and if isn't due to invalid credentials
       // try refreshing the token and retry the request
       if (response.status === 401) {
-        const result = await response.json()
+        const result = await response.json();
         if (result.message === "Invalid credentials") {
           setLoadingStates((prev) => ({ ...prev, [identifier]: false }));
           dispatch(
@@ -59,7 +58,7 @@ export const useFetch = () => {
               type: "error",
               message: "Invalid credentials. Please enter correct login information.",
               autoHide: true,
-            })
+            }),
           );
           return;
         } else {
@@ -78,7 +77,7 @@ export const useFetch = () => {
                 type: "error",
                 message: "Bad request.",
                 autoHide: true,
-              })
+              }),
             );
             break;
           case 401:
@@ -88,7 +87,7 @@ export const useFetch = () => {
                 type: "error",
                 message: "Your session has timed out. Please login again.",
                 autoHide: true,
-              })
+              }),
             );
             break;
           case 404:
@@ -97,7 +96,7 @@ export const useFetch = () => {
                 type: "error",
                 message: "404 Not Found.",
                 autoHide: true,
-              })
+              }),
             );
             break;
           default:
@@ -111,19 +110,18 @@ export const useFetch = () => {
     } catch (err: any) {
       setLoadingStates((prev) => ({ ...prev, [identifier]: false }));
       setError(err.message);
-      console.log("error is ", err)
+      console.log("error is ", err);
       dispatch(
         displayAlert({
           type: "error",
           message: "An error occurred. Please try again.",
           autoHide: true,
-        })
+        }),
       );
     }
   };
 
-  const isLoading = (identifier: string = "default") =>
-    loadingStates[identifier] || false;
+  const isLoading = (identifier = "default") => loadingStates[identifier] || false;
 
   return { fetchData, isLoading, error };
 };

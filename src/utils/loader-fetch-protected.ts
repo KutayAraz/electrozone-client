@@ -1,6 +1,7 @@
 import { setRedirectPath } from "@/stores/slices/redirect-slice";
-import loaderFetch from "./loader-fetch";
 import { store } from "@/stores/store";
+
+import loaderFetch from "./loader-fetch";
 
 export class UnauthorizedError extends Error {
   constructor(message?: string) {

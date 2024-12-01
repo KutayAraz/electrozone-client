@@ -1,20 +1,13 @@
-import { createApi, fetchBaseQuery, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
-import { clearCredentials } from "@/stores/slices";
+import { createApi, fetchBaseQuery, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+
+import { clearCredentials } from "@/stores/slices/user-slice";
 
 // Base query instance
 const baseQuery = fetchBaseQuery({
   baseUrl: "/api",
   credentials: "include", // Important for cookies
 });
-
-// Custom error type to help with typing
-interface CustomError {
-  data: {
-    message: string;
-  };
-  status: number;
-}
 
 // Enhanced base query with refresh token logic
 const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {

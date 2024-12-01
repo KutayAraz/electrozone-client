@@ -23,16 +23,13 @@ const inputStateReducer = (state: InputState, action: InputAction) => {
 };
 
 const useInput = (validateValue: (value: string) => boolean) => {
-  const [inputState, dispatch] = useReducer(
-    inputStateReducer,
-    initialInputState
-  );
+  const [inputState, dispatch] = useReducer(inputStateReducer, initialInputState);
 
   const valueIsValid = validateValue(inputState.value);
   const hasError = !valueIsValid && inputState.isTouched;
 
   const valueChangeHandler = (
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>,
   ) => {
     dispatch({ type: "INPUT", value: event.target.value });
   };
