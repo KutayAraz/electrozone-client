@@ -1,37 +1,36 @@
+import { useMediaQuery } from "@mui/material";
+import { forwardRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+import { toggleMenuDrawer } from "@/stores/slices/ui-slice";
+import { userSlice } from "@/stores/slices/user-slice";
+import { RootState } from "@/stores/store";
 import { ReactComponent as BrandLogo } from "@assets/brand-images/brand-logo.svg";
 import { ReactComponent as Brand } from "@assets/brand-images/brand.svg";
-import SearchBar from "./components/search-bar";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import { forwardRef, useState } from "react";
-import { RootState } from "@/stores/store";
-import { useNavigate } from 'react-router-dom';
-import { useMediaQuery } from "@mui/material";
-import MenuModal from "./components/menu-modal";
-import { toggleMenuDrawer } from "@/stores/slices/ui-slice";
 import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
-import { LocationModal, LocationSection, UserSection } from "./components";
+
+import { LocationModal } from "./components/location-modal";
+import { LocationSection } from "./components/location-section";
+import MenuModal from "./components/menu-modal";
 import { ProfileModal } from "./components/profile-modal";
-import { userSlice } from "@/stores/slices";
+import { SearchBar } from "./components/search-bar";
+import { UserSection } from "./components/user-section";
 
 export const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) => {
   const firstName = useSelector((state: any) => state.user.firstName);
   const city = useSelector((state: any) => state.user.city);
   const dispatch = useDispatch();
-  const isMenuDrawerOpen = useSelector((state: RootState) => state.ui.menuDrawer)
+  const isMenuDrawerOpen = useSelector((state: RootState) => state.ui.menuDrawer);
   const isSignedIn = firstName && city;
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const smallScreenDevice = useMediaQuery("(max-width: 400px)");
 
-  const localCartQuantity = useSelector(
-    (state: RootState) => state.localCart.totalQuantity
-  );
+  const localCartQuantity = useSelector((state: RootState) => state.localCart.totalQuantity);
 
-  const cartQuantity = useSelector(
-    (state: RootState) => state.user.cartItemCount
-  );
+  const cartQuantity = useSelector((state: RootState) => state.user.cartItemCount);
 
   const itemCount = isSignedIn ? cartQuantity : localCartQuantity;
 
@@ -42,13 +41,20 @@ export const Header = forwardRef<HTMLDivElement, { className: string }>((props, 
 
   return (
     <div ref={ref} className={props.className}>
-      <div className={`flex justify-between w-full text-white items-center px-2 py-[5px] sm:py-0 bg-theme-blue `}>
+      <div
+        className={`flex w-full items-center justify-between bg-theme-blue px-2 py-[5px] text-white sm:py-0 `}
+      >
         <div className="flex items-center">
-          <BurgerIcon className="block sm:hidden z-20" width={32} height={32} onClick={() => dispatch(toggleMenuDrawer(true))} />
-          <Link to={"/"} className="max-w-[60%] mb-1 flex items-center min-w-[136px] sm:hidden">
+          <BurgerIcon
+            className="z-20 block sm:hidden"
+            width={32}
+            height={32}
+            onClick={() => dispatch(toggleMenuDrawer(true))}
+          />
+          <Link to={"/"} className="mb-1 flex min-w-[136px] max-w-[60%] items-center sm:hidden">
             <Brand className="" />
           </Link>
-          <Link to={"/"} className="hidden sm:block max-w-[256px]">
+          <Link to={"/"} className="hidden max-w-[256px] sm:block">
             <BrandLogo />
           </Link>
           <LocationSection
@@ -57,7 +63,7 @@ export const Header = forwardRef<HTMLDivElement, { className: string }>((props, 
             onLocationClick={() => setIsLocationModalOpen(true)}
           />
         </div>
-        <SearchBar className="hidden md:flex h-10 mx-[3%] md:flex-grow max-w-[50%] text-gray-700" />
+        <SearchBar className="mx-[3%] hidden h-10 max-w-[50%] text-gray-700 md:flex md:grow" />
         <UserSection
           firstName={firstName}
           isSignedIn={isSignedIn}
@@ -68,7 +74,7 @@ export const Header = forwardRef<HTMLDivElement, { className: string }>((props, 
         />
       </div>
       <div className="px-2">
-        <SearchBar className={`md:hidden h-8 w-full mb-2 my-1 text-gray-700`} />
+        <SearchBar className={`my-1 mb-2 h-8 w-full text-gray-700 md:hidden`} />
       </div>
 
       <LocationModal
@@ -87,3 +93,5 @@ export const Header = forwardRef<HTMLDivElement, { className: string }>((props, 
     </div>
   );
 });
+
+Header.displayName = "Header";

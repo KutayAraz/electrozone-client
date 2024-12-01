@@ -1,4 +1,5 @@
 import { CSSTransition } from "react-transition-group";
+
 import styles from "./custom-modal.module.scss";
 
 type ModalOverlayProps = {
@@ -14,23 +15,26 @@ type ModalOverlayProps = {
   transitionDuration: number;
   transitionType: string;
   className?: string;
-}
+  role?: string;
+  "aria-modal"?: string;
+  "aria-label"?: string;
+  tabIndex?: number;
+};
 
 export const ModalOverlay = ({
   children,
   isOpen,
-  widthClass = '',
-  topClass = '',
-  bottomClass = '',
-  leftClass = '',
-  rightClass = '',
-  heightClass = '',
+  widthClass = "",
+  topClass = "",
+  bottomClass = "",
+  leftClass = "",
+  rightClass = "",
+  heightClass = "",
   direction,
   transitionDuration,
   transitionType,
   className,
 }: ModalOverlayProps) => {
-
   const classNames = {
     enter: styles[`modal-enter-${direction}-${transitionType}`],
     enterActive: styles[`modal-enter-active-${direction}-${transitionType}`],
@@ -39,12 +43,7 @@ export const ModalOverlay = ({
   };
 
   return (
-    <CSSTransition
-      in={isOpen}
-      timeout={transitionDuration}
-      classNames={classNames}
-      unmountOnExit
-    >
+    <CSSTransition in={isOpen} timeout={transitionDuration} classNames={classNames} unmountOnExit>
       <div
         className={` 
           ${styles.modal} 
@@ -61,5 +60,4 @@ export const ModalOverlay = ({
       </div>
     </CSSTransition>
   );
-}
-
+};

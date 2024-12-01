@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 
-const FooterMenu = () => {
-  const elementClasses =
-    "hover:underline block focus:underline";
+export const FooterMenu = () => {
+  const elementClasses = "hover:underline block focus:underline";
 
   return (
-    <div className="flex justify-center items-center text-center m-2">
+    <div className="m-2 flex items-center justify-center text-center">
       <div>
         <Link to="/project-details" className={elementClasses}>
           About the Project
@@ -17,5 +16,3 @@ const FooterMenu = () => {
     </div>
   );
 };
-
-export default FooterMenu;

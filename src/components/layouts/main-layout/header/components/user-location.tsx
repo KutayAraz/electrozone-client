@@ -1,13 +1,14 @@
-import { ReactComponent as LocationIcon } from "@assets/svgs/location.svg";
 import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
+import { CustomModal } from "@/components/ui/modal/custom-modal";
+import { userSlice } from "@/stores/slices/user-slice";
 import { RootState } from "@/stores/store";
 import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
-import { CustomModal } from "@/components/ui/modal/custom-modal";
-import { userSlice } from "@/stores/slices";
+import { ReactComponent as LocationIcon } from "@assets/svgs/location.svg";
 
-const UserLocation = () => {
+export const UserLocation = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const locationInput = useRef<HTMLInputElement>(null);
@@ -15,33 +16,22 @@ const UserLocation = () => {
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   const handleLocation = () => {
-    if (
-      !locationInput.current ||
-      locationInput.current.value.trim().length < 2
-    ) {
+    if (!locationInput.current || locationInput.current.value.trim().length < 2) {
       return;
     }
-    dispatch(
-      userSlice.actions.setGuestLocation({ city: locationInput.current?.value })
-    );
+    dispatch(userSlice.actions.setGuestLocation({ city: locationInput.current?.value }));
     setIsModalOpen(false);
   };
 
   return (
-    <div className="sm:hidden bg-[#3a4791] py-[5px]">
+    <div className="bg-[#3a4791] py-[5px] sm:hidden">
       {isSignedIn ? (
-        <label
-          htmlFor="userLocation"
-          className="text-white pl-[10px] flex w-full"
-        >
+        <label htmlFor="userLocation" className="flex w-full pl-[10px] text-white">
           Currently delivering to {userLocation}
         </label>
       ) : (
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="text-white pl-[10px] flex w-full"
-        >
-          <LocationIcon className="w-6 h-6 stroke-white" />
+        <button onClick={() => setIsModalOpen(true)} className="flex w-full pl-[10px] text-white">
+          <LocationIcon className="size-6 stroke-white" />
           Select your location
         </button>
       )}
@@ -56,32 +46,30 @@ const UserLocation = () => {
         leftClass="left-0"
         transitionType="slide"
         transitionDuration={300}
+        ariaLabel="User Location Modal"
       >
         <CloseButton
-          className="absolute top-4 right-4 cursor-pointer w-6 h-6 stroke-gray-500"
+          className="absolute right-4 top-4 size-6 cursor-pointer stroke-gray-500"
           onClick={() => setIsModalOpen(false)}
         />
-        <div className="flex flex-col text-center mx-auto my-6 w-[80%]">
-          <h2 className="text-xl font-[500] mt-4 mb-2">Choose your location</h2>
-          <Link
-            to="/sign-in"
-            className="bg-[#febd69] rounded-lg font-[500] py-2 my-1"
-          >
+        <div className="mx-auto my-6 flex w-4/5 flex-col text-center">
+          <h2 className="mb-2 mt-4 text-xl font-[500]">Choose your location</h2>
+          <Link to="/sign-in" className="my-1 rounded-lg bg-theme-orange py-2 font-[500]">
             Sign in to see your address
           </Link>
-          <p className="text-center my-2">or</p>
-          <label className="font-[500] mb-1 text-xl">
+          <p className="my-2 text-center">or</p>
+          <label className="mb-1 text-xl font-[500]">
             {userLocation ? "Change your city" : "Enter your city"}
           </label>
           <input
             type="text"
-            className="border-2 rounded-lg border-[#3a4791] py-1"
+            className="rounded-lg border-2 border-[#3a4791] py-1"
             ref={locationInput}
           />
           <button
             onClick={handleLocation}
             type="submit"
-            className="bg-[#febd69] rounded-lg w-[50%] mx-auto my-3 py-2 font-[500]"
+            className="mx-auto my-3 w-[50%] rounded-lg bg-theme-orange py-2 font-[500]"
           >
             Apply
           </button>
@@ -90,5 +78,3 @@ const UserLocation = () => {
     </div>
   );
 };
-
-export default UserLocation;

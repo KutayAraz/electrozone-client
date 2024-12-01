@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
+
 import { Backdrop } from "./backdrop";
 import { ModalOverlay } from "./modal-overlay";
 
@@ -18,7 +19,8 @@ type CustomModalProps = {
   isOpen: boolean;
   onClose: () => void;
   className?: string;
-}
+  ariaLabel: string; // New prop for accessibility
+};
 
 export const CustomModal = ({
   onClose,
@@ -34,32 +36,33 @@ export const CustomModal = ({
   autoCloseDuration,
   transitionType,
   transitionDuration = 300,
-  className
+  className,
+  ariaLabel,
 }: CustomModalProps) => {
   const location = useLocation();
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     onClose();
-  }, [location]);
+  }, [location, onClose]);
 
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         onClose();
       }
     };
 
     // Attach the event listener
     if (isOpen) {
-      window.addEventListener('keydown', handleEscapeKey);
+      window.addEventListener("keydown", handleEscapeKey);
     }
 
     // Detach the event listener on cleanup
     return () => {
-      window.removeEventListener('keydown', handleEscapeKey);
+      window.removeEventListener("keydown", handleEscapeKey);
     };
   }, [isOpen, onClose]);
-
 
   useEffect(() => {
     // Disable scrolling on the main page when the modal is open
@@ -80,10 +83,21 @@ export const CustomModal = ({
     };
   }, [isOpen, autoCloseDuration, onClose]);
 
+  useEffect(() => {
+    // Focus the modal when it opens
+    if (isOpen && modalRef.current) {
+      modalRef.current.focus();
+    }
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && <Backdrop onClose={onClose} />}
       <ModalOverlay
+        role="dialog"
+        aria-modal="true"
+        aria-label={ariaLabel}
+        tabIndex={-1}
         isOpen={isOpen}
         widthClass={widthClass}
         heightClass={heightClass}

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+
 import { ReactComponent as SearchIcon } from "@assets/svgs/search.svg";
 
-const SearchBar = ({ className }: { className?: string }) => {
+export const SearchBar = ({ className }: { className?: string }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const getQueryFromLocation = () => {
-    return new URLSearchParams(location.search).get('query') || '';
+    return new URLSearchParams(location.search).get("query") || "";
   };
 
   const [query, setQuery] = useState(getQueryFromLocation());
@@ -37,16 +38,11 @@ const SearchBar = ({ className }: { className?: string }) => {
         onChange={(e) => setQuery(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Search Electrozone"
-        className={`rounded-md w-full pl-3 pr-10 h-full focus:outline-none focus:ring-1 focus:ring-gray-500`}
+        className={`size-full rounded-md pl-3 pr-10 focus:outline-none focus:ring-1 focus:ring-gray-500`}
       />
-      <button
-        onClick={handleSearch}
-        className="absolute inset-y-0 right-0 flex items-center"
-      >
-        <SearchIcon className="p-2 w-auto h-full bg-theme-orange rounded-md hover:bg-orange-400" />
+      <button onClick={handleSearch} className="absolute inset-y-0 right-0 flex items-center">
+        <SearchIcon className="h-full w-auto rounded-md bg-theme-orange p-2 hover:bg-orange-400" />
       </button>
     </div>
   );
 };
-
-export default SearchBar;
