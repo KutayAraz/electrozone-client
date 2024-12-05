@@ -1,34 +1,36 @@
-import { CheckoutIntent } from "@/stores/slices/models";
-import { RootState, store } from "@/stores/store";
-import { checkHydration } from "@/utils/check-hydration";
+import { Divider } from "@mui/material";
 import { Suspense, useState } from "react";
-import {
-  useLoaderData,
-  Await,
-  defer,
-  useNavigate,
-  redirect,
-} from "react-router-dom";
-import CheckoutProductCard from "./components/CheckoutProductCard";
-import UserCard from "./components/UserCard";
 import { useDispatch, useSelector } from "react-redux";
+import { useLoaderData, Await, defer, useNavigate, redirect } from "react-router-dom";
+
+import { useFetch } from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
 import { clearbuyNowCart } from "@/stores/slices/buynow-cart-slice";
 import { clearLocalcart } from "@/stores/slices/local-cart-slice";
+import { CheckoutIntent } from "@/stores/slices/models";
 import { setUserIntent } from "@/stores/slices/user-slice";
+import { RootState, store } from "@/stores/store";
+import { checkHydration } from "@/utils/check-hydration";
+import { UnauthorizedError, loaderFetchProtected } from "@/utils/loader-fetch-protected";
 import { ReactComponent as BrandIcon } from "@assets/brand-images/brand.svg";
 import { ReactComponent as BackButton } from "@assets/svgs/backbutton.svg";
-import { displayAlert } from "@/stores/slices/alert-slice";
-import {
-  UnauthorizedError,
-  loaderFetchProtected,
-} from "@/utils/loader-fetch-protected";
-import { Divider } from "@mui/material";
-import { useFetch } from "@/hooks";
+
+import { CheckoutProductCard } from "./components/checkout-product-card";
+import { UserCard } from "./components/user-card";
+
+type CheckoutProductCardProps = {
+  id: number;
+  productName: string;
+  brand: string;
+  thumbnail: string;
+  quantity: number;
+  price: number;
+};
 
 export const Checkout = () => {
   const { cartData, user }: any = useLoaderData();
   const [showModal, setShowModal] = useState(false);
-  const [checkoutItems, setCheckoutItems] = useState<any>(cartData);
+  const [checkoutItems] = useState<any>(cartData);
   const userIntent = useSelector((state: RootState) => state.user.userIntent);
   const navigate = useNavigate();
   const dispatch = useDispatch<any>();
@@ -44,7 +46,7 @@ export const Checkout = () => {
       `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
       "PATCH",
       productsToOrder,
-      true
+      true,
     );
 
     if (result?.response.ok) {
@@ -63,17 +65,12 @@ export const Checkout = () => {
   };
 
   const handleOrderPlacement = async () => {
-    const productsToOrder = checkoutItems.cartItems.map((item: any) => ({
-      productId: item.id,
-      quantity: item.quantity,
-    }));
-
     const result = await fetchData(
       `${import.meta.env.VITE_API_URL}/order/process-order`,
       "POST",
       null,
       true,
-      true
+      true,
     );
 
     if (result?.response.ok) {
@@ -83,7 +80,7 @@ export const Checkout = () => {
           type: "success",
           message: `Your order with ${orderId} has been successfully placed`,
           autoHide: true,
-        })
+        }),
       );
       if (userIntent !== CheckoutIntent.NORMAL) {
         dispatch(setUserIntent(CheckoutIntent.NORMAL));
@@ -107,27 +104,25 @@ export const Checkout = () => {
 
   return (
     <div className="bg-gray-100 ">
-      <div className="max-w-screen-xl mx-auto bg-white px-2 py-4">
+      <div className="mx-auto max-w-screen-xl bg-white px-2 py-4">
         <button onClick={handleBackToHome} className="mb-6 w-full">
-          <BrandIcon className="w-72 h-auto rounded-lg shadow-md transition-transform transform hover:scale-105" />
+          <BrandIcon className="h-auto w-72 rounded-lg shadow-md transition-transform hover:scale-105" />
         </button>
 
         {showModal && (
-          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
-            <div className="bg-white p-8 rounded-xl shadow-lg">
-              <p className="mb-4 text-lg">
-                Do you want to add these items to your cart?
-              </p>
+          <div className="fixed left-0 top-0 z-50 flex size-full items-center justify-center">
+            <div className="rounded-xl bg-white p-8 shadow-lg">
+              <p className="mb-4 text-lg">Do you want to add these items to your cart?</p>
               <div className="flex space-x-4">
                 <button
                   onClick={addToCartAndNavigate}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors"
+                  className="rounded-md bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
                 >
                   Yes, Add to Cart
                 </button>
                 <button
                   onClick={justNavigate}
-                  className="bg-gray-300 text-black px-4 py-2 rounded-md hover:bg-gray-400 transition-colors"
+                  className="rounded-md bg-gray-300 px-4 py-2 text-black transition-colors hover:bg-gray-400"
                 >
                   No, Thanks
                 </button>
@@ -136,51 +131,43 @@ export const Checkout = () => {
           </div>
         )}
         <Divider flexItem />
-        <button
-          onClick={handleBackToHome}
-          className="block  hover:bg-gray-200 rounded-md py-2"
-        >
-          <BackButton className="w-[1.75rem] mr-2 h-auto inline" />
+        <button onClick={handleBackToHome} className="block  rounded-md py-2 hover:bg-gray-200">
+          <BackButton className="mr-2 inline h-auto w-7" />
           Go back
         </button>
         <Divider flexItem />
 
-        <div className="flex flex-col sm:flex-row sm:justify-between space-y-2 sm:space-x-2 mt-2">
-          <div className="max-w-screen-md flex-grow">
+        <div className="mt-2 flex flex-col space-y-2 sm:flex-row sm:justify-between sm:space-x-2">
+          <div className="max-w-screen-md grow">
             <Suspense fallback={<p>Loading...</p>}>
-              <Await
-                resolve={user}
-                children={(user) => (
-                  <UserCard
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                    email={user.email}
-                    address={user.address}
-                    city={user.city}
-                  />
-                )}
-              />
-              <div className="space-y-4 mt-6 max-w-screen-md flex-grow">
-                {checkoutItems.cartItems.map(
-                  (product: CheckoutProductCardProps) => {
-                    return (
-                      <CheckoutProductCard
-                        key={product.id}
-                        id={product.id}
-                        productName={product.productName}
-                        brand={product.brand}
-                        thumbnail={product.thumbnail}
-                        price={product.price}
-                        quantity={product.quantity}
-                      />
-                    );
-                  }
-                )}
+              <Await resolve={user}>
+                <UserCard
+                  firstName={user.firstName}
+                  lastName={user.lastName}
+                  email={user.email}
+                  address={user.address}
+                  city={user.city}
+                />
+              </Await>
+              <div className="mt-6 max-w-screen-md grow space-y-4">
+                {checkoutItems.cartItems.map((product: CheckoutProductCardProps) => {
+                  return (
+                    <CheckoutProductCard
+                      key={product.id}
+                      id={product.id}
+                      productName={product.productName}
+                      brand={product.brand}
+                      thumbnail={product.thumbnail}
+                      price={product.price}
+                      quantity={product.quantity}
+                    />
+                  );
+                })}
               </div>
             </Suspense>
           </div>
-          <div className="flex flex-col flex-1 bg-white px-4 py-4 rounded-md shadow-md font-[500] mt-4 md:mt-0 md:ml-5 md:max-w-sm min-w-[300px]">
-            <h4 className="text-lg underline leading-8">Order Summary:</h4>
+          <div className="mt-4 flex min-w-[300px] flex-1 flex-col rounded-md bg-white p-4 font-[500] shadow-md md:ml-5 md:mt-0 md:max-w-sm">
+            <h4 className="text-lg leading-8 underline">Order Summary:</h4>
             <table>
               <tbody className="[&_tr]:leading-8">
                 <tr>
@@ -189,18 +176,18 @@ export const Checkout = () => {
                 </tr>
                 <tr>
                   <td>Shipping:</td>
-                  <td className="italic font-NORMAL text-right">
-                    Free Shipping
-                  </td>
+                  <td className="text-right font-normal italic">Free Shipping</td>
                 </tr>
                 <tr>
                   <td>Products: </td>
                   <td className="text-right">${cartData.cartTotal}</td>
                 </tr>
                 <tr>
-                  <td><Divider /></td>
+                  <td>
+                    <Divider />
+                  </td>
                 </tr>
-                <tr className="text-black text-lg [&_td]:pt-3">
+                <tr className="text-lg text-black [&_td]:pt-3">
                   <td>Total:</td>
                   <td className="text-right">${cartData.cartTotal}</td>
                 </tr>
@@ -209,13 +196,14 @@ export const Checkout = () => {
 
             <button
               onClick={handleOrderPlacement}
-              className={`${isLoading("default")
-                ? "bg-[gray-300]"
-                : "bg-theme-orange hover:bg-orange-400"
-                }  text-white px-6 py-2 mt-2 rounded-md shadow-md transition-colors flex`}
+              className={`${
+                isLoading("default") ? "bg-[gray-300]" : "bg-theme-orange hover:bg-orange-400"
+              }  mt-2 flex rounded-md px-6 py-2 text-white shadow-md transition-colors`}
               disabled={isLoading("default")}
             >
-              <p className="mx-auto">{isLoading("default") ? "Placing order.." : "Confirm Order"}</p>
+              <p className="mx-auto">
+                {isLoading("default") ? "Placing order.." : "Confirm Order"}
+              </p>
             </button>
           </div>
         </div>
@@ -233,18 +221,14 @@ async function getCartInfo(request: any) {
     `${import.meta.env.VITE_API_URL}/order/initiate-checkout`,
     "POST",
     request,
-    { checkoutType: CheckoutIntent.NORMAL },
-    true
+    { checkoutType: userIntent },
+    true,
   );
 }
 
 async function getUserInfo(request: any) {
   await checkHydration(store);
-  return await loaderFetchProtected(
-    `${import.meta.env.VITE_API_URL}/user/profile`,
-    "GET",
-    request
-  );
+  return await loaderFetchProtected(`${import.meta.env.VITE_API_URL}/user/profile`, "GET", request);
 }
 
 export async function loader({ request }: any) {

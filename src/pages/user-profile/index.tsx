@@ -1,17 +1,15 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { defer, redirect, useLoaderData } from "react-router-dom";
+import * as yup from "yup";
+
+import { useFetch } from "@/hooks/use-fetch";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { updateUserInfo } from "@/stores/slices/user-slice";
 import { RootState } from "@/stores/store";
-import {
-  UnauthorizedError,
-  loaderFetchProtected,
-} from "@/utils/loader-fetch-protected";
-import { useDispatch, useSelector } from "react-redux";
-import { defer, redirect, useLoaderData } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { useState } from "react";
-import { useFetch } from "@/hooks";
+import { UnauthorizedError, loaderFetchProtected } from "@/utils/loader-fetch-protected";
 
 interface UpdateProfileInputs {
   email?: string | null;
@@ -25,32 +23,20 @@ const schema = yup.object({
     .string()
     .nullable()
     .notRequired()
-    .test(
-      "address-test",
-      "Please enter a valid address",
-      (value) => !value || value.length >= 3
-    ),
+    .test("address-test", "Please enter a valid address", (value) => !value || value.length >= 3),
   city: yup
     .string()
     .nullable()
     .notRequired()
-    .test(
-      "city-test",
-      "Please enter a valid city",
-      (value) => !value || value.length >= 2
-    ),
+    .test("city-test", "Please enter a valid city", (value) => !value || value.length >= 2),
 });
 
 export const UserProfile = () => {
   const dispatch = useDispatch<any>();
   const { userInfo }: any = useLoaderData();
   const cityFromStore = useSelector((state: RootState) => state.user.city);
-  const [emailPlaceholder, setEmailPlaceholder] = useState(
-    userInfo.email || ""
-  );
-  const [addressPlaceholder, setAddressPlaceholder] = useState(
-    userInfo.address || ""
-  );
+  const [emailPlaceholder, setEmailPlaceholder] = useState(userInfo.email || "");
+  const [addressPlaceholder, setAddressPlaceholder] = useState(userInfo.address || "");
   const [cityPlaceholder, setCityPlaceholder] = useState(cityFromStore || "");
   const { fetchData } = useFetch();
 
@@ -70,15 +56,17 @@ export const UserProfile = () => {
 
   const onSubmit = async (data: UpdateProfileInputs) => {
     const filteredData = Object.fromEntries(
-      Object.entries(data).filter(([_, value]) => value && value.trim() !== "")
+      Object.entries(data).filter(([value]) => value && value.trim() !== ""),
     );
 
     if (Object.keys(filteredData).length === 0) {
-      dispatch(displayAlert({
-        type: "warning",
-        message: "No changes to update.",
-        autoHide: true,
-      }));
+      dispatch(
+        displayAlert({
+          type: "warning",
+          message: "No changes to update.",
+          autoHide: true,
+        }),
+      );
       return;
     }
 
@@ -86,7 +74,7 @@ export const UserProfile = () => {
       `${import.meta.env.VITE_API_URL}/user/profile`,
       "PATCH",
       filteredData,
-      true
+      true,
     );
 
     if (result?.response.ok) {
@@ -96,7 +84,7 @@ export const UserProfile = () => {
           type: "success",
           message: "Your information has been successfully updated.",
           autoHide: true,
-        })
+        }),
       );
       if (data.email) setEmailPlaceholder(data.email);
       if (data.address) setAddressPlaceholder(data.address);
@@ -112,7 +100,7 @@ export const UserProfile = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col max-w-md mx-2 xs:mx-auto p-6 bg-white shadow-md rounded-xl my-4">
+      <div className="mx-2 my-4 flex max-w-md flex-col rounded-xl bg-white p-6 shadow-md xs:mx-auto">
         <h2 className="text-lg font-semibold text-gray-800">My Profile:</h2>
         <label htmlFor="email" className={labelClasses}>
           Email
@@ -123,11 +111,8 @@ export const UserProfile = () => {
           type="text"
           placeholder={emailPlaceholder}
           className={inputClasses}
-
         />
-        {errors.email && (
-          <p className={errorMessageClasses}>{errors.email.message}</p>
-        )}
+        {errors.email && <p className={errorMessageClasses}>{errors.email.message}</p>}
 
         <label htmlFor="address" className={labelClasses}>
           Address
@@ -139,9 +124,7 @@ export const UserProfile = () => {
           placeholder={addressPlaceholder}
           className={inputClasses}
         />
-        {errors.address && (
-          <p className={errorMessageClasses}>{errors.address.message}</p>
-        )}
+        {errors.address && <p className={errorMessageClasses}>{errors.address.message}</p>}
 
         <label htmlFor="city" className={labelClasses}>
           City/State
@@ -153,14 +136,12 @@ export const UserProfile = () => {
           placeholder={cityPlaceholder}
           className={inputClasses}
         />
-        {errors.city && (
-          <p className={errorMessageClasses}>{errors.city.message}</p>
-        )}
+        {errors.city && <p className={errorMessageClasses}>{errors.city.message}</p>}
 
         <button
           type="submit"
           aria-label="Update Profile"
-          className="bg-theme-blue hover:bg-[#A34393] rounded-lg font-[500] text-white max-w-[50%] my-2 mx-auto px-4 py-2"
+          className="mx-auto my-2 max-w-[50%] rounded-lg bg-theme-blue px-4 py-2 font-[500] text-white hover:bg-theme-purple"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Updating..." : "Update Profile"}
@@ -175,7 +156,7 @@ export const loader = async (request: any) => {
     const userInfo = await loaderFetchProtected(
       `${import.meta.env.VITE_API_URL}/user/profile`,
       "GET",
-      request.request
+      request.request,
     );
 
     return defer({

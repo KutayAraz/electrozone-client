@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import { ReactComponent as BackArrow } from "@assets/svgs/backbutton.svg"
 import { Divider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+
+import { ReactComponent as BackArrow } from "@assets/svgs/backbutton.svg";
 
 export const Error = () => {
   const navigate = useNavigate();
@@ -12,14 +13,12 @@ export const Error = () => {
         <p className="text-lg">The page you are looking for does not exist.</p>
       </div>
       <Divider />
-      <button
-        onClick={() => navigate(-1)}
-        className="underline text-theme-blue flex mx-auto"
-      >
-        <span><BackArrow className="w-6 h-auto" /></span>
+      <button onClick={() => navigate(-1)} className="mx-auto flex text-theme-blue underline">
+        <span>
+          <BackArrow className="h-auto w-6" />
+        </span>
         Go back
       </button>
     </div>
-
   );
 };

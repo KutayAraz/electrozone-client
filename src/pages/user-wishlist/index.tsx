@@ -1,19 +1,16 @@
 import { Suspense, useState } from "react";
 import { defer, redirect, useLoaderData } from "react-router-dom";
-import {
-  UnauthorizedError,
-  loaderFetchProtected,
-} from "@/utils/loader-fetch-protected";
-import ProductCard from "@/components/ui/product-card/product-card";
 
-const UserWishlist = () => {
+import { ProductCard } from "@/components/ui/product-card/product-card";
+import { loaderFetchProtected, UnauthorizedError } from "@/utils/loader-fetch-protected";
+
+export const UserWishlist = () => {
   const { wishlistedProducts }: any = useLoaderData();
-  const [wishlistProducts, setWishlistProducts] =
-    useState<any>(wishlistedProducts);
+  const [wishlistProducts, setWishlistProducts] = useState<any>(wishlistedProducts);
 
   const handleRemove = async (id: number) => {
     setWishlistProducts((prevProducts: any) =>
-      prevProducts.filter((product: any) => product.id !== id)
+      prevProducts.filter((product: any) => product.id !== id),
     );
   };
 
@@ -21,11 +18,9 @@ const UserWishlist = () => {
     <div className="page-spacing">
       <Suspense fallback={<p>Loading...</p>}>
         <>
-          <h4 className="font-bold text-xl pl-2">My Wishlist</h4>
+          <h4 className="pl-2 text-xl font-bold">My Wishlist</h4>
           {wishlistProducts.length === 0 ? (
-            <h4 className="text-gray-500 italic text-xl">
-              There's nothing in your wishlist.
-            </h4>
+            <h4 className="text-xl italic text-gray-500">There&apos;s nothing in your wishlist.</h4>
           ) : (
             <div className="flex flex-wrap">
               {wishlistProducts.map((product: any) => {
@@ -50,18 +45,15 @@ const UserWishlist = () => {
         </>
       </Suspense>
     </div>
-
   );
 };
-
-export default UserWishlist;
 
 export const loader = async (request: any) => {
   try {
     const wishlistedProducts = await loaderFetchProtected(
       `${import.meta.env.VITE_API_URL}/user/wishlist`,
       "GET",
-      request.request
+      request.request,
     );
     return defer({
       wishlistedProducts,

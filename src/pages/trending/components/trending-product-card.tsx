@@ -1,8 +1,18 @@
 import { Rating } from "@mui/material";
-import { ProductCardProps } from "./models";
 import { Link } from "react-router-dom";
 
-const ProductCard = ({
+type TrendingProductCardProps = {
+  id: number;
+  productName: string;
+  brand: string;
+  thumbnail: string;
+  price: number;
+  averageRating: string;
+  subcategory: string;
+  category: string;
+};
+
+export const TrendingProductCard = ({
   subcategory,
   id,
   thumbnail,
@@ -10,19 +20,15 @@ const ProductCard = ({
   averageRating,
   price,
   category,
-}: ProductCardProps) => {
+}: TrendingProductCardProps) => {
   return (
-    <div className="product-card w-1/2 sm:w-1/3 md:w-1/4 px-2 text-center items-center mb-2 ">
+    <div className="mb-2 w-1/2 items-center px-2 text-center sm:w-1/3 md:w-1/4 ">
       <Link
         to={`/category/${category}/${subcategory + "/" + id}`}
-        className="border-1 border-gray-300 rounded-md shadow-md hover:bg-gray-100 h-full px-4 pt-4 pb-2 flex flex-col "
+        className="flex h-full flex-col rounded-md border-1 border-gray-300 px-4 pb-2 pt-4 shadow-md hover:bg-gray-100 "
       >
         <div>
-          <img
-            src={thumbnail}
-            alt={`image for ${productName}`}
-            className="w-56 h-56 object-contain mx-auto"
-          />
+          <img src={thumbnail} alt={productName} className="mx-auto size-56 object-contain" />
         </div>
         <div>
           <Rating
@@ -38,5 +44,3 @@ const ProductCard = ({
     </div>
   );
 };
-
-export default ProductCard;

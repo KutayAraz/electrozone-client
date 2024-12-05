@@ -1,32 +1,42 @@
-import { Link } from "react-router-dom";
-import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
-import { useState } from "react";
 import { Divider, Rating } from "@mui/material";
-import { WishlistProductCardProps } from "./models";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/stores/store";
+import { Link } from "react-router-dom";
+
+import { useFetch } from "@/hooks/use-fetch";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { addItemToCart } from "@/stores/slices/local-cart-slice";
 import { updateCartItemCount } from "@/stores/slices/user-slice";
-import { ref } from "yup";
+import { RootState } from "@/stores/store";
 import { truncateString } from "@/utils/truncate-string";
-import { useFetch } from "@/hooks";
+import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
 
-const WishlistProductCard = ({
+type WishlistProductCardProps = {
+  id: number;
+  productName: string;
+  brand: string;
+  thumbnail: string;
+  price: number;
+  averageRating: number;
+  stock: number;
+  subcategory: string;
+  category: string;
+  onAddToCart: (id: number, e: React.MouseEvent) => void;
+  onRemoveFromWishlist: (id: number) => void;
+};
+
+export const WishlistProductCard = ({
   id,
   productName,
   brand,
   thumbnail,
   price,
   averageRating,
-  stock,
   subcategory,
   category,
-  onAddToCart,
   onRemoveFromWishlist,
 }: WishlistProductCardProps) => {
   const [isClicked, setIsClicked] = useState(false);
-  const [isAddToCartClicked, setIsAddToCartClicked] = useState(false);
 
   const dispatch = useDispatch<any>();
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
@@ -43,12 +53,10 @@ const WishlistProductCard = ({
         { productId: id, quantity: 1 },
         true,
         false,
-        "addToCart"
+        "addToCart",
       );
       if (result?.response.ok)
-        dispatch(
-          updateCartItemCount({ cartItemCount: result.data.totalQuantity })
-        );
+        dispatch(updateCartItemCount({ cartItemCount: result.data.totalQuantity }));
     } else {
       dispatch(addItemToCart({ id, quantity: 1 }));
     }
@@ -58,7 +66,7 @@ const WishlistProductCard = ({
         type: "success",
         message: `${truncateString(productName, 0, 20)} has been added to your cart!`,
         autoHide: true,
-      })
+      }),
     );
   };
 
@@ -76,22 +84,19 @@ const WishlistProductCard = ({
     }, 300);
   };
   return (
-    <div className="w-full xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 px-2 text-center items-center mb-3"
-    >
+    <div className="mb-3 w-full items-center px-2 text-center xs:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5">
       <Link
         to={`/category/${category + "/" + subcategory + "/" + id}`}
-        className="border-1 border-gray-300 rounded-md shadow-md hover:bg-gray-100 h-full px-2 xs:px-4 py-2 xs:pt-4 pb-2 flex xs:flex-col xs:justify-between"
+        className="flex h-full rounded-md border-1 border-gray-300 p-2 shadow-md hover:bg-gray-100 xs:flex-col xs:justify-between xs:px-4 xs:pt-4"
       >
-
-        <div className="ml-auto text-right pr-1">
+        <div className="ml-auto pr-1 text-right">
           <button
             onClick={handleWishlistButtonClick}
             aria-label="Remove from wishlist"
-            className="transition-transform duration-300 transform scale-100 group-hover:scale-110"
+            className="scale-100 transition-transform duration-300 group-hover:scale-110"
           >
             <HeartIcon
-              className={`w-8 h-auto inline-block hover:scale-125 ${isClicked ? "transform scale-125" : ""
-                }`}
+              className={`inline-block h-auto w-8 hover:scale-125 ${isClicked ? "scale-125" : ""}`}
               fill={"#febd69"}
             />
           </button>
@@ -99,16 +104,13 @@ const WishlistProductCard = ({
         <div className="flex-1 px-2 xs:px-0 ">
           <img
             src={thumbnail}
-            alt={`image for ${productName}`}
-            className="min-w-[100px] w-56 h-56 xs:w-auto xs:h-[256px] object-contain mx-auto"
+            alt={productName}
+            className="mx-auto size-56 min-w-[100px] object-contain xs:h-[256px] xs:w-auto"
           />
         </div>
-        <div className="xs:mt-2 flex-1 flex flex-col px-2 xs:px-0 my-auto space-y-2 justify-between">
-          <Divider
-            orientation="vertical"
-            className="self-stretch xs:hidden m-2"
-          />
-          <Divider className="self-stretch hidden xs:block" />
+        <div className="my-auto flex flex-1 flex-col justify-between space-y-2 px-2 xs:mt-2 xs:px-0">
+          <Divider orientation="vertical" className="m-2 self-stretch xs:hidden" />
+          <Divider className="hidden self-stretch xs:block" />
           <p>{productName}</p>
           <p className="font-[500]">{brand}</p>
 
@@ -123,7 +125,7 @@ const WishlistProductCard = ({
           <p className="text-lg">$ {price.toFixed(2)}</p>
           <button
             onClick={handleAddToCart}
-            className="border-2 p-[0.3rem] max-w-[80%] mx-auto w-full bg-theme-blue text-white rounded-lg shadow-lg text-sm xs:text-base hover:bg-blue-900"
+            className="mx-auto w-full max-w-[80%] rounded-lg border-2 bg-theme-blue p-[0.3rem] text-sm text-white shadow-lg hover:bg-blue-900 xs:text-base"
           >
             Add to Cart
           </button>
@@ -132,5 +134,3 @@ const WishlistProductCard = ({
     </div>
   );
 };
-
-export default WishlistProductCard;

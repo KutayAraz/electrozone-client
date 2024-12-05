@@ -1,29 +1,25 @@
 import { Suspense } from "react";
 import { Await, defer, redirect, useLoaderData } from "react-router-dom";
-import OrderCard from "./components/OrderCard";
-import {
-  UnauthorizedError,
-  loaderFetchProtected,
-} from "@/utils/loader-fetch-protected";
+
+import { UnauthorizedError, loaderFetchProtected } from "@/utils/loader-fetch-protected";
+
+import { OrderCard } from "./components/order-card";
 
 export const OrderStatus = () => {
   const { order }: any = useLoaderData();
   return (
     <div className="page-spacing">
       <Suspense fallback={<p>Loading Order...</p>}>
-        <Await
-          resolve={order}
-          children={(resolvedOrder) => (
-            <OrderCard
-              orderId={resolvedOrder.id}
-              orderTotal={resolvedOrder.orderTotal}
-              orderDate={resolvedOrder.orderDate}
-              user={resolvedOrder.user}
-              orderItems={resolvedOrder.orderItems}
-              isCancellable={resolvedOrder.isCancellable}
-            />
-          )}
-        />
+        <Await resolve={order}>
+          <OrderCard
+            orderId={order.id}
+            orderTotal={order.orderTotal}
+            orderDate={order.orderDate}
+            user={order.user}
+            orderItems={order.orderItems}
+            isCancellable={order.isCancellable}
+          />
+        </Await>
       </Suspense>
     </div>
   );
@@ -36,7 +32,7 @@ export const loader = async (request: any) => {
       `${import.meta.env.VITE_API_URL}/orders/user/${orderId}`,
       "GET",
       request.request,
-      null
+      null,
     );
     return defer({
       order: orderDetails,

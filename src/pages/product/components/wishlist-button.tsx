@@ -1,14 +1,20 @@
 import { useState } from "react";
-import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
-import { WishlistButtonProps } from "./models";
-import { useNavigate } from "react-router-dom";
-import { RootState } from "@/stores/store";
 import { useDispatch, useSelector } from "react-redux";
-import { displayAlert } from "@/stores/slices/alert-slice";
-import { truncateString } from "@/utils/truncate-string";
-import { useFetch } from "@/hooks";
+import { useNavigate } from "react-router-dom";
 
-const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: WishlistButtonProps) => {
+import { useFetch } from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { RootState } from "@/stores/store";
+import { truncateString } from "@/utils/truncate-string";
+import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
+
+import { WishlistButtonProps } from "./models";
+
+export const WishlistButton = ({
+  productId,
+  isInitiallyWishlisted,
+  productName,
+}: WishlistButtonProps) => {
   const [isWishlisted, setIsWishlisted] = useState(isInitiallyWishlisted);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
   const navigate = useNavigate();
@@ -32,7 +38,7 @@ const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: Wishl
       null,
       true,
       false,
-      "wishlist"
+      "wishlist",
     );
 
     if (result?.response.ok) {
@@ -43,7 +49,7 @@ const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: Wishl
             type: "success",
             message: `${truncateString(productName, 0, 20)} has been added to your wishlist!`,
             autoHide: true,
-          })
+          }),
         );
       } else if (result.data.action === "removed") {
         setIsWishlisted(false);
@@ -52,7 +58,7 @@ const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: Wishl
             type: "info",
             message: `${truncateString(productName, 0, 20)} has been removed to your wishlist!`,
             autoHide: true,
-          })
+          }),
         );
       }
     }
@@ -62,8 +68,9 @@ const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: Wishl
     <button onClick={handleClick}>
       <div className="flex items-center">
         <HeartIcon
-          className={`w-8 h-8 inline-block transition-transform duration-300 ${isClicked ? "transform scale-125" : ""
-            } `}
+          className={`inline-block size-8 transition-transform duration-300 ${
+            isClicked ? "scale-125" : ""
+          } `}
           fill={`${isWishlisted ? "#febd69" : "#ffffff"}`}
         />
         {isWishlisted ? "Remove from wishlist" : "Add to Wishlist"}
@@ -97,5 +104,3 @@ const WishlistButton = ({ productId, isInitiallyWishlisted, productName }: Wishl
 //     </div>
 //   );
 // };
-
-export default WishlistButton;

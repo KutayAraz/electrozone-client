@@ -1,12 +1,27 @@
-import OrderItemCard from "./OrderItemCard";
-import { useNavigate } from "react-router-dom";
-import { formatDateTime } from "@/utils/format-time";
 import { useDispatch } from "react-redux";
-import { displayAlert } from "@/stores/slices/alert-slice";
-import { OrderCardProps } from "./types";
-import { useFetch } from "@/hooks";
+import { useNavigate } from "react-router-dom";
 
-const OrderCard = ({
+import { useFetch } from "@/hooks";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { formatDateTime } from "@/utils/format-time";
+
+import OrderItemCard, { OrderItemCardProps } from "./order-item-card";
+
+type OrderCardProps = {
+  orderId: number;
+  orderTotal: number;
+  orderDate: string;
+  user: {
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+  };
+  orderItems: OrderItemCardProps[];
+  isCancellable: boolean;
+};
+
+export const OrderCard = ({
   orderId,
   orderTotal,
   orderDate,
@@ -24,7 +39,7 @@ const OrderCard = ({
       `${import.meta.env.VITE_API_URL}/orders/${orderId}`,
       "POST",
       orderId,
-      true
+      true,
     );
 
     if (result?.response.ok) {
@@ -33,7 +48,7 @@ const OrderCard = ({
           type: "success",
           message: "Your order has been successfully cancelled!",
           autoHide: true,
-        })
+        }),
       );
       navigate("/my-orders");
     }
@@ -41,20 +56,22 @@ const OrderCard = ({
 
   return (
     <div key={orderId} className="my-4">
-      <h3 className="text-2xl font-bold mb-2 ">Order Details</h3>
-      <div className="border p-2 bg-white shadow-md rounded-md space-y-4 ">
+      <h3 className="mb-2 text-2xl font-bold ">Order Details</h3>
+      <div className="space-y-4 rounded-md border bg-white p-2 shadow-md ">
         <div className="space-y-1">
           <p>
             <span className="font-bold underline">Order ID:</span> {orderId}
           </p>
-          <p><span className="font-bold underline">Order Total:</span> ${orderTotal}</p>
-          <p><span className="font-bold underline">Date of Order:</span> {date}</p>
+          <p>
+            <span className="font-bold underline">Order Total:</span> ${orderTotal}
+          </p>
+          <p>
+            <span className="font-bold underline">Date of Order:</span> {date}
+          </p>
         </div>
 
         <div className="space-y-1">
-          <h2 className="text-theme-blue font-bold underline">
-            User Details:
-          </h2>
+          <h2 className="font-bold text-theme-blue underline">User Details:</h2>
           <p>
             {user.firstName} {user.lastName}
           </p>
@@ -68,15 +85,15 @@ const OrderCard = ({
           ))}
         </div>
         <div>
-          <p className="font-semibold mt-6 mb-2">
-            <span className="underline text-xl font-bold">Order Total</span>: ${orderTotal}
+          <p className="mb-2 mt-6 font-semibold">
+            <span className="text-xl font-bold underline">Order Total</span>: ${orderTotal}
           </p>
         </div>
 
         {isCancellable && (
           <button
             onClick={handleCancelButton}
-            className="mt-4 bg-red-500 hover:bg-red-800 text-white px-4 py-2 rounded-md transition duration-200"
+            className="mt-4 rounded-md bg-red-500 px-4 py-2 text-white transition duration-200 hover:bg-red-800"
           >
             Cancel this order
           </button>
@@ -85,5 +102,3 @@ const OrderCard = ({
     </div>
   );
 };
-
-export default OrderCard;

@@ -1,12 +1,14 @@
 import { Modal, Rating } from "@mui/material";
-import WishlistButton from "./WishlistButton";
-import { ProductLayoutProps } from "./models";
 import { useState } from "react";
+
 import { ReactComponent as NavigationButton } from "@assets/svgs/arrow-black.svg";
 import { ReactComponent as CloseButton } from "@assets/svgs/modal-close.svg";
 import { ReactComponent as NavigationArrow } from "@assets/svgs/previous-arrow.svg";
 
-const ProductDesktopLayout = ({
+import { ProductLayoutProps } from "./models";
+import { WishlistButton } from "./wishlist-button";
+
+export const ProductDesktopLayout = ({
   productId,
   productName,
   brand,
@@ -59,62 +61,60 @@ const ProductDesktopLayout = ({
     }
   };
   return (
-    <div className="flex w-full h-[700px] my-2">
+    <div className="my-2 flex h-[700px] w-full">
       {/* First Child Div - Image Thumbnails */}
-      <div className="flex flex-col flex-shrink-0 items-center justify-center">
+      <div className="flex shrink-0 flex-col items-center justify-center">
         {/* Scroll Up Button or Spacer */}
         {startIndex > 0 ? (
           <button onClick={scrollUp}>
-            <NavigationButton className="w-6 h-6 rotate-[270deg] mb-2" />
+            <NavigationButton className="mb-2 size-6 rotate-[270deg]" />
           </button>
         ) : (
-          <div className="w-6 h-6 mb-2"></div>
+          <div className="mb-2 size-6"></div>
         )}
 
-        <div
-          className="flex flex-col space-y-2 flex-grow"
-        >
-          {allImages
-            .slice(startIndex, startIndex + 5)
-            .map((image: any, index: number) => (
-              <img
-                key={index}
-                src={image.productImage}
-                alt={`image for ${productName}`}
-                className={`object-contain cursor-pointer h-28 w-28 p-2 rounded-[10px] ${selectedImage ===
-                  image.productImage
-                  ? "border-1 border-theme-blue"
-                  : ""
-                  }`}
-                onMouseOver={() => setSelectedImage(image.productImage)}
-              />
-            ))}
+        <div className="flex grow flex-col space-y-2">
+          {allImages.slice(startIndex, startIndex + 5).map((image: any) => (
+            <img
+              key={image.id}
+              src={image.productImage}
+              alt={productName}
+              className={`size-28 cursor-pointer rounded-[10px] object-contain p-2 ${
+                selectedImage === image.productImage ? "border-1 border-theme-blue" : ""
+              }`}
+              onMouseOver={() => setSelectedImage(image.productImage)}
+              onFocus={() => setSelectedImage(image.productImage)}
+            />
+          ))}
         </div>
 
         {/* Scroll Down Button or Spacer */}
         {startIndex < allImages.length - 5 ? (
           <button onClick={scrollDown}>
-            <NavigationButton className="w-6 h-6 rotate-90 mt-2" />
+            <NavigationButton className="mt-2 size-6 rotate-90" />
           </button>
         ) : (
-          <div className="w-6 h-6 mt-2"></div>
+          <div className="mt-2 size-6"></div>
         )}
       </div>
 
       {/* Second Child Div - Large Selected Image */}
-      <div className="flex flex-grow items-center justify-center lg:ml-0">
+      <div className="flex grow items-center justify-center lg:ml-0">
         <button onClick={prevImage}>
-          <NavigationButton className="w-6 h-16 rotate-180 m-2" />
+          <NavigationButton className="m-2 h-16 w-6 rotate-180" />
         </button>
-        <div onClick={handleModalOpen} className="flex flex-grow items-center hover:cursor-pointer justify-center h-[640px] max-w-[640px] border-1 border-gray-300 rounded-md">
+        <button
+          onClick={handleModalOpen}
+          className="flex h-[640px] max-w-[640px] grow items-center justify-center rounded-md border-1 border-gray-300 hover:cursor-pointer"
+        >
           <img
             src={selectedImage}
-            alt={`image for ${productName}`}
-            className="w-auto h-auto rounded-[6px] object-contain max-h-[640px] p-2 lg:p-4"
+            alt={productName}
+            className="size-auto max-h-[640px] rounded-[6px] object-contain p-2 lg:p-4"
           />
-        </div>
-        <button onClick={nextImage} className="m">
-          <NavigationButton className="w-6 h-16 m-2" />
+        </button>
+        <button onClick={nextImage}>
+          <NavigationButton className="m-2 h-16 w-6" />
         </button>
         <Modal
           open={isModalOpen}
@@ -123,33 +123,36 @@ const ProductDesktopLayout = ({
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <div className="relative bg-white rounded-lg w-[50vw] h-[90vh] overflow-auto">
+          <div className="relative h-[90vh] w-[50vw] overflow-auto rounded-lg bg-white">
             {/* Container for navigation buttons */}
-            <button onClick={handleModalClose} className="absolute top-2 right-2 hover:cursor-pointer z-20">
-              <CloseButton className="w-8 h-auto" />
+            <button
+              onClick={handleModalClose}
+              className="absolute right-2 top-2 z-20 hover:cursor-pointer"
+            >
+              <CloseButton className="h-auto w-8" />
             </button>
-            <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-between z-10">
+            <div className="absolute inset-0 z-10 flex items-center justify-between">
               <button onClick={prevImage} className="m-2">
-                <NavigationArrow className="w-14 h-14" />
+                <NavigationArrow className="size-14" />
               </button>
               <button onClick={nextImage} className="m-2">
-                <NavigationArrow className="w-14 h-14 rotate-180" />
+                <NavigationArrow className="size-14 rotate-180" />
               </button>
             </div>
             <img
               src={selectedImage}
-              alt={`image for ${productName}`}
-              className="h-full w-auto object-contain mx-auto py-4"
+              alt={productName}
+              className="mx-auto h-full w-auto object-contain py-4"
             />
           </div>
         </Modal>
       </div>
 
       {/* Third Child Div - Product Details and Actions */}
-      <div className="flex flex-col w-[25%] lg:w-[30%] text-center m-auto border-1 py-6 border-gray-300 rounded-md h-[640px] justify-evenly lg:justify-center lg:space-y-3 px-2 flex-shrink-0">
+      <div className="m-auto flex h-[640px] w-1/4 shrink-0 flex-col justify-evenly rounded-md border-1 border-gray-300 px-2 py-6 text-center lg:w-[30%] lg:justify-center lg:space-y-3">
         <h2 className="text-lg">{productName}</h2>
         <p className="font-[500]">Brand: {brand}</p>
-        <div onClick={onRatingClick} className="mx-auto hover:cursor-pointer">
+        <button onClick={onRatingClick} className="mx-auto hover:cursor-pointer">
           <Rating
             name="half-rating-read"
             value={averageRating}
@@ -157,13 +160,10 @@ const ProductDesktopLayout = ({
             readOnly
             className="mt-4"
           />
-        </div>
+        </button>
         <p className="text-lg font-bold">${price}</p>
-        <div className="flex justify-center mb-4 items-center s">
-          <button
-            onClick={decrementQuantity}
-            className="px-2 py-1 border rounded"
-          >
+        <div className="mb-4 flex items-center justify-center">
+          <button onClick={decrementQuantity} className="rounded border px-2 py-1">
             -
           </button>
           <input
@@ -172,41 +172,43 @@ const ProductDesktopLayout = ({
             onChange={handleQuantityChange}
             min={1}
             max={25}
-            className="text-center w-16 mx-2 border rounded"
+            className="mx-2 w-16 rounded border text-center"
           />
-          <button
-            onClick={incrementQuantity}
-            className="px-2 py-1 border rounded"
-          >
+          <button onClick={incrementQuantity} className="rounded border px-2 py-1">
             +
           </button>
         </div>
         {stock > 0 ? (
-          <div className="flex flex-col w-[80%] mx-auto">
+          <div className="mx-auto flex w-4/5 flex-col">
             <button
               onClick={handleAddToCart}
               disabled={addingToCart}
-              className={`${addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-900"
-                } w-full px-4 py-2 text-white rounded-xl my-4`}
+              className={`${
+                addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-900"
+              } my-4 w-full rounded-xl px-4 py-2 text-white`}
             >
               {addingToCart ? "Adding To Cart.." : "Add to Cart"}
             </button>
             <button
               onClick={handleBuyNow}
-              className="w-full px-4 py-2 bg-orange-300 hover:bg-orange-400 rounded-xl"
+              className="w-full rounded-xl bg-orange-300 px-4 py-2 hover:bg-orange-400"
             >
               Buy now
             </button>
           </div>
         ) : (
-          <label className="text-red-500 border-1 rounded-xl">This product is currently out of stock</label>
+          <h2 className="rounded-xl border-1 text-red-500">
+            This product is currently out of stock
+          </h2>
         )}
-        <div className="flex flex-col justify-center items-center">
-          <WishlistButton isInitiallyWishlisted={isInitiallyWishlisted} productId={productId} productName={productName} />
+        <div className="flex flex-col items-center justify-center">
+          <WishlistButton
+            isInitiallyWishlisted={isInitiallyWishlisted}
+            productId={productId}
+            productName={productName}
+          />
         </div>
       </div>
     </div>
   );
 };
-
-export default ProductDesktopLayout;

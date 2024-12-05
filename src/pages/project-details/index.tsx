@@ -1,8 +1,11 @@
-const ProjectDetails = () => {
+export const ProjectDetails = () => {
   return (
     <div className="page-spacing">
-      <h4 className="text-lg text-gray-700 font-[500]">Thank you for visiting electrozone.com! Below you can find the tools used to create this project.</h4>
-      <ul className="flex flex-col space-y-[4px] mt-2 list-disc ml-4 xs:ml-[2%]">
+      <h4 className="text-lg font-[500] text-gray-700">
+        Thank you for visiting electrozone.com! Below you can find the tools used to create this
+        project.
+      </h4>
+      <ul className="ml-4 mt-2 flex list-disc flex-col space-y-[4px] xs:ml-[2%]">
         <li>This project is built with Vite.js and Typescript.</li>
         <li>State is managed with Redux.</li>
         <li>Form inputs are controlled with react-hook-form.</li>
@@ -15,5 +18,3 @@ const ProjectDetails = () => {
     </div>
   );
 };
-
-export default ProjectDetails;

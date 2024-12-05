@@ -1,20 +1,19 @@
+import { CircularProgress } from "@mui/material";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { defer, redirect, useLoaderData } from "react-router-dom";
-import OrderCard from "./components/OrderCard";
-import {
-  UnauthorizedError,
-  loaderFetchProtected,
-} from "@/utils/loader-fetch-protected";
-import { OrderCardProps } from "./components/types";
+
+import { useFetch } from "@/hooks/use-fetch";
 import useScreenValue from "@/hooks/use-screen-value";
 import { initialOrdersToFetch } from "@/utils/initial-orders-to-fetch";
-import { CircularProgress } from "@mui/material";
-import { useFetch } from "@/hooks";
+import { UnauthorizedError, loaderFetchProtected } from "@/utils/loader-fetch-protected";
+
+import { OrderCard } from "./components/order-card";
+import { OrderCardProps } from "./components/types";
 
 export const MyOrders = () => {
   const { ordersData, skipped }: any = useLoaderData();
-  const [orders, setOrders] = useState(ordersData)
-  const [ordersToSkip, setOrdersToSkip] = useState<number>(skipped)
+  const [orders, setOrders] = useState(ordersData);
+  const [ordersToSkip, setOrdersToSkip] = useState<number>(skipped);
   const [hasMore, setHasMore] = useState(true);
   const observerTarget = useRef<any>(null);
   const screenValue = useScreenValue({
@@ -22,9 +21,9 @@ export const MyOrders = () => {
     small: 4,
     medium: 6,
     large: 6,
-    default: 6
+    default: 6,
   });
-  const { fetchData } = useFetch()
+  const { fetchData } = useFetch();
 
   const fetchOrders = async (skip: number, limit: number) => {
     const queryParams = new URLSearchParams({
@@ -35,44 +34,47 @@ export const MyOrders = () => {
       `${import.meta.env.VITE_API_URL}/orders/user?${queryParams}`,
       "GET",
       null,
-      true
+      true,
     );
 
     if (result?.response.ok) {
       return result;
     }
-  }
+  };
 
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      const fetchMoreOrders = async () => {
-        for (const entry of entries) {
-          if (entry.isIntersecting && hasMore) {
-            if (orders.length < screenValue) {
-              setHasMore(false);
-              return
-            }
-            try {
-              const fetchedOrders: any = await fetchOrders(ordersToSkip, screenValue);
-              if (fetchedOrders && fetchedOrders.data.length === screenValue) {
-                setOrders((prev: any) => [...prev, ...fetchedOrders.data]);
-                setOrdersToSkip((prev: number) => prev + screenValue)
-              } else if (fetchedOrders.data.length < screenValue) {
-                setOrders((prev: any) => [...prev, ...fetchedOrders.data]);
-                setOrdersToSkip((prev: number) => prev + screenValue)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const fetchMoreOrders = async () => {
+          for (const entry of entries) {
+            if (entry.isIntersecting && hasMore) {
+              if (orders.length < screenValue) {
                 setHasMore(false);
-              } else {
-                setHasMore(false);
+                return;
               }
-            } catch (error) {
-              console.error("Failed to fetch products:", error);
+              try {
+                const fetchedOrders: any = await fetchOrders(ordersToSkip, screenValue);
+                if (fetchedOrders && fetchedOrders.data.length === screenValue) {
+                  setOrders((prev: any) => [...prev, ...fetchedOrders.data]);
+                  setOrdersToSkip((prev: number) => prev + screenValue);
+                } else if (fetchedOrders.data.length < screenValue) {
+                  setOrders((prev: any) => [...prev, ...fetchedOrders.data]);
+                  setOrdersToSkip((prev: number) => prev + screenValue);
+                  setHasMore(false);
+                } else {
+                  setHasMore(false);
+                }
+              } catch (error) {
+                console.error("Failed to fetch products:", error);
+              }
             }
           }
-        }
-      };
+        };
 
-      fetchMoreOrders();
-    }, { threshold: 0.1 });
+        fetchMoreOrders();
+      },
+      { threshold: 0.1 },
+    );
 
     const currentElement = observerTarget.current;
     if (currentElement) {
@@ -88,11 +90,17 @@ export const MyOrders = () => {
 
   return (
     <div className="flex w-full">
-      <div className="grow w-full">
-        <h2 className="text-xl font-semibold mb-2">Previous Orders</h2>
-        <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-          <p>Loading Orders.. <CircularProgress /></p>
-        </div>}>
+      <div className="w-full grow">
+        <h2 className="mb-2 text-xl font-semibold">Previous Orders</h2>
+        <Suspense
+          fallback={
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+              <p>
+                Loading Orders.. <CircularProgress />
+              </p>
+            </div>
+          }
+        >
           {orders.map((order: OrderCardProps, index: number) => {
             const isThirdToLast = index === orders.length - 2;
             return (
@@ -106,7 +114,7 @@ export const MyOrders = () => {
                 orderDate={order.orderDate}
                 orderItems={order.orderItems}
               />
-            )
+            );
           })}
         </Suspense>
       </div>

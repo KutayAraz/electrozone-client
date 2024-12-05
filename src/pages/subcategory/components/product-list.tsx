@@ -1,10 +1,12 @@
-import { ProductCard } from "@/components/ui/product-card";
-import { Product, ProductListProps } from "./models";
 import { forwardRef } from "react";
 
-const ProductList = forwardRef(({ products }: ProductListProps, ref: any) => {
+import { ProductCard } from "@/components/ui/product-card/product-card";
+
+import { Product, ProductListProps } from "./models";
+
+export const ProductList = forwardRef(({ products }: ProductListProps, ref: any) => {
   return (
-    <div className="flex flex-wrap flex-grow">
+    <div className="flex grow flex-wrap">
       {products.map((product: Product, index: number) => {
         const isThirdToLast = index === products.length - 3;
         return (
@@ -21,10 +23,10 @@ const ProductList = forwardRef(({ products }: ProductListProps, ref: any) => {
             subcategory={product.subcategory}
             category={product.category}
           />
-        )
+        );
       })}
     </div>
   );
 });
 
-export default ProductList;
+ProductList.displayName = "ProductList";

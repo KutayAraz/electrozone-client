@@ -1,55 +1,39 @@
 import { Suspense } from "react";
 import { Await, defer, useLoaderData } from "react-router-dom";
+
+import { Carousel } from "@/components/ui/carousel/carousel";
+import { CarouselCardProps } from "@/components/ui/carousel/carousel-card";
 import loaderFetch from "@/utils/loader-fetch";
-import Categories from "./components/Categories";
-import { Carousel, CarouselCardProps } from "@/components/ui/carousel";
+
+import { Categories } from "./components/categories";
 
 export const HomePage = () => {
-  const {
-    bestRatedProducts,
-    mostWishlistedProducts,
-    bestSellingProducts,
-  }: any = useLoaderData();
+  const { bestRatedProducts, mostWishlistedProducts, bestSellingProducts }: any = useLoaderData();
 
   return (
     <div className="bg-gray-100">
       <div className="page-spacing">
-        <div className="max-w-screen-xl xl:mx-auto text-center">
+        <div className="max-w-screen-xl text-center xl:mx-auto">
           <Categories />
-          <h2 className="text-xl font-semibold mt-6 mb-3 text-gray-700">
-            Best Selling Products
-          </h2>
+          <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-700">Best Selling Products</h2>
           <Suspense fallback={<p>Loading...</p>}>
-            <Await
-              resolve={bestSellingProducts}
-              children={(products: CarouselCardProps[]) => (
-                <Carousel products={products} />
-              )}
-            />
+            <Await resolve={bestSellingProducts}>
+              {(products: CarouselCardProps[]) => <Carousel products={products} />}
+            </Await>
           </Suspense>
 
-          <h2 className="text-xl font-semibold my-3 text-gray-700">
-            Most Wishlisted Products
-          </h2>
+          <h2 className="my-3 text-xl font-semibold text-gray-700">Most Wishlisted Products</h2>
           <Suspense fallback={<p>Loading..</p>}>
-            <Await
-              resolve={mostWishlistedProducts}
-              children={(products: CarouselCardProps[]) => (
-                <Carousel products={products} />
-              )}
-            />
+            <Await resolve={mostWishlistedProducts}>
+              {(products: CarouselCardProps[]) => <Carousel products={products} />}
+            </Await>
           </Suspense>
 
-          <h2 className="text-xl font-semibold my-3 text-gray-700">
-            Best Rated Products
-          </h2>
+          <h2 className="my-3 text-xl font-semibold text-gray-700">Best Rated Products</h2>
           <Suspense fallback={<p>Loading..</p>}>
-            <Await
-              resolve={bestRatedProducts}
-              children={(products: CarouselCardProps[]) => (
-                <Carousel products={products} />
-              )}
-            />
+            <Await resolve={bestRatedProducts}>
+              {(products: CarouselCardProps[]) => <Carousel products={products} />}
+            </Await>
           </Suspense>
         </div>
       </div>
@@ -58,10 +42,7 @@ export const HomePage = () => {
 };
 
 const fetchProducts = async (url: string) => {
-  const result = await loaderFetch(
-    `${import.meta.env.VITE_API_URL}/product/${url}`,
-    "GET"
-  );
+  const result = await loaderFetch(`${import.meta.env.VITE_API_URL}/product/${url}`, "GET");
   return result.data;
 };
 
