@@ -1,19 +1,27 @@
 import { configureStore } from "@reduxjs/toolkit";
-import storage from "redux-persist/lib/storage";
-import { persistReducer, persistStore } from "redux-persist";
-import thunk from "redux-thunk";
+import { combineReducers } from "redux";
 import {
-  alertSlice,
-  authSlice,
-  buyNowCartSlice,
-  hydrationCompleted,
-  hydrationSlice,
-  localCartSlice,
-  redirectSlice,
-  uiSlice,
-  userSlice,
-  wishlistSlice,
-} from "./slices";
+  persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import sessionStorage from "redux-persist/lib/storage/session";
+
+import { alertSlice } from "./slices/alert-slice";
+import { authSlice } from "./slices/auth-slice";
+import { buyNowCartSlice } from "./slices/buynow-cart-slice";
+import { hydrationSlice, hydrationCompleted } from "./slices/hydration-slice";
+import { localCartSlice } from "./slices/local-cart-slice";
+import { redirectSlice } from "./slices/redirect-slice";
+import { uiSlice } from "./slices/ui-slice";
+import { userSlice } from "./slices/user-slice";
+import { wishlistSlice } from "./slices/wishlist-slice";
 
 const userPersistConfig = {
   key: "user",
@@ -37,34 +45,37 @@ const wishlistPersistConfig = {
 
 const redirectPersistConfig = {
   key: "redirect",
-  storage: sessionStorage, // Store in session storage
-  whitelist: ["path"], // Only persist the 'path' key
+  storage: sessionStorage,
+  whitelist: ["path"],
 };
 
 const persistedUserReducer = persistReducer(userPersistConfig, userSlice.reducer);
-
 const persistedLocalCartReducer = persistReducer(localCartPersistConfig, localCartSlice.reducer);
-
 const persistedBuyNowCartReducer = persistReducer(buyNowCartPersistConfig, buyNowCartSlice.reducer);
-
 const persistedRedirectReducer = persistReducer(redirectPersistConfig, redirectSlice.reducer);
-
 const persistedWishlistReducer = persistReducer(wishlistPersistConfig, wishlistSlice.reducer);
 
+const rootReducer = combineReducers({
+  alert: alertSlice.reducer,
+  ui: uiSlice.reducer,
+  auth: authSlice.reducer,
+  hydration: hydrationSlice.reducer,
+  user: persistedUserReducer,
+  localCart: persistedLocalCartReducer,
+  buyNowCart: persistedBuyNowCartReducer,
+  redirect: persistedRedirectReducer,
+  wishlist: persistedWishlistReducer,
+});
+
 export const store = configureStore({
-  reducer: {
-    alert: alertSlice.reducer,
-    ui: uiSlice.reducer,
-    auth: authSlice.reducer,
-    hydration: hydrationSlice.reducer,
-    user: persistedUserReducer,
-    localCart: persistedLocalCartReducer,
-    buyNowCart: persistedBuyNowCartReducer,
-    redirect: persistedRedirectReducer,
-    wishlist: persistedWishlistReducer,
-  },
-  middleware: [thunk],
-  devTools: true,
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export const persistor = persistStore(store, null, () => {
