@@ -1,61 +1,60 @@
 import { Link } from "react-router-dom";
-import TVsAndSoundbars from "@assets/images/TVs-Soundbars.webp"
-import ComputersAndAccessories from "@assets/images/Computers-Accessories.webp"
-import SmartphonessAndAccessories from "@assets/images/Smartphones&Acc.webp"
-import PrintersAndInk from "@assets/images/Printers-Ink.webp"
 
-const Categories = () => {
+import ComputersAndAccessories from "@assets/images/Computers-Accessories.webp";
+import PrintersAndInk from "@assets/images/Printers-Ink.webp";
+import SmartphonessAndAccessories from "@assets/images/Smartphones&Acc.webp";
+import TVsAndSoundbars from "@assets/images/TVs-Soundbars.webp";
+
+export const Categories = () => {
   return (
     <>
-      <h2 className="font-semibold text-xl text-gray-700 mt-2 ">
-        Shop by Category
-      </h2>
-      <div className="flex flex-wrap mx-[2%] xl:mx-auto">
+      <h2 className="mt-2 text-xl font-semibold text-gray-700 ">Shop by Category</h2>
+      <div className="mx-[2%] flex flex-wrap xl:mx-auto">
         <Link
           to={"/category/tvs-and-soundbars"}
-          className="w-1/2 md:w-1/4 p-2 flex flex-col justify-between"
+          className="flex w-1/2 flex-col justify-between p-2 md:w-1/4"
         >
           <h4 className="text-lg font-[500] text-gray-700">TVs & Soundbars</h4>
           <img
             src={TVsAndSoundbars}
-            className="w-64 h-auto object-contain mx-auto"
+            alt="TVs & Soundbars Category"
+            className="mx-auto h-auto w-64 object-contain"
             style={{ borderRadius: "15px" }}
           />
         </Link>
         <Link
           to={"/category/computers-and-accessories"}
-          className="w-1/2 md:w-1/4 p-2 flex flex-col justify-between"
+          className="flex w-1/2 flex-col justify-between p-2 md:w-1/4"
         >
-          <h4 className="text-lg font-[500] text-gray-700">
-            Computers & Accessories
-          </h4>
+          <h4 className="text-lg font-[500] text-gray-700">Computers & Accessories</h4>
           <img
             src={ComputersAndAccessories}
-            className="w-64 h-auto object-contain mx-auto"
+            alt="Computers & Accessories Category"
+            className="mx-auto h-auto w-64 object-contain"
             style={{ borderRadius: "15px" }}
           />
         </Link>
         <Link
           to={"/category/smartphones-and-accessories"}
-          className="w-1/2 md:w-1/4 p-2 flex flex-col justify-between"
+          className="flex w-1/2 flex-col justify-between p-2 md:w-1/4"
         >
-          <h4 className="text-lg font-[500] text-gray-700">
-            Smartphones & Accessories
-          </h4>
+          <h4 className="text-lg font-[500] text-gray-700">Smartphones & Accessories</h4>
           <img
             src={SmartphonessAndAccessories}
-            className="w-64 h-auto object-contain mx-auto"
+            alt="Smartphones & Accessories Category"
+            className="mx-auto h-auto w-64 object-contain"
             style={{ borderRadius: "15px" }}
           />
         </Link>
         <Link
           to={"/category/printers-and-ink"}
-          className="w-1/2 md:w-1/4 p-2 flex flex-col justify-between"
+          className="flex w-1/2 flex-col justify-between p-2 md:w-1/4"
         >
           <h4 className="text-lg font-[500] text-gray-700">Printers & Ink</h4>
           <img
             src={PrintersAndInk}
-            className="w-64 h-auto object-contain mx-auto"
+            alt="Printers & Ink Category"
+            className="mx-auto h-auto w-64 object-contain"
             style={{ borderRadius: "15px" }}
           />
         </Link>
@@ -63,5 +62,3 @@ const Categories = () => {
     </>
   );
 };
-
-export default Categories;

@@ -1,10 +1,11 @@
-import useFetch from "@/common/Hooks/use-fetch";
-import { displayAlert } from "@/setup/slices/alert-slice";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
+
+import { useFetch } from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
 
 type SignUpFormInputs = {
   email: string;
@@ -17,14 +18,8 @@ type SignUpFormInputs = {
 };
 
 const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(6, "Password is too short"),
+  email: yup.string().email("Invalid email address").required("Email is required"),
+  password: yup.string().required("Password is required").min(6, "Password is too short"),
   retypedPassword: yup
     .string()
     .oneOf([yup.ref("password")], "Passwords must match")
@@ -35,7 +30,7 @@ const schema = yup.object().shape({
   city: yup.string().required("City name is required"),
 });
 
-const SignUpForm = () => {
+export const SignUpForm = () => {
   const dispatch = useDispatch<any>();
   const { isLoading, fetchData } = useFetch();
   const navigate = useNavigate();
@@ -50,20 +45,15 @@ const SignUpForm = () => {
   });
 
   const SignUpRequest = async (data: SignUpFormInputs) => {
-
-    const result = await fetchData(
-      `${import.meta.env.VITE_API_URL}/auth/signup`,
-      "POST",
-      {
-        email: data.email,
-        password: data.password,
-        retypedPassword: data.retypedPassword,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        address: data.address,
-        city: data.city,
-      }
-    );
+    const result = await fetchData(`${import.meta.env.VITE_API_URL}/auth/signup`, "POST", {
+      email: data.email,
+      password: data.password,
+      retypedPassword: data.retypedPassword,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      address: data.address,
+      city: data.city,
+    });
 
     if (result?.response.ok) {
       dispatch(
@@ -71,7 +61,7 @@ const SignUpForm = () => {
           type: "success",
           message: "Your account is created. You can now log in",
           autoHide: true,
-        })
+        }),
       );
       navigate("/sign-in");
     }
@@ -84,10 +74,8 @@ const SignUpForm = () => {
 
   return (
     <form action="POST" onSubmit={handleSubmit(SignUpRequest)}>
-      <div className="flex flex-col max-w-md mx-2 md:mx-auto p-6 bg-white shadow-md rounded-xl mb-4">
-        <h4 className="text-lg font-bold text-gray-800">
-          Account Information:
-        </h4>
+      <div className="mx-2 mb-4 flex max-w-md flex-col rounded-xl bg-white p-6 shadow-md md:mx-auto">
+        <h4 className="text-lg font-bold text-gray-800">Account Information:</h4>
 
         <label htmlFor="email" className={labelClasses}>
           Email<span aria-hidden="true">*</span>
@@ -100,9 +88,7 @@ const SignUpForm = () => {
           aria-required="true"
           required
         />
-        {errors.email && (
-          <p className={errorMessageClasses}>{errors.email.message}</p>
-        )}
+        {errors.email && <p className={errorMessageClasses}>{errors.email.message}</p>}
 
         <label htmlFor="password" className={labelClasses}>
           Password<span aria-hidden="true">*</span>
@@ -115,12 +101,8 @@ const SignUpForm = () => {
           aria-required="true"
           required
         />
-        <p className={"text-gray-600 text-sm"}>
-          Passwords must be at least 6 characters long.
-        </p>
-        {errors.password && (
-          <p className={errorMessageClasses}>{errors.password.message}</p>
-        )}
+        <p className={"text-sm text-gray-600"}>Passwords must be at least 6 characters long.</p>
+        {errors.password && <p className={errorMessageClasses}>{errors.password.message}</p>}
 
         <label htmlFor="retypedPassword" className={labelClasses}>
           Confirm Password<span aria-hidden="true">*</span>
@@ -134,14 +116,10 @@ const SignUpForm = () => {
           required
         />
         {errors.retypedPassword && (
-          <p className={errorMessageClasses}>
-            {errors.retypedPassword.message}
-          </p>
+          <p className={errorMessageClasses}>{errors.retypedPassword.message}</p>
         )}
 
-        <h4 className="text-lg font-bold mt-4 text-gray-800">
-          Personal Information:
-        </h4>
+        <h4 className="mt-4 text-lg font-bold text-gray-800">Personal Information:</h4>
         <label htmlFor="firstName" className={labelClasses}>
           First name<span aria-hidden="true">*</span>
         </label>
@@ -153,9 +131,7 @@ const SignUpForm = () => {
           aria-required="true"
           required
         />
-        {errors.firstName && (
-          <p className={errorMessageClasses}>{errors.firstName.message}</p>
-        )}
+        {errors.firstName && <p className={errorMessageClasses}>{errors.firstName.message}</p>}
 
         <label htmlFor="lastName" className={labelClasses}>
           Last name<span aria-hidden="true">*</span>
@@ -168,9 +144,7 @@ const SignUpForm = () => {
           aria-required="true"
           required
         />
-        {errors.lastName && (
-          <p className={errorMessageClasses}>{errors.lastName.message}</p>
-        )}
+        {errors.lastName && <p className={errorMessageClasses}>{errors.lastName.message}</p>}
 
         <label htmlFor="address" className={labelClasses}>
           Address<span aria-hidden="true">*</span>
@@ -183,9 +157,7 @@ const SignUpForm = () => {
           aria-required="true"
           required
         />
-        {errors.address && (
-          <p className={errorMessageClasses}>{errors.address.message}</p>
-        )}
+        {errors.address && <p className={errorMessageClasses}>{errors.address.message}</p>}
 
         <label htmlFor="city" className={labelClasses}>
           City/State<span aria-hidden="true">*</span>
@@ -198,14 +170,12 @@ const SignUpForm = () => {
           aria-required="true"
           required
         />
-        {errors.city && (
-          <p className={errorMessageClasses}>{errors.city.message}</p>
-        )}
+        {errors.city && <p className={errorMessageClasses}>{errors.city.message}</p>}
 
         <button
           type="submit"
           aria-label="Sign up"
-          className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${
+          className={`mt-4 w-full rounded-lg py-2 font-semibold text-white ${
             isValid ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400"
           } transition duration-300 ease-in-out`}
           disabled={!isValid || isLoading("default")}
@@ -216,5 +186,3 @@ const SignUpForm = () => {
     </form>
   );
 };
-
-export default SignUpForm;

@@ -1,5 +1,5 @@
-import { setAccessToken } from "@/setup/slices/auth-slice";
-import { store } from "@/setup/store";
+import { setAccessToken } from "@/stores/slices/auth-slice";
+import { store } from "@/stores/store";
 
 export async function fetchNewAccessToken() {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/refresh`, {

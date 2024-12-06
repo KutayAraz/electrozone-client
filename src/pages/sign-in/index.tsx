@@ -1,11 +1,3 @@
-import useFetch from "@/common/Hooks/use-fetch";
-import { setAccessToken } from "@/setup/slices/auth-slice";
-import { clearLocalcart } from "@/setup/slices/localCart-slice";
-import { CheckoutIntent } from "@/setup/slices/models";
-import { clearRedirectPath } from "@/setup/slices/redirect-slice";
-import { setCredentials } from "@/setup/slices/user-slice";
-import { setWishlist } from "@/setup/slices/wishlist-slice";
-import { RootState, store } from "@/setup/store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CircularProgress } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -13,26 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
+import { useFetch } from "@/hooks/use-fetch";
+import { clearLocalcart } from "@/stores/slices/local-cart-slice";
+import { CheckoutIntent } from "@/stores/slices/models";
+import { clearRedirectPath } from "@/stores/slices/redirect-slice";
+import { setCredentials } from "@/stores/slices/user-slice";
+import { setWishlist } from "@/stores/slices/wishlist-slice";
+import { RootState, store } from "@/stores/store";
+
 type SignInFormInputs = {
   email: string;
   password: string;
 };
 
 const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Invalid email address")
-    .required("Please enter your email address"),
+  email: yup.string().email("Invalid email address").required("Please enter your email address"),
   password: yup
     .string()
     .required("Please enter your password")
-    .min(
-      6,
-      "Passwords are least 6 characters long. Please enter a valid password"
-    ),
+    .min(6, "Passwords are least 6 characters long. Please enter a valid password"),
 });
 
-const SignInForm = () => {
+export const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,7 +55,7 @@ const SignInForm = () => {
       `${import.meta.env.VITE_API_URL}/carts/merge-carts`,
       "PATCH",
       productsToAdd,
-      true
+      true,
     );
 
     if (result?.response.ok) {
@@ -71,22 +65,21 @@ const SignInForm = () => {
 
   const handleSuccessfulLogin = async (credentials: any) => {
     dispatch(setCredentials({ ...credentials }));
-    dispatch(setAccessToken({ accessToken: credentials.access_token }));
 
     const wishlistProducts = await fetchData(
       `${import.meta.env.VITE_API_URL}/user/wishlist`,
       "GET",
       null,
-      true
+      true,
     );
 
-    if (wishlistProducts?.response.ok){
+    if (wishlistProducts?.response.ok) {
       const productIds = wishlistProducts.data.map((product: any) => product.id);
-      dispatch(setWishlist(productIds))
+      dispatch(setWishlist(productIds));
     }
 
     if (
-      store.getState().user.userIntent === CheckoutIntent.Normal &&
+      store.getState().user.userIntent === CheckoutIntent.NORMAL &&
       store.getState().localCart.items.length > 0
     ) {
       await mergeCartsAndNavigate();
@@ -106,7 +99,7 @@ const SignInForm = () => {
       "POST",
       { email: data.email, password: data.password },
       true,
-      true
+      true,
     );
 
     if (result?.response.ok) {
@@ -121,7 +114,7 @@ const SignInForm = () => {
 
   return (
     <form action="POST" onSubmit={handleSubmit(loginRequest)}>
-      <div className="flex flex-col max-w-md mx-2 xs:mx-auto p-6 bg-white shadow-md rounded-xl mb-4">
+      <div className="mx-2 mb-4 flex max-w-md flex-col rounded-xl bg-white p-6 shadow-md xs:mx-auto">
         <h4 className="text-lg font-semibold text-gray-800">Welcome,</h4>
         <label htmlFor="email" className={labelClasses}>
           Email<span aria-hidden="true">*</span>
@@ -134,9 +127,7 @@ const SignInForm = () => {
           aria-required="true"
           required
         />
-        {errors.email && (
-          <p className={errorMessageClasses}>{errors.email.message}</p>
-        )}
+        {errors.email && <p className={errorMessageClasses}>{errors.email.message}</p>}
 
         <label htmlFor="password" className={labelClasses}>
           Password<span aria-hidden="true">*</span>
@@ -149,15 +140,14 @@ const SignInForm = () => {
           aria-required="true"
           required
         />
-        {errors.password && (
-          <p className={errorMessageClasses}>{errors.password.message}</p>
-        )}
+        {errors.password && <p className={errorMessageClasses}>{errors.password.message}</p>}
 
         <button
           type="submit"
           aria-label="Sign in"
-          className={`w-full rounded-lg mt-4 py-2 text-white font-semibold ${isValid ? "bg-theme-blue hover:bg-blue-700" : "bg-gray-400"
-            } transition duration-300 ease-in-out`}
+          className={`mt-4 w-full rounded-lg py-2 font-semibold text-white ${
+            isValid ? "bg-theme-blue hover:bg-blue-700" : "bg-gray-400"
+          } transition duration-300 ease-in-out`}
           disabled={!isValid || isLoading("default")}
         >
           {isLoading("default") ? (
@@ -174,15 +164,13 @@ const SignInForm = () => {
           )}
         </button>
 
-        <p className="text-gray-600 mt-4 mb-1 text-center">
-          Don't have an account yet?
-        </p>
+        <p className="mb-1 mt-4 text-center text-gray-600">Don&apos;t have an account yet?</p>
 
         <button
           onClick={() => navigate("/sign-up")}
-          className={`w-full rounded-lg py-2 text-white font-semibold 
-            bg-theme-blue hover:bg-blue-700
-           transition duration-300 ease-in-out`}
+          className={`w-full rounded-lg bg-theme-blue py-2 font-semibold 
+            text-white transition
+           duration-300 ease-in-out hover:bg-blue-700`}
         >
           Create your electrozone account
         </button>
@@ -190,5 +178,3 @@ const SignInForm = () => {
     </form>
   );
 };
-
-export default SignInForm;

@@ -1,33 +1,27 @@
-import {
-  Await,
-  defer,
-  redirect,
-  useLoaderData,
-} from "react-router-dom";
-import { Suspense, useEffect } from "react";
-import Product from "./components/Product";
-import { store } from "@/setup/store";
+import { Divider } from "@mui/material";
+import React, { Suspense, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Await, defer, redirect, useLoaderData } from "react-router-dom";
+
+import PageHelmet from "@/components/seo/page-helmet";
+import { setActiveTab } from "@/stores/slices/ui-slice";
+import { store } from "@/stores/store";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
-import {
-  UnauthorizedError,
-  loaderFetchProtected,
-} from "@/utils/loader-fetch-protected";
-import ProductTabs from "./components/ProductTabs";
-import { useDispatch } from "react-redux";
-import { setActiveTab } from "@/setup/slices/ui-slice";
-import PageHelmet from "@/common/PageHelmet";
-import React from "react";
-import { Divider } from "@mui/material";
+import { loaderFetchProtected, UnauthorizedError } from "@/utils/loader-fetch-protected";
 
-const SuggestedProducts = React.lazy(() => import('./components/SuggestedProducts'));
+import { Product } from "./components/product";
+import { ProductTabs } from "./components/product-tabs";
 
-const ProductPage = () => {
-  const { product, reviewsData, wishlisted, canCurrentUserReview }: any =
-    useLoaderData();
+const SuggestedProducts = React.lazy(
+  () => import("./components/suggested-products/suggested-products"),
+);
+
+export const ProductPage = () => {
+  const { product, reviewsData, wishlisted, canCurrentUserReview }: any = useLoaderData();
   const dispatch = useDispatch();
 
-  // This code is for being able to scroll to reviews outside of this component 
+  // This code is for being able to scroll to reviews outside of this component
   // const location = useLocation();
 
   // useEffect(() => {
@@ -60,33 +54,34 @@ const ProductPage = () => {
       if (reviewsSection) {
         reviewsSection.scrollIntoView({ behavior: "smooth" });
       }
-    }, 100)
+    }, 100);
   };
 
   return (
     <>
-      <PageHelmet title={`${product.productName}`} description="Get in-depth information about products, read reviews, and compare features at Electrozone." />
+      <PageHelmet
+        title={`${product.productName}`}
+        description="Get in-depth information about products, read reviews, and compare features at Electrozone."
+      />
       <div className="page-spacing">
         <Suspense fallback={<p>Loading...</p>}>
-          <Await
-            resolve={Promise.all([product, wishlisted])}
-            children={([productData, wishlist]) => (<Product
-              id={productData.id}
-              productName={productData.productName}
-              thumbnail={productData.thumbnail}
-              images={productData.productImages}
-              brand={productData.brand}
-              description={productData.description}
-              price={productData.price}
-              stock={productData.stock}
-              averageRating={productData.averageRating}
+          <Await resolve={Promise.all([product, wishlisted])}>
+            <Product
+              id={product.id}
+              productName={product.productName}
+              thumbnail={product.thumbnail}
+              images={product.productImages}
+              brand={product.brand}
+              description={product.description}
+              price={product.price}
+              stock={product.stock}
+              averageRating={product.averageRating}
               onRatingClick={scrollToReviews}
-              subcategory={productData.subcategory}
-              category={productData.category}
+              subcategory={product.subcategory}
+              category={product.category}
               isInitiallyWishlisted={wishlisted}
             />
-            )}
-          />
+          </Await>
           <ProductTabs
             productDescription={product.description}
             canCurrentUserReview={canCurrentUserReview}
@@ -101,17 +96,11 @@ const ProductPage = () => {
         </Suspense>
       </div>
     </>
-
   );
 };
 
-export default ProductPage;
-
 async function loadProduct(productId: string) {
-  const result = await loaderFetch(
-    `${import.meta.env.VITE_API_URL}/product/${productId}`,
-    "GET"
-  );
+  const result = await loaderFetch(`${import.meta.env.VITE_API_URL}/product/${productId}`, "GET");
   return result.data;
 }
 
@@ -125,15 +114,12 @@ async function checkWishlist({ request, productId }: any) {
   return await loaderFetchProtected(
     `${import.meta.env.VITE_API_URL}/wishlist/${productId}/check`,
     "GET",
-    request
+    request,
   );
 }
 
 async function loadReviews(productId: string) {
-  const response = await loaderFetch(
-    `${import.meta.env.VITE_API_URL}/review/${productId}`,
-    "GET"
-  );
+  const response = await loaderFetch(`${import.meta.env.VITE_API_URL}/review/${productId}`, "GET");
 
   return response.data;
 }
@@ -148,7 +134,7 @@ async function canCurrentUserReview({ request, productId }: any) {
     const result = await loaderFetchProtected(
       `${import.meta.env.VITE_API_URL}/review/${productId}/eligibility`,
       "GET",
-      request
+      request,
     );
 
     return result === true;
@@ -156,11 +142,7 @@ async function canCurrentUserReview({ request, productId }: any) {
     if (error instanceof UnauthorizedError) {
       throw error;
     }
-    if (
-      error instanceof Error &&
-      "status" in error &&
-      (error as any).status === 400
-    ) {
+    if (error instanceof Error && "status" in error && (error as any).status === 400) {
       return false;
     }
     throw error;
@@ -174,7 +156,7 @@ async function isUserSignedIn() {
 export const loader = async ({ request, params }: any) => {
   try {
     const { productSlug } = params;
-    const [slugParts, productId] = productSlug.split('-p-');
+    const [productId] = productSlug.split("-p-");
 
     await checkHydration(store);
 

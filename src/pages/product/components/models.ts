@@ -23,7 +23,7 @@ export interface ReviewType {
   reviewDate: string;
   rating: number;
   comment: string;
-  reviewerInitials: { firstName: string, lastName: string }
+  reviewerInitials: { firstName: string; lastName: string };
 }
 
 export interface WishlistButtonProps {

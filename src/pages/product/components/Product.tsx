@@ -1,29 +1,28 @@
-import { Link, useNavigate } from "react-router-dom";
-import { ProductProps } from "./models";
-import { useDispatch, useSelector } from "react-redux";
-import { addItemToCart } from "@/setup/slices/localCart-slice";
+import { Divider, useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import { addtoBuyNowCart } from "@/setup/slices/buyNowCart-slice";
-import { setUserIntent, updateCartItemCount } from "@/setup/slices/user-slice";
-import { CheckoutIntent } from "@/setup/slices/models";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+
+import { useFetch } from "@/hooks/use-fetch";
+import { displayAlert } from "@/stores/slices/alert-slice";
+import { addtoBuyNowCart } from "@/stores/slices/buynow-cart-slice";
+import { CheckoutIntent } from "@/stores/slices/models";
+import { setUserIntent, updateCartItemCount } from "@/stores/slices/user-slice";
+import { RootState } from "@/stores/store";
+import { capitalizeWords, truncateString } from "@/utils";
+
+import { ProductProps } from "./models";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { displayAlert } from "@/setup/slices/alert-slice";
-import { RootState } from "@/setup/store";
-import useFetch from "@/common/Hooks/use-fetch";
-import { capitalizeWords } from "@/utils/capitalize-words";
-import { Divider, useMediaQuery } from "@mui/material";
-import ProductMobileLayout from "./ProductMobileLayout";
-import ProductDesktopLayout from "./ProductDesktopLayout";
-import { truncateString } from "@/utils/truncate-string";
+import { ProductDesktopLayout } from "./product-desktop-layout";
+import { ProductMobileLayout } from "./product-mobile-layout";
 
-const Product = ({
+export const Product = ({
   id,
   productName,
   brand,
   thumbnail,
   images,
-  description,
   averageRating,
   price,
   stock,
@@ -65,21 +64,18 @@ const Product = ({
         { productId: id, quantity },
         true,
         false,
-        "addToCart"
+        "addToCart",
       );
       if (result?.response.ok)
-        dispatch(
-          updateCartItemCount({ cartItemCount: result.data.totalQuantity })
-        );
+        dispatch(updateCartItemCount({ cartItemCount: result.data.totalQuantity }));
     } else {
-      // dispatch(addItemToCart({ id, quantity }));
-      const result = await fetchData(
+      await fetchData(
         `${import.meta.env.VITE_API_URL}/cart/session`,
         "POST",
         { productId: id, quantity },
         false,
         true,
-        "addToCart"
+        "addToCart",
       );
     }
 
@@ -88,7 +84,7 @@ const Product = ({
         type: "success",
         message: `${truncateString(productName, 0, 20)} has been added to your cart!`,
         autoHide: true,
-      })
+      }),
     );
   };
 
@@ -103,21 +99,15 @@ const Product = ({
   };
 
   return (
-    <div className="mt-4 max-w-screen-xl mx-auto">
+    <div className="mx-auto mt-4 max-w-screen-xl">
       <div className="flex flex-col text-center">
-        <div className="hidden sm:block text-left">
-          <Link
-            to={`/category/${category.replace(/-/g, "_")}`}
-            className="underline"
-          >
+        <div className="hidden text-left sm:block">
+          <Link to={`/category/${category.replace(/-/g, "_")}`} className="underline">
             {modifiedCategory}
           </Link>
           <span>&gt;</span>
           <Link
-            to={`/category/${category.replace(/-/g, "_")}/${subcategory.replace(
-              /-/g,
-              "_"
-            )}`}
+            to={`/category/${category.replace(/-/g, "_")}/${subcategory.replace(/-/g, "_")}`}
             className="underline"
           >
             {modifiedSubcategory}
@@ -172,5 +162,3 @@ const Product = ({
     </div>
   );
 };
-
-export default Product;

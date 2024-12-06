@@ -1,18 +1,17 @@
-import { ReactComponent as AddressCard } from "@assets/svg/address-card.svg";
-import { ReactComponent as OrderComplete } from "@assets/svg/order-complete.svg";
-import { ReactComponent as WishlistHeart } from "@assets/svg/wishlist-heart.svg";
-import { ReactComponent as Security } from "@assets/svg/security.svg";
-import { ReactComponent as Contact } from "@assets/svg/contact.svg";
-import { ReactComponent as Exit } from "@assets/svg/exit.svg";
-import InfoCard from "./components/InfoCard";
+import { ReactComponent as AddressCard } from "@assets/svgs/address-card.svg";
+import { ReactComponent as Contact } from "@assets/svgs/contact.svg";
+import { ReactComponent as Exit } from "@assets/svgs/exit.svg";
+import { ReactComponent as OrderComplete } from "@assets/svgs/order-complete.svg";
+import { ReactComponent as Security } from "@assets/svgs/security.svg";
+import { ReactComponent as WishlistHeart } from "@assets/svgs/wishlist-heart.svg";
 
-const UserAccount = () => {
+import { InfoCard } from "./components/info-card";
+
+export const UserAccount = () => {
   return (
     <div className="page-spacing">
-      <h2 className="text-xl font-bold mb-6">
-        Your Account Information
-      </h2>
-      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-3 gap-3">
+      <h2 className="mb-6 text-xl font-bold">Your Account Information</h2>
+      <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 lg:grid-cols-3">
         <InfoCard to="profile" Icon={AddressCard}>
           Address
         </InfoCard>
@@ -35,5 +34,3 @@ const UserAccount = () => {
     </div>
   );
 };
-
-export default UserAccount;

@@ -1,5 +1,6 @@
 import { redirect } from "react-router-dom";
-import { store } from "@/setup/store";
+
+import { store } from "@/stores/store";
 
 export function checkAuthLoader(): any {
   const accessToken = store.getState().auth.accessToken;
