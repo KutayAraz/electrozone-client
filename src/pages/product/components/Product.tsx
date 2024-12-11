@@ -9,7 +9,8 @@ import { addtoBuyNowCart } from "@/stores/slices/buynow-cart-slice";
 import { CheckoutIntent } from "@/stores/slices/models";
 import { setUserIntent, updateCartItemCount } from "@/stores/slices/user-slice";
 import { RootState } from "@/stores/store";
-import { capitalizeWords, truncateString } from "@/utils";
+import { capitalizeWords } from "@/utils/capitalize-words";
+import { truncateString } from "@/utils/truncate-string";
 
 import { ProductProps } from "./models";
 import "slick-carousel/slick/slick.css";
