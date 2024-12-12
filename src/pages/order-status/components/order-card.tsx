@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { useFetch } from "@/hooks";
+import { useFetch } from "@/hooks/use-fetch";
 import { displayAlert } from "@/stores/slices/alert-slice";
 import { formatDateTime } from "@/utils/format-time";
 
