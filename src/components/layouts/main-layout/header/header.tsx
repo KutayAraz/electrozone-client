@@ -19,7 +19,7 @@ import { UserSection } from "./components/user-section";
 
 export const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) => {
   const firstName = useSelector((state: any) => state.user.firstName);
-  const city = useSelector((state: any) => state.user.city);
+  const city = useSelector((state: RootState) => state.user.city);
   const dispatch = useDispatch();
   const isMenuDrawerOpen = useSelector((state: RootState) => state.ui.menuDrawer);
   const isSignedIn = firstName && city;

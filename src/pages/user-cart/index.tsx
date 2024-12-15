@@ -1,7 +1,7 @@
 import { Divider } from "@mui/material";
 import { Suspense, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { defer, redirect, useLoaderData, useNavigate } from "react-router-dom";
+import { defer, LoaderFunctionArgs, redirect, useLoaderData, useNavigate } from "react-router-dom";
 
 import { useFetch } from "@/hooks/use-fetch";
 import { displayAlert } from "@/stores/slices/alert-slice";
@@ -145,7 +145,7 @@ export const UserCart = () => {
   );
 };
 
-export const loader = async (request: any) => {
+export const loader = async (request: LoaderFunctionArgs) => {
   await checkHydration(store);
   const state = store.getState();
   const isSignedIn = state.user.isSignedIn;

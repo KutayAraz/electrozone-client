@@ -2,7 +2,7 @@ import { ReactComponent as LocationPin } from "@assets/svgs/location.svg";
 
 type LocationSectionProps = {
   city: string | null;
-  isSignedIn: boolean;
+  isSignedIn: boolean | null;
   onLocationClick: () => void;
 };
 
