@@ -9,13 +9,14 @@ import loaderFetch from "@/utils/loader-fetch";
 import { Subcategory, SubcategoryProps } from "./components/subcategory";
 
 export const CategoryPage = () => {
-  const { category }: any = useLoaderData();
-  const params: any = useParams();
+  const { category } = useLoaderData() as { category: Promise<SubcategoryProps[]> };
+  const { category: categoryParam } = useParams<{ category: string }>();
+  const formattedCategory = categoryParam ? formatString(categoryParam, "-") : "Category";
 
   return (
     <>
       <PageHelmet
-        title={`${formatString(params.category, "-")} | Electrozone`}
+        title={`${formattedCategory} | Electrozone`}
         description="Browse products by category to find exactly what you're looking for at Electrozone."
       />
       <div className="page-spacing">
@@ -41,6 +42,9 @@ export const CategoryPage = () => {
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
   const categoryName = params?.category?.replace(/-/g, "_");
+
+  if (!categoryName) throw new Error("Category parameter is required");
+
   const category = await loaderFetch(`${import.meta.env.VITE_API_URL}/category/` + categoryName);
   return defer({
     category: category.data,
