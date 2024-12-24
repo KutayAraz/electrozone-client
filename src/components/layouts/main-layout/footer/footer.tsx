@@ -1,8 +1,10 @@
+import { memo } from "react";
+
 import { ReactComponent as BrandSlogan } from "@assets/brand-images/brand-slogan.svg";
 
 import { FooterMenu } from "./footer-menu";
 
-export const Footer = () => {
+export const Footer = memo(() => {
   return (
     <footer className="bg-theme-blue py-0 text-white">
       <FooterMenu />
@@ -12,4 +14,6 @@ export const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = "Footer";
