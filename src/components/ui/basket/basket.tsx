@@ -1,12 +1,10 @@
-import { memo } from "react";
-
 import { ReactComponent as BasketSVG } from "@assets/svgs/basket.svg";
 
 interface BasketProps {
   itemCount: number;
 }
 
-export const Basket = memo(({ itemCount = 0 }: BasketProps) => {
+export const Basket = ({ itemCount = 0 }: BasketProps) => {
   return (
     <div className="relative inline-block">
       <BasketSVG className="size-9" />
@@ -23,6 +21,4 @@ export const Basket = memo(({ itemCount = 0 }: BasketProps) => {
       )}
     </div>
   );
-});
-
-Basket.displayName = "Basket";
+};

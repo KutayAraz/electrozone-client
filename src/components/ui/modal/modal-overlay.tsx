@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { CSSTransition } from "react-transition-group";
 
 import styles from "./custom-modal.module.scss";
@@ -22,32 +21,31 @@ type ModalOverlayProps = {
   tabIndex?: number;
 };
 
-export const ModalOverlay = memo(
-  ({
-    children,
-    isOpen,
-    widthClass = "",
-    topClass = "",
-    bottomClass = "",
-    leftClass = "",
-    rightClass = "",
-    heightClass = "",
-    direction,
-    transitionDuration,
-    transitionType,
-    className,
-  }: ModalOverlayProps) => {
-    const classNames = {
-      enter: styles[`modal-enter-${direction}-${transitionType}`],
-      enterActive: styles[`modal-enter-active-${direction}-${transitionType}`],
-      exit: styles[`modal-exit-${direction}-${transitionType}`],
-      exitActive: styles[`modal-exit-active-${direction}-${transitionType}`],
-    };
+export const ModalOverlay = ({
+  children,
+  isOpen,
+  widthClass = "",
+  topClass = "",
+  bottomClass = "",
+  leftClass = "",
+  rightClass = "",
+  heightClass = "",
+  direction,
+  transitionDuration,
+  transitionType,
+  className,
+}: ModalOverlayProps) => {
+  const classNames = {
+    enter: styles[`modal-enter-${direction}-${transitionType}`],
+    enterActive: styles[`modal-enter-active-${direction}-${transitionType}`],
+    exit: styles[`modal-exit-${direction}-${transitionType}`],
+    exitActive: styles[`modal-exit-active-${direction}-${transitionType}`],
+  };
 
-    return (
-      <CSSTransition in={isOpen} timeout={transitionDuration} classNames={classNames} unmountOnExit>
-        <div
-          className={` 
+  return (
+    <CSSTransition in={isOpen} timeout={transitionDuration} classNames={classNames} unmountOnExit>
+      <div
+        className={` 
           ${styles.modal} 
           ${widthClass} 
           ${topClass} 
@@ -57,12 +55,9 @@ export const ModalOverlay = memo(
           ${heightClass}
           ${className}
         `}
-        >
-          {children}
-        </div>
-      </CSSTransition>
-    );
-  },
-);
-
-ModalOverlay.displayName = "ModalOverlay";
+      >
+        {children}
+      </div>
+    </CSSTransition>
+  );
+};

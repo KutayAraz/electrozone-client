@@ -1,8 +1,7 @@
 import { LinearProgress } from "@mui/material";
-import { memo } from "react";
 import { useNavigation } from "react-router-dom";
 
-export const LoadingIndicator = memo(() => {
+export const LoadingIndicator = () => {
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
 
@@ -23,6 +22,4 @@ export const LoadingIndicator = memo(() => {
       />
     </div>
   );
-});
-
-LoadingIndicator.displayName = "LoadingIndicator";
+};

@@ -1,12 +1,10 @@
-import { memo } from "react";
-
 import styles from "./custom-modal.module.scss";
 
 type BackdropProps = {
   onClose: () => void;
 };
 
-export const Backdrop = memo(({ onClose }: BackdropProps) => {
+export const Backdrop = ({ onClose }: BackdropProps) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Escape") {
       onClose();
@@ -23,6 +21,4 @@ export const Backdrop = memo(({ onClose }: BackdropProps) => {
       aria-label="Close modal"
     />
   );
-});
-
-Backdrop.displayName = "Backdrop";
+};
