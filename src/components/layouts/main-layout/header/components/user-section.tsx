@@ -7,7 +7,7 @@ import { ReactComponent as UserIcon } from "@assets/svgs/user.svg";
 type UserSectionProps = {
   firstName: string | null;
   isSignedIn: boolean;
-  itemCount: number | null;
+  itemCount: number;
   smallScreenDevice: boolean;
   onProfileClick: () => void;
   onSignInClick: () => void;
@@ -16,7 +16,7 @@ type UserSectionProps = {
 export const UserSection = ({
   firstName,
   isSignedIn,
-  itemCount,
+  itemCount = 0,
   smallScreenDevice,
   onProfileClick,
   onSignInClick,
