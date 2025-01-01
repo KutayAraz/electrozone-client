@@ -5,13 +5,9 @@
   width: 100%;
   height: 100%;
   z-index: 20;
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* semi-transparent black for darkening */
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black for darkening */
   backdrop-filter: blur(5px);
+  cursor: default;
 }
 
 .modal {

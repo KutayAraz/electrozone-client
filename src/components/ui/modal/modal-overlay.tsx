@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 
 import styles from "./custom-modal.module.scss";
@@ -35,6 +36,8 @@ export const ModalOverlay = ({
   transitionType,
   className,
 }: ModalOverlayProps) => {
+  const nodeRef = useRef(null);
+
   const classNames = {
     enter: styles[`modal-enter-${direction}-${transitionType}`],
     enterActive: styles[`modal-enter-active-${direction}-${transitionType}`],
@@ -43,8 +46,15 @@ export const ModalOverlay = ({
   };
 
   return (
-    <CSSTransition in={isOpen} timeout={transitionDuration} classNames={classNames} unmountOnExit>
+    <CSSTransition
+      in={isOpen}
+      timeout={transitionDuration}
+      classNames={classNames}
+      unmountOnExit
+      nodeRef={nodeRef}
+    >
       <div
+        ref={nodeRef}
         className={` 
           ${styles.modal} 
           ${widthClass} 
