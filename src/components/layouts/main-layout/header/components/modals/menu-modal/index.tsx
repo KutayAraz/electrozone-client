@@ -1,10 +1,9 @@
 import { Divider } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/modal/custom-modal";
-import { toggleMenuDrawer } from "@/stores/slices/ui-slice";
 import { RootState } from "@/stores/store";
 import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 import { ReactComponent as ExitIcon } from "@assets/svgs/exit.svg";
@@ -14,40 +13,23 @@ import { MenuSection } from "./menu-section";
 import { SubMenu } from "./sub-menu";
 import { UserHeader } from "./user-header";
 
-interface BurgerMenuProps {
+interface MenuModalProps {
   children?: React.ReactNode;
   isOpen: boolean;
+  onClose: () => void;
 }
 
-export const MenuModal = ({ children, isOpen }: BurgerMenuProps) => {
-  const location = useLocation();
-  const dispatch = useDispatch();
-
+export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
   const city = useSelector((state: RootState) => state.user.city);
   const firstName = useSelector((state: RootState) => state.user.firstName);
   const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
 
   const [activeView, setActiveView] = useState("main");
 
-  const handleClose = useCallback(() => {
-    dispatch(toggleMenuDrawer(false));
+  const handleClose = () => {
+    onClose();
     setTimeout(() => setActiveView("main"), 300);
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(toggleMenuDrawer(false));
-  }, [location, dispatch]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflowX = "hidden"; // Prevent x-axis scrolling
-
-    return () => {
-      document.body.style.overflow = originalStyle;
-    };
-  }, [isOpen]);
+  };
 
   return (
     <div className="flex">
@@ -104,7 +86,7 @@ export const MenuModal = ({ children, isOpen }: BurgerMenuProps) => {
               <h2 className="p-4 text-xl font-bold">Help & Settings</h2>
               <Divider />
               {isSignedIn && (
-                <Link to="/my-account" className="p-4 text-lg hover:bg-gray-100">
+                <Link to="/account" className="p-4 text-lg hover:bg-gray-100">
                   Your Account
                 </Link>
               )}
