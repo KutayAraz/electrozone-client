@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { FormEvent, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/modal/custom-modal";
@@ -13,11 +13,15 @@ type LocationModalProps = {
 export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: LocationModalProps) => {
   const locationInput = useRef<HTMLInputElement>(null);
 
-  const handleLocation = () => {
-    if (!locationInput.current?.value || locationInput.current.value.trim().length < 2) {
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    const value = locationInput.current?.value.trim();
+
+    if (!value || value.length < 2) {
       return;
     }
-    onLocationSubmit(locationInput.current.value);
+
+    onLocationSubmit(value);
   };
 
   return (
@@ -28,35 +32,40 @@ export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: Locat
       transitionType="slide"
       transitionDuration={300}
       widthClass="w-[90%] md:w-[50%] lg:w-[30%]"
-      heightClass="h-[72]"
+      heightClass="h-72"
       topClass="top-[35%]"
       leftClass="left-[5%] md:left-[25%] lg:left-[35%]"
       className="noScrollbar rounded-xl"
       ariaLabel="User Location Modal"
     >
-      <div className="mx-auto my-6 flex w-4/5 flex-col text-center">
-        <button className="absolute right-3 top-2" onClick={onClose}>
+      <form onSubmit={handleSubmit} className="mx-auto my-6 flex w-4/5 flex-col text-center">
+        <button className="absolute right-3 top-2" onClick={onClose} aria-label="Close modal">
           X
         </button>
-        <h2 className="mb-2 mt-4 text-xl font-[500]">Choose your location</h2>
-        <Link to="/sign-in" className="my-1 rounded-lg bg-theme-orange py-[4px] font-[500]">
+        <h2 className="mb-2 mt-4 text-xl font-medium">Choose your location</h2>
+        <Link to="/sign-in" className="my-1 rounded-lg bg-theme-orange py-[4px] font-medium">
           Sign in to see your address
         </Link>
         <p className="my-2 text-center">or</p>
-        <label className="mb-2 font-[500]">{city ? "Change your city" : "Enter your city"}</label>
+        <label htmlFor="city-input" className="mb-2 font-medium">
+          {city ? "Change your city" : "Enter your city"}
+        </label>
         <input
+          id="city-input"
           type="text"
           className="rounded-lg border-2 border-[#3a4791] py-1"
           ref={locationInput}
+          minLength={2}
+          required
+          aria-required="true"
         />
         <button
-          onClick={handleLocation}
           type="submit"
-          className="mx-auto my-3 w-1/2 rounded-lg bg-theme-orange py-[4px] font-[500]"
+          className="mx-auto my-3 w-1/2 rounded-lg bg-theme-orange py-[4px] font-medium"
         >
           Apply
         </button>
-      </div>
+      </form>
     </CustomModal>
   );
 };

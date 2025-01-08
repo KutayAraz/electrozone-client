@@ -1,4 +1,5 @@
 import { Divider } from "@mui/material";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/modal/custom-modal";
@@ -11,6 +12,14 @@ type ProfileModalProps = {
   onClose: () => void;
 };
 
+const navigationLinks = [
+  { path: "/my-account/orders", label: "Previous Orders" },
+  { path: "/my-account/profile", label: "Manage Profile" },
+  { path: "/my-account/update-password", label: "Account Security" },
+  { path: "/my-account/wishlist", label: "Wishlist" },
+  { path: "/contact-us", label: "Contact Us" },
+] as const;
+
 export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
   return (
     <>
@@ -22,7 +31,7 @@ export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps)
         transitionType="slide"
         direction="left"
         isOpen={isOpen}
-        onClose={() => onClose()}
+        onClose={onClose}
         ariaLabel="User Profile Modal"
       >
         <div className="flex h-full flex-col justify-between">
@@ -30,31 +39,19 @@ export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps)
             <Link
               to="/my-account"
               className="block bg-theme-blue  px-4 py-6 text-xl font-semibold text-white"
-              onClick={() => onClose()}
+              onClick={onClose}
             >
               My Account
             </Link>
             <div className="flex flex-col space-y-4 bg-white text-lg">
-              <Divider />
-              <Link to="/my-account/orders" className="px-4">
-                Previous Orders
-              </Link>
-              <Divider />
-              <Link to="/my-account/profile" className="px-4">
-                Manage Profile
-              </Link>
-              <Divider />
-              <Link to="/my-account/update-password" className="px-4">
-                Account Security
-              </Link>
-              <Divider />
-              <Link to="/my-account/wishlist" className="px-4">
-                Wishlist
-              </Link>
-              <Divider />
-              <Link to="/contact-us" className="px-4">
-                Contact Us
-              </Link>
+              {navigationLinks.map(({ path, label }) => (
+                <React.Fragment key={path}>
+                  <Divider />
+                  <Link to={path} className="px-4">
+                    {label}
+                  </Link>
+                </React.Fragment>
+              ))}
               <Divider />
             </div>
           </div>
@@ -72,7 +69,7 @@ export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps)
       {isOpen && (
         <button
           className="absolute right-[calc(80%+40px)] top-6 z-[35] size-7 sm:right-[calc(60%+30px)] md:right-[calc(40%+30px)] lg:right-[calc(30%+30px)]"
-          onClick={() => onClose()}
+          onClick={onClose}
         >
           <CloseButton width={32} height={32} />
         </button>
