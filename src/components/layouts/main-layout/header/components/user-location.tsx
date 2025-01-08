@@ -30,7 +30,12 @@ export const UserLocation = () => {
           Currently delivering to {userLocation}
         </label>
       ) : (
-        <button onClick={() => setIsModalOpen(true)} className="flex w-full pl-[10px] text-white">
+        <button
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+          className="flex w-full pl-[10px] text-white"
+        >
           <LocationIcon className="size-6 stroke-white" />
           Select your location
         </button>
@@ -53,12 +58,12 @@ export const UserLocation = () => {
           onClick={() => setIsModalOpen(false)}
         />
         <div className="mx-auto my-6 flex w-4/5 flex-col text-center">
-          <h2 className="mb-2 mt-4 text-xl font-[500]">Choose your location</h2>
-          <Link to="/sign-in" className="my-1 rounded-lg bg-theme-orange py-2 font-[500]">
+          <h2 className="mb-2 mt-4 text-xl font-medium">Choose your location</h2>
+          <Link to="/sign-in" className="my-1 rounded-lg bg-theme-orange py-2 font-medium">
             Sign in to see your address
           </Link>
           <p className="my-2 text-center">or</p>
-          <label className="mb-1 text-xl font-[500]">
+          <label className="mb-1 text-xl font-medium">
             {userLocation ? "Change your city" : "Enter your city"}
           </label>
           <input
@@ -69,7 +74,7 @@ export const UserLocation = () => {
           <button
             onClick={handleLocation}
             type="submit"
-            className="mx-auto my-3 w-[50%] rounded-lg bg-theme-orange py-2 font-[500]"
+            className="mx-auto my-3 w-1/2 rounded-lg bg-theme-orange py-2 font-medium"
           >
             Apply
           </button>
