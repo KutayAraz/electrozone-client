@@ -15,19 +15,19 @@ export const paths = {
   },
   app: {
     root: {
-      path: "/my-account",
+      path: "/account",
     },
     profile: {
-      path: "/my-account/profile",
+      path: "/account/profile",
     },
     orders: {
-      path: "/my-account/orders",
+      path: "/account/orders",
       order: {
-        path: "/my-account/orders/:orderId",
+        path: "/account/orders/:orderId",
       },
     },
     wishlist: {
-      path: "/my-account/wishlist",
+      path: "/account/wishlist",
     },
   },
   products: {

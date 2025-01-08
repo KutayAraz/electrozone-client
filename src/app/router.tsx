@@ -86,6 +86,53 @@ export const createAppRouter = () =>
             },
           ],
         },
+        {
+          element: <ProtectedRoute />,
+          children: [
+            {
+              path: paths.app.root.path,
+              lazy: async () => {
+                const { UserAccount } = await import("@pages/user-account");
+                return { Component: UserAccount };
+              },
+            },
+            {
+              path: "profile",
+              lazy: async () => {
+                const { UserProfile, loader } = await import("@pages/user-profile");
+                return {
+                  Component: UserProfile,
+                  loader,
+                };
+              },
+            },
+            {
+              path: "orders",
+              children: [
+                {
+                  index: true,
+                  lazy: async () => {
+                    const { MyOrders, loader } = await import("@pages/my-orders");
+                    return {
+                      Component: MyOrders,
+                      loader,
+                    };
+                  },
+                },
+                {
+                  path: ":orderId",
+                  lazy: async () => {
+                    const { OrderStatus, loader } = await import("@pages/order-status");
+                    return {
+                      Component: OrderStatus,
+                      loader,
+                    };
+                  },
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
     {
@@ -100,48 +147,6 @@ export const createAppRouter = () =>
               loader,
             };
           },
-        },
-        {
-          index: true,
-          lazy: async () => {
-            const { UserAccount } = await import("@pages/user-account");
-            return { Component: UserAccount };
-          },
-        },
-        {
-          path: "profile",
-          lazy: async () => {
-            const { UserProfile, loader } = await import("@pages/user-profile");
-            return {
-              Component: UserProfile,
-              loader,
-            };
-          },
-        },
-        {
-          path: "orders",
-          children: [
-            {
-              index: true,
-              lazy: async () => {
-                const { MyOrders, loader } = await import("@pages/my-orders");
-                return {
-                  Component: MyOrders,
-                  loader,
-                };
-              },
-            },
-            {
-              path: ":orderId",
-              lazy: async () => {
-                const { OrderStatus, loader } = await import("@pages/order-status");
-                return {
-                  Component: OrderStatus,
-                  loader,
-                };
-              },
-            },
-          ],
         },
       ],
     },
