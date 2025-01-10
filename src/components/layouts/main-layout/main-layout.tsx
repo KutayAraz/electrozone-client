@@ -20,10 +20,9 @@ import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
 
 import { Footer } from "./footer/footer";
-import { NavigationStrip } from "./header/components/navigation-strip";
+import { Header } from "./header";
 import { SearchControls } from "./header/components/search-controls";
 import { UserLocation } from "./header/components/user-location";
-import { Header } from "./header/header";
 
 export const MainLayout = () => {
   const dispatch = useDispatch<any>();
@@ -102,21 +101,14 @@ export const MainLayout = () => {
   }, [handleScroll]);
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col">
       <Header
         ref={headerRef}
         className={`z-[4] bg-theme-blue ${
           isSticky ? "sticky top-0 transition-all duration-200" : "top-[-64px] block"
         }`}
       />
-      {showHeaderExtras ? (
-        <NavigationStrip
-          className={`z-[3] transition-all duration-200 ${!isSticky ? "block" : "sticky"}`}
-          style={
-            isSticky && scrollDirection === "up" ? { top: `${headerHeight}px` } : { top: "-64px" }
-          }
-        />
-      ) : (
+      {!showHeaderExtras && (
         <SearchControls
           className={`z-[3] transition-all duration-200 ${!isSticky ? "block" : "sticky"}`}
           style={
