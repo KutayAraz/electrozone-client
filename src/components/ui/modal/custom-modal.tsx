@@ -44,7 +44,7 @@ export const CustomModal = ({
 
   useEffect(() => {
     onClose();
-  }, [location, onClose]);
+  }, [location]);
 
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
@@ -62,7 +62,7 @@ export const CustomModal = ({
     return () => {
       window.removeEventListener("keydown", handleEscapeKey);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   useEffect(() => {
     // Disable scrolling on the main page when the modal is open

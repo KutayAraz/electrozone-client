@@ -3,7 +3,7 @@ export interface User {
   city: string | null;
   isSignedIn: boolean;
   userIntent: CheckoutIntent;
-  cartItemCount: number | null;
+  cartItemCount: number;
 }
 
 export interface UserProtected {
@@ -41,7 +41,7 @@ export interface WishlistState {
 }
 
 export enum CheckoutIntent {
-  NORMAL = 'normal',
-  SESSION = 'session',
-  BUY_NOW = 'buyNow',
+  NORMAL = "normal",
+  SESSION = "session",
+  BUY_NOW = "buyNow",
 }
