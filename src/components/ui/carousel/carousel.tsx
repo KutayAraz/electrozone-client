@@ -19,10 +19,7 @@ export const Carousel = ({ products, className }: CarouselProps) => {
   return (
     <div className="relative overflow-hidden px-5">
       <div className="relative mx-auto">
-        <div
-          ref={prevRef}
-          className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 cursor-pointer"
-        >
+        <div ref={prevRef} className="absolute -left-4 top-1/2 -translate-y-1/2 cursor-pointer">
           <NavButton className="size-5 rotate-180" />
         </div>
         <Swiper
@@ -76,10 +73,7 @@ export const Carousel = ({ products, className }: CarouselProps) => {
             </SwiperSlide>
           ))}
         </Swiper>
-        <div
-          ref={nextRef}
-          className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 cursor-pointer"
-        >
+        <div ref={nextRef} className="absolute -right-4 top-1/2 -translate-y-1/2 cursor-pointer">
           <NavButton className="size-5 " />
         </div>
       </div>
