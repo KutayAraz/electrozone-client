@@ -6,9 +6,14 @@ import { ReactComponent as SearchIcon } from "@assets/svgs/search.svg";
 type SearchBarProps = {
   className?: string;
   placeholder?: string;
+  style?: React.CSSProperties;
 };
 
-export const SearchBar = ({ className, placeholder = "Search Electrozone" }: SearchBarProps) => {
+export const SearchBar = ({
+  className,
+  placeholder = "Search Electrozone",
+  style,
+}: SearchBarProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,7 +41,7 @@ export const SearchBar = ({ className, placeholder = "Search Electrozone" }: Sea
   };
 
   return (
-    <div className={`relative flex ${className}`}>
+    <div className={`relative flex ${className}`} style={style}>
       <label htmlFor="search-input" className="sr-only">
         Search
       </label>
