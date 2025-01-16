@@ -2,6 +2,7 @@ import { FormEvent, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/modal/custom-modal";
+import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 
 type LocationModalProps = {
   isOpen: boolean;
@@ -28,28 +29,42 @@ export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: Locat
     <CustomModal
       isOpen={isOpen}
       onClose={onClose}
-      direction="center"
+      direction="bottom"
       transitionType="slide"
       transitionDuration={300}
-      widthClass="w-[90%] md:w-[50%] lg:w-[30%]"
-      heightClass="h-72"
-      topClass="top-[35%]"
-      leftClass="left-[5%] md:left-[25%] lg:left-[35%]"
-      className="noScrollbar rounded-xl"
+      widthClass="w-full sm:w-[90%] md:w-[50%] lg:w-[30%]"
+      heightClass="auto sm:h-80"
+      bottomClass="bottom-0 sm:bottom-auto"
+      topClass="top-auto sm:top-[35%]"
+      leftClass="left-0 sm:left-[5%] md:left-[25%] lg:left-[35%]"
+      className="sm:rounded-xl"
       ariaLabel="User Location Modal"
     >
       <form onSubmit={handleSubmit} className="mx-auto my-6 flex w-4/5 flex-col text-center">
-        <button className="absolute right-3 top-2" onClick={onClose} aria-label="Close modal">
-          X
+        <button
+          className="absolute right-4 top-4 sm:right-3 sm:top-2"
+          onClick={onClose}
+          aria-label="Close modal"
+        >
+          <CloseButton className="size-6 cursor-pointer stroke-gray-500 sm:hidden" />
+          <span className="hidden sm:inline">X</span>
         </button>
+
         <h2 className="mb-2 mt-4 text-xl font-medium">Choose your location</h2>
-        <Link to="/sign-in" className="my-1 rounded-lg bg-theme-orange py-[4px] font-medium">
+
+        <Link
+          to="/sign-in"
+          className="my-1 rounded-lg bg-theme-orange py-2 font-medium sm:py-[4px]"
+        >
           Sign in to see your address
         </Link>
+
         <p className="my-2 text-center">or</p>
-        <label htmlFor="city-input" className="mb-2 font-medium">
+
+        <label htmlFor="city-input" className="mb-1 text-xl font-medium sm:mb-2 sm:text-base">
           {city ? "Change your city" : "Enter your city"}
         </label>
+
         <input
           id="city-input"
           type="text"
@@ -59,9 +74,10 @@ export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: Locat
           required
           aria-required="true"
         />
+
         <button
           type="submit"
-          className="mx-auto my-3 w-1/2 rounded-lg bg-theme-orange py-[4px] font-medium"
+          className="mx-auto my-3 w-1/2 rounded-lg bg-theme-orange py-2 font-medium sm:py-[4px]"
         >
           Apply
         </button>
