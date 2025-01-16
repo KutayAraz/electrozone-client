@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@mui/material";
-import { forwardRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -10,14 +10,16 @@ import { ReactComponent as Brand } from "@assets/brand-images/brand.svg";
 import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
 
 import { LocationSection } from "./components/location-section";
+import { MobileLocationSection } from "./components/mobile-location-section";
 import { LocationModal } from "./components/modals/location-modal";
 import { MenuModal } from "./components/modals/menu-modal";
 import { ProfileModal } from "./components/modals/profile-modal";
 import { NavigationStrip } from "./components/navigation-strip";
 import { SearchBar } from "./components/search-bar";
+import SearchControls from "./components/search-controls";
 import { UserSection } from "./components/user-section";
 
-export const Header = forwardRef<HTMLDivElement, { className: string }>((props, ref) => {
+export const Header = () => {
   const navigate = useNavigate();
   const firstName = useSelector((state: any) => state.user.firstName);
   const city = useSelector((state: RootState) => state.user.city);
@@ -26,7 +28,14 @@ export const Header = forwardRef<HTMLDivElement, { className: string }>((props, 
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
   const [menuModalOpen, setMenuModalOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const [lastScrollY, setLastScrollY] = useState(window.scrollY);
+  const [scrollDirection, setScrollDirection] = useState<"up" | "down">("down");
   const smallScreenDevice = useMediaQuery("(max-width: 400px)");
+  const path = location.pathname;
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const localCartQuantity = useSelector((state: RootState) => state.localCart.totalQuantity);
 
@@ -39,10 +48,66 @@ export const Header = forwardRef<HTMLDivElement, { className: string }>((props, 
     setLocationModalOpen(false);
   };
 
+  // Check if the path starts with '/category' and has more segments following it
+  const pathSegments = location.pathname.split("/").filter(Boolean); // Split path and remove empty segments
+
+  // Determine if you should show the nav strip
+  const showHeaderExtras =
+    !isMobile ||
+    (!(pathSegments[0] === "category" && pathSegments.length >= 3) && !path.startsWith("/search"));
+
+  console.log(showHeaderExtras, isSticky, scrollDirection, headerHeight);
+
+  const throttle = (func: () => void, limit: number) => {
+    let inThrottle: boolean;
+    return function () {
+      if (!inThrottle) {
+        func();
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  };
+
+  const handleScroll = useCallback(
+    throttle(() => {
+      const currentScrollY = window.scrollY;
+
+      // Calculate and update header height only if needed
+      if (headerRef.current && headerHeight !== headerRef.current.offsetHeight) {
+        setHeaderHeight(headerRef.current.offsetHeight - 2);
+      }
+
+      // Calculate and update stickiness only if needed
+      const shouldBeSticky = currentScrollY > headerHeight + 75;
+      if (isSticky !== shouldBeSticky) {
+        setIsSticky(shouldBeSticky);
+      }
+
+      // Determine scroll direction only if changed
+      const newScrollDirection = currentScrollY > lastScrollY ? "down" : "up";
+      if (newScrollDirection !== scrollDirection) {
+        setScrollDirection(newScrollDirection);
+      }
+
+      // Update last scroll position
+      setLastScrollY(currentScrollY);
+    }, 100),
+    [lastScrollY, headerHeight, isSticky, scrollDirection],
+  );
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]);
+
   return (
-    <div ref={ref} className={props.className}>
+    <>
       <div
-        className={`flex w-full items-center justify-between bg-theme-blue px-2 py-[5px] text-white sm:py-0 `}
+        ref={headerRef}
+        className={`z-[4] flex w-full items-center justify-between bg-theme-blue px-2 py-[5px] text-white sm:py-0 ${
+          isSticky ? "sticky top-0 transition-all duration-200" : "top-[-64px] block"
+        }`}
       >
         <div className="flex items-center">
           <BurgerIcon
@@ -73,13 +138,39 @@ export const Header = forwardRef<HTMLDivElement, { className: string }>((props, 
           onSignInClick={() => navigate("/sign-in")}
         />
       </div>
-      <div className="px-2">
-        <SearchBar className={`my-1 mb-2 h-8 w-full text-gray-700 md:hidden`} />
+
+      <div
+        className={`px-2 ${
+          isSticky ? "sticky z-[4] transition-all duration-200" : "block"
+        } bg-theme-blue`}
+        style={isSticky ? { top: `${headerHeight}px` } : { top: "-64px" }}
+      >
+        <SearchBar className={`my-1 mb-2 h-8 w-full px-2 text-gray-700 md:hidden`} />
       </div>
-      <NavigationStrip
-        className={`z-[3] transition-all duration-200 `}
-        onMenuClick={() => setMenuModalOpen(true)}
-      />
+
+      {showHeaderExtras ? (
+        <NavigationStrip
+          className={`z-[3] transition-all duration-200 ${!isSticky ? "block" : "sticky"}`}
+          style={
+            isSticky && scrollDirection === "up"
+              ? { top: `calc(${headerHeight}px + 38px)` }
+              : { top: "-64px" }
+          }
+          onMenuClick={() => setMenuModalOpen(true)}
+        />
+      ) : (
+        <SearchControls
+          className={`z-[3] transition-all duration-200 ${!isSticky ? "block" : "sticky"}`}
+          style={
+            isSticky && scrollDirection === "up"
+              ? { top: `calc(${headerHeight}px + 42px)` }
+              : { top: "-64px" }
+          }
+        />
+      )}
+      {showHeaderExtras && (
+        <MobileLocationSection onLocationClick={() => setLocationModalOpen(true)} />
+      )}
 
       <LocationModal
         isOpen={locationModalOpen}
@@ -101,8 +192,8 @@ export const Header = forwardRef<HTMLDivElement, { className: string }>((props, 
           setMenuModalOpen(false);
         }}
       />
-    </div>
+    </>
   );
-});
+};
 
 Header.displayName = "Header";

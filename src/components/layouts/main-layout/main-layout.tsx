@@ -1,13 +1,7 @@
-import { Alert, Slide, createTheme, useMediaQuery } from "@mui/material";
+import { Alert, Slide, createTheme } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  LoaderFunction,
-  LoaderFunctionArgs,
-  Outlet,
-  ScrollRestoration,
-  useLocation,
-} from "react-router-dom";
+import { LoaderFunction, LoaderFunctionArgs, Outlet, ScrollRestoration } from "react-router-dom";
 
 import { LoadingIndicator } from "@/components/ui/loading-bar/loading-bar";
 import { hideAlert } from "@/stores/slices/alert-slice";
@@ -21,14 +15,9 @@ import loaderFetch from "@/utils/loader-fetch";
 
 import { Footer } from "./footer/footer";
 import { Header } from "./header";
-import { SearchControls } from "./header/components/search-controls";
-import { UserLocation } from "./header/components/user-location";
 
 export const MainLayout = () => {
   const dispatch = useDispatch<any>();
-  const location = useLocation();
-  const path = location.pathname;
-  const isMobile = useMediaQuery("(max-width: 768px)");
   const notifications = useSelector((state: RootState) => state.alert.notifications);
 
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -49,13 +38,6 @@ export const MainLayout = () => {
       },
     },
   });
-  // Check if the path starts with '/category' and has more segments following it
-  const pathSegments = location.pathname.split("/").filter(Boolean); // Split path and remove empty segments
-
-  // Determine if you should show the nav strip
-  const showHeaderExtras =
-    !isMobile ||
-    (!(pathSegments[0] === "category" && pathSegments.length >= 3) && !path.startsWith("/search"));
 
   const throttle = (func: () => void, limit: number) => {
     let inThrottle: boolean;
@@ -102,21 +84,7 @@ export const MainLayout = () => {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col">
-      <Header
-        ref={headerRef}
-        className={`z-[4] bg-theme-blue ${
-          isSticky ? "sticky top-0 transition-all duration-200" : "top-[-64px] block"
-        }`}
-      />
-      {!showHeaderExtras && (
-        <SearchControls
-          className={`z-[3] transition-all duration-200 ${!isSticky ? "block" : "sticky"}`}
-          style={
-            isSticky && scrollDirection === "up" ? { top: `${headerHeight}px` } : { top: "-64px" }
-          }
-        />
-      )}
-      {showHeaderExtras && <UserLocation />}
+      <Header />
 
       <LoadingIndicator />
       <div className="fixed right-0 top-0 z-20 xs:top-2 sm:top-28">
