@@ -4,20 +4,15 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/modal/custom-modal";
+import { TRENDING_LINKS, MENU_SECTIONS } from "@/features/header/constants/menu";
+import { MenuModalProps } from "@/features/header/types";
 import { RootState } from "@/stores/store";
 import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 import { ReactComponent as ExitIcon } from "@assets/svgs/exit.svg";
 
-import { TRENDING_LINKS, MENU_SECTIONS } from "./constants";
 import { MenuSection } from "./menu-section";
 import { SubMenu } from "./sub-menu";
 import { UserHeader } from "./user-header";
-
-interface MenuModalProps {
-  children?: React.ReactNode;
-  isOpen: boolean;
-  onClose: () => void;
-}
 
 export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
   const city = useSelector((state: RootState) => state.user.city);

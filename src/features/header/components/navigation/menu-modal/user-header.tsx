@@ -1,10 +1,7 @@
 import { Link } from "react-router-dom";
 
+import { UserHeaderProps } from "@/features/header/types";
 import { ReactComponent as UserIcon } from "@assets/svgs/user.svg";
-type UserHeaderProps = {
-  firstName: string | null;
-  isSignedIn: boolean;
-};
 
 export const UserHeader = ({ firstName, isSignedIn }: UserHeaderProps) => (
   <Link

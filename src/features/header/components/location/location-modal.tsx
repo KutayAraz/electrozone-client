@@ -3,13 +3,7 @@ import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/modal/custom-modal";
 import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
-
-type LocationModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  onLocationSubmit: (location: string) => void;
-  city: string | null;
-};
+import { LocationModalProps } from "@features/header/types";
 
 export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: LocationModalProps) => {
   const locationInput = useRef<HTMLInputElement>(null);

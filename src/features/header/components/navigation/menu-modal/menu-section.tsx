@@ -1,15 +1,5 @@
+import { MenuSectionProps } from "@/features/header/types";
 import { ReactComponent as Arrow } from "@assets/svgs/arrow-black.svg";
-
-type MenuSection = {
-  id: string;
-  title: string;
-  links: Array<{ name: string; url: string }>;
-};
-
-type MenuSectionProps = {
-  section: MenuSection;
-  onClick: () => void;
-};
 
 export const MenuSection = ({ section, onClick }: MenuSectionProps) => (
   <button

@@ -4,14 +4,9 @@ import { Typography, Divider, Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 
 import { toggleFilterDrawer, toggleSortingDrawer } from "@/stores/slices/ui-slice";
+import { SearchControlsProps } from "@features/header/types";
 
-export const SearchControls = ({
-  className,
-  style = {},
-}: {
-  className?: string;
-  style?: React.CSSProperties;
-}) => {
+export const SearchControls = ({ className, style = {} }: SearchControlsProps) => {
   const dispatch = useDispatch<any>();
   const path = location.pathname;
 
@@ -72,5 +67,3 @@ export const SearchControls = ({
     )
   );
 };
-
-export default SearchControls;

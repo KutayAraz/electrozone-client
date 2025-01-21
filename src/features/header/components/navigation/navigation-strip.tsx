@@ -1,28 +1,9 @@
 import { Link } from "react-router-dom";
 
+import { MENU_ITEMS } from "@/features/header/constants/menu";
 import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
 
-type MenuItem = {
-  name: string;
-  url: string;
-};
-
-type NavigationStripProps = {
-  onMenuClick: () => void;
-  className?: string;
-  style?: React.CSSProperties;
-};
-
-const MENU_ITEMS: MenuItem[] = [
-  { name: "Best Sellers", url: "/trending/best-sellers" },
-  { name: "TVs", url: "/category/tvs-and-soundbars/tvs" },
-  { name: "Most Wishlisted", url: "/trending/most-wishlisted" },
-  { name: "Laptops", url: "/category/computers-and-accessories/laptops" },
-  { name: "Top Rated", url: "/trending/top-rated" },
-  { name: "Smartphones", url: "/category/smartphones-and-accessories/smartphones" },
-  { name: "Laser Printers", url: "/category/printers-and-ink/laser-printers" },
-  { name: "PCs", url: "/category/computers-and-accessories/computers" },
-];
+import { NavigationStripProps } from "../../types";
 
 export const NavigationStrip = ({ onMenuClick, className, style = {} }: NavigationStripProps) => {
   const navContainerClass =

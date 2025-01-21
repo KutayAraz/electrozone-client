@@ -3,15 +3,7 @@ import { Link } from "react-router-dom";
 import { Basket } from "@/components/ui/basket/basket";
 import { ReactComponent as Arrow } from "@assets/svgs/arrow.svg";
 import { ReactComponent as UserIcon } from "@assets/svgs/user.svg";
-
-type UserSectionProps = {
-  firstName: string | null;
-  isSignedIn: boolean;
-  itemCount: number;
-  smallScreenDevice: boolean;
-  onProfileClick: () => void;
-  onSignInClick: () => void;
-};
+import { UserSectionProps } from "@features/header/types";
 
 export const UserSection = ({
   firstName,

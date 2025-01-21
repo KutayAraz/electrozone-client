@@ -2,10 +2,7 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "@/stores/store";
 import { ReactComponent as LocationIcon } from "@assets/svgs/location.svg";
-
-type MobileLocationSectionProps = {
-  onLocationClick: () => void;
-};
+import { MobileLocationSectionProps } from "@features/header/types";
 
 export const MobileLocationSection = ({ onLocationClick }: MobileLocationSectionProps) => {
   const userLocation = useSelector((state: RootState) => state.user.city);

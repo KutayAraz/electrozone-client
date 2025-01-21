@@ -1,14 +1,8 @@
 import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
 
+import { SubMenuProps } from "@/features/header/types";
 import { ReactComponent as BackArrow } from "@assets/svgs/go-back.svg";
-
-type SubMenuProps = {
-  isVisible: boolean;
-  title: string;
-  links: Array<{ name: string; url: string }>;
-  onBack: () => void;
-};
 
 export const SubMenu = ({ isVisible, links, onBack }: SubMenuProps) => (
   <div

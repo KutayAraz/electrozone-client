@@ -5,20 +5,8 @@ import { Link } from "react-router-dom";
 import { CustomModal } from "@/components/ui/modal/custom-modal";
 import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 import { ReactComponent as ExitIcon } from "@assets/svgs/exit.svg";
-
-type ProfileModalProps = {
-  isOpen: boolean;
-  isSignedIn: boolean;
-  onClose: () => void;
-};
-
-const navigationLinks = [
-  { path: "/my-account/orders", label: "Previous Orders" },
-  { path: "/my-account/profile", label: "Manage Profile" },
-  { path: "/my-account/update-password", label: "Account Security" },
-  { path: "/my-account/wishlist", label: "Wishlist" },
-  { path: "/contact-us", label: "Contact Us" },
-] as const;
+import { navigationLinks } from "@features/header/constants/navigation";
+import { ProfileModalProps } from "@features/header/types";
 
 export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
   return (
