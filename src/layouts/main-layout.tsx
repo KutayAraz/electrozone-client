@@ -1,9 +1,8 @@
 import { Alert, Slide, createTheme } from "@mui/material";
-import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LoaderFunction, LoaderFunctionArgs, Outlet, ScrollRestoration } from "react-router-dom";
 
-import { LoadingIndicator } from "@/components/ui/loading-bar/loading-bar";
+import { LoadingIndicator } from "@/components/ui/loading-bar";
 import { hideAlert } from "@/stores/slices/alert-slice";
 import { clearbuyNowCart } from "@/stores/slices/buynow-cart-slice";
 import { clearLocalcart } from "@/stores/slices/local-cart-slice";
@@ -12,20 +11,12 @@ import { setUserIntent, updateCartItemCount } from "@/stores/slices/user-slice";
 import { RootState, store } from "@/stores/store";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
-
-import { Footer } from "./footer/footer";
-import { Header } from "./header";
+import { Footer } from "@features/footer";
+import { Header } from "@features/header";
 
 export const MainLayout = () => {
   const dispatch = useDispatch<any>();
   const notifications = useSelector((state: RootState) => state.alert.notifications);
-
-  const [headerHeight, setHeaderHeight] = useState(0);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const [isSticky, setIsSticky] = useState(false);
-
-  const [lastScrollY, setLastScrollY] = useState(window.scrollY);
-  const [scrollDirection, setScrollDirection] = useState<"up" | "down">("down");
 
   const theme = createTheme({
     breakpoints: {
@@ -39,51 +30,8 @@ export const MainLayout = () => {
     },
   });
 
-  const throttle = (func: () => void, limit: number) => {
-    let inThrottle: boolean;
-    return function () {
-      if (!inThrottle) {
-        func();
-        inThrottle = true;
-        setTimeout(() => (inThrottle = false), limit);
-      }
-    };
-  };
-
-  const handleScroll = useCallback(
-    throttle(() => {
-      const currentScrollY = window.scrollY;
-
-      // Calculate and update header height only if needed
-      if (headerRef.current && headerHeight !== headerRef.current.offsetHeight) {
-        setHeaderHeight(headerRef.current.offsetHeight - 2);
-      }
-
-      // Calculate and update stickiness only if needed
-      const shouldBeSticky = currentScrollY > headerHeight + 75;
-      if (isSticky !== shouldBeSticky) {
-        setIsSticky(shouldBeSticky);
-      }
-
-      // Determine scroll direction only if changed
-      const newScrollDirection = currentScrollY > lastScrollY ? "down" : "up";
-      if (newScrollDirection !== scrollDirection) {
-        setScrollDirection(newScrollDirection);
-      }
-
-      // Update last scroll position
-      setLastScrollY(currentScrollY);
-    }, 100),
-    [lastScrollY, headerHeight, isSticky, scrollDirection],
-  );
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-
   return (
-    <div className="mx-auto flex min-h-screen max-w-screen-xl flex-col">
+    <div className="mx-auto flex min-h-screen flex-col">
       <Header />
 
       <LoadingIndicator />
