@@ -1,15 +1,7 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
 
-type FooterLink = {
-  to: string;
-  label: string;
-};
-
-const FOOTER_LINKS: FooterLink[] = [
-  { to: "/project-details", label: "About the Project" },
-  { to: "/contact", label: "Contact" },
-];
+import { FOOTER_LINKS } from "../constants/links";
 
 export const FooterMenu = memo(() => {
   // Extract classes to a constant to avoid recreation on each render
