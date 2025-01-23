@@ -3,7 +3,7 @@ import { CSSTransition } from "react-transition-group";
 
 import styles from "./custom-modal.module.scss";
 
-type ModalOverlayProps = {
+interface ModalOverlayProps {
   children: React.ReactNode;
   isOpen: boolean;
   widthClass: string;
@@ -20,7 +20,7 @@ type ModalOverlayProps = {
   "aria-modal"?: string;
   "aria-label"?: string;
   tabIndex?: number;
-};
+}
 
 export const ModalOverlay = ({
   children,

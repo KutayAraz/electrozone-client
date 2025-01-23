@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { Backdrop } from "./backdrop";
 import { ModalOverlay } from "./modal-overlay";
 
-type CustomModalProps = {
+interface CustomModalProps {
   widthClass: string;
   heightClass: string;
   topClass?: string;
@@ -20,7 +20,7 @@ type CustomModalProps = {
   onClose: () => void;
   className?: string;
   ariaLabel: string;
-};
+}
 
 export const CustomModal = ({
   onClose,

@@ -7,10 +7,10 @@ import { ReactComponent as NavButton } from "@assets/svgs/carousel-nav-button.sv
 
 import { CarouselCard, CarouselCardProps } from "./carousel-card";
 
-type CarouselProps = {
+interface CarouselProps {
   products: CarouselCardProps[];
   className?: string;
-};
+}
 
 export const Carousel = ({ products, className }: CarouselProps) => {
   const prevRef = useRef<HTMLDivElement>(null);

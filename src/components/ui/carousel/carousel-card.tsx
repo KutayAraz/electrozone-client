@@ -10,7 +10,7 @@ import { createUrlSlug } from "@/utils/create-url-slug";
 import { truncateString } from "@/utils/truncate-string";
 import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
 
-export type CarouselCardProps = {
+export interface CarouselCardProps {
   id: number;
   productName: string;
   brand: string;
@@ -18,7 +18,7 @@ export type CarouselCardProps = {
   thumbnail: string;
   subcategory: string;
   category: string;
-};
+}
 
 export const CarouselCard = ({
   id,

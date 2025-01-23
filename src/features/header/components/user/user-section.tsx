@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { Basket } from "@/components/ui/basket/basket";
+import { Basket } from "@/components/ui/basket";
 import { ReactComponent as Arrow } from "@assets/svgs/arrow.svg";
 import { ReactComponent as UserIcon } from "@assets/svgs/user.svg";
 import { UserSectionProps } from "@features/header/types";

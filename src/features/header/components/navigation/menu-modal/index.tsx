@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { CustomModal } from "@/components/ui/modal/custom-modal";
+import { CustomModal } from "@/components/ui/custom-modal";
 import { TRENDING_LINKS, MENU_SECTIONS } from "@/features/header/constants/menu";
 import { MenuModalProps } from "@/features/header/types";
 import { RootState } from "@/stores/store";

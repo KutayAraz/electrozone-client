@@ -1,7 +1,7 @@
 import { FormEvent, useRef } from "react";
 import { Link } from "react-router-dom";
 
-import { CustomModal } from "@/components/ui/modal/custom-modal";
+import { CustomModal } from "@/components/ui/custom-modal";
 import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 import { LocationModalProps } from "@features/header/types";
 

@@ -1,8 +1,8 @@
 import styles from "./custom-modal.module.scss";
 
-type BackdropProps = {
+interface BackdropProps {
   onClose: () => void;
-};
+}
 
 export const Backdrop = ({ onClose }: BackdropProps) => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
