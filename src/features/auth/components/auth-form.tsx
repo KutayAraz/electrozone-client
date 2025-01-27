@@ -7,6 +7,7 @@ type AuthFormProps = {
   submitText: string;
   loadingText: string;
   children: React.ReactNode;
+  signUpButton?: React.ReactNode;
 };
 
 export const AuthForm = ({
@@ -16,10 +17,11 @@ export const AuthForm = ({
   submitText,
   loadingText,
   children,
+  signUpButton,
 }: AuthFormProps) => {
   return (
     <form action="POST" onSubmit={onSubmit}>
-      <div className="mx-2 mb-4 flex max-w-md flex-col rounded-xl bg-white p-6 shadow-md xs:mx-auto">
+      <div className="mx-2 mb-4 flex max-w-md flex-col rounded-xl bg-gray-100 p-6 shadow-md xs:mx-auto">
         {children}
         <button
           type="submit"
@@ -41,6 +43,7 @@ export const AuthForm = ({
             submitText
           )}
         </button>
+        {signUpButton}
       </div>
     </form>
   );

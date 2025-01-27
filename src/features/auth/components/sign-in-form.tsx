@@ -43,11 +43,11 @@ export const SignIn = () => {
     mode: "onBlur",
   });
 
+  const { data: wishlistProducts } = useGetWishlistQuery();
+
   const handleSuccessfulLogin = async (credentials: any) => {
     dispatch(setCredentials({ ...credentials }));
 
-    // Set wishlist data
-    const { data: wishlistProducts } = useGetWishlistQuery();
     if (wishlistProducts) {
       dispatch(setWishlist(wishlistProducts));
     }
@@ -87,6 +87,18 @@ export const SignIn = () => {
       isLoading={isLoading}
       submitText="Sign In"
       loadingText="Signing in.."
+      signUpButton={
+        <>
+          <p className="mb-1 mt-2 text-center text-gray-600">Don&apos;t have an account yet?</p>
+          <button
+            type="button"
+            onClick={() => navigate("/sign-up")}
+            className="w-full rounded-lg bg-theme-orange py-2 font-semibold text-white transition duration-300 ease-in-out hover:bg-blue-700"
+          >
+            Create your electrozone account
+          </button>
+        </>
+      }
     >
       <h4 className="text-lg font-semibold text-gray-800">Welcome,</h4>
 
@@ -115,15 +127,6 @@ export const SignIn = () => {
         required
       />
       {errors.password && <p className={errorMessageClasses}>{errors.password.message}</p>}
-
-      <p className="mb-1 mt-4 text-center text-gray-600">Don&apos;t have an account yet?</p>
-      <button
-        type="button"
-        onClick={() => navigate("/sign-up")}
-        className="w-full rounded-lg bg-theme-blue py-2 font-semibold text-white transition duration-300 ease-in-out hover:bg-blue-700"
-      >
-        Create your electrozone account
-      </button>
     </AuthForm>
   );
 };
