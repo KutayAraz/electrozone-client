@@ -19,7 +19,7 @@ export const authApi = createApi({
     }),
     refreshToken: builder.query<RefreshTokenResponse, void>({
       query: () => ({
-        url: "/auth/refresh-token",
+        url: "/auth/refresh",
         method: "POST",
       }),
     }),

@@ -13,6 +13,8 @@ import {
 import storage from "redux-persist/lib/storage";
 import sessionStorage from "redux-persist/lib/storage/session";
 
+import { authApi } from "@/features/auth/api/auth-api";
+
 import { alertSlice } from "./slices/alert-slice";
 import { authSlice } from "./slices/auth-slice";
 import { buyNowCartSlice } from "./slices/buynow-cart-slice";
@@ -58,6 +60,7 @@ const persistedWishlistReducer = persistReducer(wishlistPersistConfig, wishlistS
 const rootReducer = combineReducers({
   alert: alertSlice.reducer,
   ui: uiSlice.reducer,
+  [authApi.reducerPath]: authApi.reducer,
   auth: authSlice.reducer,
   hydration: hydrationSlice.reducer,
   user: persistedUserReducer,
@@ -74,7 +77,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat(authApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
