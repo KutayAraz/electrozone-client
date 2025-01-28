@@ -4,7 +4,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { Spinner } from "@/components/ui/spinner/spinner";
+import { Spinner } from "@/components/ui/spinner";
 import { persistor, store } from "@/stores/store";
 
 interface AppProviderProps {

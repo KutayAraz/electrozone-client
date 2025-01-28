@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { CartItem, BuyNowCartState } from "./models";
 
 const initialState: BuyNowCartState = {

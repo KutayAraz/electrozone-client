@@ -22,12 +22,11 @@ export default {
         1: "1px",
       },
       fontFamily: {
-        sans: ['Nunito', 'sans-serif'],
+        sans: ["Nunito", "sans-serif"],
       },
       fontWeight: {
         normal: 400,
         bold: 700,
-        // Add other custom weights as needed
       },
     },
   },
