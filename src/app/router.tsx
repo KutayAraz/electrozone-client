@@ -1,12 +1,9 @@
 import { useMemo } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import {
-  MainLayout,
-  loader as mainLayoutLoader,
-} from "@/components/layouts/main-layout/main-layout";
+import { MainLayout, loader as mainLayoutLoader } from "@/components/layouts/main-layout";
 import { paths } from "@/config/paths";
-import ProtectedRoute from "@/lib/auth";
+import { ProtectedRoute } from "@/lib/auth";
 
 export const createAppRouter = () =>
   createBrowserRouter([
@@ -97,7 +94,7 @@ export const createAppRouter = () =>
               },
             },
             {
-              path: "profile",
+              path: paths.app.profile.path,
               lazy: async () => {
                 const { UserProfile, loader } = await import("@pages/user-profile");
                 return {
@@ -107,7 +104,7 @@ export const createAppRouter = () =>
               },
             },
             {
-              path: "orders",
+              path: paths.app.profile.orders.path,
               children: [
                 {
                   index: true,
@@ -120,11 +117,11 @@ export const createAppRouter = () =>
                   },
                 },
                 {
-                  path: ":orderId",
+                  path: paths.app.profile.orders.order.path,
                   lazy: async () => {
-                    const { OrderStatus, loader } = await import("@pages/order-status");
+                    const { OrderDetails, loader } = await import("@/pages/order-details");
                     return {
-                      Component: OrderStatus,
+                      Component: OrderDetails,
                       loader,
                     };
                   },

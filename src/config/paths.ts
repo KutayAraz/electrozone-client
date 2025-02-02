@@ -19,11 +19,11 @@ export const paths = {
     },
     profile: {
       path: "/account/profile",
-    },
-    orders: {
-      path: "/account/orders",
-      order: {
-        path: "/account/orders/:orderId",
+      orders: {
+        path: "/account/orders",
+        order: {
+          path: "/account/orders/:orderId",
+        },
       },
     },
     wishlist: {
