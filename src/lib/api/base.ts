@@ -1,59 +1,60 @@
-import { BaseQueryFn } from "@reduxjs/toolkit/query";
-import { createApi, fetchBaseQuery, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { Mutex } from "async-mutex";
 
 import { clearCredentials } from "@/stores/slices/user-slice";
 
-// Base query instance
+// Create a mutex to prevent multiple refresh token requests
+const mutex = new Mutex();
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: "/api",
-  credentials: "include", // Important for cookies
+  baseUrl: import.meta.env.VITE_API_URL,
+  credentials: "include", // Important for sending/receiving cookies
 });
 
-// Enhanced base query with refresh token logic
-const baseQueryWithReauth: BaseQueryFn = async (args, api, extraOptions) => {
+export const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
+  // Wait if there's a refresh token request in progress
+  await mutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
 
-  // Type guard to check if we have a FetchBaseQueryError
-  if (result.error && "status" in result.error) {
-    const error = result.error as FetchBaseQueryError;
+  if (result.error && result.error.status === 401) {
+    // Check if we already have a mutex lock
+    if (!mutex.isLocked()) {
+      const release = await mutex.acquire();
 
-    // Check if error is 401 Unauthorized
-    if (error.status === 401) {
       try {
-        // Try to refresh the token
         const refreshResult = await baseQuery(
-          { url: "auth/refresh", method: "POST" },
+          { url: "/auth/refresh", method: "POST" },
           api,
           extraOptions,
         );
 
         if (refreshResult.data) {
-          // Token refreshed successfully, retry original request
+          // Retry the initial query
           result = await baseQuery(args, api, extraOptions);
         } else {
-          // Refresh failed - dispatch logout
+          // If refresh token is invalid, clear credentials and redirect to sign in
           api.dispatch(clearCredentials());
+          window.location.href = "/sign-in";
         }
-      } catch (refreshError) {
-        // Critical error - force logout
+      } catch (error) {
+        // Handle any errors during refresh
         api.dispatch(clearCredentials());
-        return {
-          error: {
-            status: "FETCH_ERROR",
-            error: "Authentication failed",
-          },
-        };
+        window.location.href = "/sign-in";
+      } finally {
+        // Release mutex
+        release();
       }
+    } else {
+      // Wait for the existing refresh call to complete and retry the request
+      await mutex.waitForUnlock();
+      result = await baseQuery(args, api, extraOptions);
     }
   }
 
   return result;
 };
-
-// Create the base API
-export const api = createApi({
-  reducerPath: "api",
-  baseQuery: baseQueryWithReauth,
-  tagTypes: ["User", "Product", "Cart"], // Add your cache tags here
-  endpoints: () => ({}), // We'll extend this with other APIs
-});
