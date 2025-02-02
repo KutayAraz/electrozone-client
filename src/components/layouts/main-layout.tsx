@@ -33,7 +33,6 @@ export const MainLayout = () => {
   return (
     <div className="mx-auto flex min-h-screen flex-col">
       <Header />
-
       <LoadingIndicator />
       <div className="fixed right-0 top-0 z-20 xs:top-2 sm:top-28">
         {notifications.map((alert: any) => (
