@@ -10,11 +10,24 @@ export const authApi = createApi({
     credentials: "include",
   }),
   endpoints: (builder) => ({
-    signIn: builder.mutation<AuthResponse, SignInFormInputs>({
+    login: builder.mutation<AuthResponse, SignInFormInputs>({
       query: (credentials) => ({
-        url: "/auth/signin",
+        url: "/auth/login",
         method: "POST",
         body: credentials,
+      }),
+    }),
+    logout: builder.mutation<void, void>({
+      query: () => ({
+        url: "/auth/logout",
+        method: "POST",
+      }),
+    }),
+    register: builder.mutation<void, SignUpFormInputs>({
+      query: (userData) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: userData,
       }),
     }),
     refreshToken: builder.query<RefreshTokenResponse, void>({
@@ -23,29 +36,8 @@ export const authApi = createApi({
         method: "POST",
       }),
     }),
-    signUp: builder.mutation<void, SignUpFormInputs>({
-      query: (userData) => ({
-        url: "/auth/signup",
-        method: "POST",
-        body: userData,
-      }),
-    }),
-    getWishlist: builder.query<number[], void>({
-      query: () => ({
-        url: "/user/wishlist",
-        method: "GET",
-      }),
-      transformResponse: (response: any[]) => response.map((product) => product.id),
-    }),
-    mergeCarts: builder.mutation<void, { productId: number; quantity: number }[]>({
-      query: (products) => ({
-        url: "/carts/merge-carts",
-        method: "PATCH",
-        body: products,
-      }),
-    }),
   }),
 });
 
-export const { useSignInMutation, useSignUpMutation, useGetWishlistQuery, useMergeCartsMutation } =
+export const { useLoginMutation, useLogoutMutation, useRegisterMutation, useRefreshTokenQuery } =
   authApi;
