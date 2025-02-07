@@ -1,5 +1,5 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { BaseQueryFn, FetchArgs, FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Mutex } from "async-mutex";
 
 import { clearCredentials } from "@/stores/slices/user-slice";
@@ -12,17 +12,22 @@ const baseQuery = fetchBaseQuery({
   credentials: "include", // Important for sending/receiving cookies
 });
 
-export const baseQueryWithReauth: BaseQueryFn<
+export const withAuthRefresh: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
-> = async (args, api, extraOptions) => {
+> = async (args: any, api, extraOptions: any) => {
+  console.log("extra", extraOptions);
+  if (extraOptions?.skipAuth) {
+    console.log("skipping auth");
+    return baseQuery(args, api, extraOptions);
+  }
   // Wait if there's a refresh token request in progress
   await mutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    // Check if we already have a mutex lock
+    // Check if there's already a mutex lock
     if (!mutex.isLocked()) {
       const release = await mutex.acquire();
 
@@ -37,14 +42,13 @@ export const baseQueryWithReauth: BaseQueryFn<
           // Retry the initial query
           result = await baseQuery(args, api, extraOptions);
         } else {
-          // If refresh token is invalid, clear credentials and redirect to sign in
+          // If refresh token is invalid, clear credentials
           api.dispatch(clearCredentials());
-          window.location.href = "/sign-in";
+          // api.dispatch(showAlert({}));
         }
       } catch (error) {
         // Handle any errors during refresh
         api.dispatch(clearCredentials());
-        window.location.href = "/sign-in";
       } finally {
         // Release mutex
         release();
