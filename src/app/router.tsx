@@ -104,6 +104,15 @@ export const createAppRouter = () =>
               },
             },
             {
+              path: paths.app.wishlist.path,
+              lazy: async () => {
+                const { UserWishlist } = await import("@pages/wishlist");
+                return {
+                  Component: UserWishlist,
+                };
+              },
+            },
+            {
               path: paths.app.profile.orders.path,
               children: [
                 {
