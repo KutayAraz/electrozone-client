@@ -1,27 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import {
-  persistReducer,
-  persistStore,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import sessionStorage from "redux-persist/lib/storage/session";
 
-import { authApi } from "@/features/auth/api/auth-api";
+import { notificationSlice } from "@/components/ui/notifications/notification-slice";
+import { baseApi } from "@/lib/api/base-api";
 
-import { alertSlice } from "./slices/alert-slice";
-import { authSlice } from "./slices/auth-slice";
 import { buyNowCartSlice } from "./slices/buynow-cart-slice";
-import { hydrationSlice, hydrationCompleted } from "./slices/hydration-slice";
+import { hydrationCompleted, hydrationSlice } from "./slices/hydration-slice";
 import { localCartSlice } from "./slices/local-cart-slice";
 import { redirectSlice } from "./slices/redirect-slice";
-import { uiSlice } from "./slices/ui-slice";
 import { userSlice } from "./slices/user-slice";
 import { wishlistSlice } from "./slices/wishlist-slice";
 
@@ -58,16 +56,14 @@ const persistedRedirectReducer = persistReducer(redirectPersistConfig, redirectS
 const persistedWishlistReducer = persistReducer(wishlistPersistConfig, wishlistSlice.reducer);
 
 const rootReducer = combineReducers({
-  alert: alertSlice.reducer,
-  ui: uiSlice.reducer,
-  [authApi.reducerPath]: authApi.reducer,
-  auth: authSlice.reducer,
+  [baseApi.reducerPath]: baseApi.reducer,
   hydration: hydrationSlice.reducer,
   user: persistedUserReducer,
   localCart: persistedLocalCartReducer,
   buyNowCart: persistedBuyNowCartReducer,
   redirect: persistedRedirectReducer,
   wishlist: persistedWishlistReducer,
+  notification: notificationSlice.reducer,
 });
 
 export const store = configureStore({
@@ -77,7 +73,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware),
+    }).concat(baseApi.middleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
