@@ -1,67 +1,109 @@
+// types.ts
+export type CategoryParams = {
+  category: string;
+  subcategory?: string;
+  productSlug?: string;
+};
+
+export type OrderParams = {
+  orderId: string;
+};
+
 export const paths = {
   home: {
     path: "/",
+    getHref: () => "/",
   },
+
   auth: {
     login: {
-      path: "/sign-in",
+      path: "/auth/login",
+      getHref: (redirectTo?: string) =>
+        `/auth/login${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
     register: {
-      path: "/sign-up",
+      path: "/auth/register",
+      getHref: (redirectTo?: string) =>
+        `/auth/register${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
     },
     signOut: {
-      path: "/sign-out",
+      path: "/auth/logout",
+      getHref: () => "/auth/logout",
     },
   },
+
   app: {
     root: {
       path: "/account",
+      getHref: () => "/account",
     },
     profile: {
-      path: "/account/profile",
+      path: "profile",
+      getHref: () => "/account/profile",
       orders: {
-        path: "/account/orders",
+        path: "orders",
+        getHref: () => "/account/profile/orders",
         order: {
-          path: "/account/orders/:orderId",
+          path: ":orderId",
+          getHref: (params: OrderParams) => `/account/profile/orders/${params.orderId}`,
         },
       },
     },
     wishlist: {
-      path: "/account/wishlist",
+      path: "wishlist",
+      getHref: () => "/account/wishlist",
     },
   },
+
   products: {
     category: {
       path: "/category/:category",
+      getHref: (params: Pick<CategoryParams, "category">) => `/category/${params.category}`,
     },
     subcategory: {
-      path: "/category/:category/:subcategory",
+      path: ":subcategory",
+      getHref: (params: Pick<CategoryParams, "category" | "subcategory">) =>
+        `/category/${params.category}/${params.subcategory}`,
     },
     product: {
-      path: "/category/:category/:subcategory/:productSlug",
+      path: ":productSlug",
+      getHref: (params: CategoryParams) =>
+        `/category/${params.category}/${params.subcategory}/${params.productSlug}`,
     },
     search: {
       path: "/search",
+      getHref: (query?: string) => `/search${query ? `?q=${encodeURIComponent(query)}` : ""}`,
     },
     trending: {
       path: "/trending/:type",
+      getHref: (type: string) => `/trending/${type}`,
     },
   },
+
   cart: {
     path: "/cart",
+    getHref: () => "/cart",
   },
+
   checkout: {
-    path: "/checkout",
+    root: {
+      path: "/checkout",
+      getHref: () => "/checkout",
+    },
     success: {
-      path: "/order-success",
+      path: "/checkout/success",
+      getHref: (orderId?: string) => `/checkout/success${orderId ? `?orderId=${orderId}` : ""}`,
     },
   },
+
   misc: {
     contact: {
       path: "/contact-us",
+      getHref: () => "/contact-us",
     },
     projectDetails: {
       path: "/project-details",
+      getHref: () => "/project-details",
     },
   },
-};
+} as const;
