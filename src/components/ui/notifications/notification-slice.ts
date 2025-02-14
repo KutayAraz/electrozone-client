@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { RootState } from "@/stores/store";
-
 // Alert types as a const enum for better type safety and autocomplete
 export const enum NotificationType {
   ERROR = "error",
@@ -94,9 +92,9 @@ export const notificationSlice = createSlice({
 });
 
 // Selectors
-export const selectNotifications = (state: RootState) => state.notification.notifications;
+export const selectNotifications = (state: any) => state.notification.notifications;
 
-export const selectLatestNotification = (state: RootState) => state.notification.notifications[0];
+export const selectLatestNotification = (state: any) => state.notification.notifications[0];
 
 export const { addNotification, dismissNotification, clearNotifications, removeOldNotifications } =
   notificationSlice.actions;

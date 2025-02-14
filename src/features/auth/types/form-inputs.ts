@@ -1,9 +1,9 @@
-export type SignInFormInputs = {
+export type LoginFormInputs = {
   email: string;
   password: string;
 };
 
-export type SignUpFormInputs = {
+export type RegisterFormInputs = {
   email: string;
   password: string;
   retypedPassword: string;

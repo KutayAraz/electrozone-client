@@ -1,10 +1,10 @@
 import { baseApi } from "@/lib/api/base-api";
 
-import { SignUpFormInputs } from "../types/form-inputs";
+import { RegisterFormInputs } from "../types/form-inputs";
 
 export const registerApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    register: builder.mutation<void, SignUpFormInputs>({
+    register: builder.mutation<void, RegisterFormInputs>({
       query: (userData) => ({
         url: "/auth/register",
         method: "POST",

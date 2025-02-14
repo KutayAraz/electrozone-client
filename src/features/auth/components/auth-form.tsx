@@ -7,7 +7,7 @@ type AuthFormProps = {
   submitText: string;
   loadingText: string;
   children: React.ReactNode;
-  signUpButton?: React.ReactNode;
+  changeFormButton?: React.ReactNode;
 };
 
 export const AuthForm = ({
@@ -17,7 +17,7 @@ export const AuthForm = ({
   submitText,
   loadingText,
   children,
-  signUpButton,
+  changeFormButton,
 }: AuthFormProps) => {
   return (
     <form action="POST" onSubmit={onSubmit}>
@@ -43,7 +43,7 @@ export const AuthForm = ({
             submitText
           )}
         </button>
-        {signUpButton}
+        {changeFormButton}
       </div>
     </form>
   );
