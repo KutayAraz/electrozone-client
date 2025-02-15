@@ -1,65 +1,50 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { displayAlert } from "@/stores/slices/alert-slice";
+import { paths } from "@/config/paths";
 
-import { useSignUpMutation } from "../api/auth-api";
-import { signUpSchema } from "../schemas/sign-up-schema";
-import { SignUpFormInputs } from "../types/form-inputs";
+import { RegisterSchema, registerSchema } from "../schemas/register-schema";
+import { RegisterFormProps } from "../types/form";
 
 import { AuthForm } from "./auth-form";
 
 const inputClasses =
-  "border-2 border-gray-300 rounded-md px-4 py-2 mt-1 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition duration-300";
-const labelClasses = "text-gray-600 mt-2";
+  "border-1 border-gray-400 rounded-md px-4 py-2 mt-1 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition duration-300";
+const labelClasses = "text-gray-700 mt-2";
 const errorMessageClasses = "text-red-500 text-sm mt-1";
 
-export const SignUp = () => {
-  const dispatch = useDispatch<any>();
+export const RegisterForm = ({ onSubmit, isLoading }: RegisterFormProps) => {
   const navigate = useNavigate();
-  const [signUp, { isLoading }] = useSignUpMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<SignUpFormInputs>({
-    resolver: yupResolver(signUpSchema),
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
     mode: "onBlur",
   });
-
-  const onSubmit = async (data: SignUpFormInputs) => {
-    try {
-      await signUp(data).unwrap();
-      dispatch(
-        displayAlert({
-          type: "success",
-          message: "Your account is created. You can now log in",
-          autoHide: true,
-        }),
-      );
-      navigate("/sign-in");
-    } catch (error) {
-      dispatch(
-        displayAlert({
-          type: "error",
-          message: "Failed to create account. Please try again.",
-          autoHide: true,
-        }),
-      );
-      console.error("Failed to sign up:", error);
-    }
-  };
 
   return (
     <AuthForm
       onSubmit={handleSubmit(onSubmit)}
       isValid={isValid}
       isLoading={isLoading}
-      submitText="Sign Up"
+      submitText="Register"
       loadingText="Creating your account..."
+      changeFormButton={
+        <>
+          <p className="mb-1 mt-2 text-center text-gray-600">Already have an account?</p>
+          <button
+            type="button"
+            onClick={() => navigate(paths.auth.login.getHref())}
+            className="w-full rounded-lg bg-theme-orange py-2 font-semibold text-white transition duration-300 ease-in-out hover:bg-blue-700"
+          >
+            Login to your electrozone account!
+          </button>
+        </>
+      }
     >
       <h4 className="text-lg font-bold text-gray-800">Account Information:</h4>
 

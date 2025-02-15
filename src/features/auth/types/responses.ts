@@ -1,11 +1,10 @@
 export type AuthResponse = {
-  token: string;
-  user: {
-    id: string;
-    email: string;
-    firstName: string;
-    lastName: string;
-  };
+  email: string;
+  firstName: string;
+  lastName: string;
+  address: string;
+  city: string;
+  cartItemCount: number;
 };
 
 export type RefreshTokenResponse = {
