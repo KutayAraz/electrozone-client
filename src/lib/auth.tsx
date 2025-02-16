@@ -1,53 +1,18 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 
-import { selectAccessToken, clearAccessToken } from "@/stores/slices/auth-slice";
+import { setRedirectPath } from "@/stores/slices/redirect-slice";
 import { RootState } from "@/stores/store";
 
-import fetchNewAccessToken from "../utils/renew-token";
-
-const ProtectedRoute = () => {
+export const ProtectedRoute = () => {
+  const { isAuthenticated } = useSelector((state: RootState) => state.user);
+  const location = useLocation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(true);
-
-  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
-  const accessToken = useSelector(selectAccessToken);
-
-  useEffect(() => {
-    if (!isSignedIn) {
-      navigate("/sign-in");
-    }
-    if (!accessToken) {
-      fetchNewAccessToken()
-        .then((newToken) => {
-          setLoading(false);
-          if (!newToken) {
-            console.log("triggering from here", location.pathname);
-            navigate("/sign-in");
-          }
-        })
-        .catch(() => {
-          dispatch(clearAccessToken());
-          setLoading(false);
-          console.log("triggering from here", location.pathname);
-          navigate("/sign-in");
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [accessToken, dispatch, navigate, isSignedIn]);
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (!isAuthenticated) {
+    dispatch(setRedirectPath(location.pathname));
+    return <Navigate to="/sign-in" replace />;
   }
 
-  if (accessToken) {
-    return <Outlet />;
-  }
-  return null;
+  return <Outlet />;
 };
-
-export default ProtectedRoute;
