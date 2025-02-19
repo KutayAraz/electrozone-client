@@ -10,7 +10,12 @@ export const ProtectedRoute = () => {
   const dispatch = useDispatch();
 
   if (!isAuthenticated) {
-    dispatch(setRedirectPath(location.pathname));
+    dispatch(
+      setRedirectPath({
+        path: location.pathname,
+        source: location.pathname.includes("/checkout") ? "checkout" : "protected",
+      }),
+    );
     return <Navigate to="/sign-in" replace />;
   }
 
