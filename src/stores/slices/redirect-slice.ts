@@ -1,16 +1,34 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+
+export type RedirectSource = "checkout" | "protected" | "normal";
+
+interface RedirectState {
+  path: string | null;
+  source?: RedirectSource;
+}
+
+const initialState: RedirectState = {
+  path: null,
+  source: undefined,
+};
 
 export const redirectSlice = createSlice({
   name: "redirect",
-  initialState: {
-    path: null,
-  },
+  initialState,
   reducers: {
-    setRedirectPath: (state, action) => {
-      state.path = action.payload;
+    setRedirectPath: (
+      state,
+      action: PayloadAction<{
+        path: string;
+        source?: RedirectSource;
+      }>,
+    ) => {
+      state.path = action.payload.path;
+      state.source = action.payload.source;
     },
     clearRedirectPath: (state) => {
       state.path = null;
+      state.source = undefined;
     },
   },
 });
