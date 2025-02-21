@@ -14,7 +14,12 @@ const inputClasses =
 const labelClasses = "text-gray-700 mt-2";
 const errorMessageClasses = "text-red-500 text-sm mt-1";
 
-export const RegisterForm = ({ onSubmit, isLoading }: RegisterFormProps) => {
+export const RegisterForm = ({
+  onSubmit,
+  isLoading,
+  serverError,
+  onFieldChange,
+}: RegisterFormProps) => {
   const navigate = useNavigate();
 
   const {
@@ -29,7 +34,7 @@ export const RegisterForm = ({ onSubmit, isLoading }: RegisterFormProps) => {
   return (
     <AuthForm
       onSubmit={handleSubmit(onSubmit)}
-      isValid={isValid}
+      isValid={isValid && !serverError}
       isLoading={isLoading}
       submitText="Register"
       loadingText="Creating your account..."
@@ -52,14 +57,22 @@ export const RegisterForm = ({ onSubmit, isLoading }: RegisterFormProps) => {
         Email<span aria-hidden="true">*</span>
       </label>
       <input
-        {...register("email")}
+        {...register("email", {
+          onChange: () => {
+            if (serverError?.field === "email") {
+              onFieldChange?.("email");
+            }
+          },
+        })}
         id="email"
         type="email"
         className={inputClasses}
         aria-required="true"
         required
       />
-      {errors.email && <p className={errorMessageClasses}>{errors.email.message}</p>}
+      {(errors.email || serverError?.field === "email") && (
+        <p className={errorMessageClasses}>{errors.email?.message || serverError?.message}</p>
+      )}
 
       <label htmlFor="password" className={labelClasses}>
         Password<span aria-hidden="true">*</span>

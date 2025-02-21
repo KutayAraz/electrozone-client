@@ -1,4 +1,4 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +14,7 @@ const inputClasses =
 const labelClasses = "text-gray-600 mt-2";
 const errorMessageClasses = "text-red-500 text-sm mt-1";
 
-export const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
+export const LoginForm = ({ onSubmit, isLoading, serverError, onFieldChange }: LoginFormProps) => {
   const navigate = useNavigate();
 
   const {
@@ -22,16 +22,16 @@ export const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginSchema>({
-    resolver: yupResolver(loginSchema),
+    resolver: zodResolver(loginSchema),
     mode: "onBlur",
   });
 
   return (
     <AuthForm
       onSubmit={handleSubmit(onSubmit)}
-      isValid={isValid}
-      submitText="Sign In"
-      loadingText="Signing in.."
+      isValid={isValid && !serverError}
+      submitText="Login"
+      loadingText="Logging in.."
       isLoading={isLoading}
       changeFormButton={
         <>
@@ -52,27 +52,43 @@ export const LoginForm = ({ onSubmit, isLoading }: LoginFormProps) => {
         Email<span aria-hidden="true">*</span>
       </label>
       <input
-        {...register("email")}
+        {...register("email", {
+          onChange: () => {
+            if (serverError?.field === "email") {
+              onFieldChange?.("email");
+            }
+          },
+        })}
         id="email"
         type="email"
         className={inputClasses}
         aria-required="true"
         required
       />
-      {errors.email && <p className={errorMessageClasses}>{errors.email.message}</p>}
+      {(errors.email || serverError?.field === "email") && (
+        <p className={errorMessageClasses}>{errors.email?.message || serverError?.message}</p>
+      )}
 
       <label htmlFor="password" className={labelClasses}>
         Password<span aria-hidden="true">*</span>
       </label>
       <input
-        {...register("password")}
+        {...register("password", {
+          onChange: () => {
+            if (serverError?.field === "password") {
+              onFieldChange?.("password");
+            }
+          },
+        })}
         id="password"
         type="password"
         className={inputClasses}
         aria-required="true"
         required
       />
-      {errors.password && <p className={errorMessageClasses}>{errors.password.message}</p>}
+      {(errors.password || serverError?.field === "password") && (
+        <p className={errorMessageClasses}>{errors.password?.message || serverError?.message}</p>
+      )}
     </AuthForm>
   );
 };
