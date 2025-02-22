@@ -15,6 +15,7 @@ import sessionStorage from "redux-persist/lib/storage/session";
 
 import { notificationSlice } from "@/components/ui/notifications/notification-slice";
 import { baseApi } from "@/lib/api/base-api";
+import { errorMiddleware } from "@/lib/api/error-middleware";
 
 import { buyNowCartSlice } from "./slices/buynow-cart-slice";
 import { hydrationCompleted, hydrationSlice } from "./slices/hydration-slice";
@@ -73,7 +74,9 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(baseApi.middleware),
+    })
+      .concat(baseApi.middleware)
+      .concat(errorMiddleware),
   devTools: process.env.NODE_ENV !== "production",
 });
 
