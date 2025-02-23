@@ -8,13 +8,14 @@ import {
 import { paths } from "@/config/paths";
 import { useRegisterMutation } from "@/features/auth/api/register";
 import { RegisterForm } from "@/features/auth/components/register-form";
+import { useFormError } from "@/features/auth/hooks/use-form-error";
 import { RegisterSchema } from "@/features/auth/schemas/register-schema";
-import { handleRegistrationError } from "@/features/auth/utils/error-handler";
+import { isApiError } from "@/types/api";
 
 export const RegisterPage = () => {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
-
+  const { serverError, setServerError, clearServerError } = useFormError();
   const [register, { isLoading }] = useRegisterMutation();
 
   const handleRegisterSubmit = async (data: RegisterSchema) => {
@@ -30,15 +31,36 @@ export const RegisterPage = () => {
         }),
       );
       navigate(paths.auth.login.getHref());
-    } catch (error: unknown) {
-      console.log("here");
-      dispatch(displayNotification(handleRegistrationError(error)));
+    } catch (error) {
+      // Using type guard to ensure type safety
+      if (isApiError(error)) {
+        if (error.status === 409) {
+          setServerError({
+            field: "email",
+            message: "This email is already taken",
+          });
+        }
+
+        dispatch(
+          displayNotification({
+            type: NotificationType.ERROR,
+            message: error.data.message,
+            autoHide: true,
+            duration: 5000,
+          }),
+        );
+      }
     }
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <RegisterForm isLoading={isLoading} onSubmit={handleRegisterSubmit} />
+      <RegisterForm
+        onSubmit={handleRegisterSubmit}
+        isLoading={isLoading}
+        serverError={serverError}
+        onFieldChange={clearServerError}
+      />
     </div>
   );
 };
