@@ -17,9 +17,7 @@ export const withAuthRefresh: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args: any, api, extraOptions: any) => {
-  console.log("extra", extraOptions);
   if (extraOptions?.skipAuth) {
-    console.log("skipping auth");
     return baseQuery(args, api, extraOptions);
   }
   // Wait if there's a refresh token request in progress
