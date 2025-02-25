@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { ReactComponent as X } from "@assets/svgs/close-button.svg";
 
-import { dismissNotification, NotificationType, selectNotifications } from "./notification-slice";
+import {
+  dismissNotification,
+  Notification,
+  NotificationType,
+  selectNotifications,
+} from "./notification-slice";
 
 export const Notifications = () => {
   const dispatch = useDispatch();
@@ -27,7 +32,7 @@ export const Notifications = () => {
 
   return (
     <div className="fixed inset-x-0 top-2 z-50 flex flex-col items-center gap-2 px-4">
-      {notifications.map((notification) => (
+      {notifications.map((notification: Notification) => (
         <Slide
           key={notification.id}
           direction="down"
