@@ -1,13 +1,13 @@
 import { baseApi } from "@/lib/api/base-api";
 
-export const logoutApi = baseApi.injectEndpoints({
+const logoutApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     logout: builder.mutation<void, void>({
       query: () => ({
         url: "/auth/logout",
         method: "POST",
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["User", "BuyNowCart", "UserCart"],
       extraOptions: { skipAuth: true },
     }),
   }),

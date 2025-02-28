@@ -1,6 +1,8 @@
 import { baseApi } from "@/lib/api/base-api";
 
-import { RefreshTokenResponse } from "../types/responses";
+type RefreshTokenResponse = {
+  success: boolean;
+};
 
 export const refreshTokenApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({

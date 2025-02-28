@@ -5,9 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { paths } from "@/config/paths";
 
 import { RegisterSchema, registerSchema } from "../schemas/register-schema";
-import { RegisterFormProps } from "../types/form";
 
 import { AuthForm } from "./auth-form";
+
+interface RegisterFormProps {
+  onSubmit: (data: RegisterSchema) => void;
+  isLoading: boolean;
+  serverError?: {
+    field: string;
+    message: string;
+  };
+  onFieldChange?: (field: string) => void;
+}
 
 const inputClasses =
   "border-1 border-gray-400 rounded-md px-4 py-2 mt-1 focus:border-blue-500 focus:ring focus:ring-blue-200 focus:outline-none transition duration-300";

@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 
-type AuthFormProps = {
+interface AuthFormProps {
   onSubmit: (e: React.FormEvent) => void;
   isValid: boolean;
   isLoading: boolean;
@@ -8,7 +8,7 @@ type AuthFormProps = {
   loadingText: string;
   children: React.ReactNode;
   changeFormButton?: React.ReactNode;
-};
+}
 
 export const AuthForm = ({
   onSubmit,
