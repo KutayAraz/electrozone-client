@@ -1,8 +1,13 @@
 import { baseApi } from "@/lib/api/base-api";
 
+interface WishlistToggleResult {
+  action: "added" | "removed";
+  productId: number;
+}
+
 export const toggleWishlistApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    toggleWishlist: builder.mutation<any, void>({
+    toggleWishlist: builder.mutation<WishlistToggleResult, void>({
       query: (productId) => ({
         url: `wishlist/${productId}`,
         method: "PATCH",
