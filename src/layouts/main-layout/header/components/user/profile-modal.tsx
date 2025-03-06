@@ -3,10 +3,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/custom-modal";
+import { navigationLinks } from "@/layouts/main-layout/header/constants/navigation";
 import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 import { ReactComponent as ExitIcon } from "@assets/svgs/exit.svg";
-import { navigationLinks } from "@features/header/constants/navigation";
-import { ProfileModalProps } from "@features/header/types";
+
+interface ProfileModalProps {
+  isOpen: boolean;
+  isSignedIn: boolean;
+  onClose: () => void;
+}
 
 export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
   return (

@@ -1,23 +1,18 @@
-import { Alert, Slide, createTheme } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { createTheme } from "@mui/material";
 import { LoaderFunction, LoaderFunctionArgs, Outlet, ScrollRestoration } from "react-router-dom";
 
 import { LoadingIndicator } from "@/components/ui/loading-bar";
-import { hideAlert } from "@/stores/slices/alert-slice";
 import { clearbuyNowCart } from "@/stores/slices/buynow-cart-slice";
 import { clearLocalcart } from "@/stores/slices/local-cart-slice";
 import { CheckoutIntent } from "@/stores/slices/models";
 import { setUserIntent, updateCartItemCount } from "@/stores/slices/user-slice";
-import { RootState, store } from "@/stores/store";
+import { store } from "@/stores/store";
 import { checkHydration } from "@/utils/check-hydration";
 import loaderFetch from "@/utils/loader-fetch";
 import { Footer } from "@features/footer";
 import { Header } from "@features/header";
 
 export const MainLayout = () => {
-  const dispatch = useDispatch<any>();
-  const notifications = useSelector((state: RootState) => state.alert.notifications);
-
   const theme = createTheme({
     breakpoints: {
       values: {
@@ -34,25 +29,6 @@ export const MainLayout = () => {
     <div className="mx-auto flex min-h-screen flex-col">
       <Header />
       <LoadingIndicator />
-      <div className="fixed right-0 top-0 z-20 xs:top-2 sm:top-28">
-        {notifications.map((alert: any) => (
-          <Slide key={alert.id} direction="left" in={true} mountOnEnter unmountOnExit>
-            <Alert
-              severity={alert.type}
-              onClose={() => dispatch(hideAlert(alert.id))}
-              className="mb-2"
-              style={{ borderRadius: 0 }}
-              sx={{
-                [theme.breakpoints.down("sm")]: {
-                  fontSize: "12px",
-                },
-              }}
-            >
-              {alert.message}
-            </Alert>
-          </Slide>
-        ))}
-      </div>
       <div className="grow">
         <Outlet />
       </div>
@@ -69,7 +45,7 @@ const mergeCartsAndSetIntent = async () => {
   const userIntent = state.user.userIntent;
   const buyNowCart = state.buyNowCart;
 
-  if (!state.user.isSignedIn) return;
+  if (!state.user.isAuthenticated) return;
 
   if (userIntent === CheckoutIntent.BUY_NOW) {
     productsToOrder = [buyNowCart];

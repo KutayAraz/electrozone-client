@@ -54,7 +54,7 @@ export const Header = () => {
   return (
     <>
       <div
-        className={`z-[4] flex w-full items-center justify-between bg-theme-blue px-2 py-[5px] text-white sm:py-0`}
+        className={`flex w-full items-center justify-between bg-theme-blue px-2 py-[5px] text-white sm:py-0`}
       >
         <div className="flex items-center">
           <BurgerIcon

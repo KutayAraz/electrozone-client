@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 
-import { MENU_ITEMS } from "@/features/header/constants/menu";
+import { MENU_ITEMS } from "@/layouts/main-layout/header/constants/menu";
 import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
 
-import { NavigationStripProps } from "../../types";
+interface NavigationStripProps {
+  onMenuClick: () => void;
+  className?: string;
+  style?: React.CSSProperties;
+}
 
 export const NavigationStrip = ({ onMenuClick, className, style = {} }: NavigationStripProps) => {
   const navContainerClass =

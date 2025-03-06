@@ -2,11 +2,14 @@ import { useSelector } from "react-redux";
 
 import { RootState } from "@/stores/store";
 import { ReactComponent as LocationIcon } from "@assets/svgs/location.svg";
-import { MobileLocationSectionProps } from "@features/header/types";
+
+interface MobileLocationSectionProps {
+  onLocationClick: () => void;
+}
 
 export const MobileLocationSection = ({ onLocationClick }: MobileLocationSectionProps) => {
   const userLocation = useSelector((state: RootState) => state.user.city);
-  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
+  const isSignedIn = useSelector((state: RootState) => state.user.isAuthenticated);
 
   return (
     <div className="bg-[#3a4791] py-[5px] sm:hidden">

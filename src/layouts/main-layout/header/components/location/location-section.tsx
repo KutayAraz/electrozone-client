@@ -1,5 +1,4 @@
 import { ReactComponent as LocationPin } from "@assets/svgs/location.svg";
-import { LocationSectionProps } from "@features/header/types";
 
 const CityDisplay = ({ city }: { city: string }) => (
   <div className="text-left text-sm">
@@ -9,6 +8,12 @@ const CityDisplay = ({ city }: { city: string }) => (
 );
 
 CityDisplay.displayName = "CityDisplay";
+
+interface LocationSectionProps {
+  city: string | null;
+  isSignedIn: boolean;
+  onLocationClick: () => void;
+}
 
 export const LocationSection = ({ city, isSignedIn, onLocationClick }: LocationSectionProps) => (
   <div className="hidden items-center px-6 sm:flex">

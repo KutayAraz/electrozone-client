@@ -2,7 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { ReactComponent as SearchIcon } from "@assets/svgs/search.svg";
-import { SearchBarProps } from "@features/header/types";
+
+interface SearchBarProps {
+  className?: string;
+  placeholder?: string;
+  style?: React.CSSProperties;
+}
 
 export const SearchBar = ({
   className,
