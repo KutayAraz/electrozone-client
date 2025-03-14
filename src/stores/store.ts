@@ -19,18 +19,12 @@ import { errorMiddleware } from "@/lib/api/error-middleware";
 
 import { buyNowCartSlice } from "./slices/buynow-cart-slice";
 import { hydrationCompleted, hydrationSlice } from "./slices/hydration-slice";
-import { localCartSlice } from "./slices/local-cart-slice";
 import { redirectSlice } from "./slices/redirect-slice";
 import { userSlice } from "./slices/user-slice";
 import { wishlistSlice } from "./slices/wishlist-slice";
 
 const userPersistConfig = {
   key: "user",
-  storage,
-};
-
-const localCartPersistConfig = {
-  key: "localCart",
   storage,
 };
 
@@ -51,7 +45,6 @@ const redirectPersistConfig = {
 };
 
 const persistedUserReducer = persistReducer(userPersistConfig, userSlice.reducer);
-const persistedLocalCartReducer = persistReducer(localCartPersistConfig, localCartSlice.reducer);
 const persistedBuyNowCartReducer = persistReducer(buyNowCartPersistConfig, buyNowCartSlice.reducer);
 const persistedRedirectReducer = persistReducer(redirectPersistConfig, redirectSlice.reducer);
 const persistedWishlistReducer = persistReducer(wishlistPersistConfig, wishlistSlice.reducer);
@@ -60,7 +53,6 @@ const rootReducer = combineReducers({
   [baseApi.reducerPath]: baseApi.reducer,
   hydration: hydrationSlice.reducer,
   user: persistedUserReducer,
-  localCart: persistedLocalCartReducer,
   buyNowCart: persistedBuyNowCartReducer,
   redirect: persistedRedirectReducer,
   wishlist: persistedWishlistReducer,
