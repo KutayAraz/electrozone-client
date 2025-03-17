@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import { Navigation, Scrollbar, A11y } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { A11y, Navigation, Scrollbar } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import { ReactComponent as NavButton } from "@assets/svgs/carousel-nav-button.svg";
 
@@ -9,10 +9,11 @@ import { CarouselCard, CarouselCardProps } from "./carousel-card";
 
 interface CarouselProps {
   products: CarouselCardProps[];
+  onWishlistToggle: (id: number) => void;
   className?: string;
 }
 
-export const Carousel = ({ products, className }: CarouselProps) => {
+export const Carousel = ({ products, className, onWishlistToggle }: CarouselProps) => {
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
 
@@ -60,15 +61,16 @@ export const Carousel = ({ products, className }: CarouselProps) => {
           className={`${className}`}
         >
           {products.map((product: CarouselCardProps) => (
-            <SwiperSlide key={product.id}>
+            <SwiperSlide key={product.productId}>
               <CarouselCard
-                id={product.id}
+                productId={product.productId}
                 productName={product.productName}
                 brand={product.brand}
                 thumbnail={product.thumbnail}
                 price={product.price}
                 subcategory={product.subcategory}
                 category={product.category}
+                onWishlistToggle={onWishlistToggle}
               />
             </SwiperSlide>
           ))}
