@@ -31,9 +31,6 @@ const categoryInfoApi = baseApi.injectEndpoints({
         method: "GET",
       }),
       providesTags: (_result, _error, categoryName) => [{ type: "Category", id: categoryName }],
-      transformResponse: (response: CategoryInfo[]) => {
-        return response;
-      },
       extraOptions: { skipAuth: true },
     }),
   }),

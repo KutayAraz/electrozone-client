@@ -7,7 +7,7 @@ const subcategoryBrandsApi = baseApi.injectEndpoints({
         url: `/subcategory/${encodeURIComponent(subcategoryName)}/brands`,
         method: "GET",
       }),
-      providesTags: (result, error, subcategoryName) => [
+      providesTags: (_result, _error, subcategoryName) => [
         { type: "Subcategory", id: `${subcategoryName}-brands` },
       ],
       extraOptions: { skipAuth: true },
