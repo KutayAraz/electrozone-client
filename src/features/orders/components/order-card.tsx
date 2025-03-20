@@ -4,9 +4,21 @@ import { useNavigate } from "react-router-dom";
 
 import { formatDateTime } from "@/utils/format-time";
 
-import { OrderCardProps, Product } from "../types";
+import { Product } from "../types";
 
 import { OrderItemCard } from "./order-item-card";
+
+type OrderCardProps = {
+  orderId: number;
+  orderTotal: number;
+  orderQuantity: number;
+  orderDate: string;
+  user: {
+    firstName: string;
+    lastName: string;
+  };
+  orderItems: Product[];
+};
 
 export const OrderCard = forwardRef(
   (

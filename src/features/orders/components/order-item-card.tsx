@@ -2,7 +2,13 @@ import { Link } from "react-router-dom";
 
 import { createUrlSlug } from "@/utils/create-url-slug";
 
-import { OrderItemCardProps } from "../../../pages/my-orders/components/types";
+interface OrderItemCardProps {
+  id: string;
+  productName: string;
+  thumbnail: string;
+  subcategory: string;
+  category: string;
+}
 
 export const OrderItemCard = ({
   id,

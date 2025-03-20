@@ -3,9 +3,18 @@ import { Link } from "react-router-dom";
 
 import { createUrlSlug } from "@/utils/create-url-slug";
 
-import { OrderDetailsItemCardProps } from "../../types";
+interface OrderDetailsItemCardProps {
+  id: number;
+  productName: string;
+  thumbnail: string;
+  quantity: number;
+  price: number;
+  brand: string;
+  subcategory: string;
+  category: string;
+}
 
-export const OrderItemCard = ({
+export const OrderItemDetailsCard = ({
   id,
   productName,
   thumbnail,
@@ -32,5 +41,3 @@ export const OrderItemCard = ({
     </Link>
   );
 };
-
-export default OrderItemCard;

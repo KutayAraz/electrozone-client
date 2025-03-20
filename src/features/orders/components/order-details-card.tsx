@@ -1,13 +1,22 @@
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
-import { useFetch } from "@/hooks/use-fetch";
-import { displayAlert } from "@/stores/slices/alert-slice";
+import { OrderItemCardProps } from "@/pages-old/my-orders/components/types";
 import { formatDateTime } from "@/utils/format-time";
 
-import { OrderDetailsCardProps } from "../../types";
+import { OrderItemDetailsCard } from "./order-item-details-card";
 
-import OrderItemCard from "./order-item-card";
+interface OrderDetailsCardProps {
+  orderId: number;
+  orderTotal: number;
+  orderDate: string;
+  user: {
+    firstName: string;
+    lastName: string;
+    address: string;
+    city: string;
+  };
+  orderItems: OrderItemCardProps[];
+  isCancellable: boolean;
+  onOrderCancel: () => void;
+}
 
 export const OrderDetailsCard = ({
   orderId,
@@ -16,31 +25,9 @@ export const OrderDetailsCard = ({
   user,
   orderItems,
   isCancellable,
+  onOrderCancel,
 }: OrderDetailsCardProps) => {
   const date = formatDateTime(orderDate);
-  const navigate = useNavigate();
-  const dispatch = useDispatch<any>();
-  const { fetchData } = useFetch();
-
-  const handleCancelButton = async () => {
-    const result = await fetchData(
-      `${import.meta.env.VITE_API_URL}/orders/${orderId}`,
-      "POST",
-      orderId,
-      true,
-    );
-
-    if (result?.response.ok) {
-      dispatch(
-        displayAlert({
-          type: "success",
-          message: "Your order has been successfully cancelled!",
-          autoHide: true,
-        }),
-      );
-      navigate("/my-orders");
-    }
-  };
 
   return (
     <div key={orderId} className="my-4">
@@ -69,7 +56,7 @@ export const OrderDetailsCard = ({
 
         <div className="grid grid-cols-2 gap-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {orderItems.map((product: any) => (
-            <OrderItemCard {...product} key={product.id} />
+            <OrderItemDetailsCard {...product} key={product.id} />
           ))}
         </div>
         <div>
@@ -80,7 +67,7 @@ export const OrderDetailsCard = ({
 
         {isCancellable && (
           <button
-            onClick={handleCancelButton}
+            onClick={onOrderCancel}
             className="mt-4 rounded-md bg-red-500 px-4 py-2 text-white transition duration-200 hover:bg-red-800"
           >
             Cancel this order
