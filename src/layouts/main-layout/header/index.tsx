@@ -3,8 +3,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
-import { userSlice } from "@/stores/slices/user-slice";
-import { RootState } from "@/stores/store";
+import { selectUser, userSlice } from "@/stores/slices/user-slice";
 import { ReactComponent as BrandLogo } from "@assets/brand-images/brand-logo.svg";
 import { ReactComponent as Brand } from "@assets/brand-images/brand.svg";
 import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
@@ -23,10 +22,7 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const firstName = useSelector((state: RootState) => state.user.firstName);
-  const city = useSelector((state: RootState) => state.user.city);
-  const localCartQuantity = useSelector((state: RootState) => state.localCart.totalQuantity);
-  const cartQuantity = useSelector((state: RootState) => state.user.cartItemCount);
+  const user = useSelector(selectUser);
 
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
@@ -35,8 +31,6 @@ export const Header = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const smallScreenDevice = useMediaQuery("(max-width: 400px)");
   const path = location.pathname;
-  const isSignedIn: boolean = !!firstName && !!city;
-  const itemCount = isSignedIn ? cartQuantity : localCartQuantity;
 
   const handleLocationSubmit = (location: string) => {
     dispatch(userSlice.actions.setGuestLocation({ city: location }));
@@ -46,7 +40,7 @@ export const Header = () => {
   // Check if the path starts with '/category' and has more segments following it
   const pathSegments = location.pathname.split("/").filter(Boolean); // Split path and remove empty segments
 
-  // Determine if you should show the nav strip
+  // Determine if navstrip should be shown
   const showHeaderExtras =
     !isMobile ||
     (!(pathSegments[0] === "category" && pathSegments.length >= 3) && !path.startsWith("/search"));
@@ -70,15 +64,15 @@ export const Header = () => {
             <BrandLogo />
           </Link>
           <LocationSection
-            city={city}
-            isSignedIn={isSignedIn}
+            city={user.city}
+            isSignedIn={user.isAuthenticated}
             onLocationClick={() => setLocationModalOpen(true)}
           />
         </div>
         <SearchBar className="mx-[3%] hidden h-10 max-w-[50%] text-gray-700 md:flex md:grow" />
         <UserSection
-          firstName={firstName}
-          isSignedIn={isSignedIn}
+          firstName={user.firstName}
+          isSignedIn={user.isAuthenticated}
           itemCount={itemCount}
           smallScreenDevice={smallScreenDevice}
           onProfileClick={() => setProfileModalOpen(true)}
@@ -108,12 +102,12 @@ export const Header = () => {
           setLocationModalOpen(false);
         }}
         onLocationSubmit={handleLocationSubmit}
-        city={city}
+        city={user.city}
       />
 
       <ProfileModal
         isOpen={profileModalOpen}
-        isSignedIn={isSignedIn}
+        isSignedIn={user.isAuthenticated}
         onClose={() => setProfileModalOpen(false)}
       />
       <MenuModal

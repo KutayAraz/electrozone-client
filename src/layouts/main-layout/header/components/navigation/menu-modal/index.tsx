@@ -4,20 +4,23 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/custom-modal";
-import { TRENDING_LINKS, MENU_SECTIONS } from "@/features/header/constants/menu";
-import { MenuModalProps } from "@/features/header/types";
-import { RootState } from "@/stores/store";
 import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
 import { ReactComponent as ExitIcon } from "@assets/svgs/exit.svg";
 
+import { selectUser } from "@/stores/slices/user-slice";
+import { MENU_SECTIONS, TRENDING_LINKS } from "../../../constants/menu";
 import { MenuSection } from "./menu-section";
 import { SubMenu } from "./sub-menu";
 import { UserHeader } from "./user-header";
 
+interface MenuModalProps {
+  children?: React.ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
 export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
-  const city = useSelector((state: RootState) => state.user.city);
-  const firstName = useSelector((state: RootState) => state.user.firstName);
-  const isSignedIn = useSelector((state: RootState) => state.user.isSignedIn);
+  const user = useSelector(selectUser);
 
   const [activeView, setActiveView] = useState("main");
 
@@ -43,7 +46,7 @@ export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
         className="overflow-x-hidden"
         ariaLabel="Main Menu Modal"
       >
-        <UserHeader firstName={firstName} isSignedIn={isSignedIn} />
+        <UserHeader firstName={user.firstName} isSignedIn={user.isAuthenticated} />
 
         <div className="relative flex h-fit flex-col justify-between text-gray-700">
           <div
@@ -80,21 +83,21 @@ export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
             <div className="flex flex-col">
               <h2 className="p-4 text-xl font-bold">Help & Settings</h2>
               <Divider />
-              {isSignedIn && (
+              {user.isAuthenticated && (
                 <Link to="/account" className="p-4 text-lg hover:bg-gray-100">
                   Your Account
                 </Link>
               )}
-              {city && <p className="p-4 text-lg">Delivery Location: {city}</p>}
+              {user.city && <p className="p-4 text-lg">Delivery Location: {user.city}</p>}
               <Link to="/contact" className="p-4 text-lg hover:bg-gray-100">
                 Contact
               </Link>
               <Link
-                to={isSignedIn ? "/sign-out" : "/sign-in"}
+                to={user.isAuthenticated ? "/sign-out" : "/sign-in"}
                 className="p-4 text-lg hover:bg-gray-100"
               >
-                {isSignedIn ? "Sign Out " : "Sign In"}
-                {isSignedIn && <ExitIcon className="mr-4 inline size-6" />}
+                {user.isAuthenticated ? "Sign Out " : "Sign In"}
+                {user.isAuthenticated && <ExitIcon className="mr-4 inline size-6" />}
               </Link>
             </div>
           </div>
