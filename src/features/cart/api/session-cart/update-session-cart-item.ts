@@ -16,7 +16,10 @@ const updateSessionCartItemApi = baseApi.injectEndpoints({
         body: cartItem,
       }),
       // Invalidate the session cart cache to reflect the updated cart
-      invalidatesTags: [{ type: "SessionCart", id: "LIST" }],
+      invalidatesTags: [
+        { type: "SessionCart", id: "LIST" },
+        { type: "SessionCartCount", id: "LIST" },
+      ],
     }),
   }),
   overrideExisting: false,

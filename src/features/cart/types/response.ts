@@ -38,6 +38,13 @@ export interface CartResponse {
   quantityChanges?: QuantityChange[];
 }
 
+export interface CartOperationResponse {
+  success: boolean;
+  priceChanges?: PriceChange[];
+  quantityChanges?: QuantityChange[];
+  removedCartItems?: string[];
+}
+
 export interface AddToCartPayload {
   productId: string;
   quantity: number;

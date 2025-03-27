@@ -1,16 +1,18 @@
 import { baseApi } from "@/lib/api/base-api";
-
-import { CartResponse } from "../../types/response";
+import { CartOperationResponse } from "../../types/response";
 
 const removeSessionCartItemApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    removeSessionCartItem: builder.mutation<CartResponse, number>({
+    removeSessionCartItem: builder.mutation<CartOperationResponse, number>({
       query: (productId) => ({
         url: `/cart/session/item/${productId}`,
         method: "DELETE",
       }),
       // Invalidate the session cart cache to reflect the updated cart
-      invalidatesTags: [{ type: "SessionCart", id: "LIST" }],
+      invalidatesTags: [
+        { type: "SessionCart", id: "LIST" },
+        { type: "SessionCartCount", id: "LIST" },
+      ],
       extraOptions: { skipAuth: true },
     }),
   }),

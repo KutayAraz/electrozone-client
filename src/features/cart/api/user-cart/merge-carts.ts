@@ -14,6 +14,8 @@ const mergeCartsApi = baseApi.injectEndpoints({
       invalidatesTags: [
         { type: "UserCart", id: "LIST" },
         { type: "SessionCart", id: "LIST" },
+        { type: "UserCartCount", id: "LIST" },
+        { type: "SessionCartCount", id: "LIST" },
       ],
     }),
   }),

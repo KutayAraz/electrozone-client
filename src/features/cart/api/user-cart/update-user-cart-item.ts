@@ -1,6 +1,6 @@
 import { baseApi } from "@/lib/api/base-api";
 
-import { CartResponse } from "../../types/response";
+import { CartOperationResponse } from "../../types/response";
 
 interface UpdateQuantityPayload {
   productId: string;
@@ -9,14 +9,17 @@ interface UpdateQuantityPayload {
 
 const updateUserCartItemApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    updateUserCartItem: builder.mutation<CartResponse, UpdateQuantityPayload>({
+    updateUserCartItem: builder.mutation<CartOperationResponse, UpdateQuantityPayload>({
       query: (cartItem) => ({
         url: "/cart/user/item",
         method: "PATCH",
         body: cartItem,
       }),
       // Invalidate the user cart cache to reflect the updated cart
-      invalidatesTags: [{ type: "UserCart", id: "LIST" }],
+      invalidatesTags: [
+        { type: "UserCart", id: "LIST" },
+        { type: "UserCartCount", id: "LIST" },
+      ],
     }),
   }),
   overrideExisting: false,

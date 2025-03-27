@@ -10,7 +10,10 @@ const clearSessionCartApi = baseApi.injectEndpoints({
         method: "DELETE",
       }),
       // Invalidate the session cart cache to reflect the cleared cart
-      invalidatesTags: [{ type: "SessionCart", id: "LIST" }],
+      invalidatesTags: [
+        { type: "SessionCart", id: "LIST" },
+        { type: "SessionCartCount", id: "LIST" },
+      ],
       extraOptions: { skipAuth: true },
     }),
   }),
