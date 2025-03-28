@@ -1,7 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --screen-xs: 480px;
+  --screen-sm: 768px;
+  --screen-md: 1024px;
+  --screen-lg: 1280px;
+  --screen-xl: 1452px;
+
+  --color-theme-blue: #13193F;
+  --color-theme-orange: #febd69;
+  --color-theme-purple: #A34393;
+
+  --space-1: 2px;
+
+  --border-width-1: 1px;
+
+  --font-sans: "Nunito", sans-serif;
+
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+}
 
 /* Hide scrollbar for Chrome, Safari, and Opera */
 .noScrollbar::-webkit-scrollbar {
@@ -46,5 +65,5 @@ input[type='number'] {
 }
 
 :root {
-    --swiper-theme-color: #13193F;
+  --swiper-theme-color: #13193F;
 }
