@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
 import { selectUser, userSlice } from "@/stores/slices/user-slice";
-import { ReactComponent as BrandLogo } from "@assets/brand-images/brand-logo.svg";
-import { ReactComponent as Brand } from "@assets/brand-images/brand.svg";
-import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
+import BrandLogo from "@assets/brand-images/brand-logo.svg?react";
+import Brand from "@assets/brand-images/brand.svg?react";
+import BurgerIcon from "@assets/svgs/burger.svg?react";
 
+import { useCartCount } from "@/features/cart/hooks/use-cart-count";
 import { LocationModal } from "./components/location/location-modal";
 import { LocationSection } from "./components/location/location-section";
 import { MobileLocationSection } from "./components/location/mobile-location-section";
@@ -23,6 +24,7 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const user = useSelector(selectUser);
+  const { itemCount } = useCartCount();
 
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [locationModalOpen, setLocationModalOpen] = useState(false);
@@ -76,7 +78,7 @@ export const Header = () => {
           itemCount={itemCount}
           smallScreenDevice={smallScreenDevice}
           onProfileClick={() => setProfileModalOpen(true)}
-          onSignInClick={() => navigate("/sign-in")}
+          onSignInClick={() => navigate("auth/login")}
         />
       </div>
 

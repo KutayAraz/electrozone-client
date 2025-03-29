@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { MENU_ITEMS } from "@/layouts/main-layout/header/constants/menu";
-import { ReactComponent as BurgerIcon } from "@assets/svgs/burger.svg";
+import BurgerIcon from "@assets/svgs/burger.svg?react";
 
 interface NavigationStripProps {
   onMenuClick: () => void;
