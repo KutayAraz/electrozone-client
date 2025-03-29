@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { ReactComponent as UserIcon } from "@assets/svgs/user.svg";
+import UserIcon from "@assets/svgs/user.svg?react";
 
 interface UserHeaderProps {
   firstName: string | null;

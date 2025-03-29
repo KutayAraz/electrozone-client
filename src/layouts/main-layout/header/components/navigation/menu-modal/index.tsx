@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/custom-modal";
-import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
-import { ReactComponent as ExitIcon } from "@assets/svgs/exit.svg";
+import CloseButton from "@assets/svgs/close-button.svg?react";
+import ExitIcon from "@assets/svgs/exit.svg?react";
 
 import { selectUser } from "@/stores/slices/user-slice";
 import { MENU_SECTIONS, TRENDING_LINKS } from "../../../constants/menu";

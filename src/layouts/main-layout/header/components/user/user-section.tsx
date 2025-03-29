@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
 import { Basket } from "@/components/ui/basket";
-import { ReactComponent as Arrow } from "@assets/svgs/arrow.svg";
-import { ReactComponent as UserIcon } from "@assets/svgs/user.svg";
+import Arrow from "@assets/svgs/arrow.svg?react";
+import UserIcon from "@assets/svgs/user.svg?react";
 
 export interface UserSectionProps {
   firstName: string | null;

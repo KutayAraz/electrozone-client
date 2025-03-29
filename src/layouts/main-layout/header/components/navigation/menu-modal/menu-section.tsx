@@ -1,4 +1,4 @@
-import { ReactComponent as Arrow } from "@assets/svgs/arrow-black.svg";
+import Arrow from "@assets/svgs/arrow-black.svg?react";
 
 interface MenuSection {
   id: string;

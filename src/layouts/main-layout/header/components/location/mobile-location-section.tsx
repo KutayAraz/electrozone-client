@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 import { RootState } from "@/stores/store";
-import { ReactComponent as LocationIcon } from "@assets/svgs/location.svg";
+import LocationIcon from "@assets/svgs/location.svg?react";
 
 interface MobileLocationSectionProps {
   onLocationClick: () => void;

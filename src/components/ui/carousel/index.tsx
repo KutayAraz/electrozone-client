@@ -3,7 +3,7 @@ import "swiper/css";
 import { A11y, Navigation, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { ReactComponent as NavButton } from "@assets/svgs/carousel-nav-button.svg";
+import NavButton from "@assets/svgs/carousel-nav-button.svg?react";
 
 import { CarouselCard, CarouselCardProps } from "./carousel-card";
 
@@ -63,6 +63,7 @@ export const Carousel = ({ products, className, onWishlistToggle }: CarouselProp
           {products.map((product: CarouselCardProps) => (
             <SwiperSlide key={product.productId}>
               <CarouselCard
+                key={product.productId}
                 productId={product.productId}
                 productName={product.productName}
                 brand={product.brand}

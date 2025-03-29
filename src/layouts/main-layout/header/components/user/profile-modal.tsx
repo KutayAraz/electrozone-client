@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/custom-modal";
 import { navigationLinks } from "@/layouts/main-layout/header/constants/navigation";
-import { ReactComponent as CloseButton } from "@assets/svgs/close-button.svg";
-import { ReactComponent as ExitIcon } from "@assets/svgs/exit.svg";
+import CloseButton from "@assets/svgs/close-button.svg?react";
+import ExitIcon from "@assets/svgs/exit.svg?react";
 
 interface ProfileModalProps {
   isOpen: boolean;

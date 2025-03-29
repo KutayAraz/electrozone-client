@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { ReactComponent as BrandSlogan } from "@assets/brand-images/brand-slogan.svg";
+import BrandSlogan from "@assets/brand-images/brand-slogan.svg?react";
 
 import { FooterMenu } from "./components/footer-menu";
 

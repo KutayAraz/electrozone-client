@@ -1,7 +1,7 @@
 import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import { ReactComponent as BackArrow } from "@assets/svgs/go-back.svg";
+import BackArrow from "@assets/svgs/go-back.svg?react";
 
 interface SubMenuProps {
   isVisible: boolean;

@@ -1,4 +1,4 @@
-import { ReactComponent as LocationPin } from "@assets/svgs/location.svg";
+import LocationPin from "@assets/svgs/location.svg?react";
 
 const CityDisplay = ({ city }: { city: string }) => (
   <div className="text-left text-sm">

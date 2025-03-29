@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { ReactComponent as SearchIcon } from "@assets/svgs/search.svg";
+import SearchIcon from "@assets/svgs/search.svg?react";
 
 interface SearchBarProps {
   className?: string;
@@ -53,7 +53,7 @@ export const SearchBar = ({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         aria-label={placeholder}
-        className="size-full rounded-md pl-3 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-theme-orange focus:ring-offset-2"
+        className="size-full bg-white rounded-md pl-3 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-theme-orange focus:ring-offset-2"
         autoComplete="off"
       />
       <button

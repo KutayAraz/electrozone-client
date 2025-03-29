@@ -1,4 +1,4 @@
-import { ReactComponent as BasketSVG } from "@assets/svgs/basket.svg";
+import BasketSVG from "@assets/svgs/basket.svg?react";
 
 interface BasketProps {
   itemCount: number;

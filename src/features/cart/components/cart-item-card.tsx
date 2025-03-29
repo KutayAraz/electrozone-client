@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { createUrlSlug } from "@/utils/create-url-slug";
-import { ReactComponent as Bin } from "@assets/svgs/bin.svg";
+import Bin from "@assets/svgs/bin.svg?react";
 
 type CartItemCardProps = {
   id: number;

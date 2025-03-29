@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { ReactComponent as HeartIcon } from "@assets/svgs/wishlist-heart.svg";
+import HeartIcon from "@assets/svgs/wishlist-heart.svg?react";
 
 interface WishlistHeartProps {
   isWishlisted: boolean;

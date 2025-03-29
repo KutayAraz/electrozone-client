@@ -1,7 +1,7 @@
 import { Alert, Slide } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
-import { ReactComponent as X } from "@assets/svgs/close-button.svg";
+import CloseButton from "@assets/svgs/close-button.svg?react";
 
 import {
   dismissNotification,
@@ -51,7 +51,7 @@ export const Notifications = () => {
                   className="rounded-full p-1 hover:bg-black/10"
                   aria-label="Dismiss notification"
                 >
-                  <X className="size-6 stroke-gray-500" />
+                  <CloseButton className="size-6 stroke-gray-500" />
                 </button>
               }
             >
