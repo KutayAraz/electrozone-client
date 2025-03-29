@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 
-import styles from "./custom-modal.module.scss";
+import styles from "./custom-modal.module.css";
 
 interface ModalOverlayProps {
   children: React.ReactNode;
