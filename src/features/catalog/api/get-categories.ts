@@ -5,7 +5,7 @@ export interface Category {
   category: string;
 }
 
-const categoriesApi = baseApi.injectEndpoints({
+export const categoriesApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query<Category[], void>({
       query: () => ({

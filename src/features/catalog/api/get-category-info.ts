@@ -23,7 +23,7 @@ export interface CategoryInfo {
   topWishlisted: ProductQueryResult;
 }
 
-const categoryInfoApi = baseApi.injectEndpoints({
+export const categoryInfoApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getCategoryInfo: builder.query<CategoryInfo[], string>({
       query: (categoryName) => ({

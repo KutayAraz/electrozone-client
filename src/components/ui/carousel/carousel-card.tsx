@@ -31,10 +31,10 @@ export const CarouselCard = ({
   const isWishlisted = wishlist.items.includes(productId);
 
   return (
-    <div className="relative mx-[4px] xs:mx-2 sm:mx-3">
+    <div className="relative mx-[4px] xs:mx-2 sm:mx-3 my-1">
       <Link
         to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${productId}`}
-        className="flex flex-col items-center rounded-md border-2 bg-white p-2 shadow-sm hover:bg-gray-100"
+        className="flex flex-col items-center rounded-md border-1 border-gray-300 bg-white p-2 shadow-sm hover:bg-gray-100 hover:shadow-md"
         key={productId}
       >
         <div className="ml-auto pr-1 text-right">
