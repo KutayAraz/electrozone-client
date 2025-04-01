@@ -1,3 +1,4 @@
+import { RootState } from "@/stores/store";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // Alert types as a const enum for better type safety and autocomplete
@@ -9,7 +10,7 @@ export const enum NotificationType {
 }
 
 // Constants
-const AUTO_HIDE_DURATION = 3000;
+const AUTO_HIDE_DURATION = 3500;
 const MAX_NOTIFICATIONS = 5; // Prevent too many notifications from stacking
 
 export interface Notification {
@@ -18,6 +19,7 @@ export interface Notification {
   message: string;
   details?: string; // Optional details for extended error information
   timestamp: number;
+  autoHide: boolean;
 }
 
 export interface AddNotificationPayload {
@@ -49,11 +51,12 @@ export const displayNotification = createAsyncThunk<void, AddNotificationPayload
       message: payload.message,
       details: payload.details,
       timestamp: Date.now(),
+      autoHide: payload.autoHide !== false, // Default to true if not specified
     };
 
     dispatch(addNotification(notification));
 
-    if (payload.autoHide) {
+    if (notification.autoHide) {
       const duration = payload.duration || AUTO_HIDE_DURATION;
       setTimeout(() => {
         dispatch(dismissNotification(notification.id));
@@ -92,9 +95,9 @@ export const notificationSlice = createSlice({
 });
 
 // Selectors
-export const selectNotifications = (state: any) => state.notification.notifications;
+export const selectNotifications = (state: RootState) => state.notification.notifications;
 
-export const selectLatestNotification = (state: any) => state.notification.notifications[0];
+export const selectLatestNotification = (state: RootState) => state.notification.notifications[0];
 
 export const { addNotification, dismissNotification, clearNotifications, removeOldNotifications } =
   notificationSlice.actions;
