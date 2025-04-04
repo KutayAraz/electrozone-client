@@ -12,11 +12,11 @@ const baseQuery = fetchBaseQuery({
   credentials: "include", // Important for sending/receiving cookies
 });
 
-export const withAuthRefresh: BaseQueryFn<
-  string | FetchArgs,
-  unknown,
-  FetchBaseQueryError
-> = async (args: any, api, extraOptions: any) => {
+export const refreshAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+  args: any,
+  api,
+  extraOptions: any,
+) => {
   if (extraOptions?.skipAuth) {
     return baseQuery(args, api, extraOptions);
   }
@@ -42,7 +42,6 @@ export const withAuthRefresh: BaseQueryFn<
         } else {
           // If refresh token is invalid, clear credentials
           api.dispatch(clearCredentials());
-          // api.dispatch(showAlert({}));
         }
       } catch (error) {
         // Handle any errors during refresh

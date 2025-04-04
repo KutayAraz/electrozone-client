@@ -1,11 +1,11 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 
-import { withAuthRefresh } from "./with-auth-refresh";
+import { refreshAuth } from "./refresh-auth";
 
 // Create the base API with empty endpoints for endpoint injecting
 export const baseApi = createApi({
   reducerPath: "api",
-  baseQuery: withAuthRefresh,
+  baseQuery: refreshAuth,
   endpoints: () => ({}),
   tagTypes: [
     "User",
