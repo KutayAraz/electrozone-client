@@ -3,7 +3,7 @@ import { CartOperationResponse } from "../../types/response";
 
 const removeSessionCartItemApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    removeSessionCartItem: builder.mutation<CartOperationResponse, number>({
+    removeSessionCartItem: builder.mutation<CartOperationResponse, string>({
       query: (productId) => ({
         url: `/cart/session/item/${productId}`,
         method: "DELETE",
