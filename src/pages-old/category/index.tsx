@@ -6,7 +6,7 @@ import { Spinner } from "@/components/ui/spinner/spinner";
 import { formatString } from "@/utils/format-casing";
 import loaderFetch from "@/utils/loader-fetch";
 
-import { Subcategory, SubcategoryProps } from "./components/subcategory";
+import { Subcategory, SubcategoryProps } from "../../features/catalog/components/subcategory";
 
 export const CategoryPage = () => {
   const { category } = useLoaderData() as { category: Promise<SubcategoryProps[]> };
