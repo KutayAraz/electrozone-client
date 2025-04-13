@@ -1,10 +1,10 @@
+import { useAppSelector } from "@/hooks/use-app-selector";
 import { selectIsAuthenticated } from "@/stores/slices/user-slice";
-import { useSelector } from "react-redux";
 import { useGetSessionCartCountQuery } from "../api/session-cart/get-session-cart-count";
 import { useGetUserCartCountQuery } from "../api/user-cart/get-user-cart-count";
 
 export const useCartCount = () => {
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   // Only run the appropriate query based on authentication status
   const { data: userCartCount = 0, isLoading: isUserCartLoading } = useGetUserCartCountQuery(
