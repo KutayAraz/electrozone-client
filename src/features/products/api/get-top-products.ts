@@ -14,7 +14,7 @@ interface TopProduct {
   wishlisted?: number;
 }
 
-const topProductsApi = baseApi.injectEndpoints({
+export const topProductsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getBestSellers: builder.query<TopProduct[], void>({
       query: () => ({
