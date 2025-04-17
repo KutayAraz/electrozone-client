@@ -10,24 +10,15 @@ export const useCreateReview = () => {
   const [createReview] = useCreateReviewMutation();
 
   const submitReview = async (productId: number, rating: number, comment: string) => {
-    try {
-      await createReview({ productId, review: { rating, comment } }).unwrap();
+    const response = await createReview({ productId, review: { rating, comment } }).unwrap();
 
-      dispatch(
-        displayNotification({
-          type: NotificationType.SUCCESS,
-          message: "Review has been added",
-        }),
-      );
-    } catch (error: any) {
-      dispatch(
-        displayNotification({
-          type: NotificationType.ERROR,
-          message: "An error occured while adding your review",
-          details: error.message,
-        }),
-      );
-    }
+    dispatch(
+      displayNotification({
+        type: NotificationType.SUCCESS,
+        message: "Review has been added",
+        details: `New rating after you review: ${response}`,
+      }),
+    );
   };
 
   return submitReview;
