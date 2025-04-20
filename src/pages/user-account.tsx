@@ -36,7 +36,7 @@ export const UserAccountPage = () => {
 
   return (
     <div className="page-spacing">
-      <h2 className="mb-6 text-xl font-bold">Your Account Information</h2>
+      <h2 className="mb-3 text-xl font-bold">Your Account Information</h2>
       <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 lg:grid-cols-3">
         {accountMenuItems.map(({ to, Icon, label }) => (
           <InfoCard key={to} to={to} Icon={Icon}>

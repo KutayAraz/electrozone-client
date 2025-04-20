@@ -1,15 +1,7 @@
-import * as yup from "yup";
+import { z } from "zod";
 
-export const profileSchema = yup.object({
-  email: yup.string().email("Invalid email address").nullable().notRequired(),
-  address: yup
-    .string()
-    .nullable()
-    .notRequired()
-    .test("address-test", "Please enter a valid address", (value) => !value || value.length >= 3),
-  city: yup
-    .string()
-    .nullable()
-    .notRequired()
-    .test("city-test", "Please enter a valid city", (value) => !value || value.length >= 2),
+export const profileSchema = z.object({
+  email: z.string().email("Invalid email address").or(z.literal("")),
+  address: z.string().min(3, "Please enter a valid address").or(z.literal("")),
+  city: z.string().min(2, "Please enter a valid city").or(z.literal("")),
 });
