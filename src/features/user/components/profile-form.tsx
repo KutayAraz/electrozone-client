@@ -1,78 +1,54 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 
-import { displayAlert } from "@/stores/slices/alert-slice";
-import { updateUserInfo } from "@/stores/slices/user-slice";
-import { RootState } from "@/stores/store";
-
-import { useUpdateUserMutation } from "../api/user";
+import {
+  displayNotification,
+  NotificationType,
+} from "@/components/ui/notifications/notification-slice";
+import { Spinner } from "@/components/ui/spinner";
+import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema } from "../schema/profile-schema";
-import { UpdateUser } from "../types";
+import { UpdateUser, User } from "../types";
 
-export const UserProfile = ({ userInfo }: UpdateUser) => {
-  const dispatch = useDispatch<any>();
-  const cityFromStore = useSelector((state: RootState) => state.user.city);
-  const [emailPlaceholder, setEmailPlaceholder] = useState(userInfo.email || "");
-  const [addressPlaceholder, setAddressPlaceholder] = useState(userInfo.address || "");
-  const [cityPlaceholder, setCityPlaceholder] = useState(cityFromStore || "");
-  const [updatedUser, { isLoading, isError }] = useUpdateUserMutation();
+type ProfileFormProps = {
+  userInfo: Partial<User>;
+  onUpdateProfile: (data: UpdateUser) => void;
+  isUpdating: boolean;
+};
+
+export const ProfileForm = ({ userInfo, onUpdateProfile, isUpdating }: ProfileFormProps) => {
+  const dispatch = useAppDispatch();
 
   const {
     register,
     handleSubmit,
+    formState: { errors, isSubmitting, isDirty },
     reset,
-    formState: { errors, isSubmitting },
   } = useForm({
-    resolver: yupResolver(profileSchema),
+    resolver: zodResolver(profileSchema),
     defaultValues: {
       email: "",
       address: "",
       city: "",
     },
+    mode: "onBlur",
   });
 
-  const handleSubmit = async (data: UpdateUser) => {
-    const filteredData = Object.fromEntries(
-      Object.entries(data).filter(([value]) => value && value.trim() !== ""),
-    );
+  const onSubmit = async (data: UpdateUser) => {
+    const filteredData = Object.fromEntries(Object.entries(data).filter(([_, v]) => v != ""));
 
     if (Object.keys(filteredData).length === 0) {
       dispatch(
-        displayAlert({
-          type: "warning",
+        displayNotification({
+          type: NotificationType.WARNING,
           message: "No changes to update.",
-          autoHide: true,
         }),
       );
       return;
     }
 
-    const result: any = await fetch(`${import.meta.env.VITE_API_URL}/user/profile`, {
-      method: "PATCH",
-      credentials: "include", // Enables cookie sending
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(filteredData), // Convert data to JSON string
-    });
-
-    if (result?.response.ok) {
-      dispatch(updateUserInfo({ city: result.data.city }));
-      dispatch(
-        displayAlert({
-          type: "success",
-          message: "Your information has been successfully updated.",
-          autoHide: true,
-        }),
-      );
-      if (data.email) setEmailPlaceholder(data.email);
-      if (data.address) setAddressPlaceholder(data.address);
-      if (data.city) setCityPlaceholder(data.city);
-      reset();
-    }
+    onUpdateProfile(filteredData);
+    reset();
   };
 
   const inputClasses =
@@ -81,8 +57,8 @@ export const UserProfile = ({ userInfo }: UpdateUser) => {
   const errorMessageClasses = "text-red-500 text-sm mt-1";
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="mx-2 my-4 flex max-w-md flex-col rounded-xl bg-white p-6 shadow-md xs:mx-auto">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex max-w-md flex-col rounded-xl bg-white p-6 shadow-md xs:mx-auto">
         <h2 className="text-lg font-semibold text-gray-800">My Profile:</h2>
         <label htmlFor="email" className={labelClasses}>
           Email
@@ -91,7 +67,7 @@ export const UserProfile = ({ userInfo }: UpdateUser) => {
           {...register("email")}
           id="email"
           type="text"
-          placeholder={emailPlaceholder}
+          placeholder={userInfo.email}
           className={inputClasses}
         />
         {errors.email && <p className={errorMessageClasses}>{errors.email.message}</p>}
@@ -103,7 +79,7 @@ export const UserProfile = ({ userInfo }: UpdateUser) => {
           {...register("address")}
           id="address"
           type="text"
-          placeholder={addressPlaceholder}
+          placeholder={userInfo.address}
           className={inputClasses}
         />
         {errors.address && <p className={errorMessageClasses}>{errors.address.message}</p>}
@@ -115,7 +91,7 @@ export const UserProfile = ({ userInfo }: UpdateUser) => {
           {...register("city")}
           id="city"
           type="text"
-          placeholder={cityPlaceholder}
+          placeholder={userInfo.city}
           className={inputClasses}
         />
         {errors.city && <p className={errorMessageClasses}>{errors.city.message}</p>}
@@ -123,10 +99,18 @@ export const UserProfile = ({ userInfo }: UpdateUser) => {
         <button
           type="submit"
           aria-label="Update Profile"
-          className="mx-auto my-2 max-w-[50%] rounded-lg bg-theme-blue px-4 py-2 font-[500] text-white hover:bg-theme-purple"
-          disabled={isSubmitting}
+          className="mx-auto my-2 max-w-[50%] rounded-lg bg-theme-blue px-8 py-2
+           font-[500] text-white hover:bg-theme-purple disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={isUpdating || isSubmitting || Object.keys(errors).length > 0 || !isDirty}
         >
-          {isSubmitting ? "Updating..." : "Update Profile"}
+          {isUpdating ? (
+            <span className="flex items-center">
+              <span className="pr-2">Updating...</span>
+              <Spinner size={15} />
+            </span>
+          ) : (
+            "Update Profile"
+          )}
         </button>
       </div>
     </form>
