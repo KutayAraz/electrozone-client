@@ -1,3 +1,5 @@
+import { ProfileSchema } from "../schemas/profile-schema";
+
 export interface User {
   email: string;
   firstName: string;
@@ -7,4 +9,4 @@ export interface User {
   role: string;
 }
 
-export type UpdateUser = Partial<User>;
+export type UpdateUser = Partial<ProfileSchema>;
