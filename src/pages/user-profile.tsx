@@ -2,12 +2,12 @@ import { ProfileForm } from "@/features/user/components/profile-form";
 import { useUpdateProfile } from "@/features/user/hooks/use-update-profile";
 
 export const UserProfilePage = () => {
-  const { userInfo, updateUserProfile, isProfileLoading } = useUpdateProfile();
+  const { userInfo, submitProfile, isProfileLoading } = useUpdateProfile();
 
   return (
     <div className="page-spacing">
       <ProfileForm
-        onUpdateProfile={updateUserProfile}
+        onUpdateProfile={submitProfile}
         userInfo={userInfo}
         isUpdating={isProfileLoading}
       />
