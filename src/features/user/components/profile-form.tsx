@@ -7,7 +7,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { profileSchema } from "../schema/profile-schema";
+import { profileSchema } from "../schemas/profile-schema";
 import { UpdateUser, User } from "../types";
 
 type ProfileFormProps = {

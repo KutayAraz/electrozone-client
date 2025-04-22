@@ -1,12 +1,5 @@
 import { baseApi } from "@/lib/api/base-api";
-
-interface UpdateUserInput {
-  firstName?: string;
-  lastName?: string;
-  address?: string;
-  city?: string;
-  password?: string;
-}
+import { ProfileSchema } from "../schemas/profile-schema";
 
 interface UpdateUserResponse {
   email: string;
@@ -16,7 +9,7 @@ interface UpdateUserResponse {
 
 const updateUserProfileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    updateUserProfile: builder.mutation<UpdateUserResponse, UpdateUserInput>({
+    updateUserProfile: builder.mutation<UpdateUserResponse, Partial<ProfileSchema>>({
       query: (userData) => ({
         url: "/user/profile",
         method: "PATCH",

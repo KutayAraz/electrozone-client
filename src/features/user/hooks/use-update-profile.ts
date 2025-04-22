@@ -14,7 +14,7 @@ export const useUpdateProfile = () => {
   const { data: userInfo, isLoading } = useGetUserProfileQuery();
   const [updatedUser, { isLoading: isProfileLoading }] = useUpdateUserProfileMutation();
 
-  const updateUserProfile = async (data: UpdateUser) => {
+  const submitProfile = async (data: UpdateUser) => {
     const result = await updatedUser(data).unwrap();
 
     dispatch(updateUserInfo({ city: result.city }));
@@ -28,7 +28,7 @@ export const useUpdateProfile = () => {
 
   return {
     userInfo: userInfo || {},
-    updateUserProfile,
+    submitProfile,
     isLoading,
     isProfileLoading,
   };
