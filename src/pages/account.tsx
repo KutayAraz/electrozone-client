@@ -24,7 +24,7 @@ export const InfoCard = ({ to, children, Icon }: InfoCardProps) => {
   );
 };
 
-export const UserAccountPage = () => {
+export const AccountPage = () => {
   const accountMenuItems = [
     { to: "profile", Icon: AddressCard, label: "Address" },
     { to: "orders", Icon: OrderComplete, label: "Orders" },
