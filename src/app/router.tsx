@@ -78,8 +78,8 @@ export const createAppRouter = () =>
             {
               index: true,
               lazy: async () => {
-                const { UserAccountPage } = await import("@/pages/user-account");
-                return { Component: UserAccountPage };
+                const { AccountPage } = await import("@/pages/account");
+                return { Component: AccountPage };
               },
             },
             {
@@ -87,6 +87,13 @@ export const createAppRouter = () =>
               lazy: async () => {
                 const { UserProfilePage } = await import("@/pages/user-profile");
                 return { Component: UserProfilePage };
+              },
+            },
+            {
+              path: paths.app.security.path,
+              lazy: async () => {
+                const { AccountSecurityPage } = await import("@/pages/account-security");
+                return { Component: AccountSecurityPage };
               },
             },
             //   {

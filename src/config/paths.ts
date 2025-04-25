@@ -53,6 +53,10 @@ export const paths = {
       path: "wishlist",
       getHref: () => "/account/wishlist",
     },
+    security: {
+      path: "security",
+      getHref: () => "/account/security",
+    },
   },
 
   products: {
