@@ -37,7 +37,7 @@ export const OrderItemDetailsCard = ({
       <p className="mt-2 group-hover:text-theme-blue">{productName}</p>
       <p className="group-hover:text-theme-blue">{brand}</p>
       <p className="group-hover:text-theme-blue">Quantity: {quantity}</p>
-      <p className="group-hover:text-theme-blue ">Total: ${price.toFixed(2)}</p>
+      <p className="group-hover:text-theme-blue ">Total: ${price}</p>
     </Link>
   );
 };

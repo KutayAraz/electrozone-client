@@ -25,7 +25,7 @@ export interface OrderDetailResponse {
   isCancellable: boolean;
 }
 
-const getOrderByIdApi = baseApi.injectEndpoints({
+export const getOrderByIdApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrderById: builder.query<OrderDetailResponse, number>({
       query: (orderId) => ({

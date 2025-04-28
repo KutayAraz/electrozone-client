@@ -1,51 +1,79 @@
-import { Suspense } from "react";
-import { Await, defer, LoaderFunctionArgs, redirect, useLoaderData } from "react-router-dom";
+import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router-dom";
 
-import { orderApi } from "@/features/orders/api/order-api";
+import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+import {
+  displayNotification,
+  NotificationType,
+} from "@/components/ui/notifications/notification-slice";
+import { Spinner } from "@/components/ui/spinner";
+import { useCancelOrderMutation } from "@/features/orders/api/cancel-order";
+import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
+import { OrderDetailsCard } from "@/features/orders/components/order-details-card";
+import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { useConfirmationDialog } from "@/hooks/use-confirmation-dialog";
 import { store } from "@/stores/store";
 
-import { OrderDetailsCard } from "../features/orders/components/order-details/order-card";
+export const orderDetailsLoader = async (request: LoaderFunctionArgs) => {
+  const orderId = Number(request.params.orderId);
 
-export const OrderDetails = () => {
-  const { order }: any = useLoaderData();
-  return (
-    <div className="page-spacing">
-      <Suspense fallback={<p>Loading Order...</p>}>
-        <Await resolve={order}>
-          <OrderDetailsCard
-            orderId={order.id}
-            orderTotal={order.orderTotal}
-            orderDate={order.orderDate}
-            user={order.user}
-            orderItems={order.orderItems}
-            isCancellable={order.isCancellable}
-          />
-        </Await>
-      </Suspense>
-    </div>
-  );
+  return store.dispatch(getOrderByIdApi.endpoints.getOrderById.initiate(orderId));
 };
 
-export const loader = async (request: LoaderFunctionArgs) => {
-  try {
-    const orderId = Number(request.params.orderId);
+export const OrderDetails = () => {
+  const order = useLoaderData();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [cancelOrder, { isLoading }] = useCancelOrderMutation();
 
-    // Initialize query
-    const response = await store.dispatch(orderApi.endpoints.getOrder.initiate(orderId));
+  const submitCancellation = async () => {
+    await cancelOrder(order.data.id).unwrap();
 
-    if ("error" in response) {
-      // Handle RTK Query error
-      if (response.error && "status" in response.error && response.error.status === 401) {
-        return redirect("/sign-in");
-      }
-      throw response.error;
-    }
+    dispatch(
+      displayNotification({
+        type: NotificationType.SUCCESS,
+        message: "Your order has been cancelled successfully",
+      }),
+    );
 
-    return defer({
-      order: response.data,
-    });
-  } catch (error: unknown) {
-    console.error("Error loading order:", error);
-    throw error;
-  }
+    navigate("/account/orders");
+  };
+
+  const {
+    handleOpen: handleCancelClick,
+    handleConfirm: handleConfirmCancel,
+    dialogProps,
+  } = useConfirmationDialog({
+    onConfirm: submitCancellation,
+    confirmationTitle: "Cancel Order",
+    confirmationMessage:
+      "Are you sure you want to cancel this order? This action cannot be undone.",
+    confirmButtonText: "Yes, Cancel Order",
+    cancelButtonText: "No, Keep Order",
+  });
+
+  return (
+    <div className="page-spacing">
+      {order.state === "loading" ? (
+        <Spinner />
+      ) : (
+        <>
+          <OrderDetailsCard
+            orderId={order.data.id}
+            orderTotal={order.data.orderTotal}
+            orderDate={order.data.orderDate}
+            user={order.data.user}
+            orderItems={order.data.orderItems}
+            isCancellable={order.data.isCancellable}
+            onOrderCancel={handleCancelClick}
+          />
+
+          <ConfirmationDialog
+            {...dialogProps}
+            onConfirm={handleConfirmCancel}
+            isProcessing={isLoading}
+          />
+        </>
+      )}
+    </div>
+  );
 };
