@@ -15,6 +15,7 @@ export interface CarouselCardProps {
   subcategory: string;
   category: string;
   onWishlistToggle: (id: number) => void;
+  isTogglingWishlist: boolean;
 }
 
 export const CarouselCard = ({
@@ -26,6 +27,7 @@ export const CarouselCard = ({
   subcategory,
   category,
   onWishlistToggle,
+  isTogglingWishlist,
 }: CarouselCardProps) => {
   const wishlist = useSelector((state: RootState) => state.wishlist);
   const isWishlisted = wishlist.items.includes(productId);
@@ -37,8 +39,12 @@ export const CarouselCard = ({
         className="flex flex-col items-center rounded-md border-1 border-gray-300 bg-white p-2 shadow-sm hover:bg-gray-100 hover:shadow-md"
         key={productId}
       >
-        <div className="ml-auto pr-1 text-right">
-          <WishlistHeart isWishlisted={isWishlisted} onClick={() => onWishlistToggle(productId)} />
+        <div className="ml-auto h-6 pr-1 text-right">
+          <WishlistHeart
+            isWishlisted={isWishlisted}
+            onClick={() => onWishlistToggle(productId)}
+            disabled={isTogglingWishlist}
+          />
         </div>
         <div className="h-[100px] rounded-md pt-2 sm:h-[160px]">
           <img

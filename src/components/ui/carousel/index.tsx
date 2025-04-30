@@ -1,19 +1,16 @@
 import { useRef } from "react";
 import "swiper/css";
 import { A11y, Navigation, Scrollbar } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper } from "swiper/react";
 
 import NavButton from "@assets/svgs/carousel-nav-button.svg?react";
 
-import { CarouselCard, CarouselCardProps } from "./carousel-card";
-
 interface CarouselProps {
-  products: CarouselCardProps[];
-  onWishlistToggle: (id: number) => void;
+  children: React.ReactNode;
   className?: string;
 }
 
-export const Carousel = ({ products, className, onWishlistToggle }: CarouselProps) => {
+export const Carousel = ({ children, className }: CarouselProps) => {
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
 
@@ -60,21 +57,7 @@ export const Carousel = ({ products, className, onWishlistToggle }: CarouselProp
           }}
           className={`${className}`}
         >
-          {products.map((product: CarouselCardProps) => (
-            <SwiperSlide key={product.productId}>
-              <CarouselCard
-                key={product.productId}
-                productId={product.productId}
-                productName={product.productName}
-                brand={product.brand}
-                thumbnail={product.thumbnail}
-                price={product.price}
-                subcategory={product.subcategory}
-                category={product.category}
-                onWishlistToggle={onWishlistToggle}
-              />
-            </SwiperSlide>
-          ))}
+          {children}
         </Swiper>
         <div ref={nextRef} className="absolute -right-4 top-1/2 -translate-y-1/2 cursor-pointer">
           <NavButton className="size-5 " />
