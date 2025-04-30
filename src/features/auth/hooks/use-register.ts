@@ -1,13 +1,17 @@
+import { useNavigate } from "react-router-dom";
+
 import {
   displayNotification,
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
 import { paths } from "@/config/paths";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { ErrorType } from "@/types/api-error";
 import { isStandardApiError } from "@/utils/error-guard";
-import { useNavigate } from "react-router-dom";
+
 import { useRegisterMutation } from "../api/register";
 import { RegisterSchema } from "../schemas/register-schema";
+
 import { useFormError } from "./use-form-error";
 
 export const useRegister = () => {
@@ -36,6 +40,20 @@ export const useRegister = () => {
         if (error.status === 409) {
           setServerError({
             field: "email",
+            message: "This email is already taken",
+          });
+        }
+
+        if ((error.type = ErrorType.INVALID_NEW_PASSWORD)) {
+          setServerError({
+            field: "password",
+            message: "This email is already taken",
+          });
+        }
+
+        if ((error.type = ErrorType.PASSWORD_MISMATCH)) {
+          setServerError({
+            field: "retypedPassword",
             message: "This email is already taken",
           });
         }
