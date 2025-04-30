@@ -1,7 +1,4 @@
-export enum ErrorType {
-  QUANTITY_LIMIT_EXCEEDED = "QUANTITY_LIMIT_EXCEEDED",
-  STOCK_LIMIT_EXCEEDED = "STOCK_LIMIT_EXCEEDED",
-}
+import { ErrorType } from "@/types/api-error";
 
 export interface FormattedCartItem {
   cartItemId: number;
@@ -46,7 +43,7 @@ export interface CartOperationResponse {
 }
 
 export interface AddToCartPayload {
-  productId: string;
+  productId: number;
   quantity: number;
 }
 

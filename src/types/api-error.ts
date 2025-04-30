@@ -5,7 +5,15 @@ export interface StandardErrorResponse {
   details?: string;
 }
 
+export enum ErrorType {
+  QUANTITY_LIMIT_EXCEEDED = "QUANTITY_LIMIT_EXCEEDED",
+  STOCK_LIMIT_EXCEEDED = "STOCK_LIMIT_EXCEEDED",
+  INVALID_NEW_PASSWORD = "INVALID_NEW_PASSWORD",
+  PASSWORD_MISMATCH = "PASSWORD_MISMATCH",
+}
+
 export interface ApiErrorPayload {
+  type: ErrorType;
   data: StandardErrorResponse;
   status: number;
 }

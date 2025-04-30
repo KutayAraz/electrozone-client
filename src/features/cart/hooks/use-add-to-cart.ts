@@ -2,13 +2,13 @@ import {
   displayNotification,
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
-import { selectIsAuthenticated } from "@/stores/slices/user-slice";
-
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
+import { selectIsAuthenticated } from "@/stores/slices/user-slice";
+import { ErrorType } from "@/types/api-error";
+
 import { useAddToSessionCartMutation } from "../api/session-cart/add-to-session-cart";
 import { useAddToUserCartMutation } from "../api/user-cart/add-to-user-cart";
-import { ErrorType } from "../types/response";
 
 export const useAddToCart = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +19,7 @@ export const useAddToCart = () => {
 
   const isLoading = isUserCartLoading || isSessionCartLoading;
 
-  const addToCart = async (productId: string, quantity: number) => {
+  const addToCart = async (productId: number, quantity = 1) => {
     let response;
     if (isAuthenticated) {
       response = await addToUserCart({ productId, quantity }).unwrap();
