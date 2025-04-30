@@ -14,34 +14,20 @@ interface TopProduct {
   wishlisted?: number;
 }
 
-export const topProductsApi = baseApi.injectEndpoints({
+export enum ProductTrend {
+  BEST_SELLERS = "best-sellers",
+  MOST_WISHLISTED = "most-wishlisted",
+  BEST_RATED = "best-rated",
+}
+
+export const getTopProductsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getBestSellers: builder.query<TopProduct[], void>({
-      query: () => ({
-        url: "/product/best-sellers",
+    getTopProducts: builder.query<TopProduct[], ProductTrend>({
+      query: (trend: ProductTrend) => ({
+        url: `/product/${trend}`,
         method: "GET",
       }),
-      providesTags: [{ type: "Product", id: "best-sellers" }],
-      keepUnusedDataFor: 600, // 10 minutes
-      extraOptions: { skipAuth: true },
-    }),
-
-    getMostWishlisted: builder.query<TopProduct[], void>({
-      query: () => ({
-        url: "/product/most-wishlisted",
-        method: "GET",
-      }),
-      providesTags: [{ type: "Product", id: "most-wishlisted" }],
-      keepUnusedDataFor: 600, // 10 minutes
-      extraOptions: { skipAuth: true },
-    }),
-
-    getBestRated: builder.query<TopProduct[], void>({
-      query: () => ({
-        url: "/product/best-rated",
-        method: "GET",
-      }),
-      providesTags: [{ type: "Product", id: "best-rated" }],
+      providesTags: (result, error, trend) => [{ type: "Product", id: trend }],
       keepUnusedDataFor: 600, // 10 minutes
       extraOptions: { skipAuth: true },
     }),
@@ -49,5 +35,4 @@ export const topProductsApi = baseApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetBestSellersQuery, useGetMostWishlistedQuery, useGetBestRatedQuery } =
-  topProductsApi;
+export const { useGetTopProductsQuery } = getTopProductsApi;

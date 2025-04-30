@@ -1,19 +1,26 @@
+import { Suspense } from "react";
 import { Await, useLoaderData } from "react-router";
+import { SwiperSlide } from "swiper/react";
 
 import { Carousel } from "@/components/ui/carousel";
-import { CarouselCardProps } from "@/components/ui/carousel/carousel-card";
+import { CarouselCard } from "@/components/ui/carousel/carousel-card";
 import { Spinner } from "@/components/ui/spinner";
 import { Categories } from "@/features/catalog/components/categories";
-import { topProductsApi } from "@/features/products/api/get-top-products";
+import { Product } from "@/features/orders/types";
+import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
+import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { store } from "@/stores/store";
-import { Suspense } from "react";
 
 export const homePageLoader = async () => {
-  const bestRatedResult = store.dispatch(topProductsApi.endpoints.getBestRated.initiate());
-  const mostWishlistedResult = store.dispatch(
-    topProductsApi.endpoints.getMostWishlisted.initiate(),
+  const bestRatedResult = store.dispatch(
+    getTopProductsApi.endpoints.getTopProducts.initiate(ProductTrend.BEST_RATED),
   );
-  const bestSellersResult = store.dispatch(topProductsApi.endpoints.getBestSellers.initiate());
+  const mostWishlistedResult = store.dispatch(
+    getTopProductsApi.endpoints.getTopProducts.initiate(ProductTrend.MOST_WISHLISTED),
+  );
+  const bestSellersResult = store.dispatch(
+    getTopProductsApi.endpoints.getTopProducts.initiate(ProductTrend.BEST_SELLERS),
+  );
 
   return {
     bestRated: bestRatedResult,
@@ -22,10 +29,33 @@ export const homePageLoader = async () => {
   };
 };
 
+const ProductsShowcase = ({ products }: { products: Product[] }) => {
+  const { handleToggleWishlist, isLoading } = useToggleWishlist();
+  return (
+    <Carousel>
+      {products.map((product: any) => (
+        <SwiperSlide key={product.productId}>
+          <CarouselCard
+            key={product.productId}
+            productId={product.productId}
+            productName={product.productName}
+            brand={product.brand}
+            thumbnail={product.thumbnail}
+            price={product.price}
+            subcategory={product.subcategory}
+            category={product.category}
+            onWishlistToggle={() => handleToggleWishlist(product.id)}
+            isTogglingWishlist={isLoading}
+          />
+        </SwiperSlide>
+      ))}
+    </Carousel>
+  );
+};
+
 export const HomePage = () => {
   const { bestRated, mostWishlisted, bestSellers } = useLoaderData();
 
-  const handleWishlistClick = () => {};
   return (
     <div className="page-spacing">
       <div className="max-w-screen-xl text-center xl:mx-auto">
@@ -33,26 +63,20 @@ export const HomePage = () => {
         <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-700">Best Selling Products</h2>
         <Suspense fallback={<Spinner />}>
           <Await resolve={bestSellers}>
-            {(products: { data: CarouselCardProps[] }) => (
-              <Carousel products={products.data} onWishlistToggle={handleWishlistClick} />
-            )}
+            {(products: { data: any[] }) => <ProductsShowcase products={products.data} />}
           </Await>
         </Suspense>
         <h2 className="my-3 text-xl font-semibold text-gray-700">Most Wishlisted Products</h2>
         <Suspense fallback={<Spinner />}>
           <Await resolve={mostWishlisted}>
-            {(products: { data: CarouselCardProps[] }) => (
-              <Carousel products={products.data} onWishlistToggle={handleWishlistClick} />
-            )}
+            {(products: { data: any[] }) => <ProductsShowcase products={products.data} />}
           </Await>
         </Suspense>
 
         <h2 className="my-3 text-xl font-semibold text-gray-700">Best Rated Products</h2>
         <Suspense fallback={<Spinner />}>
           <Await resolve={bestRated}>
-            {(products: { data: CarouselCardProps[] }) => (
-              <Carousel products={products.data} onWishlistToggle={handleWishlistClick} />
-            )}
+            {(products: { data: any[] }) => <ProductsShowcase products={products.data} />}
           </Await>
         </Suspense>
       </div>
