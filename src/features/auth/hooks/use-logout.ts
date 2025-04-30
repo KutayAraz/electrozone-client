@@ -5,6 +5,7 @@ import {
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { clearCredentials } from "@/stores/slices/user-slice";
 import { clearWishlist } from "@/stores/slices/wishlist-slice";
+
 import { useLogoutMutation } from "../api/logout";
 
 export const useLogout = () => {

@@ -1,10 +1,11 @@
+import { Link } from "react-router";
+
 import AddressCard from "@assets/svgs/address-card.svg?react";
 import Contact from "@assets/svgs/contact.svg?react";
 import Exit from "@assets/svgs/exit.svg?react";
 import OrderComplete from "@assets/svgs/order-complete.svg?react";
 import Security from "@assets/svgs/security.svg?react";
 import WishlistHeart from "@assets/svgs/wishlist-heart.svg?react";
-import { Link } from "react-router";
 
 type InfoCardProps = {
   to: string;

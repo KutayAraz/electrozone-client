@@ -1,5 +1,7 @@
-import HeartIcon from "@assets/svgs/wishlist-heart.svg?react";
 import { useEffect, useState } from "react";
+
+import HeartIcon from "@assets/svgs/wishlist-heart.svg?react";
+
 import styles from "./wishlist-heart.module.css";
 
 interface WishlistHeartProps {

@@ -1,4 +1,3 @@
-
 import {
   displayNotification,
   NotificationType,
@@ -21,7 +20,7 @@ export const useUpdateQuantity = () => {
 
   const isLoading = isSessionCartLoading || isUserCartLoading;
 
-  const addToCart = async (productId: string, quantity: number) => {
+  const updateQuantity = async (productId: string, quantity: number) => {
     let response;
     if (isAuthenticated) {
       response = await updateUserCartItem({ productId, quantity }).unwrap();
@@ -50,5 +49,5 @@ export const useUpdateQuantity = () => {
     );
   };
 
-  return { addToCart, isLoading };
+  return { updateQuantity, isLoading };
 };
