@@ -1,14 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
+import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { useAppSelector } from "@/hooks/use-app-selector";
 import { selectIsAuthenticated } from "@/stores/slices/user-slice";
 import { addToWishlist, removeFromWishlist } from "@/stores/slices/wishlist-slice";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import { useToggleWishlistMutation } from "../api/toggle-wishlist";
 
-export const useWishlistToggle = () => {
-  const [toggleWishlistApi] = useToggleWishlistMutation();
-  const dispatch = useDispatch();
+export const useToggleWishlist = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
+  const [toggleWishlist, { isLoading }] = useToggleWishlistMutation();
 
   const handleToggleWishlist = async (productId: number) => {
     if (!isAuthenticated) {
@@ -21,12 +25,12 @@ export const useWishlistToggle = () => {
     }
 
     try {
-      const result = await toggleWishlistApi(productId);
+      const result = await toggleWishlist(productId).unwrap();
 
       // Optionally update local state immediately for better UX
-      if (result.data?.action === "added") {
+      if (result.action === "added") {
         dispatch(addToWishlist(productId));
-      } else if (result.data?.action === "removed") {
+      } else if (result.action === "removed") {
         dispatch(removeFromWishlist(productId));
       }
     } catch (error) {
@@ -34,5 +38,5 @@ export const useWishlistToggle = () => {
     }
   };
 
-  return handleToggleWishlist;
+  return { handleToggleWishlist, isLoading };
 };

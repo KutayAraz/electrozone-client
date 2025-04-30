@@ -12,7 +12,7 @@ interface WishlistItem {
   category: string;
 }
 
-const wishlistApi = baseApi.injectEndpoints({
+export const wishlistApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getUserWishlist: builder.query<WishlistItem[], void>({
       query: () => ({
