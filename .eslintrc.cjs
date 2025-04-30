@@ -5,11 +5,7 @@ module.exports = {
     es6: true,
   },
   parserOptions: { ecmaVersion: "latest", sourceType: "module" },
-  ignorePatterns: [
-    "node_modules/*",
-    "public/mockServiceWorker.js",
-    "generators/*",
-  ],
+  ignorePatterns: ["node_modules/*", "public/mockServiceWorker.js", "generators/*"],
   extends: ["eslint:recommended"],
   plugins: ["check-file"],
   overrides: [
@@ -20,13 +16,13 @@ module.exports = {
         react: { version: "detect" },
         "import/resolver": {
           typescript: {
-            project: "./tsconfig.json"
+            project: "./tsconfig.json",
           },
           alias: {
             map: [["@", "./src"]],
-            extensions: [".ts", ".tsx", ".js", ".jsx"]
-          }
-        }
+            extensions: [".ts", ".tsx", ".js", ".jsx"],
+          },
+        },
       },
       env: {
         browser: true,
@@ -45,7 +41,6 @@ module.exports = {
         "plugin:prettier/recommended",
         "plugin:testing-library/react",
         "plugin:jest-dom/recommended",
-        "plugin:tailwindcss/recommended",
         "plugin:vitest/legacy-recommended",
       ],
       rules: {
@@ -53,26 +48,25 @@ module.exports = {
           "error",
           {
             zones: [
-              // Other feature restrictions remain the same
               {
                 target: "./src/components",
-                from: "./src/features",  // Change to string, not an array
+                from: "./src/features",
               },
               {
                 target: "./src/hooks",
-                from: "./src/features",  // Change to string, not an array
+                from: "./src/features",
               },
               {
                 target: "./src/lib",
-                from: "./src/features",  // Change to string, not an array
+                from: "./src/features",
               },
               {
                 target: "./src/types",
-                from: "./src/features",  // Change to string, not an array
+                from: "./src/features",
               },
               {
                 target: "./src/utils",
-                from: "./src/features",  // Change to string, not an array
+                from: "./src/features",
               },
             ],
           },
@@ -83,15 +77,7 @@ module.exports = {
         "import/order": [
           "error",
           {
-            groups: [
-              "builtin",
-              "external",
-              "internal",
-              "parent",
-              "sibling",
-              "index",
-              "object",
-            ],
+            groups: ["builtin", "external", "internal", "parent", "sibling", "index", "object"],
             "newlines-between": "always",
             alphabetize: { order: "asc", caseInsensitive: true },
           },
@@ -106,7 +92,7 @@ module.exports = {
         "@typescript-eslint/explicit-module-boundary-types": ["off"],
         "@typescript-eslint/no-empty-function": ["off"],
         "@typescript-eslint/no-explicit-any": ["off"],
-        'prettier/prettier': ['error', { "endOfLine": "auto"}, { usePrettierrc: true }],
+        "prettier/prettier": ["error", { endOfLine: "auto" }, { usePrettierrc: true }],
         "check-file/filename-naming-convention": [
           "error",
           {
