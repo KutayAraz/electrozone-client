@@ -1,72 +1,46 @@
-import { yupResolver } from "@hookform/resolvers/yup";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import * as yup from "yup";
 
-import { useFetch } from "@/hooks/use-fetch";
-import { displayAlert } from "@/stores/slices/alert-slice";
+import { ContactSchema, contactSchema } from "../schemas/contact-schema";
 
-type ContactInputType = {
-  name?: string | null;
-  email?: string | null;
-  message: string;
-  access_key: string;
+type ContactFormProps = {
+  onSendMessage: (data: ContactSchema) => void;
+  isSending: boolean;
 };
 
-const schema = yup.object().shape({
-  name: yup.string().nullable().notRequired(),
-  email: yup.string().email("Invalid email address").nullable().notRequired(),
-  message: yup
-    .string()
-    .min(4, "The message should be at least 4 characters long.")
-    .required("Message area is required."),
-  access_key: yup.string().required(),
-});
-
-export const Contact = () => {
+export const ContactForm = ({ onSendMessage, isSending }: ContactFormProps) => {
   const {
     register,
     handleSubmit,
-    reset,
+    setValue,
+
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: zodResolver(contactSchema),
+    mode: "onTouched",
   });
 
-  const dispatch = useDispatch<any>();
-  const { fetchData, isLoading } = useFetch();
+  const onSubmit = async (data: ContactSchema) => {
+    onSendMessage(data);
+    setValue("message", "");
+  };
 
   const inputClasses =
     "mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-theme-blue focus:border-theme-blue";
   const errorMessageClasses = "text-red-500 text-sm mt-1";
 
-  const sendMessage = async (data: ContactInputType) => {
-    const result = await fetchData("https://api.web3forms.com/submit", "POST", data);
-
-    if (result?.response.ok) {
-      dispatch(
-        displayAlert({
-          type: "success",
-          message: "Your message was sent successfuly. Thank you!",
-          autoHide: true,
-        }),
-      );
-
-      reset({ message: "" });
-    }
-  };
   return (
     <div className="container mx-auto max-w-2xl p-4">
       <h2 className="mb-4 text-2xl font-semibold text-gray-700">Contact Us</h2>
       <p className="mb-4">
         Any feedback or suggestions on the project would be greatly appreciated!
       </p>
-      <form onSubmit={handleSubmit(sendMessage)} className="space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <input
             type="hidden"
             {...register("access_key")}
-            value={`${import.meta.env.VITE_WEB3FORMS_ACCESS_KEY}`} // Replace with your actual Web3Forms access key
+            value={`${import.meta.env.VITE_WEB3FORMS_ACCESS_KEY}`}
           />
           <label htmlFor="name" className="block text-sm">
             Name (Optional)
@@ -113,11 +87,11 @@ export const Contact = () => {
             type="submit"
             aria-label="Send Message"
             className={`${
-              isLoading("default") ? "bg-gray-200" : "bg-theme-blue hover:bg-theme-purple"
+              isSending ? "bg-gray-200" : "bg-theme-blue hover:bg-theme-purple"
             }  mb-2 max-w-[50%] rounded-lg px-10 py-2 font-[500] text-white`}
-            disabled={isLoading("default")}
+            disabled={isSending}
           >
-            {isLoading("default") ? "Sending" : "Send"}
+            {isSending ? "Sending" : "Send"}
           </button>
         </div>
       </form>
