@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import {
@@ -6,7 +7,7 @@ import {
 } from "@/components/ui/notifications/notification-slice";
 import { Spinner } from "@/components/ui/spinner";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
-import { zodResolver } from "@hookform/resolvers/zod";
+
 import { profileSchema } from "../schemas/profile-schema";
 import { UpdateUser, User } from "../types";
 
@@ -31,11 +32,11 @@ export const ProfileForm = ({ userInfo, onUpdateProfile, isUpdating }: ProfileFo
       address: "",
       city: "",
     },
-    mode: "onBlur",
+    mode: "onTouched",
   });
 
   const onSubmit = async (data: UpdateUser) => {
-    const filteredData = Object.fromEntries(Object.entries(data).filter(([_, v]) => v != ""));
+    const filteredData = Object.fromEntries(Object.entries(data).filter(([, v]) => v != ""));
 
     if (Object.keys(filteredData).length === 0) {
       dispatch(

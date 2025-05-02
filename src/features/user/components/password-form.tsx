@@ -1,6 +1,8 @@
-import { Spinner } from "@/components/ui/spinner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
+import { Spinner } from "@/components/ui/spinner";
+
 import { passwordSchema, PasswordSchema } from "../schemas/change-password-schema";
 
 type PasswordFormProps = {
@@ -16,7 +18,7 @@ export const PasswordForm = ({ onChangePassword, isUpdating }: PasswordFormProps
     reset,
   } = useForm<PasswordSchema>({
     resolver: zodResolver<PasswordSchema>(passwordSchema),
-    mode: "onBlur",
+    mode: "onTouched",
   });
 
   const onSubmit = async (data: PasswordSchema) => {

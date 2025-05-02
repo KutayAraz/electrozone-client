@@ -32,7 +32,7 @@ export const LoginForm = ({ onSubmit, isLoading, serverError, onFieldChange }: L
     formState: { errors, isValid },
   } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
-    mode: "onBlur",
+    mode: "onTouched",
   });
 
   return (

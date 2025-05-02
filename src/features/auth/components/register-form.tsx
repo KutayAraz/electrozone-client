@@ -37,7 +37,7 @@ export const RegisterForm = ({
     formState: { errors, isValid },
   } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
-    mode: "onBlur",
+    mode: "onTouched",
   });
 
   return (
