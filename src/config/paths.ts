@@ -102,8 +102,8 @@ export const paths = {
 
   misc: {
     contact: {
-      path: "/contact-us",
-      getHref: () => "/contact-us",
+      path: "/contact",
+      getHref: () => "/contact",
     },
     projectDetails: {
       path: "/project-details",
