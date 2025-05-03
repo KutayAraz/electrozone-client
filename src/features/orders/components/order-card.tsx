@@ -4,20 +4,20 @@ import { useNavigate } from "react-router-dom";
 
 import { formatDateTime } from "@/utils/format-time";
 
-import { Product } from "../types";
+import { OrderItemSummary } from "../api/get-orders";
 
 import { OrderItemCard } from "./order-item-card";
 
 type OrderCardProps = {
   orderId: number;
-  orderTotal: number;
+  orderTotal: string;
   orderQuantity: number;
   orderDate: string;
   user: {
     firstName: string;
     lastName: string;
   };
-  orderItems: Product[];
+  orderItems: OrderItemSummary[];
 };
 
 export const OrderCard = forwardRef(
@@ -53,10 +53,10 @@ export const OrderCard = forwardRef(
 
         <Divider />
         <div className="noScrollbar my-2 flex space-x-2 overflow-x-auto scroll-smooth whitespace-nowrap pl-2">
-          {orderItems.map((product: Product) => (
+          {orderItems.map((product: OrderItemSummary) => (
             <OrderItemCard
-              key={product.productId}
-              id={product.productId}
+              key={`${product.id + orderId + product.productName}`}
+              id={product.id}
               productName={product.productName}
               thumbnail={product.thumbnail}
               subcategory={product.subcategory}

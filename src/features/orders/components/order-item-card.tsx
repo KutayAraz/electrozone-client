@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { createUrlSlug } from "@/utils/create-url-slug";
 
 interface OrderItemCardProps {
-  id: string;
+  id: number;
   productName: string;
   thumbnail: string;
   subcategory: string;
