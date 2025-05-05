@@ -15,7 +15,7 @@ export interface InitiateCheckoutRequest {
   checkoutType: CheckoutType;
 }
 
-const initiateCheckoutApi = baseApi.injectEndpoints({
+export const initiateCheckoutApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     initiateCheckout: builder.mutation<CheckoutResponse, InitiateCheckoutRequest>({
       query: (body) => ({
