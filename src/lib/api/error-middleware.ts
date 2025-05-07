@@ -1,38 +1,57 @@
-import { isRejectedWithValue, Middleware } from "@reduxjs/toolkit";
-
 import {
   displayNotification,
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
+import { isNetworkError, isServerDownError, isStandardApiError } from "@/utils/error-guard";
+import { isRejectedWithValue, ThunkMiddleware } from "@reduxjs/toolkit";
 
-export const errorMiddleware: Middleware =
-  ({ dispatch }: any) =>
+const skipErrorEndpoints = ["getSessionCartCount", "logout"];
+
+export const errorMiddleware: ThunkMiddleware =
+  ({ dispatch }) =>
   (next) =>
-  (action) => {
+  (action: any) => {
     // Check if this is a rejected RTK Query action
     if (isRejectedWithValue(action)) {
-      // Skip if error was already handled by a feature hook
-      if (action.meta?.handled) return next(action);
+      const { payload, meta } = action;
 
-      const error = action.payload;
+      const { endpointName } = meta.arg;
 
-      // Handle different error scenarios
-      if (error.status === 500) {
+      if (endpointName && skipErrorEndpoints.includes(endpointName)) {
+        return next(action);
+      }
+
+      // Handle different error types
+      if (isStandardApiError(payload)) {
+        const { message, details } = payload.data;
+
+        // Show notification with the message and details if present
         dispatch(
           displayNotification({
             type: NotificationType.ERROR,
-            message: "An unexpected server error occurred",
-            autoHide: true,
-            duration: 3000,
+            message,
+            details: details ? details : undefined,
           }),
         );
-      } else if (error.data?.message) {
+      } else if (isNetworkError(payload)) {
         dispatch(
           displayNotification({
             type: NotificationType.ERROR,
-            message: error.data.message,
-            autoHide: true,
-            duration: 3000,
+            message: "Network error. Please check your internet connection.",
+          }),
+        );
+      } else if (isServerDownError(payload)) {
+        dispatch(
+          displayNotification({
+            type: NotificationType.ERROR,
+            message: "Server is currently unavailable. Please try again later.",
+          }),
+        );
+      } else {
+        dispatch(
+          displayNotification({
+            type: NotificationType.ERROR,
+            message: "An unexpected error occurred.",
           }),
         );
       }
