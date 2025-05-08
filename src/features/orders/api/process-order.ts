@@ -1,7 +1,7 @@
 import { baseApi } from "@/lib/api/base-api";
 
 export interface ProcessOrderRequest {
-  checkoutSnapshot: string;
+  checkoutSnapshotId: string;
   idempotencyKey: string;
 }
 
