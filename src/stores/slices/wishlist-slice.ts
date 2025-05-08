@@ -22,7 +22,9 @@ export const wishlistSlice = createSlice({
     setWishlist(state, action: PayloadAction<number[]>) {
       state.items = action.payload;
     },
+    clearWishlist: () => initialState,
   },
 });
 
-export const { addToWishlist, removeFromWishlist, setWishlist } = wishlistSlice.actions;
+export const { addToWishlist, removeFromWishlist, setWishlist, clearWishlist } =
+  wishlistSlice.actions;
