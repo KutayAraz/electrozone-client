@@ -30,6 +30,7 @@
     "react-transition-group": "^4.4.5",
     "redux-persist": "^6.0.0",
     "swiper": "^11.1.4",
+    "uuid": "^11.1.0",
     "vite-plugin-svgr": "^4.3.0",
     "zod": "^3.24.2"
   },
