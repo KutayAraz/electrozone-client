@@ -1,4 +1,4 @@
-import { Close, ErrorOutline, Info } from "@mui/icons-material";
+import { Close, ErrorOutline, Info, RemoveCircleOutline } from "@mui/icons-material";
 import { useState } from "react";
 
 import { ErrorType } from "@/types/api-error";
@@ -15,16 +15,22 @@ interface CartChangesAlertProps {
     newQuantity: number;
     reason: ErrorType;
   }[];
+  removedCartItems?: string[];
 }
 
-export const CartChangesAlert = ({ priceChanges, quantityChanges }: CartChangesAlertProps) => {
+export const CartChangesAlert = ({
+  priceChanges,
+  quantityChanges,
+  removedCartItems,
+}: CartChangesAlertProps) => {
   const [showPriceAlert, setShowPriceAlert] = useState(Boolean(priceChanges?.length));
   const [showQuantityAlert, setShowQuantityAlert] = useState(Boolean(quantityChanges?.length));
+  const [showRemovedAlert, setShowRemovedAlert] = useState(Boolean(removedCartItems?.length));
 
   // If there are no changes or both alerts are closed, don't render anything
   if (
-    (!priceChanges?.length && !quantityChanges?.length) ||
-    (!showPriceAlert && !showQuantityAlert)
+    (!priceChanges?.length && !quantityChanges?.length && !removedCartItems?.length) ||
+    (!showPriceAlert && !showQuantityAlert && !showRemovedAlert)
   ) {
     return null;
   }
@@ -94,6 +100,43 @@ export const CartChangesAlert = ({ priceChanges, quantityChanges }: CartChangesA
               type="button"
               className="ml-auto flex-shrink-0 rounded-md p-1.5 text-amber-500 hover:bg-amber-100"
               onClick={() => setShowQuantityAlert(false)}
+            >
+              <span className="sr-only">Close</span>
+              <Close className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Removed Items Alert */}
+      {removedCartItems && removedCartItems?.length > 0 && showRemovedAlert && (
+        <div className="rounded-lg border-l-4 border-red-500 bg-red-50 p-4 shadow-sm">
+          <div className="flex items-start justify-between">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <RemoveCircleOutline className="h-5 w-5 text-red-600" />
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">Removed Items</h3>
+                <div className="mt-2 text-sm text-red-700">
+                  <p>The following items have been removed from your cart:</p>
+                  <ul className="mt-1 list-inside space-y-1">
+                    {removedCartItems.map((itemName, index) => (
+                      <li key={index}>
+                        <span className="font-medium">{itemName}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="mt-1 text-xs text-red-600">
+                    These items may be out of stock or no longer available.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="ml-auto flex-shrink-0 rounded-md p-1.5 text-red-500 hover:bg-red-100"
+              onClick={() => setShowRemovedAlert(false)}
             >
               <span className="sr-only">Close</span>
               <Close className="h-4 w-4" />
