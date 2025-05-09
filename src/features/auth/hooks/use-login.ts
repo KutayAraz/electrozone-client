@@ -1,10 +1,7 @@
-import {
-  displayNotification,
-  NotificationType,
-} from "@/components/ui/notifications/notification-slice";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { setCredentials } from "@/stores/slices/user-slice";
-import { HttpStatus, isApiError } from "@/types/api";
+import { HttpStatus } from "@/types/api-error";
+import { isStandardApiError } from "@/utils/error-guard";
 import { useLoginMutation } from "../api/login";
 import { LoginSchema } from "../schemas/login-schema";
 import { useFormError } from "./use-form-error";
@@ -12,7 +9,7 @@ import { useFormError } from "./use-form-error";
 export const useLogin = () => {
   const dispatch = useAppDispatch();
 
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const { serverError, setServerError, clearServerError } = useFormError();
 
   const submitLogin = async (data: LoginSchema) => {
@@ -28,7 +25,7 @@ export const useLogin = () => {
         }),
       );
     } catch (error: any) {
-      if (isApiError(error)) {
+      if (isStandardApiError(error)) {
         // Handle specific error cases based on backend error types
         switch (error.status) {
           case HttpStatus.NOT_FOUND:
@@ -46,16 +43,9 @@ export const useLogin = () => {
           default:
             return;
         }
-      } else {
-        dispatch(
-          displayNotification({
-            type: NotificationType.ERROR,
-            message: error.message,
-          }),
-        );
       }
     }
   };
 
-  return { submitLogin, serverError, clearServerError };
+  return { submitLogin, isLoading, serverError, clearServerError };
 };
