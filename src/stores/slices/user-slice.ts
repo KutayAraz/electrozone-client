@@ -1,21 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import type { RootState } from "../store";
+import { CheckoutType } from "@/types/checkout";
 
-import { CheckoutIntent } from "./models";
+import type { RootState } from "../store";
 
 interface User {
   firstName: string | null;
   city: string | null;
   isAuthenticated: boolean;
-  userIntent: CheckoutIntent;
+  checkoutIntent: CheckoutType;
 }
 
 const initialState: User = {
   firstName: null,
   city: null,
   isAuthenticated: false,
-  userIntent: CheckoutIntent.NORMAL,
+  checkoutIntent: CheckoutType.NORMAL,
 };
 
 interface Credentials {
@@ -39,7 +39,7 @@ export const userSlice = createSlice({
       state.city = action.payload.city;
     },
     setUserIntent(state, action) {
-      state.userIntent = action.payload;
+      state.checkoutIntent = action.payload;
     },
     setGuestLocation(state, action) {
       state.city = action.payload.city;
@@ -53,3 +53,4 @@ export const { setCredentials, clearCredentials, updateUserInfo, setUserIntent }
 export const selectUser = (state: RootState) => state.user;
 export const selectIsAuthenticated = (state: RootState) => state.user.isAuthenticated;
 export const selectUserLocation = (state: RootState) => state.user.city;
+export const selectCheckoutIntent = (state: RootState) => state.user.checkoutIntent;
