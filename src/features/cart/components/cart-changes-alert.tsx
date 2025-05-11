@@ -1,5 +1,5 @@
 import { Close, ErrorOutline, Info, RemoveCircleOutline } from "@mui/icons-material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ErrorType } from "@/types/api-error";
 
@@ -26,6 +26,12 @@ export const CartChangesAlert = ({
   const [showPriceAlert, setShowPriceAlert] = useState(Boolean(priceChanges?.length));
   const [showQuantityAlert, setShowQuantityAlert] = useState(Boolean(quantityChanges?.length));
   const [showRemovedAlert, setShowRemovedAlert] = useState(Boolean(removedCartItems?.length));
+
+  useEffect(() => {
+    setShowPriceAlert(Boolean(priceChanges?.length));
+    setShowQuantityAlert(Boolean(quantityChanges?.length));
+    setShowRemovedAlert(Boolean(removedCartItems?.length));
+  }, [priceChanges, quantityChanges, removedCartItems]);
 
   // If there are no changes or both alerts are closed, don't render anything
   if (

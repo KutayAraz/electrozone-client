@@ -52,9 +52,7 @@ export const CheckoutItemCard = ({
         <div className="flex items-center justify-between pt-2">
           <div className="flex items-center text-sm text-gray-600">
             <span>Qty: {quantity}</span>
-            {quantity > 1 && (
-              <span className="ml-2 text-xs text-gray-500">(${price.toFixed(2)} each)</span>
-            )}
+            {quantity > 1 && <span className="ml-2 text-xs text-gray-500">({price} each)</span>}
           </div>
         </div>
       </div>
