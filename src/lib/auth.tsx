@@ -16,7 +16,7 @@ export const ProtectedRoute = () => {
         source: location.pathname.includes("/checkout") ? "checkout" : "protected",
       }),
     );
-    return <Navigate to="/sign-in" replace />;
+    return <Navigate to="/auth/login" replace />;
   }
 
   return <Outlet />;
