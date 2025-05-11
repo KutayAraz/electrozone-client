@@ -1,56 +1,60 @@
 import { useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { redirect, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 
-import {
-  displayNotification,
-  NotificationType,
-} from "@/components/ui/notifications/notification-slice";
-import { useMergeCartsMutation } from "@/features/cart/api/user-cart/merge-carts";
 import { CartChangesAlert } from "@/features/cart/components/cart-changes-alert";
+import { useMergeCarts } from "@/features/cart/hooks/use-merge-carts";
 import { initiateCheckoutApi } from "@/features/checkout/api/initiate-checkout";
 import { CartAdditionModal } from "@/features/checkout/components/cart-addition-modal";
 import { CheckoutItemCard } from "@/features/checkout/components/checkout-product-card";
 import { CheckoutSummary } from "@/features/checkout/components/checkout-summary";
 import { UserCard } from "@/features/checkout/components/user-card";
-import { useProcessOrderMutation } from "@/features/orders/api/process-order";
+import { useProcessOrder } from "@/features/orders/hooks/use-process-order";
 import { getUserProfileApi } from "@/features/user/api/get-user-profile";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import { CheckoutLayout } from "@/layouts/checkout-layout";
 import { selectCheckoutIntent, setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
-import { ErrorType } from "@/types/api-error";
 import { CheckoutType } from "@/types/checkout";
 
 export const checkoutLoader = async () => {
   const state = store.getState();
   const userIntent: CheckoutType = state.user.checkoutIntent;
 
-  const userInfo = await store
-    .dispatch(getUserProfileApi.endpoints.getUserProfile.initiate())
-    .unwrap();
-  const checkoutData = await store
-    .dispatch(initiateCheckoutApi.endpoints.initiateCheckout.initiate({ checkoutType: userIntent }))
-    .unwrap();
-
-  return {
-    user: userInfo,
-    checkoutData,
-  };
+  try {
+    const userInfo = await store
+      .dispatch(getUserProfileApi.endpoints.getUserProfile.initiate())
+      .unwrap();
+    const checkoutData = await store
+      .dispatch(
+        initiateCheckoutApi.endpoints.initiateCheckout.initiate({ checkoutType: userIntent }),
+      )
+      .unwrap();
+    return {
+      user: userInfo,
+      checkoutData,
+    };
+  } catch (error: any) {
+    if (error.data && error.data.type === "EMPTY_CART") {
+      return redirect("/cart");
+    }
+  }
 };
 
 export const CheckoutPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const revalidator = useRevalidator();
 
   const checkoutIntent = useAppSelector(selectCheckoutIntent);
+  const [showModal, setShowModal] = useState(false);
+
   const { user, checkoutData } = useLoaderData();
+
   const { checkoutSnapshotId, cartData } = checkoutData;
 
-  const [processOrder, { isLoading: isPlacingOrder }] = useProcessOrderMutation();
-  const [mergeCarts, { isLoading: isMergingCarts }] = useMergeCartsMutation();
-
-  const [showModal, setShowModal] = useState(false);
+  const { submitMergeCarts, isLoading: isMergingCarts } = useMergeCarts();
+  const { placeOrder, isLoading: isPlacingOrder } = useProcessOrder();
 
   const navigateToCart = () => {
     setShowModal(false);
@@ -58,54 +62,20 @@ export const CheckoutPage = () => {
   };
 
   const addToCartAndNavigate = async () => {
-    await mergeCarts();
-    dispatch(setUserIntent(CheckoutType.NORMAL));
-
-    dispatch(
-      displayNotification({
-        type: NotificationType.SUCCESS,
-        message: "Your cart items before logging in, are added to your user cart.",
-      }),
-    );
-
+    await submitMergeCarts();
     navigateToCart();
   };
 
-  const placeOrder = async () => {
-    try {
-      const result = await processOrder(checkoutSnapshotId).unwrap();
+  const handleSubmitOrder = async () => {
+    const result = await placeOrder(checkoutSnapshotId, async () => {
+      // Simply revalidate the route data using the loader
+      revalidator.revalidate();
+      return null; // No need to return cart data as revalidation will handle it
+    });
 
+    if (typeof result === "number" || typeof result === "string") {
       dispatch(setUserIntent(CheckoutType.NORMAL));
-
-      dispatch(
-        displayNotification({
-          type: NotificationType.SUCCESS,
-          message: `Your order has been placed with confirmation number ${result.orderId}.`,
-        }),
-      );
-    } catch (error: any) {
-      if (error.status === 400 || error.status === 409) {
-        // Check for specific validation error types
-        const errorType = error.data?.errorType;
-
-        if (
-          errorType === ErrorType.STOCK_LIMIT_EXCEEDED ||
-          errorType === ErrorType.QUANTITY_LIMIT_EXCEEDED ||
-          errorType === ErrorType.PRICE_CHANGED
-        ) {
-          // Refresh checkout to get updated cart information
-          // refetchCartFunction();
-        }
-      } else {
-        // Generic error handling for other errors
-        dispatch(
-          displayNotification({
-            type: NotificationType.ERROR,
-            message: "An error occurred while placing your order. Please try again.",
-            autoHide: false,
-          }),
-        );
-      }
+      navigate(`/order-confirmation/${result}`);
     }
   };
 
@@ -138,6 +108,7 @@ export const CheckoutPage = () => {
             <CartChangesAlert
               priceChanges={cartData.priceChanges}
               quantityChanges={cartData.quantityChanges}
+              removedCartItems={cartData.removedCartItems}
             />
             <UserCard
               firstName={user.firstName}
@@ -165,7 +136,7 @@ export const CheckoutPage = () => {
           <CheckoutSummary
             totalQuantity={cartData.totalQuantity}
             cartTotal={cartData.cartTotal}
-            onOrderPlacement={placeOrder}
+            onOrderPlacement={handleSubmitOrder}
             isLoading={isPlacingOrder}
           />
         </div>
