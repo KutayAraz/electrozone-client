@@ -3,7 +3,7 @@ import { baseApi } from "@/lib/api/base-api";
 import { CartOperationResponse } from "../../types/response";
 
 interface UpdateQuantityPayload {
-  productId: string;
+  productId: number;
   quantity: number;
 }
 
