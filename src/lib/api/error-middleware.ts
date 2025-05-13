@@ -1,11 +1,12 @@
+import { isRejectedWithValue, ThunkMiddleware } from "@reduxjs/toolkit";
+
 import {
   displayNotification,
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
 import { isNetworkError, isServerDownError, isStandardApiError } from "@/utils/error-guard";
-import { isRejectedWithValue, ThunkMiddleware } from "@reduxjs/toolkit";
 
-const skipErrorEndpoints = ["getSessionCartCount", "logout"];
+const skipErrorEndpoints = ["getSessionCartCount", "logout", "processOrder"];
 
 export const errorMiddleware: ThunkMiddleware =
   ({ dispatch }) =>
