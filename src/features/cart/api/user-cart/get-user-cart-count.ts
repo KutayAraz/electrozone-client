@@ -2,7 +2,7 @@ import { baseApi } from "@/lib/api/base-api";
 
 export const getUserCartCountApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getUserCartCount: builder.query<number, void>({
+    getUserCartCount: builder.query<{ count: number }, void>({
       query: () => ({
         url: "cart/user/count",
         method: "GET",

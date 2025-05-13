@@ -2,7 +2,7 @@ import { baseApi } from "@/lib/api/base-api";
 
 const getSessionCartCountApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    getSessionCartCount: builder.query<number, void>({
+    getSessionCartCount: builder.query<{ count: number }, void>({
       query: () => ({
         url: "cart/session/count",
         method: "GET",
