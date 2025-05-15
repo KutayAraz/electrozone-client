@@ -2,10 +2,10 @@ import {
   displayNotification,
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
-import { selectIsAuthenticated } from "@/stores/slices/user-slice";
-
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
+import { selectIsAuthenticated } from "@/stores/slices/user-slice";
+
 import { useRemoveSessionCartItemMutation } from "../api/session-cart/remove-session-cart-item";
 import { useRemoveUserCartItemMutation } from "../api/user-cart/remove-user-cart-item";
 
@@ -19,7 +19,7 @@ export const useRemoveFromCart = () => {
 
   const isLoading = isUserCartLoading || isSessionCartLoading;
 
-  const removeFromCart = async (productId: string) => {
+  const removeFromCart = async (productId: number) => {
     if (isAuthenticated) {
       await removeUserCartItem(productId).unwrap();
     } else {

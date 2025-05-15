@@ -4,7 +4,7 @@ import { CartOperationResponse } from "../../types/response";
 
 const removeUserCartItemApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    removeUserCartItem: builder.mutation<CartOperationResponse, string>({
+    removeUserCartItem: builder.mutation<CartOperationResponse, number>({
       query: (productId) => ({
         url: `/cart/user/item/${productId}`,
         method: "DELETE",
