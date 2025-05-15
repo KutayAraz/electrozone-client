@@ -2,7 +2,7 @@ import { baseApi } from "@/lib/api/base-api";
 
 import { User } from "../types";
 
-const getUserProfileApi = baseApi.injectEndpoints({
+export const getUserProfileApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getUserProfile: builder.query<User, void>({
       query: () => ({
