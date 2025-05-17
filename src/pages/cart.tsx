@@ -44,7 +44,7 @@ export const CartPage = () => {
   const proceedToCheckout = () => {
     if (!isAuthenticated) {
       dispatch(setUserIntent(CheckoutIntent.SESSION));
-      navigate("/sign-in", { state: { from: { pathname: "/checkout" } } });
+      navigate("auth/login", { state: { from: { pathname: "/checkout" } } });
     } else {
       navigate("/checkout", { replace: true });
     }
