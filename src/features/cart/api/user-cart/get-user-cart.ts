@@ -11,7 +11,7 @@ const getUserCartApi = baseApi.injectEndpoints({
       }),
       providesTags: [{ type: "UserCart", id: "LIST" }],
       // Keep unused data for a short time only since cart info is dynamic
-      keepUnusedDataFor: 60, // 1 minute
+      keepUnusedDataFor: 60,
     }),
   }),
   overrideExisting: false,
