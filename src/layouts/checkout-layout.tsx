@@ -5,10 +5,17 @@ import BrandIcon from "@assets/brand-images/brand-logo.svg?react";
 
 type CheckoutLayoutProps = {
   children: React.ReactNode;
-  onBackClick: () => void;
+  hideBackButton?: boolean;
+  isSuccessPage?: boolean;
+  onBackClick?: () => void;
 };
 
-export const CheckoutLayout = ({ children, onBackClick }: CheckoutLayoutProps) => {
+export const CheckoutLayout = ({
+  hideBackButton = false,
+  isSuccessPage = false,
+  children,
+  onBackClick,
+}: CheckoutLayoutProps) => {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       {/* Header */}
@@ -30,14 +37,20 @@ export const CheckoutLayout = ({ children, onBackClick }: CheckoutLayoutProps) =
       {/* Main Content */}
       <main className="flex-grow">
         <div className="mx-auto max-w-screen-xl px-4 py-6">
-          <div className="mb-6 flex items-center justify-between">
-            <button
-              onClick={onBackClick}
-              className="flex items-center rounded-md px-3 py-2 text-gray-700 transition-colors hover:bg-gray-200"
-            >
-              <ArrowBack className="mr-1 h-4 w-4" />
-              <span>Back to Cart</span>
-            </button>
+          <div
+            className={`mb-6 flex items-center ${
+              hideBackButton ? "justify-end" : "justify-between"
+            }`}
+          >
+            {!hideBackButton && (
+              <button
+                onClick={onBackClick}
+                className="flex items-center rounded-md px-3 py-2 text-gray-700 transition-colors hover:bg-gray-200"
+              >
+                <ArrowBack className="mr-1 h-4 w-4" />
+                <span>Back to Cart</span>
+              </button>
+            )}
 
             <div className="hidden items-center md:flex">
               <ShoppingCart className="mr-2 text-blue-600" />
@@ -67,13 +80,23 @@ export const CheckoutLayout = ({ children, onBackClick }: CheckoutLayoutProps) =
                   <span className="mt-1 text-xs text-blue-600">Checkout</span>
                 </div>
 
-                <div className="h-[2px] flex-1 bg-gray-300"></div>
+                <div
+                  className={`h-[2px] flex-1 ${isSuccessPage ? "bg-blue-600" : "bg-gray-300"}`}
+                ></div>
 
                 <div className="flex flex-col items-center">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-300 text-gray-600">
+                  <div
+                    className={`flex h-8 w-8 items-center justify-center rounded-full ${
+                      isSuccessPage ? "bg-blue-600 text-white" : "bg-gray-300 text-gray-600"
+                    }`}
+                  >
                     3
                   </div>
-                  <span className="mt-1 text-xs text-gray-600">Confirmation</span>
+                  <span
+                    className={`mt-1 text-xs ${isSuccessPage ? "text-blue-600" : "text-gray-600"}`}
+                  >
+                    Confirmation
+                  </span>
                 </div>
               </div>
             </div>
