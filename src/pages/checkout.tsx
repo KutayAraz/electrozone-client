@@ -75,7 +75,7 @@ export const CheckoutPage = () => {
 
     if (typeof result === "number" || typeof result === "string") {
       dispatch(setUserIntent(CheckoutType.NORMAL));
-      navigate(`/order-confirmation/${result}`);
+      navigate(`/order-confirmation/${result}`, { state: { result } });
     }
   };
 
