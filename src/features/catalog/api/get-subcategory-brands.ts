@@ -1,6 +1,6 @@
 import { baseApi } from "@/lib/api/base-api";
 
-const subcategoryBrandsApi = baseApi.injectEndpoints({
+export const subcategoryBrandsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSubcategoryBrands: builder.query<string[], string>({
       query: (subcategoryName) => ({

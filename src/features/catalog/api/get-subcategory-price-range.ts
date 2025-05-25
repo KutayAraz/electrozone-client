@@ -1,6 +1,6 @@
 import { baseApi } from "@/lib/api/base-api";
 
-const subcategoryPriceRangeApi = baseApi.injectEndpoints({
+export const subcategoryPriceRangeApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSubcategoryPriceRange: builder.query<
       { min: number; max: number },
