@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { CheckoutLayout } from "@/layouts/checkout-layout";
 
-export const OrderSuccessPage = () => {
+export const OrderConfirmationPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const orderId = location.state?.orderId;
