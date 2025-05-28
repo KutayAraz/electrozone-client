@@ -20,5 +20,6 @@ export const baseApi = createApi({
     "Order",
     "Subcategory",
     "Category",
+    "ProductList",
   ],
 });
