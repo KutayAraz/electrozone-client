@@ -1,0 +1,21 @@
+export type ProductLayoutProps = {
+  productId: number;
+  productName: string;
+  brand: string;
+  thumbnail: string;
+  images: Array<{ id: number; productImage: string }>;
+  setSelectedImage: (image: string) => void;
+  selectedImage?: string;
+  price: string;
+  quantity: number;
+  decrementQuantity: () => void;
+  handleQuantityChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  incrementQuantity: () => void;
+  stock: number;
+  handleAddToCart: () => void;
+  handleBuyNow: () => void;
+  addingToCart: boolean;
+  averageRating: number;
+  isInitiallyWishlisted: boolean;
+  onRatingClick: () => void;
+};
