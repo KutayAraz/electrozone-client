@@ -3,14 +3,22 @@ import {
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
+
 import { useCreateReviewMutation } from "../api/create-review";
 
 export const useCreateReview = () => {
   const dispatch = useAppDispatch();
-  const [createReview] = useCreateReviewMutation();
 
-  const submitReview = async (productId: number, rating: number, comment: string) => {
-    const response = await createReview({ productId, review: { rating, comment } }).unwrap();
+  const [createReview, { isLoading }] = useCreateReviewMutation();
+
+  const submitReview = async (productId: number, rating: number, comment?: string) => {
+    // Only include the comment if it has content (not empty string)
+    const reviewData = {
+      rating,
+      ...(comment?.trim() ? { comment: comment.trim() } : {}),
+    };
+
+    const response = await createReview({ productId, review: reviewData }).unwrap();
 
     dispatch(
       displayNotification({
@@ -21,5 +29,5 @@ export const useCreateReview = () => {
     );
   };
 
-  return submitReview;
+  return { submitReview, isLoading };
 };
