@@ -1,9 +1,9 @@
 import { Rating } from "@mui/material";
 
 export interface ReviewProps {
-  id: string;
+  id: number;
   reviewDate: string;
-  rating: number;
+  rating: string;
   comment: string;
   reviewerInitials: { firstName: string; lastName: string };
 }
@@ -15,7 +15,7 @@ export const Review = ({ id, rating, comment, reviewDate, reviewerInitials }: Re
     <div className="flex flex-col rounded-lg border border-gray-200 p-4 shadow-sm" key={id}>
       <Rating
         name="half-rating-read"
-        value={rating}
+        value={Number(rating)}
         precision={0.1}
         readOnly
         className="mb-1"

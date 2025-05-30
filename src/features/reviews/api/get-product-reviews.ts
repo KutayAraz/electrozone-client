@@ -1,23 +1,28 @@
 import { baseApi } from "@/lib/api/base-api";
 
-interface Review {
+export interface ReviewType {
   id: number;
-  reviewDate: Date;
+
+  reviewDate: string;
+
   rating: string;
+
   comment: string;
+
   user: {
     firstName: string;
+
     lastName: string;
   };
 }
 
-interface RatingDistribution {
+export interface RatingDistribution {
   review_rating: number;
   count: string;
 }
 
 interface ProductReviewsResponse {
-  reviews: Review[];
+  reviews: ReviewType[];
   ratingsDistribution: RatingDistribution[];
   totalCount: number;
   skip: number;

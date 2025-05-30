@@ -2,7 +2,7 @@ import { baseApi } from "@/lib/api/base-api";
 
 interface CreateReviewDto {
   rating: number;
-  comment: string;
+  comment?: string;
 }
 
 const createReviewApi = baseApi.injectEndpoints({
