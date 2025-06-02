@@ -5,9 +5,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
+import { WishlistHeart } from "@/components/ui/wishlist-heart";
+import { useAppSelector } from "@/hooks/use-app-selector";
+import type { RootState } from "@/stores/store";
+
 import { ProductLayoutProps } from "../types";
 
 export const ProductMobileLayout = ({
+  productId,
   productName,
   brand,
   thumbnail,
@@ -24,7 +29,17 @@ export const ProductMobileLayout = ({
   addingToCart,
   averageRating,
   onRatingClick,
+  onWishlistToggle,
 }: ProductLayoutProps) => {
+  const wishlist = useAppSelector((state: RootState) => state.wishlist);
+  const isWishlisted = wishlist.items.includes(productId);
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onWishlistToggle(productId);
+  };
+
   return (
     <>
       <h2 className="text-center">{productName}</h2>
@@ -39,21 +54,31 @@ export const ProductMobileLayout = ({
         modules={[Pagination]}
         className="h-[45vh]"
       >
-        <SwiperSlide key={thumbnail}>
+        <div className="absolute right-2 top-2 z-20">
+          <WishlistHeart
+            onClick={handleWishlistToggle}
+            isWishlisted={isWishlisted}
+            className="scale-125 bg-white/80 backdrop-blur-sm rounded-full p-1"
+          />
+        </div>
+        <SwiperSlide key={thumbnail} className="flex items-center justify-center mx-auto">
           <img
             src={thumbnail}
             alt={`thumbnail for ${productName}`}
-            className="mx-auto h-[40vh] w-auto object-contain"
+            className="h-[40vh] w-auto object-contain"
           />
         </SwiperSlide>
 
         {images?.map((image: any) => (
-          <SwiperSlide key={image.id}>
-            <button onClick={() => setSelectedImage(image.productImage)}>
+          <SwiperSlide key={image.id} className="flex items-center justify-center mx-auto">
+            <button
+              onClick={() => setSelectedImage(image.productImage)}
+              className="flex items-center justify-center h-full mx-auto"
+            >
               <img
                 src={image.productImage}
                 alt={productName}
-                className="mx-auto h-[40vh] w-auto object-contain"
+                className="h-[40vh] w-auto object-contain"
               />
             </button>
           </SwiperSlide>
@@ -80,7 +105,7 @@ export const ProductMobileLayout = ({
         </div>
         {stock > 0 ? (
           <button
-            onClick={handleAddToCart}
+            onClick={() => handleAddToCart(quantity)}
             disabled={addingToCart}
             className={`${
               addingToCart ? "bg-gray-400" : "bg-theme-blue"
@@ -109,9 +134,6 @@ export const ProductMobileLayout = ({
         >
           Buy now
         </button>
-        <div className="mb-0 flex flex-col items-center justify-center">
-          {/* <WishlistHeart /> */}
-        </div>
       </div>
     </>
   );

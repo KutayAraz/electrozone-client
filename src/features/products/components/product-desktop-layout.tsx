@@ -1,6 +1,9 @@
 import { Modal, Rating } from "@mui/material";
 import { useState } from "react";
 
+import { WishlistHeart } from "@/components/ui/wishlist-heart";
+import { useAppSelector } from "@/hooks/use-app-selector";
+import { RootState } from "@/stores/store";
 import NavigationButton from "@assets/svgs/arrow-black.svg?react";
 import CloseButton from "@assets/svgs/modal-close.svg?react";
 import NavigationArrow from "@assets/svgs/previous-arrow.svg?react";
@@ -8,6 +11,7 @@ import NavigationArrow from "@assets/svgs/previous-arrow.svg?react";
 import { ProductLayoutProps } from "../types";
 
 export const ProductDesktopLayout = ({
+  productId,
   productName,
   brand,
   thumbnail,
@@ -25,7 +29,11 @@ export const ProductDesktopLayout = ({
   handleBuyNow,
   averageRating,
   onRatingClick,
+  onWishlistToggle,
 }: ProductLayoutProps) => {
+  const wishlist = useAppSelector((state: RootState) => state.wishlist);
+  const isWishlisted = wishlist.items.includes(productId);
+
   const allImages = [{ productImage: thumbnail }, ...images];
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [startIndex, setStartIndex] = useState<number>(0);
@@ -57,6 +65,13 @@ export const ProductDesktopLayout = ({
       setStartIndex(startIndex + 1);
     }
   };
+
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onWishlistToggle(productId);
+  };
+
   return (
     <div className="my-2 flex h-[700px] w-full">
       {/* First Child Div - Image Thumbnails */}
@@ -102,8 +117,15 @@ export const ProductDesktopLayout = ({
         </button>
         <button
           onClick={handleModalOpen}
-          className="flex h-[640px] max-w-[640px] grow items-center justify-center rounded-md border-1 border-gray-300 hover:cursor-pointer"
+          className="flex relative h-[640px] max-w-[640px] grow items-center justify-center rounded-md border-1 border-gray-300 hover:cursor-pointer"
         >
+          <div className="absolute top-2 right-2">
+            <WishlistHeart
+              onClick={handleWishlistToggle}
+              isWishlisted={isWishlisted}
+              className="scale-125"
+            />
+          </div>
           <img
             src={selectedImage}
             alt={productName}
@@ -169,7 +191,7 @@ export const ProductDesktopLayout = ({
             onChange={handleQuantityChange}
             min={1}
             max={25}
-            className="mx-2 w-16 rounded border text-center"
+            className="mx-2 py-1 w-16 rounded border text-center"
           />
           <button onClick={incrementQuantity} className="rounded border px-2 py-1">
             +
@@ -178,7 +200,7 @@ export const ProductDesktopLayout = ({
         {stock > 0 ? (
           <div className="mx-auto flex w-4/5 flex-col">
             <button
-              onClick={handleAddToCart}
+              onClick={() => handleAddToCart(quantity)}
               disabled={addingToCart}
               className={`${
                 addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-900"
@@ -198,7 +220,6 @@ export const ProductDesktopLayout = ({
             This product is currently out of stock
           </h2>
         )}
-        <div className="flex flex-col items-center justify-center">{/* <WishlistHeart /> */}</div>
       </div>
     </div>
   );

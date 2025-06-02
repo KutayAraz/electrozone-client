@@ -1,7 +1,7 @@
 import { Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
 
-import { ProductDescriptionTab } from "./product-destription-tab";
+import { ProductDescriptionTab } from "./product-description-tab";
 
 interface TabPanelProps {
   children?: React.ReactNode;
