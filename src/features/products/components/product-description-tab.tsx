@@ -3,7 +3,6 @@ interface ProductDescriptionTabProps {
 }
 
 export const ProductDescriptionTab = ({ productDescription }: ProductDescriptionTabProps) => {
-  console.log("product desc", productDescription);
   return (
     <ul>
       {productDescription.map((bulletPoint: string, index: number) => (
