@@ -36,8 +36,8 @@ const ProductsShowcase = ({ products }: { products: Product[] }) => {
       {products.map((product: any) => (
         <SwiperSlide key={product.productId}>
           <CarouselCard
-            key={product.productId}
-            productId={product.productId}
+            key={product.id}
+            productId={product.id}
             productName={product.productName}
             brand={product.brand}
             thumbnail={product.thumbnail}
