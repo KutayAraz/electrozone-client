@@ -12,10 +12,10 @@ export type ProductLayoutProps = {
   handleQuantityChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   incrementQuantity: () => void;
   stock: number;
-  handleAddToCart: () => void;
+  handleAddToCart: (quantity: number) => void;
   handleBuyNow: () => void;
   addingToCart: boolean;
   averageRating: number;
-  isInitiallyWishlisted: boolean;
   onRatingClick: () => void;
+  onWishlistToggle: (id: number) => void;
 };
