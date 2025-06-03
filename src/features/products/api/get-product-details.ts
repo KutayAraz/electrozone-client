@@ -19,7 +19,7 @@ export interface ProductDetails {
   category: string;
 }
 
-const productDetailsApi = baseApi.injectEndpoints({
+export const getProductDetailsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getProductDetails: builder.query<ProductDetails, number>({
       query: (productId) => ({
@@ -36,4 +36,4 @@ const productDetailsApi = baseApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetProductDetailsQuery } = productDetailsApi;
+export const { useGetProductDetailsQuery } = getProductDetailsApi;
