@@ -63,16 +63,16 @@ export const paths = {
     category: {
       path: "/category/:category",
       getHref: (params: Pick<CategoryParams, "category">) => `/category/${params.category}`,
-    },
-    subcategory: {
-      path: ":subcategory",
-      getHref: (params: Pick<CategoryParams, "category" | "subcategory">) =>
-        `/category/${params.category}/${params.subcategory}`,
-    },
-    product: {
-      path: ":productSlug",
-      getHref: (params: CategoryParams) =>
-        `/category/${params.category}/${params.subcategory}/${params.productSlug}`,
+      subcategory: {
+        path: ":subcategory",
+        getHref: (params: Pick<CategoryParams, "category" | "subcategory">) =>
+          `/category/${params.category}/${params.subcategory}`,
+        product: {
+          path: ":productSlug",
+          getHref: (params: CategoryParams) =>
+            `/category/${params.category}/${params.subcategory}/${params.productSlug}`,
+        },
+      },
     },
     search: {
       path: "/search",

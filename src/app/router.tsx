@@ -33,42 +33,72 @@ export const createAppRouter = () =>
             return { Component: RegisterPage };
           },
         },
+        {
+          path: paths.cart.path,
+          lazy: async () => {
+            const { CartPage } = await import("@/pages/cart");
+            return { Component: CartPage };
+          },
+        },
 
         // Products Section
         {
-          path: paths.products.category.path,
+          path: paths.products.trending.path,
           lazy: async () => {
-            const { CategoryPage, categoryLoader } = await import("@/pages/category");
-            return { Component: CategoryPage, loader: categoryLoader };
+            const { TrendingProductsPage, trendingProductsLoader } = await import(
+              "@/pages/trending"
+            );
+            return { Component: TrendingProductsPage, loader: trendingProductsLoader };
           },
-          // children: [
-          //   {
-          //     path: paths.products.subcategory.path,
-          //     lazy: async () => {
-          //       const { SubcategoryPage } = await import("@/pages/subcategory");
-          //       return { Component: SubcategoryPage };
-          //     },
-          //     children: [
-          //       {
-          //         path: paths.products.product.path,
-          //         lazy: async () => {
-          //           const { ProductPage } = await import("@/pages/product");
-          //           return { Component: ProductPage };
-          //         },
-          //       },
-          //     ],
-          //   },
-          // ],
         },
-
-        // Cart (Public)
-        // {
-        //   path: paths.cart.path,
-        //   lazy: async () => {
-        //     const { UserCart } = await import("@/pages/user-cart");
-        //     return { Component: UserCart };
-        //   },
-        // },
+        {
+          path: paths.products.search.path,
+          lazy: async () => {
+            const { SearchPage, searchPageLoader } = await import("@/pages/search");
+            return { Component: SearchPage, loader: searchPageLoader };
+          },
+        },
+        {
+          path: paths.products.category.path,
+          children: [
+            {
+              index: true,
+              lazy: async () => {
+                const { CategoryPage, categoryLoader } = await import("@/pages/category");
+                return { Component: CategoryPage, loader: categoryLoader };
+              },
+            },
+            {
+              path: paths.products.category.subcategory.path,
+              children: [
+                {
+                  index: true,
+                  lazy: async () => {
+                    const { SubcategoryPage, subcategoryPageLoader } = await import(
+                      "@/pages/subcategory"
+                    );
+                    return { Component: SubcategoryPage, loader: subcategoryPageLoader };
+                  },
+                },
+                {
+                  path: paths.products.category.subcategory.product.path,
+                  lazy: async () => {
+                    const { ProductPage, productPageLoader } = await import("@/pages/product");
+                    return { Component: ProductPage, loader: productPageLoader };
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        // Misc Section
+        {
+          path: paths.misc.contact.path,
+          lazy: async () => {
+            const { ContactPage } = await import("@pages/contact");
+            return { Component: ContactPage };
+          },
+        },
 
         // Protected Account Section
         {
@@ -96,32 +126,34 @@ export const createAppRouter = () =>
                 return { Component: AccountSecurityPage };
               },
             },
-            //   {
-            //     path: paths.app.profile.orders.path,
-            //     children: [
-            //       {
-            //         index: true,
-            //         lazy: async () => {
-            //           const { MyOrders } = await import("@/pages/my-orders");
-            //           return { Component: MyOrders };
-            //         },
-            //       },
-            //       {
-            //         path: paths.app.profile.orders.order.path,
-            //         lazy: async () => {
-            //           const { OrderDetails } = await import("@/pages/order-details");
-            //           return { Component: OrderDetails };
-            //         },
-            //       },
-            //     ],
-            //   },
-            //   {
-            //     path: paths.app.wishlist.path,
-            //     lazy: async () => {
-            //       const { UserWishlist } = await import("@pages/wishlist");
-            //       return { Component: UserWishlist };
-            //     },
-            //   },
+            {
+              path: paths.app.profile.orders.path,
+              children: [
+                {
+                  index: true,
+                  lazy: async () => {
+                    const { OrdersPage } = await import("@/pages/orders");
+                    return { Component: OrdersPage };
+                  },
+                },
+                {
+                  path: paths.app.profile.orders.order.path,
+                  lazy: async () => {
+                    const { OrderDetails, orderDetailsLoader } = await import(
+                      "@/pages/order-details"
+                    );
+                    return { Component: OrderDetails, loader: orderDetailsLoader };
+                  },
+                },
+              ],
+            },
+            {
+              path: paths.app.wishlist.path,
+              lazy: async () => {
+                const { WishlistPage, wishlistLoader } = await import("@pages/wishlist");
+                return { Component: WishlistPage, loader: wishlistLoader };
+              },
+            },
           ],
         },
       ],
@@ -134,17 +166,17 @@ export const createAppRouter = () =>
         {
           path: paths.checkout.root.path,
           lazy: async () => {
-            const { Checkout } = await import("@/pages-old/checkout");
-            return { Component: Checkout };
+            const { CheckoutPage, checkoutLoader } = await import("@/pages/checkout");
+            return { Component: CheckoutPage, loader: checkoutLoader };
           },
         },
-        // {
-        //   path: paths.checkout.success.path,
-        //   lazy: async () => {
-        //     const { OrderSuccessPage } = await import("@/pages-old/order-success");
-        //     return { Component: OrderSuccessPage };
-        //   },
-        // },
+        {
+          path: paths.checkout.success.path,
+          lazy: async () => {
+            const { OrderConfirmationPage } = await import("@/pages/order-confirmation");
+            return { Component: OrderConfirmationPage };
+          },
+        },
       ],
     },
 
@@ -152,8 +184,8 @@ export const createAppRouter = () =>
     {
       path: "*",
       lazy: async () => {
-        const { Error } = await import("@/pages-old/error");
-        return { Component: Error };
+        const { ErrorPage } = await import("@/pages/error");
+        return { Component: ErrorPage };
       },
     },
   ]);
