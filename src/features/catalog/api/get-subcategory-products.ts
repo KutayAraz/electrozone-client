@@ -31,7 +31,7 @@ export type GetProductsQueryArg = {
   brandString?: string;
 };
 
-export const getProductsApi = baseApi.injectEndpoints({
+export const getSubcategoryProductsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getSubcategoryProducts: builder.infiniteQuery<
       ProductQueryResult,
@@ -106,3 +106,5 @@ export const getProductsApi = baseApi.injectEndpoints({
     }),
   }),
 });
+
+export const { useGetSubcategoryProductsInfiniteQuery } = getSubcategoryProductsApi;
