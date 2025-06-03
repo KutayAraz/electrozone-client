@@ -31,7 +31,7 @@ export const Notifications = () => {
   if (notifications.length === 0) return null;
 
   return (
-    <div className="fixed inset-x-0 top-2 z-50 flex flex-col items-center gap-2 px-4">
+    <div className="pointer-events-none fixed inset-x-0 top-2 z-50 flex flex-col items-center gap-2 px-4">
       {notifications.map((notification: Notification) => (
         <Slide
           key={notification.id}
