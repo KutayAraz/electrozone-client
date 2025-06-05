@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 
 import { Spinner } from "@/components/ui/spinner";
-import { useGetSubcategoryProductsInfiniteQuery } from "@/features/catalog/api/get-products";
+import { useGetSubcategoryProductsInfiniteQuery } from "@/features/catalog/api/get-subcategory-products";
 import { subcategoryBrandsApi } from "@/features/catalog/api/get-subcategory-brands";
 import { subcategoryPriceRangeApi } from "@/features/catalog/api/get-subcategory-price-range";
 import { FilterDrawer } from "@/features/product-listing/components/filters/filter-drawer";
