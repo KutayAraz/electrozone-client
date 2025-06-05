@@ -11,18 +11,40 @@ export const wishlistLoader = () => {
   return store.dispatch(wishlistApi.endpoints.getUserWishlist.initiate());
 };
 
-export const WishlistPage = () => {
-  const { data: wishlistProducts, isLoading: isWishlistProductsLoading } =
-    useGetUserWishlistQuery();
+const ProductWishlist = ({ product }: any) => {
   const dispatch = useAppDispatch();
 
-  const { handleToggleWishlist, isLoading: isWishlistToggling } = useToggleWishlist();
+  const { handleToggleWishlist, isLoading } = useToggleWishlist();
   const { addToCart, isLoading: isAddingToCart } = useAddToCart();
 
   const handleRemove = async (productId: number) => {
     handleToggleWishlist(productId);
     dispatch(removeFromWishlist(productId));
   };
+
+  return (
+    <ProductCard
+      key={product.id}
+      productId={product.id}
+      productName={product.productName}
+      brand={product.brand}
+      price={product.price}
+      averageRating={product.averageRating}
+      stock={product.stock}
+      thumbnail={product.thumbnail}
+      subcategory={product.subcategory}
+      category={product.category}
+      onWishlistToggle={() => handleRemove(product.id)}
+      onAddToCart={addToCart}
+      isAddingToCart={isAddingToCart}
+      isTogglingWishlist={isLoading}
+    />
+  );
+};
+
+export const WishlistPage = () => {
+  const { data: wishlistProducts, isLoading: isWishlistProductsLoading } =
+    useGetUserWishlistQuery();
 
   return (
     <div className="page-spacing">
@@ -34,24 +56,7 @@ export const WishlistPage = () => {
       ) : (
         <div className="flex flex-wrap">
           {wishlistProducts?.map((product: any) => {
-            return (
-              <ProductCard
-                key={product.id}
-                productId={product.id}
-                productName={product.productName}
-                brand={product.brand}
-                price={product.price}
-                averageRating={product.averageRating}
-                stock={product.stock}
-                thumbnail={product.thumbnail}
-                subcategory={product.subcategory}
-                category={product.category}
-                onWishlistToggle={() => handleRemove(product.id)}
-                onAddToCart={addToCart}
-                isAddingToCart={isAddingToCart}
-                isTogglingWishlist={isWishlistToggling}
-              />
-            );
+            return <ProductWishlist product={product} key={product.id} />;
           })}
         </div>
       )}
