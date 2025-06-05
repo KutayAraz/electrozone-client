@@ -69,7 +69,7 @@ export const MENU_ITEMS: MenuItem[] = [
   { name: "TVs", url: "/category/tvs-and-soundbars/tvs" },
   { name: "Most Wishlisted", url: "/trending/most-wishlisted" },
   { name: "Laptops", url: "/category/computers-and-accessories/laptops" },
-  { name: "Top Rated", url: "/trending/top-rated" },
+  { name: "Best Rated", url: "/trending/best-rated" },
   { name: "Smartphones", url: "/category/smartphones-and-accessories/smartphones" },
   { name: "Laser Printers", url: "/category/printers-and-ink/laser-printers" },
   { name: "PCs", url: "/category/computers-and-accessories/computers" },
