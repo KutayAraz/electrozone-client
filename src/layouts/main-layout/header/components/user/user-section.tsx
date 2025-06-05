@@ -35,7 +35,7 @@ export const UserSection = ({
     <button onClick={onProfileClick}>
       <UserIcon width={32} height={32} />
     </button>
-    <Link to="/my-cart" className="ml-2 mt-auto flex">
+    <Link to="/cart" className="ml-2 mt-auto flex">
       {!smallScreenDevice && <p className="self-center">Basket</p>}
       <Basket itemCount={itemCount} />
     </Link>

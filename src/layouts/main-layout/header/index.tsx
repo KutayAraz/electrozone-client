@@ -3,12 +3,12 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 
+import { useCartCount } from "@/features/cart/hooks/use-cart-count";
 import { selectUser, userSlice } from "@/stores/slices/user-slice";
 import BrandLogo from "@assets/brand-images/brand-logo.svg?react";
 import Brand from "@assets/brand-images/brand.svg?react";
 import BurgerIcon from "@assets/svgs/burger.svg?react";
 
-import { useCartCount } from "@/features/cart/hooks/use-cart-count";
 import { LocationModal } from "./components/location/location-modal";
 import { LocationSection } from "./components/location/location-section";
 import { MobileLocationSection } from "./components/location/mobile-location-section";
@@ -24,7 +24,7 @@ export const Header = () => {
   const navigate = useNavigate();
 
   const user = useSelector(selectUser);
-  const { itemCount } = useCartCount();
+  const itemCount = useCartCount();
 
   const [profileModalOpen, setProfileModalOpen] = useState(false);
   const [locationModalOpen, setLocationModalOpen] = useState(false);

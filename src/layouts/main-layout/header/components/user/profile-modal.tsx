@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/custom-modal";
+import { useLogout } from "@/features/auth/hooks/use-logout";
 import { navigationLinks } from "@/layouts/main-layout/header/constants/navigation";
 import CloseButton from "@assets/svgs/close-button.svg?react";
 import ExitIcon from "@assets/svgs/exit.svg?react";
@@ -14,6 +15,7 @@ interface ProfileModalProps {
 }
 
 export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
+  const { submitLogout } = useLogout();
   return (
     <>
       <CustomModal
@@ -31,16 +33,16 @@ export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps)
           <div className="bg-white">
             <Link
               to="/my-account"
-              className="block bg-theme-blue  px-4 py-6 text-xl font-semibold text-white"
+              className="block bg-theme-blue px-4 py-6 text-xl font-semibold text-white"
               onClick={onClose}
             >
               My Account
             </Link>
-            <div className="flex flex-col space-y-4 bg-white text-lg">
+            <div className="flex flex-col bg-white text-lg ">
               {navigationLinks.map(({ path, label }) => (
                 <React.Fragment key={path}>
                   <Divider />
-                  <Link to={path} className="px-4">
+                  <Link to={path} className="p-4 hover:bg-gray-100">
                     {label}
                   </Link>
                 </React.Fragment>
@@ -49,14 +51,12 @@ export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps)
             </div>
           </div>
 
-          <Link to="/sign-out">
-            <Divider />
-            {isSignedIn && (
-              <div className="mt-4 px-4 pb-4 text-lg">
-                Sign Out <ExitIcon className="inline h-auto w-8" />
-              </div>
-            )}
-          </Link>
+          <Divider />
+          {isSignedIn && (
+            <button className="mt-4 p-4 text-lg hover:bg-gray-100" onClick={submitLogout}>
+              Logout <ExitIcon className="inline h-auto w-8" />
+            </button>
+          )}
         </div>
       </CustomModal>
       {isOpen && (
