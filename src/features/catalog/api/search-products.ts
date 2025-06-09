@@ -15,6 +15,9 @@ export interface Product {
 export type SearchResult = {
   products: Product[];
   productQuantity: number;
+  brands: string[];
+  subcategories: string[];
+  priceRange: { min: string; max: string };
 };
 
 export type SearchPageParam = {
@@ -26,8 +29,8 @@ export type SearchQueryArg = {
   query: string;
   sort?: string;
   stockStatus?: string;
-  minPrice?: string;
-  maxPrice?: string;
+  min_price?: string;
+  max_price?: string;
   brandString?: string;
   subcategoriesString?: string;
 };
@@ -68,11 +71,11 @@ export const searchProductsApi = baseApi.injectEndpoints({
         if (params.queryArg.stockStatus) {
           queryParams.append("stock_status", params.queryArg.stockStatus);
         }
-        if (params.queryArg.minPrice) {
-          queryParams.append("min_price", params.queryArg.minPrice);
+        if (params.queryArg.min_price) {
+          queryParams.append("min_price", params.queryArg.min_price);
         }
-        if (params.queryArg.maxPrice) {
-          queryParams.append("max_price", params.queryArg.maxPrice);
+        if (params.queryArg.max_price) {
+          queryParams.append("max_price", params.queryArg.max_price);
         }
         if (params.queryArg.brandString) {
           queryParams.append("brands", params.queryArg.brandString);
@@ -81,7 +84,7 @@ export const searchProductsApi = baseApi.injectEndpoints({
           queryParams.append("subcategories", params.queryArg.subcategoriesString);
         }
 
-        return `/search?${queryParams.toString()}`;
+        return `product?${queryParams.toString()}`;
       },
       keepUnusedDataFor: 0,
       extraOptions: { skipAuth: true },

@@ -26,8 +26,8 @@ export type GetProductsQueryArg = {
   subcategory: string;
   sort_by?: string;
   stockStatus?: string;
-  minPriceQuery?: string;
-  maxPriceQuery?: string;
+  min_price?: string;
+  max_price?: string;
   brandString?: string;
 };
 
@@ -65,16 +65,16 @@ export const getSubcategoryProductsApi = baseApi.injectEndpoints({
           queryParams.append("limit", params.pageParam.limit.toString());
 
         // Add sorting param
-        if (params.queryArg.sort_by) queryParams.append("sort_by", params.queryArg.sort_by);
+        if (params.queryArg.sort_by) queryParams.append("sort", params.queryArg.sort_by);
 
         // Add filtering params
         if (params.queryArg.stockStatus) {
           queryParams.append("stock_status", params.queryArg.stockStatus);
         }
-        if (params.queryArg.minPriceQuery)
-          queryParams.append("min_price", params.queryArg.minPriceQuery);
-        if (params.queryArg.maxPriceQuery)
-          queryParams.append("max_price", params.queryArg.maxPriceQuery);
+        if (params.queryArg.min_price) queryParams.append("min_price", params.queryArg.min_price);
+        if (params.queryArg.max_price) {
+          queryParams.append("max_price", params.queryArg.max_price);
+        }
         if (params.queryArg.brandString) queryParams.append("brands", params.queryArg.brandString);
 
         return `/subcategory/${encodeURIComponent(
@@ -96,11 +96,10 @@ export const getSubcategoryProductsApi = baseApi.injectEndpoints({
 
       // FIXED: Create cache keys that separate different filter combinations
       serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        const { subcategory, sort_by, stockStatus, minPriceQuery, maxPriceQuery, brandString } =
-          queryArgs;
+        const { subcategory, sort_by, stockStatus, min_price, max_price, brandString } = queryArgs;
         return `${endpointName}-${subcategory}-${sort_by || "featured"}-${stockStatus || ""}-${
-          minPriceQuery || ""
-        }-${maxPriceQuery || ""}-${brandString || ""}`;
+          min_price || ""
+        }-${max_price || ""}-${brandString || ""}`;
       },
       extraOptions: { skipAuth: true },
     }),
