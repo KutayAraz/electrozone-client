@@ -5,13 +5,13 @@ import { PriceRangeData } from "../types/filters";
 
 interface UseFiltersProps {
   priceRangeData: PriceRangeData;
-  brandsData: string[];
 }
 
 interface UseFiltersReturn {
   // State
   priceRange: [number, number];
   selectedBrands: string[];
+  selectedSubcategories: string[];
   stockStatus: string;
 
   // Handlers
@@ -20,6 +20,7 @@ interface UseFiltersReturn {
   handlePriceBlur: () => void;
   handleStockChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleBrandChange: (brand: string) => void;
+  handleSubcategoryChange: (subcategory: string) => void;
 
   // Actions
   applyFilters: () => void;
@@ -28,13 +29,14 @@ interface UseFiltersReturn {
   // Utility
   getFilterParams: () => {
     stockStatus?: string;
-    minPriceQuery?: string;
-    maxPriceQuery?: string;
+    min_price?: string;
+    max_price?: string;
     brandString?: string;
+    subcategoriesString?: string;
   };
 }
 
-export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): UseFiltersReturn => {
+export const useFilters = ({ priceRangeData }: UseFiltersProps): UseFiltersReturn => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Parse initial values from URL params
@@ -54,6 +56,11 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
     return brandsParam ? brandsParam.split(" ").map(decodeURIComponent) : [];
   };
 
+  const getInitialSubcategories = () => {
+    const subcategoriesParam = searchParams.get("subcategories");
+    return subcategoriesParam ? subcategoriesParam.split(" ").map(decodeURIComponent) : [];
+  };
+
   const getInitialStockStatus = () => {
     return searchParams.get("stock_status") || "";
   };
@@ -63,18 +70,29 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
     getInitialPriceMax(),
   ]);
   const [selectedBrands, setSelectedBrands] = useState<string[]>(getInitialBrands());
+  const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(
+    getInitialSubcategories(),
+  );
   const [stockStatus, setStockStatus] = useState<string>(getInitialStockStatus());
 
   // Update state when URL params change (e.g., browser back/forward)
   useEffect(() => {
     setPriceRange([getInitialPriceMin(), getInitialPriceMax()]);
     setSelectedBrands(getInitialBrands());
+    setSelectedSubcategories(getInitialSubcategories());
     setStockStatus(getInitialStockStatus());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, priceRangeData]);
 
   // Price handlers
   const handlePriceChange = useCallback((event: any, newValue: [number, number]) => {
-    setPriceRange(newValue);
+    // Ensure max is never less than min
+    const [newMin, newMax] = newValue;
+    if (newMax < newMin) {
+      setPriceRange([newMin, newMin]);
+    } else {
+      setPriceRange(newValue);
+    }
   }, []);
 
   const handlePriceInputChange = useCallback(
@@ -92,19 +110,20 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
   );
 
   const handlePriceBlur = useCallback(() => {
-    const minPrice = Number(priceRangeData.min) || 0;
     const maxPrice = Number(priceRangeData.max) || 1000;
 
     setPriceRange((prev) => {
       let [min, max] = prev;
 
-      // Clamp values to valid range
-      if (min < minPrice) min = minPrice;
+      // Ensure min is at least 0
+      if (min < 0) min = 0;
+
+      // Ensure max doesn't exceed the maximum possible price
       if (max > maxPrice) max = maxPrice;
 
-      // Ensure min is less than max
+      // Ensure min is less than or equal to max
       if (min > max) {
-        [min, max] = [max, min];
+        max = min; // Set max to min instead of swapping
       }
 
       return [min, max];
@@ -135,13 +154,24 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
     });
   }, []);
 
+  // Subcategory handler
+  const handleSubcategoryChange = useCallback((subcategory: string) => {
+    setSelectedSubcategories((prev) => {
+      if (prev.includes(subcategory)) {
+        return prev.filter((s) => s !== subcategory);
+      }
+      return [...prev, subcategory];
+    });
+  }, []);
+
   // Get filter params for API query
   const getFilterParams = useCallback(() => {
     const params: {
       stockStatus?: string;
-      minPriceQuery?: string;
-      maxPriceQuery?: string;
+      min_price?: string;
+      max_price?: string;
       brandString?: string;
+      subcategoriesString?: string;
     } = {};
 
     // Only include params that differ from defaults
@@ -149,34 +179,51 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
       params.stockStatus = stockStatus;
     }
 
-    const minPrice = Number(priceRangeData.min) || 0;
     const maxPrice = Number(priceRangeData.max) || 1000;
 
-    if (priceRange[0] > minPrice) {
-      params.minPriceQuery = String(priceRange[0]);
+    // Only include min_price if it's greater than 0
+    if (priceRange[0] > 0) {
+      params.min_price = String(priceRange[0]);
     }
 
+    // Only include max_price if it's less than the maximum
     if (priceRange[1] < maxPrice) {
-      params.maxPriceQuery = String(priceRange[1]);
+      params.max_price = String(priceRange[1]);
     }
 
     if (selectedBrands.length > 0) {
       params.brandString = selectedBrands.map(encodeURIComponent).join(" ");
     }
 
+    if (selectedSubcategories.length > 0) {
+      params.subcategoriesString = selectedSubcategories.map(encodeURIComponent).join(" ");
+    }
+
     return params;
-  }, [stockStatus, priceRange, selectedBrands, priceRangeData]);
+  }, [stockStatus, priceRange, selectedBrands, selectedSubcategories, priceRangeData]);
 
   // Apply filters - updates URL params which should trigger query refetch
   const applyFilters = useCallback(() => {
-    const newSearchParams = new URLSearchParams();
+    const newSearchParams = new URLSearchParams(searchParams);
 
     // Preserve existing sort param
     const currentSort = searchParams.get("sort") || "featured";
     newSearchParams.set("sort", currentSort);
 
+    // Preserve search query if it exists
+    const searchQuery = searchParams.get("query");
+    if (searchQuery) {
+      newSearchParams.set("query", searchQuery);
+    }
+
+    // Remove all filter params first
+    newSearchParams.delete("brands");
+    newSearchParams.delete("min_price");
+    newSearchParams.delete("max_price");
+    newSearchParams.delete("stock_status");
+    newSearchParams.delete("subcategories");
+
     // Add filter params
-    const minPrice = Number(priceRangeData.min) || 0;
     const maxPrice = Number(priceRangeData.max) || 1000;
 
     if (selectedBrands.length > 0) {
@@ -184,10 +231,12 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
       newSearchParams.set("brands", brandsString);
     }
 
-    if (priceRange[0] > minPrice) {
+    // Only include min_price if it's greater than 0
+    if (priceRange[0] > 0) {
       newSearchParams.set("min_price", String(priceRange[0]));
     }
 
+    // Only include max_price if it's less than the maximum
     if (priceRange[1] < maxPrice) {
       newSearchParams.set("max_price", String(priceRange[1]));
     }
@@ -196,23 +245,42 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
       newSearchParams.set("stock_status", stockStatus);
     }
 
-    // Update URL - this should trigger a refetch in the component using this hook
+    if (selectedSubcategories.length > 0) {
+      const subcategoriesString = selectedSubcategories.map(encodeURIComponent).join(" ");
+      newSearchParams.set("subcategories", subcategoriesString);
+    }
+
+    // Update URL - this will trigger a refetch in the component using this hook
     setSearchParams(newSearchParams);
-  }, [searchParams, selectedBrands, priceRange, stockStatus, priceRangeData, setSearchParams]);
+  }, [
+    searchParams,
+    selectedBrands,
+    selectedSubcategories,
+    priceRange,
+    stockStatus,
+    priceRangeData,
+    setSearchParams,
+  ]);
 
   // Reset all filters
   const resetFilters = useCallback(() => {
-    const minPrice = Number(priceRangeData.min) || 0;
     const maxPrice = Number(priceRangeData.max) || 1000;
 
-    setPriceRange([minPrice, maxPrice]);
+    setPriceRange([0, maxPrice]); // Always reset min to 0
     setSelectedBrands([]);
+    setSelectedSubcategories([]);
     setStockStatus("");
 
-    // Clear URL params except sort
+    // Clear URL params except sort and search query
     const newSearchParams = new URLSearchParams();
     const currentSort = searchParams.get("sort") || "featured";
     newSearchParams.set("sort", currentSort);
+
+    const searchQuery = searchParams.get("query");
+    if (searchQuery) {
+      newSearchParams.set("query", searchQuery);
+    }
+
     setSearchParams(newSearchParams);
   }, [priceRangeData, searchParams, setSearchParams]);
 
@@ -220,6 +288,7 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
     // State
     priceRange,
     selectedBrands,
+    selectedSubcategories,
     stockStatus,
 
     // Handlers
@@ -228,6 +297,7 @@ export const useFilters = ({ priceRangeData, brandsData }: UseFiltersProps): Use
     handlePriceBlur,
     handleStockChange,
     handleBrandChange,
+    handleSubcategoryChange,
 
     // Actions
     applyFilters,
