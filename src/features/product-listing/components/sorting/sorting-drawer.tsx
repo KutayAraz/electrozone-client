@@ -5,18 +5,21 @@ import SortIcon from "@mui/icons-material/Sort";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { Divider, Drawer, IconButton, ListItemIcon, MenuItem, Typography } from "@mui/material";
-import { useState } from "react";
 
 import { useSorting } from "../../hooks/use-sorting";
 
-export const SortingDrawer = () => {
+interface SortingDrawerProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
   const { handleSortChange } = useSorting();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <Drawer open={isOpen} onClose={() => setIsOpen(false)} anchor="bottom">
+    <Drawer open={isOpen} onClose={onClose} anchor="bottom">
       <div className="pb-2 [&_li]:px-6 [&_li]:py-3">
-        <div className="flex items-center justify-between px-6 py-[8px]">
+        <div className="flex items-center justify-between px-4 py-2">
           <div className="flex space-x-3">
             <SortIcon style={{ color: "#757575" }} />
             <Typography variant="body1" sx={{ color: "#373D51" }}>
@@ -25,7 +28,7 @@ export const SortingDrawer = () => {
           </div>
           <div>
             <IconButton
-              onClick={() => setIsOpen(false)}
+              onClick={onClose}
               sx={{
                 color: (theme) => theme.palette.grey[500],
               }}

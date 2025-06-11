@@ -1,6 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Drawer, IconButton } from "@mui/material";
-import { useState } from "react";
 
 import { PriceRangeData } from "../../types/filters";
 
@@ -9,22 +8,29 @@ import { FilterPanel } from "./filter-panel";
 interface FilterDrawerProps {
   priceRangeData: PriceRangeData;
   brandsData: string[];
+  subcategoriesData?: string[];
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export const FilterDrawer = ({ priceRangeData, brandsData }: FilterDrawerProps) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
+export const FilterDrawer = ({
+  priceRangeData,
+  brandsData,
+  subcategoriesData,
+  isOpen,
+  onClose,
+}: FilterDrawerProps) => {
   return (
     <Drawer
       anchor="bottom"
       open={isOpen}
-      onClose={() => setIsOpen(false)}
+      onClose={() => onClose()}
       sx={{
         "& .MuiDrawer-paper": { maxHeight: "80%", overflow: "auto" },
       }}
     >
       <IconButton
-        onClick={() => setIsOpen(false)}
+        onClick={() => onClose()}
         sx={{
           position: "absolute",
           right: 8,
@@ -38,8 +44,8 @@ export const FilterDrawer = ({ priceRangeData, brandsData }: FilterDrawerProps) 
       <FilterPanel
         priceRangeData={priceRangeData}
         brandsData={brandsData}
-        compact={true}
-        onFilterApply={() => setIsOpen(false)}
+        subcategoriesData={subcategoriesData}
+        onFilterApply={onClose}
       />
     </Drawer>
   );
