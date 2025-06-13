@@ -6,32 +6,35 @@ import { PriceRangeData } from "../../types/filters";
 import { BrandsFilter } from "./brands-filter";
 import { PriceRangeFilter } from "./price-range-filter";
 import { StockStatusFilter } from "./stock-status-filter";
+import { SubcategoriesFilter } from "./subcategories-filter";
 
 interface FilterPanelProps {
   priceRangeData: PriceRangeData;
   brandsData: string[];
-  compact?: boolean; // For mobile/drawer view
+  subcategoriesData?: string[]; // Optional for pages that don't need it
   onFilterApply?: () => void; // Optional callback for mobile views
 }
 
 export const FilterPanel = ({
   priceRangeData,
   brandsData,
-  compact = false,
+  subcategoriesData,
   onFilterApply,
 }: FilterPanelProps) => {
   const {
     priceRange,
     selectedBrands,
+    selectedSubcategories,
     stockStatus,
     handlePriceChange,
     handlePriceInputChange,
     handlePriceBlur,
     handleStockChange,
     handleBrandChange,
+    handleSubcategoryChange,
     applyFilters,
     resetFilters,
-  } = useFilters({ priceRangeData, brandsData });
+  } = useFilters({ priceRangeData });
 
   const handleApplyFilters = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -40,23 +43,28 @@ export const FilterPanel = ({
   };
 
   return (
-    <div className={compact ? "p-6 pb-3" : ""}>
-      <StockStatusFilter
-        stockStatus={stockStatus}
-        handleStockChange={handleStockChange}
-        compact={compact}
-      />
+    <div className="p-4">
+      <StockStatusFilter stockStatus={stockStatus} handleStockChange={handleStockChange} />
 
-      {!compact && <Divider sx={{ marginY: "5px", marginRight: "8px" }} />}
+      {/* Only show subcategories filter if data is provided */}
+      {subcategoriesData && subcategoriesData.length > 0 && (
+        <>
+          <SubcategoriesFilter
+            subcategoriesData={subcategoriesData}
+            selectedSubcategories={selectedSubcategories}
+            handleSubcategoryChange={handleSubcategoryChange}
+          />
+          <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+        </>
+      )}
 
       <BrandsFilter
         brandsData={brandsData}
         selectedBrands={selectedBrands}
         handleBrandChange={handleBrandChange}
-        compact={compact}
       />
 
-      {!compact && <Divider sx={{ marginY: "5px", marginRight: "8px" }} />}
+      <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
 
       <PriceRangeFilter
         priceRange={priceRange}
@@ -64,7 +72,6 @@ export const FilterPanel = ({
         handlePriceChange={handlePriceChange}
         handlePriceInputChange={handlePriceInputChange}
         handlePriceBlur={handlePriceBlur}
-        compact={compact}
       />
 
       <div className="mt-2">
@@ -83,11 +90,9 @@ export const FilterPanel = ({
           FILTER
         </Button>
 
-        {compact && (
-          <Button variant="outlined" onClick={resetFilters} fullWidth sx={{ mt: 1 }}>
-            Reset Filters
-          </Button>
-        )}
+        <Button variant="outlined" onClick={resetFilters} fullWidth sx={{ mt: 1 }}>
+          Reset Filters
+        </Button>
       </div>
     </div>
   );
