@@ -19,11 +19,11 @@ export const PriceRangeFilter = ({
   handlePriceBlur,
   compact = false,
 }: PriceRangeFilterProps) => {
-  // Convert string values to numbers
-  const minPrice = Number(priceRangeData.min) || 0;
+  // Always use 0 as minimum, get maximum from data
+  const minPrice = 0;
   const maxPrice = Number(priceRangeData.max) || 1000;
 
-  const step = Math.floor((maxPrice - minPrice) / (compact ? 10 : 8));
+  const step = Math.floor(maxPrice / (compact ? 10 : 8));
 
   const handleSliderChange = (event: Event, value: number | number[]) => {
     // Ensure to have an array of two numbers
@@ -67,7 +67,12 @@ export const PriceRangeFilter = ({
             onChange={handlePriceInputChange}
             onBlur={handlePriceBlur}
             size="small"
+            type="number"
             slotProps={{
+              htmlInput: {
+                min: 0,
+                max: priceRange[1], // Prevent min from exceeding current max
+              },
               input: {
                 startAdornment: (
                   <InputAdornment
@@ -97,7 +102,12 @@ export const PriceRangeFilter = ({
             onChange={handlePriceInputChange}
             onBlur={handlePriceBlur}
             size="small"
+            type="number"
             slotProps={{
+              htmlInput: {
+                min: priceRange[0], // Prevent max from going below current min
+                max: maxPrice,
+              },
               input: {
                 startAdornment: (
                   <InputAdornment
