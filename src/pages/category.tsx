@@ -5,7 +5,7 @@ import { PageHelmet } from "@/components/seo/page-helmet";
 import { Carousel } from "@/components/ui/carousel";
 import { CarouselCard, CarouselCardProps } from "@/components/ui/carousel/carousel-card";
 import { Spinner } from "@/components/ui/spinner";
-import { categoryInfoApi } from "@/features/catalog/api/get-category-info";
+import { categoryInfoApi } from "@/features/product-listing/api/get-category-info";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { store } from "@/stores/store";
 import { formatString } from "@/utils/format-casing";
