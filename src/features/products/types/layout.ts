@@ -1,5 +1,7 @@
 export type ProductLayoutProps = {
   productId: number;
+  subcategory?: string;
+  category?: string;
   productName: string;
   brand: string;
   thumbnail: string;
