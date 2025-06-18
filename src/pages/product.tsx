@@ -67,6 +67,8 @@ export const ProductPage = () => {
       {isMobile ? (
         <ProductDesktopLayout
           productId={productData.id}
+          subcategory={productData.subcategory}
+          category={productData.category}
           price={productData.price}
           productName={productData.productName}
           brand={productData.brand}
