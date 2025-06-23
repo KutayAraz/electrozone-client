@@ -2,7 +2,7 @@ import { baseApi } from "@/lib/api/base-api";
 
 import { CartResponse } from "../../types/response";
 
-const mergeCartsApi = baseApi.injectEndpoints({
+export const mergeCartsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     mergeCarts: builder.mutation<CartResponse, void>({
       query: () => ({
