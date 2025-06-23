@@ -7,7 +7,7 @@ import UserIcon from "@assets/svgs/user.svg?react";
 export interface UserSectionProps {
   firstName: string | null;
   isSignedIn: boolean;
-  itemCount: number;
+  itemCount: number | undefined;
   smallScreenDevice: boolean;
   onProfileClick: () => void;
   onSignInClick: () => void;

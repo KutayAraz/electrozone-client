@@ -54,7 +54,7 @@ export const CartPage = () => {
 
   return (
     <div className="page-spacing">
-      <h1 className="mb-6 text-2xl font-bold text-gray-800 md:text-3xl">Your Shopping Cart</h1>
+      <h1 className="mb-6 text-2xl font-bold text-gray-800">Your Shopping Cart</h1>
 
       {/* Cart Changes Alert */}
       <CartChangesAlert

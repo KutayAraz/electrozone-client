@@ -61,7 +61,7 @@ export const ProductMobileLayout = ({
             className="scale-125 bg-white/80 backdrop-blur-sm rounded-full p-1"
           />
         </div>
-        <SwiperSlide key={thumbnail} className="flex items-center justify-center mx-auto">
+        <SwiperSlide key={thumbnail} className="flex items-center justify-center">
           <img
             src={thumbnail}
             alt={`thumbnail for ${productName}`}
@@ -70,10 +70,10 @@ export const ProductMobileLayout = ({
         </SwiperSlide>
 
         {images?.map((image: any) => (
-          <SwiperSlide key={image.id} className="flex items-center justify-center mx-auto">
+          <SwiperSlide key={image.id} className="flex items-center justify-center">
             <button
               onClick={() => setSelectedImage(image.productImage)}
-              className="flex items-center justify-center h-full mx-auto"
+              className="flex items-center justify-center h-full w-full"
             >
               <img
                 src={image.productImage}
