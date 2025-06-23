@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { paths } from "@/config/paths";
-import { MainLayout } from "@/layouts/main-layout";
+import { MainLayout, mainLayoutLoader } from "@/layouts/main-layout";
 import { ProtectedRoute } from "@/lib/auth";
 
 export const createAppRouter = () =>
@@ -10,6 +10,7 @@ export const createAppRouter = () =>
     {
       path: paths.home.path,
       element: <MainLayout />,
+      loader: mainLayoutLoader,
       children: [
         {
           index: true,
@@ -97,6 +98,13 @@ export const createAppRouter = () =>
           lazy: async () => {
             const { ContactPage } = await import("@pages/contact");
             return { Component: ContactPage };
+          },
+        },
+        {
+          path: paths.misc.projectDetails.path,
+          lazy: async () => {
+            const { ProjectDetailsPage } = await import("@pages/project-details");
+            return { Component: ProjectDetailsPage };
           },
         },
 
