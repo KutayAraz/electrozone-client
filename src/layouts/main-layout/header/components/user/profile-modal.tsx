@@ -53,7 +53,13 @@ export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps)
 
           <Divider />
           {isSignedIn && (
-            <button className="mt-4 p-4 text-lg hover:bg-gray-100" onClick={submitLogout}>
+            <button
+              className="mt-4 p-4 text-lg hover:bg-gray-100"
+              onClick={() => {
+                submitLogout();
+                onClose();
+              }}
+            >
               Logout <ExitIcon className="inline h-auto w-8" />
             </button>
           )}
