@@ -7,7 +7,7 @@ const getSessionCartCountApi = baseApi.injectEndpoints({
         url: "cart/session/count",
         method: "GET",
       }),
-      providesTags: [{ type: "SessionCartCount", id: "List" }],
+      providesTags: [{ type: "SessionCartCount", id: "LIST" }],
       extraOptions: { skipAuth: true },
     }),
   }),
