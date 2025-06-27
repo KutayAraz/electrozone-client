@@ -4,13 +4,14 @@ import { Basket } from "@/components/ui/basket";
 import Arrow from "@assets/svgs/arrow.svg?react";
 import UserIcon from "@assets/svgs/user.svg?react";
 
+import { LoginLink } from "./login-link";
+
 export interface UserSectionProps {
   firstName: string | null;
   isSignedIn: boolean;
   itemCount: number | undefined;
   smallScreenDevice: boolean;
   onProfileClick: () => void;
-  onSignInClick: () => void;
 }
 
 export const UserSection = ({
@@ -19,7 +20,6 @@ export const UserSection = ({
   itemCount = 0,
   smallScreenDevice,
   onProfileClick,
-  onSignInClick,
 }: UserSectionProps) => (
   <div className="flex items-center whitespace-nowrap xs:pr-2">
     {isSignedIn ? (
@@ -27,9 +27,7 @@ export const UserSection = ({
         {firstName}
       </button>
     ) : (
-      <button onClick={onSignInClick} className="pl-2 xs:pl-4">
-        Sign in
-      </button>
+      <LoginLink className="login-button">Login</LoginLink>
     )}
     <Arrow width={20} height={20} />
     <button onClick={onProfileClick}>
