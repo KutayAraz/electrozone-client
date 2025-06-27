@@ -1,15 +1,17 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type RedirectSource = "checkout" | "protected" | "normal";
+export type RedirectSource = "protected-route" | "voluntary-login" | "checkout";
 
 interface RedirectState {
   path: string | null;
-  source?: RedirectSource;
+  source: RedirectSource | null;
+  previousPath: string | null;
 }
 
 const initialState: RedirectState = {
   path: null,
-  source: undefined,
+  source: null,
+  previousPath: null,
 };
 
 export const redirectSlice = createSlice({
@@ -20,15 +22,18 @@ export const redirectSlice = createSlice({
       state,
       action: PayloadAction<{
         path: string;
-        source?: RedirectSource;
+        source: RedirectSource;
+        previousPath?: string;
       }>,
     ) => {
       state.path = action.payload.path;
       state.source = action.payload.source;
+      state.previousPath = action.payload.previousPath || null;
     },
     clearRedirectPath: (state) => {
       state.path = null;
-      state.source = undefined;
+      state.source = null;
+      state.previousPath = null;
     },
   },
 });

@@ -1,24 +1,23 @@
-import { useSelector } from "react-redux";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
+import { paths } from "@/config/paths";
+import { useAppSelector } from "@/hooks/use-app-selector";
 import { selectIsAuthenticated } from "@/stores/slices/user-slice";
+import { RootState } from "@/stores/store";
 
-interface RedirectAuthenticatedProps {
-  children: React.ReactNode;
-}
-
-export const RedirectAuthenticated = ({ children }: RedirectAuthenticatedProps) => {
-  const location = useLocation();
-  const isAuthenticated = useSelector(selectIsAuthenticated);
+export const RedirectAuthenticated = () => {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const redirectInfo = useAppSelector((state: RootState) => state.redirect);
 
   if (isAuthenticated) {
-    // If user has history, go back; otherwise go home
-    return location.key !== "default" ? (
-      <Navigate to=".." relative="path" replace />
-    ) : (
-      <Navigate to="/" replace />
-    );
+    // If have a previous path from voluntary login, go back there
+    if (redirectInfo.source === "voluntary-login" && redirectInfo.previousPath) {
+      return <Navigate to={redirectInfo.previousPath} replace />;
+    }
+
+    // Otherwise, go home
+    return <Navigate to={paths.home.getHref()} replace />;
   }
 
-  return <>{children}</>;
+  return <Outlet />;
 };

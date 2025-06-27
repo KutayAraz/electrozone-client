@@ -1,5 +1,12 @@
+// use-login.ts
+import { useNavigate } from "react-router-dom";
+
+import { paths } from "@/config/paths";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { useAppSelector } from "@/hooks/use-app-selector";
+import { clearRedirectPath } from "@/stores/slices/redirect-slice";
 import { setCredentials } from "@/stores/slices/user-slice";
+import { RootState } from "@/stores/store";
 import { HttpStatus } from "@/types/api-error";
 import { isStandardApiError } from "@/utils/error-guard";
 
@@ -10,6 +17,8 @@ import { useFormError } from "./use-form-error";
 
 export const useLogin = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const redirectInfo = useAppSelector((state: RootState) => state.redirect);
 
   const [login, { isLoading }] = useLoginMutation();
   const { serverError, setServerError, clearServerError } = useFormError();
@@ -26,9 +35,23 @@ export const useLogin = () => {
           email: response.email,
         }),
       );
+
+      // Handle redirect based on source
+      if (redirectInfo.source === "protected-route" && redirectInfo.path) {
+        // User was trying to access a protected route
+        navigate(redirectInfo.path, { replace: true });
+      } else if (redirectInfo.source === "voluntary-login" && redirectInfo.previousPath) {
+        // User voluntarily clicked login, go back to where they were
+        navigate(redirectInfo.previousPath, { replace: true });
+      } else {
+        // Default: go to home page
+        navigate(paths.home.getHref(), { replace: true });
+      }
+
+      // Clear redirect info after navigation
+      dispatch(clearRedirectPath());
     } catch (error: any) {
       if (isStandardApiError(error)) {
-        // Handle specific error cases based on backend error types
         switch (error.status) {
           case HttpStatus.NOT_FOUND:
             setServerError({
