@@ -3,6 +3,8 @@ import {
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { CheckoutIntent } from "@/stores/slices/models";
+import { setUserIntent } from "@/stores/slices/user-slice";
 
 import { useMergeCartsMutation } from "../api/user-cart/merge-carts";
 
@@ -15,10 +17,16 @@ export const useMergeCarts = () => {
 
     let message = "Products in your cart before logging in, are added to your cart.";
 
-    if (result.priceChanges || result.quantityChanges || result.removedCartItems) {
+    if (
+      result.priceChanges?.length ||
+      result.quantityChanges?.length ||
+      result.removedCartItems?.length
+    ) {
       message +=
         "There are also some changes made to your cart. Please review them before proceeding";
     }
+
+    dispatch(setUserIntent(CheckoutIntent.NORMAL));
 
     dispatch(
       displayNotification({
