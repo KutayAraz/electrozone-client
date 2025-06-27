@@ -1,19 +1,52 @@
 import { ArrowForward, CheckCircle, LocalShipping, ShoppingBag } from "@mui/icons-material";
-import { useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, LoaderFunctionArgs, redirect, useLoaderData } from "react-router-dom";
 
+import {
+  displayNotification,
+  NotificationType,
+} from "@/components/ui/notifications/notification-slice";
+import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
 import { CheckoutLayout } from "@/layouts/checkout-layout";
+import { store } from "@/stores/store";
+
+export const orderConfirmationLoader = async ({ params }: LoaderFunctionArgs) => {
+  const { orderId } = params;
+
+  if (!orderId) {
+    return redirect("/");
+  }
+
+  try {
+    // Validate the order belongs to the current user
+    const result = await store
+      .dispatch(getOrderByIdApi.endpoints.getOrderById.initiate(Number(orderId)))
+      .unwrap();
+
+    if (!result) {
+      // Order doesn't belong to this user or doesn't exist
+      store.dispatch(
+        displayNotification({
+          type: NotificationType.ERROR,
+          message: "The order does not exist or you are not authorized to view this order.",
+        }),
+      );
+      return redirect("/");
+    }
+
+    return { orderId, orderData: result };
+  } catch (error) {
+    store.dispatch(
+      displayNotification({
+        type: NotificationType.ERROR,
+        message: "The order does not exist or you are not authorized to view this order.",
+      }),
+    );
+    return redirect("/");
+  }
+};
 
 export const OrderConfirmationPage = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const orderId = location.state?.orderId;
-
-  useEffect(() => {
-    if (!orderId) {
-      navigate("/");
-    }
-  }, [orderId, navigate]);
+  const { orderId, orderData } = useLoaderData();
 
   return (
     <CheckoutLayout hideBackButton={true} isSuccessPage={true}>
@@ -30,6 +63,7 @@ export const OrderConfirmationPage = () => {
             <div className="mb-2 rounded-lg bg-blue-50 px-4 py-2 text-lg font-medium text-blue-800">
               Order ID: #{orderId}
             </div>
+            <p className="text-sm text-gray-600">Total: ${orderData.orderTotal}</p>
           </div>
 
           <div className="mb-8 space-y-4 rounded-lg bg-gray-50 p-6">
@@ -43,7 +77,7 @@ export const OrderConfirmationPage = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 sm:flex-row">
+          <div className="flex flex-col gap-4 sm:flex-row justify-between">
             <Link
               to="/orders"
               className="flex items-center justify-center rounded-md border border-blue-600 bg-white px-6 py-3 text-center font-medium text-blue-600 shadow-sm transition-all duration-200 hover:bg-blue-50"
