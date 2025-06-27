@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { paths } from "@/config/paths";
+import { RedirectAuthenticated } from "@/features/auth/components/redirect-authenticated";
 import { MainLayout, mainLayoutLoader } from "@/layouts/main-layout";
 import { ProtectedRoute } from "@/lib/auth";
 
@@ -22,6 +23,7 @@ export const createAppRouter = () =>
         // Auth Section
         {
           path: paths.auth.login.path,
+          element: <RedirectAuthenticated />,
           lazy: async () => {
             const { LoginPage } = await import("@/pages/login");
             return { Component: LoginPage };
@@ -29,6 +31,7 @@ export const createAppRouter = () =>
         },
         {
           path: paths.auth.register.path,
+          element: <RedirectAuthenticated />,
           lazy: async () => {
             const { RegisterPage } = await import("@/pages/register");
             return { Component: RegisterPage };
@@ -181,8 +184,10 @@ export const createAppRouter = () =>
         {
           path: paths.checkout.success.path,
           lazy: async () => {
-            const { OrderConfirmationPage } = await import("@/pages/order-confirmation");
-            return { Component: OrderConfirmationPage };
+            const { OrderConfirmationPage, orderConfirmationLoader } = await import(
+              "@/pages/order-confirmation"
+            );
+            return { Component: OrderConfirmationPage, loader: orderConfirmationLoader };
           },
         },
       ],

@@ -95,8 +95,8 @@ export const paths = {
       getHref: () => "/checkout",
     },
     success: {
-      path: "/checkout/success",
-      getHref: (orderId?: string) => `/checkout/success${orderId ? `?orderId=${orderId}` : ""}`,
+      path: "/order-confirmation/:orderId",
+      getHref: (params: { orderId: string }) => `/order-confirmation/${params.orderId}`,
     },
   },
 
