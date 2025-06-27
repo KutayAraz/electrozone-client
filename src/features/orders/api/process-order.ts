@@ -19,7 +19,9 @@ const processOrderApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [
         { type: "UserCart", id: "LIST" },
+        { type: "UserCartCount", id: "LIST" },
         { type: "SessionCart", id: "LIST" },
+        { type: "SessionCartCount", id: "LIST" },
         { type: "BuyNowCart", id: "LIST" },
         { type: "Order", id: "LIST" },
       ],
