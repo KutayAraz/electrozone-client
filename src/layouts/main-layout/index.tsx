@@ -17,7 +17,7 @@ export const mainLayoutLoader = async ({ request }: LoaderFunctionArgs) => {
 
   if (
     currentPath !== "/checkout" &&
-    currentPath !== "/sign-in" &&
+    currentPath !== "/auth/login" &&
     (checkoutIntent === CheckoutType.SESSION || checkoutIntent === CheckoutType.BUY_NOW)
   ) {
     if (checkoutIntent === CheckoutType.SESSION)
