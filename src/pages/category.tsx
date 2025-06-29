@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { Link, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
-import { SwiperSlide } from "swiper/react";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
 import { Carousel } from "@/components/ui/carousel";
-import { CarouselCard, CarouselCardProps } from "@/components/ui/carousel/carousel-card";
+import { CarouselCardProps } from "@/components/ui/carousel/carousel-card";
 import { Spinner } from "@/components/ui/spinner";
 import { categoryInfoApi } from "@/features/product-listing/api/get-category-info";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
@@ -27,7 +27,20 @@ type ProductSectionProps = {
 };
 
 const ProductSection = ({ title, subcategory, products }: ProductSectionProps) => {
-  const { handleToggleWishlist, isLoading } = useToggleWishlist();
+  const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
+  const { handleToggleWishlist } = useToggleWishlist();
+
+  const handleWishlistToggle = async (id: number) => {
+    setTogglingProductId(id);
+
+    try {
+      await handleToggleWishlist(id);
+    } finally {
+      setTogglingProductId(null);
+    }
+  };
+
+  const isProductToggling = (id: number) => togglingProductId === id;
 
   return (
     <>
@@ -37,24 +50,12 @@ const ProductSection = ({ title, subcategory, products }: ProductSectionProps) =
           {formatString(subcategory, "_")}
         </Link>
       </h3>
-      <Carousel className="mb-5">
-        {products.map((product: any) => (
-          <SwiperSlide key={product.productId}>
-            <CarouselCard
-              key={product.id}
-              productId={product.id}
-              productName={product.productName}
-              brand={product.brand}
-              thumbnail={product.thumbnail}
-              price={product.price}
-              subcategory={product.subcategory}
-              category={product.category}
-              onWishlistToggle={handleToggleWishlist}
-              isTogglingWishlist={isLoading}
-            />
-          </SwiperSlide>
-        ))}
-      </Carousel>
+      <Carousel
+        className="mb-5"
+        products={products}
+        onWishlistToggle={handleWishlistToggle}
+        isTogglingWishlist={isProductToggling}
+      />
     </>
   );
 };
@@ -81,6 +82,13 @@ const Subcategory = ({ subcategory, topSelling, topWishlisted }: SubcategoryProp
   </div>
 );
 
+type SubcategoryData = {
+  id: number;
+  subcategory: string;
+  topSelling: { products: CarouselCardProps[]; productQuantity: number };
+  topWishlisted: { products: CarouselCardProps[]; productQuantity: number };
+};
+
 export const CategoryPage = () => {
   const categoryData = useLoaderData();
 
@@ -97,7 +105,7 @@ export const CategoryPage = () => {
         {categoryData.state === "loading" ? (
           <Spinner />
         ) : (
-          categoryData.data.map((subcategory: SubcategoryProps) => (
+          categoryData.data.map((subcategory: SubcategoryData) => (
             <Subcategory
               key={subcategory.id}
               id={subcategory.id}

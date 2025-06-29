@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 
 import { Spinner } from "@/components/ui/spinner";
+import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
 import { subcategoryBrandsApi } from "@/features/product-listing/api/get-subcategory-brands";
 import { subcategoryPriceRangeApi } from "@/features/product-listing/api/get-subcategory-price-range";
 import { useGetSubcategoryProductsInfiniteQuery } from "@/features/product-listing/api/get-subcategory-products";
@@ -13,6 +14,7 @@ import { SortingDrawer } from "@/features/product-listing/components/sorting/sor
 import { SortingPanel } from "@/features/product-listing/components/sorting/sorting-panel";
 import { useFilters } from "@/features/product-listing/hooks/use-filters";
 import { useSorting } from "@/features/product-listing/hooks/use-sorting";
+import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { store } from "@/stores/store";
 import { formatString } from "@/utils/format-casing";
 
@@ -37,6 +39,13 @@ export const subcategoryPageLoader = async (request: LoaderFunctionArgs) => {
 export const SubcategoryPage = () => {
   const { brands, priceRange } = useLoaderData();
   const { subcategory } = useParams();
+
+  // Cart and wishlist functionality
+  const [togglingWishlistId, setTogglingWishlistId] = useState<number | null>(null);
+  const [addingToCartId, setAddingToCartId] = useState<number | null>(null);
+
+  const { handleToggleWishlist } = useToggleWishlist();
+  const { addToCart } = useAddToCart();
 
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [sortingDrawerOpen, setSortingDrawerOpen] = useState(false);
@@ -97,6 +106,28 @@ export const SubcategoryPage = () => {
     [fetchNextPage, hasNextPage, isFetching],
   );
 
+  // Cart and wishlist handlers
+  const handleWishlistToggle = async (productId: number) => {
+    setTogglingWishlistId(productId);
+    try {
+      await handleToggleWishlist(productId);
+    } finally {
+      setTogglingWishlistId(null);
+    }
+  };
+
+  const handleAddToCart = async (productId: number) => {
+    setAddingToCartId(productId);
+    try {
+      await addToCart(productId);
+    } finally {
+      setAddingToCartId(null);
+    }
+  };
+
+  const isProductTogglingWishlist = (productId: number) => togglingWishlistId === productId;
+  const isProductAddingToCart = (productId: number) => addingToCartId === productId;
+
   const allProducts = data?.pages?.flatMap((page) => page.products) || [];
   const totalProductCount = data?.pages?.[0]?.productQuantity || 0;
 
@@ -155,7 +186,15 @@ export const SubcategoryPage = () => {
                 />
 
                 {/* Product Grid with Infinite Scroll */}
-                <ProductList products={allProducts} loading={isLoading} ref={lastProductRef} />
+                <ProductList
+                  products={allProducts}
+                  loading={isLoading}
+                  ref={lastProductRef}
+                  onAddToCart={handleAddToCart}
+                  onWishlistToggle={handleWishlistToggle}
+                  isAddingToCart={isProductAddingToCart}
+                  isTogglingWishlist={isProductTogglingWishlist}
+                />
                 {isFetching && !isLoading && (
                   <div className="flex justify-center py-4">
                     <Spinner />

@@ -1,4 +1,3 @@
-// use-login.ts
 import { useNavigate } from "react-router-dom";
 
 import { paths } from "@/config/paths";

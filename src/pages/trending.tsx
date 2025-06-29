@@ -1,9 +1,10 @@
+import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router-dom";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
-import { ProductCard } from "@/components/ui/product-card";
 import { Spinner } from "@/components/ui/spinner";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
+import { ProductList } from "@/features/product-listing/components/product-listing";
 import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { store } from "@/stores/store";
@@ -18,9 +19,34 @@ export const TrendingProductsPage = () => {
   const products = useLoaderData();
   const { type }: any = useParams();
 
-  const { handleToggleWishlist, isLoading: isTogglingWishlist } = useToggleWishlist();
-  const { addToCart, isLoading: isAddingToCart } = useAddToCart();
+  // Cart and wishlist functionality
+  const [togglingWishlistId, setTogglingWishlistId] = useState<number | null>(null);
+  const [addingToCartId, setAddingToCartId] = useState<number | null>(null);
 
+  const { handleToggleWishlist } = useToggleWishlist();
+  const { addToCart } = useAddToCart();
+
+  // Cart and wishlist handlers
+  const handleWishlistToggle = async (productId: number) => {
+    setTogglingWishlistId(productId);
+    try {
+      await handleToggleWishlist(productId);
+    } finally {
+      setTogglingWishlistId(null);
+    }
+  };
+
+  const handleAddToCart = async (productId: number) => {
+    setAddingToCartId(productId);
+    try {
+      await addToCart(productId);
+    } finally {
+      setAddingToCartId(null);
+    }
+  };
+
+  const isProductTogglingWishlist = (productId: number) => togglingWishlistId === productId;
+  const isProductAddingToCart = (productId: number) => addingToCartId === productId;
   return (
     <>
       <PageHelmet
@@ -36,24 +62,13 @@ export const TrendingProductsPage = () => {
           </p>
         ) : (
           <div className="flex flex-wrap">
-            {products.data.map((product: any) => (
-              <ProductCard
-                key={product.id}
-                subcategory={product.subcategory}
-                category={product.category}
-                productId={product.id}
-                thumbnail={product.thumbnail}
-                productName={product.productName}
-                brand={product.brand}
-                averageRating={product.averageRating}
-                price={product.price}
-                stock={product.stock}
-                onWishlistToggle={handleToggleWishlist}
-                onAddToCart={addToCart}
-                isTogglingWishlist={isTogglingWishlist}
-                isAddingToCart={isAddingToCart}
-              />
-            ))}
+            <ProductList
+              products={products.data}
+              onAddToCart={handleAddToCart}
+              onWishlistToggle={handleWishlistToggle}
+              isAddingToCart={isProductAddingToCart}
+              isTogglingWishlist={isProductTogglingWishlist}
+            />
           </div>
         )}
       </div>

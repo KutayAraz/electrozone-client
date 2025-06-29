@@ -1,11 +1,9 @@
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { Await, useLoaderData } from "react-router";
-import { SwiperSlide } from "swiper/react";
 
 import { Carousel } from "@/components/ui/carousel";
-import { CarouselCard } from "@/components/ui/carousel/carousel-card";
+import { CarouselCardProps } from "@/components/ui/carousel/carousel-card";
 import { Spinner } from "@/components/ui/spinner";
-import { Product } from "@/features/orders/types";
 import { Categories } from "@/features/product-listing/components/categories";
 import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
@@ -29,27 +27,27 @@ export const homePageLoader = async () => {
   };
 };
 
-const ProductsShowcase = ({ products }: { products: Product[] }) => {
-  const { handleToggleWishlist, isLoading } = useToggleWishlist();
+const ProductsShowcase = ({ products }: { products: CarouselCardProps[] }) => {
+  const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
+  const { handleToggleWishlist } = useToggleWishlist();
+
+  const handleWishlistToggle = async (id: number) => {
+    setTogglingProductId(id);
+
+    try {
+      await handleToggleWishlist(id);
+    } finally {
+      setTogglingProductId(null);
+    }
+  };
+  const isProductToggling = (id: number) => togglingProductId === id;
+
   return (
-    <Carousel>
-      {products.map((product: any) => (
-        <SwiperSlide key={product.productId}>
-          <CarouselCard
-            key={product.id}
-            productId={product.id}
-            productName={product.productName}
-            brand={product.brand}
-            thumbnail={product.thumbnail}
-            price={product.price}
-            subcategory={product.subcategory}
-            category={product.category}
-            onWishlistToggle={() => handleToggleWishlist(product.id)}
-            isTogglingWishlist={isLoading}
-          />
-        </SwiperSlide>
-      ))}
-    </Carousel>
+    <Carousel
+      products={products}
+      onWishlistToggle={handleWishlistToggle}
+      isTogglingWishlist={isProductToggling}
+    />
   );
 };
 
