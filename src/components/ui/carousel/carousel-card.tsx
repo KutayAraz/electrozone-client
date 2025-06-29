@@ -7,7 +7,7 @@ import { createUrlSlug } from "@/utils/create-url-slug";
 import { WishlistHeart } from "../wishlist-heart";
 
 export interface CarouselCardProps {
-  productId: number;
+  id: number;
   productName: string;
   brand: string;
   price: number;
@@ -15,11 +15,11 @@ export interface CarouselCardProps {
   subcategory: string;
   category: string;
   onWishlistToggle: (id: number) => void;
-  isTogglingWishlist: boolean;
+  isTogglingWishlist: (id: number) => boolean;
 }
 
 export const CarouselCard = ({
-  productId,
+  id,
   productName,
   brand,
   price,
@@ -30,20 +30,20 @@ export const CarouselCard = ({
   isTogglingWishlist,
 }: CarouselCardProps) => {
   const wishlist = useSelector((state: RootState) => state.wishlist);
-  const isWishlisted = wishlist.items.includes(productId);
+  const isWishlisted = wishlist.items.includes(id);
 
   return (
     <div className="relative mx-[4px] xs:mx-2 sm:mx-3 my-1">
       <Link
-        to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${productId}`}
+        to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
         className="flex flex-col items-center rounded-md border-1 border-gray-300 bg-white p-2 shadow-sm hover:bg-gray-100 hover:shadow-md"
-        key={productId}
+        key={id}
       >
         <div className="ml-auto h-6 pr-1 text-right">
           <WishlistHeart
             isWishlisted={isWishlisted}
-            onClick={() => onWishlistToggle(productId)}
-            disabled={isTogglingWishlist}
+            onClick={() => onWishlistToggle(id)}
+            disabled={isTogglingWishlist(id)}
           />
         </div>
         <div className="h-[100px] rounded-md pt-2 sm:h-[160px]">

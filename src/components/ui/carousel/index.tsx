@@ -1,16 +1,25 @@
 import { useRef } from "react";
 import "swiper/css";
 import { A11y, Navigation, Scrollbar } from "swiper/modules";
-import { Swiper } from "swiper/react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 import NavButton from "@assets/svgs/carousel-nav-button.svg?react";
 
+import { CarouselCard, CarouselCardProps } from "./carousel-card";
+
 interface CarouselProps {
-  children: React.ReactNode;
+  products: CarouselCardProps[];
+  onWishlistToggle: (id: number) => void;
+  isTogglingWishlist: (id: number) => boolean;
   className?: string;
 }
 
-export const Carousel = ({ children, className }: CarouselProps) => {
+export const Carousel = ({
+  products,
+  className,
+  onWishlistToggle,
+  isTogglingWishlist,
+}: CarouselProps) => {
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
 
@@ -57,7 +66,15 @@ export const Carousel = ({ children, className }: CarouselProps) => {
           }}
           className={`${className}`}
         >
-          {children}
+          {products.map((product: CarouselCardProps) => (
+            <SwiperSlide key={product.id}>
+              <CarouselCard
+                {...product}
+                onWishlistToggle={onWishlistToggle}
+                isTogglingWishlist={isTogglingWishlist}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
         <div ref={nextRef} className="absolute -right-4 top-1/2 -translate-y-1/2 cursor-pointer">
           <NavButton className="size-5 " />

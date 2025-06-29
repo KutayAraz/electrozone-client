@@ -9,7 +9,7 @@ import { createUrlSlug } from "@/utils/create-url-slug";
 import { WishlistHeart } from "../wishlist-heart";
 
 export interface ProductCardProps {
-  productId: number;
+  id: number;
   thumbnail: string;
   productName: string;
   brand: string;
@@ -21,14 +21,14 @@ export interface ProductCardProps {
   onWishlistToggle: (id: number) => void;
   onAddToCart: (id: number) => void;
   className?: string;
-  isAddingToCart?: boolean;
-  isTogglingWishlist?: boolean;
+  isAddingToCart: boolean;
+  isTogglingWishlist: boolean;
 }
 
 export const ProductCard = forwardRef(
   (
     {
-      productId,
+      id,
       thumbnail,
       productName,
       brand,
@@ -46,25 +46,25 @@ export const ProductCard = forwardRef(
     ref: React.Ref<HTMLDivElement>,
   ) => {
     const wishlist = useAppSelector((state: RootState) => state.wishlist);
-    const isWishlisted = wishlist.items.includes(productId);
+    const isWishlisted = wishlist.items.includes(id);
 
     const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       e.stopPropagation();
-      onAddToCart(productId);
+      onAddToCart(id);
     };
 
     const handleWishlistToggle = (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      onWishlistToggle(productId);
+      onWishlistToggle(id);
     };
 
     return (
       <div className={`w-full p-2 xs:w-1/2 md:w-1/3 lg:w-1/4 ${className}`} ref={ref}>
         <Link
           to={`/category/${
-            category + "/" + subcategory + "/" + createUrlSlug(productName) + "-p-" + productId
+            category + "/" + subcategory + "/" + createUrlSlug(productName) + "-p-" + id
           }`}
           className="group flex rounded-lg border-1 border-gray-300 px-1 py-2 hover:shadow-md xs:flex-col xs:justify-between xs:pt-2"
         >

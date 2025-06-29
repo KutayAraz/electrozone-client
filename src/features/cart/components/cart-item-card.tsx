@@ -10,7 +10,7 @@ type CartItemCardProps = {
   thumbnail: string;
   quantity: number;
   price: string;
-  amount: number;
+  amount: string;
   category: string;
   subcategory: string;
   onRemoveItem: () => void;
