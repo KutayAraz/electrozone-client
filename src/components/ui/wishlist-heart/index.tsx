@@ -59,7 +59,7 @@ export const WishlistHeart = ({
       )}
       <div className="inline-flex h-6 w-6 items-center justify-center">
         {disabled ? (
-          <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>
+          <span className="h-full w-full animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>
         ) : (
           <HeartIcon
             className={`h-full w-full transition-all duration-300 ${
