@@ -15,7 +15,8 @@ export type ProductLayoutProps = {
   incrementQuantity: () => void;
   stock: number;
   handleAddToCart: (quantity: number) => void;
-  handleBuyNow: () => void;
+  handleBuyNow: () => Promise<void>;
+  isNavigatingToCheckout: boolean;
   addingToCart: boolean;
   averageRating: number;
   onRatingClick: () => void;

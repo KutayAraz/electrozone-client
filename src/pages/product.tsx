@@ -2,6 +2,7 @@ import { useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useNavigate, useParams } from "react-router";
 
+import { useCreateBuyNowCartMutation } from "@/features/cart/api/buy-now-cart/create-buy-now-cart";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
 import { getProductDetailsApi } from "@/features/products/api/get-product-details";
 import { ProductDesktopLayout } from "@/features/products/components/product-desktop-layout";
@@ -38,6 +39,7 @@ export const ProductPage = () => {
   const [selectedImage, setSelectedImage] = useState(productData.thumbnail);
 
   const { addToCart, isLoading: isAddingToCart } = useAddToCart();
+  const [addToBuyNowCart, { isLoading: isNavigatingToCheckout }] = useCreateBuyNowCartMutation();
   const { handleToggleWishlist } = useToggleWishlist();
 
   const isMobile = useMediaQuery("(min-width:768px)");
@@ -57,8 +59,9 @@ export const ProductPage = () => {
     }
   };
 
-  const buyNowClick = () => {
+  const buyNowClick = async () => {
     dispatch(setUserIntent(CheckoutIntent.BUY_NOW));
+    await addToBuyNowCart({ productId: productData.id, quantity: 1 }).unwrap();
     navigate("/checkout");
   };
 
@@ -80,6 +83,7 @@ export const ProductPage = () => {
           addingToCart={isAddingToCart}
           handleQuantityChange={handleQuantityChange}
           handleBuyNow={buyNowClick}
+          isNavigatingToCheckout={isNavigatingToCheckout}
           decrementQuantity={decrementQuantity}
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
@@ -99,9 +103,10 @@ export const ProductPage = () => {
           images={productData.productImages}
           thumbnail={productData.thumbnail}
           handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
-          addingToCart={isAddingToCart}
+          addingToCart={isAddingToCart || isNavigatingToCheckout}
           handleQuantityChange={handleQuantityChange}
           handleBuyNow={buyNowClick}
+          isNavigatingToCheckout={isNavigatingToCheckout}
           decrementQuantity={decrementQuantity}
           selectedImage={selectedImage}
           setSelectedImage={setSelectedImage}

@@ -49,3 +49,4 @@ export interface AddToCartPayload {
 
 export type AddToSessionCartPayload = AddToCartPayload;
 export type BuyNowCartPayload = AddToCartPayload;
+export type CartItem = FormattedCartItem;

@@ -26,6 +26,7 @@ export const ProductMobileLayout = ({
   stock,
   handleAddToCart,
   handleBuyNow,
+  isNavigatingToCheckout,
   addingToCart,
   averageRating,
   onRatingClick,
@@ -132,7 +133,7 @@ export const ProductMobileLayout = ({
           onClick={handleBuyNow}
           className="mx-auto my-2 w-4/5 rounded-md bg-theme-orange px-4 py-2 text-white"
         >
-          Buy now
+          {isNavigatingToCheckout ? "Navigating to checkout" : "Buy now"}
         </button>
       </div>
     </>

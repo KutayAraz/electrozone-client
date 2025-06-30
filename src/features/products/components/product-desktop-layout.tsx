@@ -31,6 +31,7 @@ export const ProductDesktopLayout = ({
   handleAddToCart,
   addingToCart,
   handleBuyNow,
+  isNavigatingToCheckout,
   averageRating,
   onRatingClick,
   onWishlistToggle,
@@ -234,7 +235,7 @@ export const ProductDesktopLayout = ({
                 onClick={handleBuyNow}
                 className="w-full rounded-xl bg-orange-300 px-4 py-2 hover:bg-orange-400"
               >
-                Buy now
+                {isNavigatingToCheckout ? "Navigating to checkout" : "Buy now"}
               </button>
             </div>
           ) : (
