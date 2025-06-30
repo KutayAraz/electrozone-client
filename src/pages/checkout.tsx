@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { redirect, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 
+import { paths } from "@/config/paths";
+import { useClearSessionCartMutation } from "@/features/cart/api/session-cart/clear-session-cart";
 import { CartChangesAlert } from "@/features/cart/components/cart-changes-alert";
 import { useMergeCarts } from "@/features/cart/hooks/use-merge-carts";
 import { initiateCheckoutApi } from "@/features/checkout/api/initiate-checkout";
@@ -13,6 +15,7 @@ import { getUserProfileApi } from "@/features/user/api/get-user-profile";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import { CheckoutLayout } from "@/layouts/checkout-layout";
+import { CheckoutIntent } from "@/stores/slices/models";
 import { selectCheckoutIntent, setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
 import { CheckoutType } from "@/types/checkout";
@@ -55,6 +58,7 @@ export const CheckoutPage = () => {
 
   const { submitMergeCarts, isLoading: isMergingCarts } = useMergeCarts();
   const { placeOrder, isLoading: isPlacingOrder } = useProcessOrder();
+  const [clearSessionCart, { isLoading: isClearingSessionCart }] = useClearSessionCartMutation();
 
   const navigateToCart = () => {
     setShowModal(false);
@@ -73,9 +77,9 @@ export const CheckoutPage = () => {
       return null; // No need to return cart data as revalidation will handle it
     });
 
-    if (typeof result === "number" || typeof result === "string") {
+    if (typeof result === "number") {
       dispatch(setUserIntent(CheckoutType.NORMAL));
-      navigate(`/order-confirmation/${result}`, { state: { result } });
+      navigate(paths.checkout.success.getHref({ orderId: result.toString() }));
     }
   };
 
@@ -93,13 +97,20 @@ export const CheckoutPage = () => {
     }
   };
 
+  const cancelAndNavigate = async () => {
+    await clearSessionCart();
+    dispatch(setUserIntent(CheckoutIntent.NORMAL));
+    navigateToCart();
+  };
+
   return (
     <>
       <CartAdditionModal
         isOpen={showModal}
         onAddToCart={addToCartAndNavigate}
         isMerging={isMergingCarts}
-        onCancel={navigateToCart}
+        isCancelling={isClearingSessionCart}
+        onCancel={cancelAndNavigate}
       />
 
       <CheckoutLayout onBackClick={handleBackToCart}>
