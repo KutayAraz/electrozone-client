@@ -1,12 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
 import { Spinner } from "@/components/ui/spinner";
+import { paths } from "@/config/paths";
 import { CartChangesAlert } from "@/features/cart/components/cart-changes-alert";
 import { CartItemCard } from "@/features/cart/components/cart-item-card";
 import { useClearCart } from "@/features/cart/hooks/use-clear-cart";
 import { useGetCart } from "@/features/cart/hooks/use-get-cart";
 import { useRemoveFromCart } from "@/features/cart/hooks/use-remove-from-cart";
 import { useUpdateQuantity } from "@/features/cart/hooks/use-update-quantity";
+import { CartItem } from "@/features/cart/types/response";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import { CheckoutIntent } from "@/stores/slices/models";
@@ -42,12 +44,8 @@ export const CartPage = () => {
   };
 
   const proceedToCheckout = () => {
-    if (!isAuthenticated) {
-      dispatch(setUserIntent(CheckoutIntent.SESSION));
-      navigate("auth/login", { state: { from: { pathname: "/checkout" } } });
-    } else {
-      navigate("/checkout", { replace: true });
-    }
+    if (!isAuthenticated) dispatch(setUserIntent(CheckoutIntent.SESSION));
+    navigate(paths.checkout.root.getHref());
   };
 
   const isCartEmpty = !cartData?.cartItems || cartData.cartItems.length === 0;
@@ -98,7 +96,7 @@ export const CartPage = () => {
               </h2>
 
               <div className="space-y-4">
-                {cartData?.cartItems.map((cartItem: any) => (
+                {cartData?.cartItems.map((cartItem: CartItem) => (
                   <CartItemCard
                     key={cartItem.id}
                     id={cartItem.id}
