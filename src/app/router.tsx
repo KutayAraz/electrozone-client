@@ -161,8 +161,8 @@ export const createAppRouter = () =>
             {
               path: paths.app.wishlist.path,
               lazy: async () => {
-                const { WishlistPage, wishlistLoader } = await import("@pages/wishlist");
-                return { Component: WishlistPage, loader: wishlistLoader };
+                const { WishlistPage, wishlistPageLoader } = await import("@pages/wishlist");
+                return { Component: WishlistPage, loader: wishlistPageLoader };
               },
             },
           ],
