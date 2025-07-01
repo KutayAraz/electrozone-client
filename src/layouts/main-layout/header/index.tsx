@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { useCartCount } from "@/features/cart/hooks/use-cart-count";
 import { selectUser, userSlice } from "@/stores/slices/user-slice";
@@ -21,7 +21,6 @@ import { UserSection } from "./components/user/user-section";
 
 export const Header = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const user = useSelector(selectUser);
   const itemCount = useCartCount();
@@ -78,7 +77,6 @@ export const Header = () => {
           itemCount={itemCount}
           smallScreenDevice={smallScreenDevice}
           onProfileClick={() => setProfileModalOpen(true)}
-          onSignInClick={() => navigate("auth/login")}
         />
       </div>
 
