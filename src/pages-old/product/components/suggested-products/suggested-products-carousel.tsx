@@ -1,17 +1,18 @@
 import { useRef, useState } from "react";
-import { Navigation, Scrollbar, A11y } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { A11y, Navigation, Scrollbar } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperType } from "swiper/types";
 
-import { CarouselCardProps, CarouselCard } from "@/components/ui/carousel/carousel-card";
+import { CarouselCard } from "@/components/ui/carousel/carousel-card";
+import { CarouselProduct } from "@/types/product";
 import { ReactComponent as NavButton } from "@assets/svgs/carousel-nav-button.svg";
 
 export const SuggestedProductCarousel = ({
   products,
   className,
 }: {
-  products: CarouselCardProps[];
+  products: CarouselProduct[];
   className?: string;
 }) => {
   const prevRef = useRef<HTMLDivElement>(null);
@@ -65,7 +66,7 @@ export const SuggestedProductCarousel = ({
           }}
           className={`${className}`}
         >
-          {products.map((product: CarouselCardProps) => (
+          {products.map((product: CarouselProduct) => (
             <SwiperSlide key={product.id}>
               <CarouselCard
                 id={product.id}
