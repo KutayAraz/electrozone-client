@@ -1,4 +1,4 @@
-import { OrderItemCardProps } from "@/pages-old/my-orders/components/types";
+import { OrderItem } from "@/types/order";
 import { formatDateTime } from "@/utils/format-time";
 
 import { OrderItemDetailsCard } from "./order-item-details-card";
@@ -13,7 +13,7 @@ interface OrderDetailsCardProps {
     address: string;
     city: string;
   };
-  orderItems: OrderItemCardProps[];
+  orderItems: OrderItem[];
   isCancellable: boolean;
   onOrderCancel: () => void;
 }
@@ -55,7 +55,7 @@ export const OrderDetailsCard = ({
         </div>
 
         <div className="grid grid-cols-2 gap-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
-          {orderItems.map((product: any) => (
+          {orderItems.map((product: OrderItem) => (
             <OrderItemDetailsCard {...product} key={product.id} />
           ))}
         </div>

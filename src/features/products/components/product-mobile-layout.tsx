@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import { WishlistHeart } from "@/components/ui/wishlist-heart";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import type { RootState } from "@/stores/store";
+import { ProductImage } from "@/types/product";
 
 import { ProductLayoutProps } from "../types";
 
@@ -70,7 +71,7 @@ export const ProductMobileLayout = ({
           />
         </SwiperSlide>
 
-        {images?.map((image: any) => (
+        {images?.map((image: ProductImage) => (
           <SwiperSlide key={image.id} className="flex items-center justify-center">
             <button
               onClick={() => setSelectedImage(image.productImage)}

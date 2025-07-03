@@ -7,12 +7,13 @@ import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { removeFromWishlist } from "@/stores/slices/wishlist-slice";
 import { store } from "@/stores/store";
+import { Product } from "@/types/product";
 
 export const wishlistPageLoader = async () => {
   return await store.dispatch(wishlistApi.endpoints.getUserWishlist.initiate());
 };
 
-const WishlistProduct = ({ product }: any) => {
+const WishlistProduct = ({ ...product }: Product) => {
   const dispatch = useAppDispatch();
 
   const { handleToggleWishlist, isLoading: isTogglingWishlist } = useToggleWishlist();
@@ -53,7 +54,7 @@ export const WishlistPage = () => {
         <h4 className="text-lg italic text-gray-500">There&apos;s nothing in your wishlist.</h4>
       ) : (
         <div className="flex flex-wrap">
-          {wishlistProducts?.data.map((product: any) => {
+          {wishlistProducts?.data.map((product: Product) => {
             return <WishlistProduct product={product} key={product.id} />;
           })}
         </div>

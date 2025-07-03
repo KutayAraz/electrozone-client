@@ -1,9 +1,10 @@
 import { forwardRef } from "react";
 
 import { ProductCard } from "@/components/ui/product-card";
+import { Product } from "@/types/product";
 
 interface ProductListProps {
-  products: any[];
+  products: Product[];
   loading?: boolean;
   onAddToCart: (productId: number) => void;
   onWishlistToggle: (productId: number) => void;
@@ -15,7 +16,7 @@ export const ProductList = forwardRef<HTMLDivElement, ProductListProps>(
   ({ products, onAddToCart, onWishlistToggle, isAddingToCart, isTogglingWishlist }, ref) => {
     return (
       <>
-        {products.map((product: any, index: number) => {
+        {products.map((product: Product, index: number) => {
           const isLastElement = index === products.length - 1;
 
           return (

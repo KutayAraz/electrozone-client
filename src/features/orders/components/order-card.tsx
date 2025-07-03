@@ -23,7 +23,7 @@ type OrderCardProps = {
 export const OrderCard = forwardRef(
   (
     { orderId, orderTotal, orderQuantity, orderDate, user, orderItems }: OrderCardProps,
-    ref: any,
+    ref: React.Ref<HTMLDivElement>,
   ) => {
     const navigate = useNavigate();
     const date = formatDateTime(orderDate);

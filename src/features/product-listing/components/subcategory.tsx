@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import { Carousel } from "@/components/ui/carousel";
 import { CarouselCardProps } from "@/components/ui/carousel/carousel-card";
+import { CarouselProduct } from "@/types/product";
 import { formatString } from "@/utils/format-casing";
 
 type ProductSectionProps = {
@@ -25,8 +26,8 @@ const ProductSection = ({ title, subcategory, products }: ProductSectionProps) =
 export type SubcategoryProps = {
   id: number;
   subcategory: string;
-  topSelling: { products: CarouselCardProps[]; productQuantity: number };
-  topWishlisted: { products: CarouselCardProps[]; productQuantity: number };
+  topSelling: { products: CarouselProduct[]; productQuantity: number };
+  topWishlisted: { products: CarouselProduct[]; productQuantity: number };
   onWishlistToggle: (productId: number) => void;
 };
 

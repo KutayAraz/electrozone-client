@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { WishlistHeart } from "@/components/ui/wishlist-heart";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import { RootState } from "@/stores/store";
+import { ProductImage } from "@/types/product";
 import { capitalizeWords } from "@/utils/capitalize-words";
 import NavigationButton from "@assets/svgs/arrow-black.svg?react";
 import CloseButton from "@assets/svgs/modal-close.svg?react";
@@ -39,7 +40,7 @@ export const ProductDesktopLayout = ({
   const wishlist = useAppSelector((state: RootState) => state.wishlist);
   const isWishlisted = wishlist.items.includes(productId);
 
-  const allImages = [{ productImage: thumbnail }, ...images];
+  const allImages = [{ id: 0, productImage: thumbnail }, ...images];
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [startIndex, setStartIndex] = useState<number>(0);
 
@@ -109,7 +110,7 @@ export const ProductDesktopLayout = ({
           )}
 
           <div className="flex grow flex-col space-y-2">
-            {allImages.slice(startIndex, startIndex + 5).map((image: any) => (
+            {allImages.slice(startIndex, startIndex + 5).map((image: ProductImage) => (
               <img
                 key={image.id}
                 src={image.productImage}

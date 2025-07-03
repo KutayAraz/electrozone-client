@@ -3,11 +3,11 @@ import { Link, LoaderFunctionArgs, useLoaderData, useParams } from "react-router
 
 import { PageHelmet } from "@/components/seo/page-helmet";
 import { Carousel } from "@/components/ui/carousel";
-import { CarouselCardProps } from "@/components/ui/carousel/carousel-card";
 import { Spinner } from "@/components/ui/spinner";
 import { categoryInfoApi } from "@/features/product-listing/api/get-category-info";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { store } from "@/stores/store";
+import { CarouselProduct } from "@/types/product";
 import { formatString } from "@/utils/format-casing";
 
 export const categoryLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -23,7 +23,7 @@ export const categoryLoader = async ({ params }: LoaderFunctionArgs) => {
 type ProductSectionProps = {
   title: string;
   subcategory: string;
-  products: CarouselCardProps[];
+  products: CarouselProduct[];
 };
 
 const ProductSection = ({ title, subcategory, products }: ProductSectionProps) => {
@@ -63,8 +63,8 @@ const ProductSection = ({ title, subcategory, products }: ProductSectionProps) =
 type SubcategoryProps = {
   id: number;
   subcategory: string;
-  topSelling: { products: CarouselCardProps[]; productQuantity: number };
-  topWishlisted: { products: CarouselCardProps[]; productQuantity: number };
+  topSelling: { products: CarouselProduct[]; productQuantity: number };
+  topWishlisted: { products: CarouselProduct[]; productQuantity: number };
 };
 
 const Subcategory = ({ subcategory, topSelling, topWishlisted }: SubcategoryProps) => (
@@ -85,8 +85,8 @@ const Subcategory = ({ subcategory, topSelling, topWishlisted }: SubcategoryProp
 type SubcategoryData = {
   id: number;
   subcategory: string;
-  topSelling: { products: CarouselCardProps[]; productQuantity: number };
-  topWishlisted: { products: CarouselCardProps[]; productQuantity: number };
+  topSelling: { products: CarouselProduct[]; productQuantity: number };
+  topWishlisted: { products: CarouselProduct[]; productQuantity: number };
 };
 
 export const CategoryPage = () => {

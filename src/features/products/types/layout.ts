@@ -1,3 +1,5 @@
+import { ProductImage } from "@/types/product";
+
 export type ProductLayoutProps = {
   productId: number;
   subcategory?: string;
@@ -5,7 +7,7 @@ export type ProductLayoutProps = {
   productName: string;
   brand: string;
   thumbnail: string;
-  images: Array<{ id: number; productImage: string }>;
+  images: ProductImage[];
   setSelectedImage: (image: string) => void;
   selectedImage?: string;
   price: string;

@@ -49,7 +49,7 @@ export const useLogin = () => {
 
       // Clear redirect info after navigation
       dispatch(clearRedirectPath());
-    } catch (error: any) {
+    } catch (error) {
       if (isStandardApiError(error)) {
         switch (error.status) {
           case HttpStatus.NOT_FOUND:

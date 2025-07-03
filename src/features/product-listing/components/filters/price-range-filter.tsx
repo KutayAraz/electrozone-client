@@ -5,7 +5,7 @@ import { PriceRangeData } from "../../types/filters";
 interface PriceRangeFilterProps {
   priceRange: [number, number];
   priceRangeData: PriceRangeData;
-  handlePriceChange: (event: any, newValue: [number, number]) => void;
+  handlePriceChange: (event: Event | React.SyntheticEvent, newValue: [number, number]) => void;
   handlePriceInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handlePriceBlur: () => void;
   compact?: boolean;

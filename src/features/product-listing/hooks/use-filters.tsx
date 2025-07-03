@@ -15,7 +15,7 @@ interface UseFiltersReturn {
   stockStatus: string;
 
   // Handlers
-  handlePriceChange: (event: any, newValue: [number, number]) => void;
+  handlePriceChange: (event: Event | React.SyntheticEvent, newValue: [number, number]) => void;
   handlePriceInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handlePriceBlur: () => void;
   handleStockChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -85,15 +85,18 @@ export const useFilters = ({ priceRangeData }: UseFiltersProps): UseFiltersRetur
   }, [searchParams, priceRangeData]);
 
   // Price handlers
-  const handlePriceChange = useCallback((event: any, newValue: [number, number]) => {
-    // Ensure max is never less than min
-    const [newMin, newMax] = newValue;
-    if (newMax < newMin) {
-      setPriceRange([newMin, newMin]);
-    } else {
-      setPriceRange(newValue);
-    }
-  }, []);
+  const handlePriceChange = useCallback(
+    (event: Event | React.SyntheticEvent, newValue: [number, number]) => {
+      // Ensure max is never less than min
+      const [newMin, newMax] = newValue;
+      if (newMax < newMin) {
+        setPriceRange([newMin, newMin]);
+      } else {
+        setPriceRange(newValue);
+      }
+    },
+    [],
+  );
 
   const handlePriceInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

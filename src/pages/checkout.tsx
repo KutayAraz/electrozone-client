@@ -18,7 +18,8 @@ import { CheckoutLayout } from "@/layouts/checkout-layout";
 import { CheckoutIntent } from "@/stores/slices/models";
 import { selectCheckoutIntent, setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
-import { CheckoutType } from "@/types/checkout";
+import { CheckoutItem, CheckoutType } from "@/types/checkout";
+import { isStandardApiError } from "@/utils/error-guard";
 
 export const checkoutLoader = async () => {
   const state = store.getState();
@@ -37,10 +38,11 @@ export const checkoutLoader = async () => {
       user: userInfo,
       checkoutData,
     };
-  } catch (error: any) {
-    if (error.data && error.data.type === "EMPTY_CART") {
+  } catch (error: unknown) {
+    if (isStandardApiError(error) && error.data?.type === "EMPTY_CART") {
       return redirect("/cart");
     }
+    throw error;
   }
 };
 
@@ -129,7 +131,7 @@ export const CheckoutPage = () => {
               city={user.city}
             />
             <div className="mt-6 max-w-screen-md grow space-y-4">
-              {cartData.cartItems.map((product: any) => {
+              {cartData.cartItems.map((product: CheckoutItem) => {
                 return (
                   <CheckoutItemCard
                     key={product.id}
