@@ -65,10 +65,20 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
-.sticky-header {
-  animation: sticky-transition-show .2s forwards linear;
-}
-
 :root {
   --swiper-theme-color: #13193F;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out;
 }
