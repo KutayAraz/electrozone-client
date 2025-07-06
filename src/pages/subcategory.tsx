@@ -145,11 +145,11 @@ export const SubcategoryPage = () => {
       <div className="page-spacing">
         <div className="flex flex-row items-start sm:space-x-2">
           {/* Desktop Filter Panel */}
-          <div className="sticky hidden h-[calc(100vh-135px)] w-48 shrink-0 flex-col overflow-y-auto sm:top-[150px] sm:flex md:top-28 md:w-60">
-            <h3 className="pl-4 mb-2 text-lg font-bold">
+          <div className="flex-col sticky hidden h-[calc(100vh-135px)] w-48 shrink-0 overflow-y-auto sm:top-30 sm:flex md:top-20 md:w-60">
+            <h3 className="text-lg font-bold">
               {subcategory ? subcategory.toUpperCase().replace(/-/g, " ") : "Products"}
             </h3>
-            <div className="flex flex-col overflow-y-auto overflow-x-hidden">
+            <div className="flex flex-col overflow-x-hidden">
               <FilterPanel priceRangeData={priceRange.data} brandsData={brands.data} />
             </div>
           </div>

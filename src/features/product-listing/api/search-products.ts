@@ -1,16 +1,5 @@
 import { baseApi } from "@/lib/api/base-api";
-
-export interface Product {
-  id: number;
-  productName: string;
-  brand: string;
-  thumbnail: string;
-  averageRating: number;
-  price: string;
-  stock: number;
-  subcategory: string;
-  category: string;
-}
+import { Product } from "@/types/product";
 
 export type SearchResult = {
   products: Product[];

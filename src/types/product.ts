@@ -16,14 +16,17 @@ export type ProductImage = {
 
 export type Product = {
   id: number;
-  thumbnail: string;
   productName: string;
   brand: string;
-  averageRating: number;
-  price: number;
+  thumbnail: string;
+  averageRating: string;
+  price: string;
   stock: number;
   subcategory: string;
   category: string;
+};
+
+export type ProductCard = Product & {
   onWishlistToggle: (id: number) => void;
   onAddToCart: (id: number) => void;
   className?: string;
