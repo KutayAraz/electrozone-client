@@ -58,7 +58,7 @@ export const HomePage = () => {
     <div className="page-spacing">
       <div className="max-w-screen-xl text-center xl:mx-auto">
         <Categories />
-        <h2 className="mb-3 mt-6 text-xl font-semibold text-gray-700">Best Selling Products</h2>
+        <h2 className="mb-3 mt-6 text-xl font-semibold">Best Selling Products</h2>
         <Suspense fallback={<Spinner />}>
           <Await resolve={bestSellers}>
             {(products: { data: CarouselProduct[] }) => (
@@ -66,7 +66,7 @@ export const HomePage = () => {
             )}
           </Await>
         </Suspense>
-        <h2 className="my-3 text-xl font-semibold text-gray-700">Most Wishlisted Products</h2>
+        <h2 className="my-3 text-xl font-semibold">Most Wishlisted Products</h2>
         <Suspense fallback={<Spinner />}>
           <Await resolve={mostWishlisted}>
             {(products: { data: CarouselProduct[] }) => (
@@ -75,7 +75,7 @@ export const HomePage = () => {
           </Await>
         </Suspense>
 
-        <h2 className="my-3 text-xl font-semibold text-gray-700">Best Rated Products</h2>
+        <h2 className="my-3 text-xl font-semibold">Best Rated Products</h2>
         <Suspense fallback={<Spinner />}>
           <Await resolve={bestRated}>
             {(products: { data: CarouselProduct[] }) => (

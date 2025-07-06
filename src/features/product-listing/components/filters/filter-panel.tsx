@@ -43,7 +43,7 @@ export const FilterPanel = ({
   };
 
   return (
-    <div className="p-4">
+    <>
       <StockStatusFilter stockStatus={stockStatus} handleStockChange={handleStockChange} />
 
       {/* Only show subcategories filter if data is provided */}
@@ -94,6 +94,6 @@ export const FilterPanel = ({
           Reset Filters
         </Button>
       </div>
-    </div>
+    </>
   );
 };

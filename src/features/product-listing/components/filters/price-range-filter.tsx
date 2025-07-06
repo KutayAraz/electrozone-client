@@ -59,9 +59,9 @@ export const PriceRangeFilter = ({
       />
 
       <div className="mb-2 flex space-x-2">
-        <div className={compact ? "flex-1" : ""}>
+        <div className="flex-1">
           <TextField
-            fullWidth={compact}
+            fullWidth
             name="minPrice"
             value={priceRange[0]}
             onChange={handlePriceInputChange}
@@ -94,9 +94,9 @@ export const PriceRangeFilter = ({
             }}
           />
         </div>
-        <div className={compact ? "flex-1" : ""}>
+        <div className="flex-1">
           <TextField
-            fullWidth={compact}
+            fullWidth
             name="maxPrice"
             value={priceRange[1]}
             onChange={handlePriceInputChange}
