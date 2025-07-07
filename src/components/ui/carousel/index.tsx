@@ -26,8 +26,11 @@ export const Carousel = ({
   return (
     <div className="relative overflow-hidden px-5">
       <div className="relative mx-auto">
-        <div ref={prevRef} className="absolute -left-4 top-1/2 -translate-y-1/2 cursor-pointer">
-          <NavButton className="size-5 rotate-180" />
+        <div
+          ref={prevRef}
+          className="absolute -left-3 top-1/2 -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full shadow-md p-2 hover:shadow-lg transition-shadow duration-200"
+        >
+          <NavButton className="size-5 rotate-180 text-gray-600" />
         </div>
         <Swiper
           modules={[Navigation, Scrollbar, A11y]}
@@ -76,8 +79,11 @@ export const Carousel = ({
             </SwiperSlide>
           ))}
         </Swiper>
-        <div ref={nextRef} className="absolute -right-4 top-1/2 -translate-y-1/2 cursor-pointer">
-          <NavButton className="size-5 " />
+        <div
+          ref={nextRef}
+          className="absolute -right-3 top-1/2 -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full shadow-md p-2 hover:shadow-lg transition-shadow duration-200"
+        >
+          <NavButton className="size-5 text-gray-600" />
         </div>
       </div>
     </div>

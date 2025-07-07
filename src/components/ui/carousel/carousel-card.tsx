@@ -36,7 +36,7 @@ export const CarouselCard = ({
     <div className="relative mx-[4px] xs:mx-2 sm:mx-3 my-1">
       <Link
         to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
-        className="flex flex-col items-center rounded-md border-1 border-gray-300 bg-white p-2 shadow-sm hover:bg-gray-100 hover:shadow-md"
+        className="flex flex-col items-center rounded-lg border border-gray-200 bg-white p-3 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-200"
         key={id}
       >
         <div className="ml-auto h-6 pr-1 text-right">
@@ -46,7 +46,7 @@ export const CarouselCard = ({
             disabled={isTogglingWishlist(id)}
           />
         </div>
-        <div className="h-[100px] rounded-md pt-2 sm:h-[160px]">
+        <div className="h-[100px] rounded-md pt-2 sm:h-[160px] bg-gray-50 flex items-center justify-center">
           <img
             src={thumbnail}
             alt={productName}
@@ -54,9 +54,11 @@ export const CarouselCard = ({
             loading="lazy"
           />
         </div>
-        <p className="mt-2 line-clamp-3 h-[3em] text-center text-sm">{productName}</p>
-        <p className="mt-2 line-clamp-3 text-center text-sm">{brand}</p>
-        <p className="mt-2 line-clamp-3 text-center text-sm ">${price}</p>
+        <p className="mt-3 line-clamp-3 h-[3em] text-center text-sm font-medium text-gray-800">
+          {productName}
+        </p>
+        <p className="mt-1 text-center text-xs text-gray-500 uppercase tracking-wide">{brand}</p>
+        <p className="mt-2 text-center text-base font-semibold text-gray-900">${price}</p>
       </Link>
     </div>
   );
