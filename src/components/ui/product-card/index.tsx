@@ -13,8 +13,8 @@ export interface ProductCardProps {
   thumbnail: string;
   productName: string;
   brand: string;
-  averageRating: number;
-  price: number;
+  averageRating: string;
+  price: string;
   stock: number;
   subcategory: string;
   category: string;
