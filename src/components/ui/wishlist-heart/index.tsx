@@ -50,22 +50,24 @@ export const WishlistHeart = ({
       onClick={handleClick}
       disabled={disabled}
       aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-      className={`relative scale-100 transition-transform duration-300 group-hover:scale-110 ${
+      className={`relative w-10 h-10 flex items-center justify-center transition-transform duration-300 ${
         disabled ? "cursor-not-allowed" : "cursor-pointer"
       } ${className}`}
     >
       {isAnimating && isWishlisted && (
         <span className="absolute inset-0 animate-ping rounded-full bg-[var(--color-theme-orange)] opacity-50"></span>
       )}
-      <div className="inline-flex h-6 w-6 items-center justify-center">
+      <div className="flex items-center justify-center w-6 h-6">
         {disabled ? (
-          <span className="h-full w-full animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>
+          <span className="w-full h-full animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>
         ) : (
           <HeartIcon
-            className={`h-full w-full transition-all duration-300 ${
+            className={`w-full h-full transition-all duration-300 ${
               isAnimating ? (isWishlisted ? styles.animateHeartbeat : styles.animateHeartbreak) : ""
             }`}
             fill={isWishlisted ? "var(--color-theme-orange)" : "#ffffff"}
+            stroke={isWishlisted ? "var(--color-theme-orange)" : "#e5e7eb"}
+            strokeWidth="2"
           />
         )}
       </div>
