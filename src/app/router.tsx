@@ -138,7 +138,7 @@ export const createAppRouter = () =>
               },
             },
             {
-              path: paths.app.profile.orders.path,
+              path: paths.app.orders.path,
               children: [
                 {
                   index: true,
@@ -148,7 +148,7 @@ export const createAppRouter = () =>
                   },
                 },
                 {
-                  path: paths.app.profile.orders.order.path,
+                  path: paths.app.orders.order.path,
                   lazy: async () => {
                     const { OrderDetails, orderDetailsLoader } = await import(
                       "@/pages/order-details"

@@ -68,11 +68,11 @@ export const OrderConfirmationPage = () => {
           </div>
 
           <div className="mb-8 space-y-4 rounded-lg bg-gray-50 p-6">
-            <div className="flex items-center text-gray-700">
+            <div className="flex items-center">
               <LocalShipping className="mr-3 text-blue-600" />
               <span>You can track your order status in your account dashboard.</span>
             </div>
-            <div className="flex items-center text-gray-700">
+            <div className="flex items-center">
               <ShoppingBag className="mr-3 text-blue-600" />
               <span>You can cancel your order until it is a day old.</span>
             </div>
@@ -80,7 +80,7 @@ export const OrderConfirmationPage = () => {
 
           <div className="flex flex-col gap-4 sm:flex-row justify-between">
             <Link
-              to={paths.app.profile.orders.order.getHref(orderId)}
+              to={paths.app.orders.order.getHref(orderId)}
               className="flex items-center justify-center rounded-md border border-blue-600 bg-white px-6 py-3 text-center font-medium text-blue-600 shadow-sm transition-all duration-200 hover:bg-blue-50"
             >
               View Order Details

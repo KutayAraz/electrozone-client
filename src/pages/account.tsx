@@ -29,7 +29,7 @@ export const InfoCard = ({ to, children, Icon }: InfoCardProps) => {
 export const AccountPage = () => {
   const accountMenuItems = [
     { path: paths.app.profile.getHref(), Icon: AddressCard, label: "Address" },
-    { path: paths.app.profile.orders.getHref(), Icon: OrderComplete, label: "Orders" },
+    { path: paths.app.orders.getHref(), Icon: OrderComplete, label: "Orders" },
     { path: paths.app.security.getHref(), Icon: Security, label: "Security" },
     { path: paths.app.wishlist.getHref(), Icon: WishlistHeart, label: "Wishlist" },
     { path: paths.misc.contact.getHref(), Icon: Contact, label: "Contact" },

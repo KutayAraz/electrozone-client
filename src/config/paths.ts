@@ -40,13 +40,13 @@ export const paths = {
     profile: {
       path: "profile",
       getHref: () => "/account/profile",
-      orders: {
-        path: "orders",
-        getHref: () => "/account/profile/orders",
-        order: {
-          path: ":orderId",
-          getHref: (params: OrderParams) => `/account/profile/orders/${params.orderId}`,
-        },
+    },
+    orders: {
+      path: "orders",
+      getHref: () => "/account/orders",
+      order: {
+        path: ":orderId",
+        getHref: (params: OrderParams) => `/account/orders/${params.orderId}`,
       },
     },
     wishlist: {

@@ -36,7 +36,7 @@ export const OrderDetails = () => {
       }),
     );
 
-    navigate(paths.app.profile.orders.getHref());
+    navigate(paths.app.orders.getHref());
   };
 
   const {
