@@ -6,6 +6,7 @@ import {
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
 import { Spinner } from "@/components/ui/spinner";
+import { paths } from "@/config/paths";
 import { useCancelOrderMutation } from "@/features/orders/api/cancel-order";
 import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
 import { OrderDetailsCard } from "@/features/orders/components/order-details-card";
@@ -35,7 +36,7 @@ export const OrderDetails = () => {
       }),
     );
 
-    navigate("/account/orders");
+    navigate(paths.app.profile.orders.getHref());
   };
 
   const {

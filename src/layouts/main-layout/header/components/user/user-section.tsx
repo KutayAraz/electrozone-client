@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { Basket } from "@/components/ui/basket";
+import { paths } from "@/config/paths";
 import Arrow from "@assets/svgs/arrow.svg?react";
 import UserIcon from "@assets/svgs/user.svg?react";
 
@@ -33,7 +34,7 @@ export const UserSection = ({
     <button onClick={onProfileClick}>
       <UserIcon width={32} height={32} />
     </button>
-    <Link to="/cart" className="ml-2 mt-auto flex">
+    <Link to={paths.cart.getHref()} className="ml-2 mt-auto flex">
       {!smallScreenDevice && <p className="self-center">Basket</p>}
       <Basket itemCount={itemCount} />
     </Link>

@@ -2,6 +2,7 @@ import { Rating } from "@mui/material";
 import { forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { paths } from "@/config/paths";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import { RootState } from "@/stores/store";
 import { createUrlSlug } from "@/utils/create-url-slug";
@@ -85,7 +86,11 @@ export const ProductCard = forwardRef(
 
             {/* Product Image */}
             <Link
-              to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
+              to={paths.products.category.subcategory.product.getHref({
+                category,
+                subcategory,
+                productSlug: `${createUrlSlug(productName)}-p-${id}`,
+              })}
               className="block w-full h-full"
             >
               <div className="w-full h-full flex items-center justify-center p-4">
@@ -113,7 +118,11 @@ export const ProductCard = forwardRef(
           {/* Content Section */}
           <div className="flex-1 p-3 sm:p-4 flex flex-col min-h-0">
             <Link
-              to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
+              to={paths.products.category.subcategory.product.getHref({
+                category,
+                subcategory,
+                productSlug: `${createUrlSlug(productName)}-p-${id}`,
+              })}
               className="flex-1 flex flex-col"
             >
               {/* Brand */}

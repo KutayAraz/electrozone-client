@@ -2,6 +2,7 @@ import { FormEvent, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/custom-modal";
+import { paths } from "@/config/paths";
 import CloseButton from "@assets/svgs/close-button.svg?react";
 
 interface LocationModalProps {
@@ -53,7 +54,7 @@ export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: Locat
         <h2 className="mb-2 mt-4 text-xl font-medium">Choose your location</h2>
 
         <Link
-          to="/sign-in"
+          to={paths.auth.login.getHref()}
           className="my-1 rounded-lg bg-theme-orange py-2 font-medium sm:py-[4px]"
         >
           Sign in to see your address

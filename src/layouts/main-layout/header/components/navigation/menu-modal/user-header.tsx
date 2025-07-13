@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { paths } from "@/config/paths";
 import UserIcon from "@assets/svgs/user.svg?react";
 
 interface UserHeaderProps {
@@ -9,7 +10,7 @@ interface UserHeaderProps {
 
 export const UserHeader = ({ firstName, isSignedIn }: UserHeaderProps) => (
   <Link
-    to={isSignedIn ? "/my-account" : "/sign-in"}
+    to={isSignedIn ? paths.app.root.getHref() : paths.auth.login.getHref()}
     className="flex w-full items-center justify-between bg-theme-blue p-4 text-white shadow-md"
   >
     <span className={`${isSignedIn ? "text-2xl" : "text-xl"}`}>

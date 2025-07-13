@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { paths } from "@/config/paths";
 import { createUrlSlug } from "@/utils/create-url-slug";
 
 interface OrderItemCardProps {
@@ -19,7 +20,11 @@ export const OrderItemCard = ({
 }: OrderItemCardProps) => {
   return (
     <Link
-      to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
+      to={paths.products.category.subcategory.product.getHref({
+        category,
+        subcategory,
+        productSlug: `${createUrlSlug(productName)}-p-${id}`,
+      })}
       key={id}
       className="mr-2 shrink-0 rounded border border-transparent p-4 hover:border-1 hover:border-white sm:mr-4"
     >

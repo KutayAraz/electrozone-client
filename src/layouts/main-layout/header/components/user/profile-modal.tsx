@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/custom-modal";
+import { paths } from "@/config/paths";
 import { useLogout } from "@/features/auth/hooks/use-logout";
 import { navigationLinks } from "@/layouts/main-layout/header/constants/navigation";
 import CloseButton from "@assets/svgs/close-button.svg?react";
@@ -32,7 +33,7 @@ export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps)
         <div className="flex h-full flex-col justify-between">
           <div className="bg-white">
             <Link
-              to="/my-account"
+              to={paths.app.root.getHref()}
               className="block bg-theme-blue px-4 py-6 text-xl font-semibold text-white"
               onClick={onClose}
             >

@@ -1,6 +1,7 @@
 import { Divider } from "@mui/material";
 import { Link } from "react-router-dom";
 
+import { paths } from "@/config/paths";
 import { createUrlSlug } from "@/utils/create-url-slug";
 
 interface OrderDetailsItemCardProps {
@@ -26,7 +27,11 @@ export const OrderItemDetailsCard = ({
 }: OrderDetailsItemCardProps) => {
   return (
     <Link
-      to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
+      to={paths.products.category.subcategory.product.getHref({
+        category,
+        subcategory,
+        productSlug: `${createUrlSlug(productName)}-p-${id}`,
+      })}
       key={id}
       className="group rounded-md border px-4 py-2 hover:border-gray-400 hover:shadow-md"
     >

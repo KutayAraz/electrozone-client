@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, Outlet, ScrollRestoration } from "react-router-dom";
 
 import { LoadingIndicator } from "@/components/ui/loading-bar";
+import { paths } from "@/config/paths";
 import { mergeCartsApi } from "@/features/cart/api/user-cart/merge-carts";
 import { CheckoutIntent } from "@/stores/slices/models";
 import { setUserIntent } from "@/stores/slices/user-slice";
@@ -16,8 +17,8 @@ export const mainLayoutLoader = async ({ request }: LoaderFunctionArgs) => {
   const checkoutIntent = store.getState().user.checkoutIntent;
 
   if (
-    currentPath !== "/checkout" &&
-    currentPath !== "/auth/login" &&
+    currentPath !== paths.checkout.root.getHref() &&
+    currentPath !== paths.auth.login.getHref() &&
     (checkoutIntent === CheckoutType.SESSION || checkoutIntent === CheckoutType.BUY_NOW)
   ) {
     if (checkoutIntent === CheckoutType.SESSION)

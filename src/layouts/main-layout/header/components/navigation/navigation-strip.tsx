@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 
+import { paths } from "@/config/paths";
 import { MENU_ITEMS } from "@/layouts/main-layout/header/constants/menu";
 import BurgerIcon from "@assets/svgs/burger.svg?react";
 
@@ -26,7 +27,7 @@ export const NavigationStrip = ({ onMenuClick, className, style = {} }: Navigati
         <p className="my-auto hidden px-2 sm:flex">All</p>
       </button>
       <Link
-        to={"/"}
+        to={paths.home.getHref()}
         className="flex rounded border border-transparent px-1 hover:border-1 hover:border-white sm:my-auto sm:hidden"
       >
         Home

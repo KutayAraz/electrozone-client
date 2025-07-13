@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { paths } from "@/config/paths";
 import { useCartCount } from "@/features/cart/hooks/use-cart-count";
 import { selectUser, userSlice } from "@/stores/slices/user-slice";
 import BrandLogo from "@assets/brand-images/brand-logo.svg?react";
@@ -103,10 +104,13 @@ export const Header = () => {
               height={32}
               onClick={() => setMenuModalOpen(true)}
             />
-            <Link to={"/"} className="mb-1 flex min-w-[136px] max-w-[60%] items-center sm:hidden">
+            <Link
+              to={paths.home.getHref()}
+              className="mb-1 flex min-w-[136px] max-w-[60%] items-center sm:hidden"
+            >
               <Brand className="" />
             </Link>
-            <Link to={"/"} className="hidden max-w-[256px] sm:block">
+            <Link to={paths.home.getHref()} className="hidden max-w-[256px] sm:block">
               <BrandLogo />
             </Link>
             <LocationSection

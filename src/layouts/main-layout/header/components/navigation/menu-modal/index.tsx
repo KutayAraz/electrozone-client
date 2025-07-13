@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { CustomModal } from "@/components/ui/custom-modal";
+import { paths } from "@/config/paths";
 import { selectUser } from "@/stores/slices/user-slice";
 import CloseButton from "@assets/svgs/close-button.svg?react";
 import ExitIcon from "@assets/svgs/exit.svg?react";
@@ -66,9 +67,7 @@ export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
 
             <Divider />
             <div className="p-4">
-              <Link to="/category" className="text-xl font-bold">
-                Shop By Department
-              </Link>
+              <h2 className="text-xl font-bold">Shop By Department</h2>
             </div>
             <Divider />
 
@@ -85,12 +84,12 @@ export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
               <h2 className="p-4 text-xl font-bold">Help & Settings</h2>
               <Divider />
               {user.isAuthenticated && (
-                <Link to="/account" className="p-4 text-lg hover:bg-gray-100">
+                <Link to={paths.app.root.getHref()} className="p-4 text-lg hover:bg-gray-100">
                   Your Account
                 </Link>
               )}
               {user.city && <p className="p-4 text-lg">Delivery Location: {user.city}</p>}
-              <Link to="/contact" className="p-4 text-lg hover:bg-gray-100">
+              <Link to={paths.misc.contact.getHref()} className="p-4 text-lg hover:bg-gray-100">
                 Contact
               </Link>
               <Link

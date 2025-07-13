@@ -1,20 +1,15 @@
-import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+
+import { paths } from "@/config/paths";
 
 export const UserProfileLayout = () => {
   const menuItems = [
-    { name: "Previous Orders", link: "/my-account/orders" },
-    { name: "Manage Profile", link: "/my-account/profile" },
-    { name: "Account Security", link: "/my-account/update-password" },
-    { name: "Wishlist", link: "/my-account/wishlist" },
-    { name: "Contact Us", link: "/contact" },
+    { path: paths.app.profile.orders.getHref(), name: "Previous Orders" },
+    { path: paths.app.profile.getHref(), name: "Manage Profile" },
+    { path: paths.app.security.getHref(), name: "Account Security" },
+    { path: paths.app.wishlist.getHref(), name: "Wishlist" },
+    { path: paths.misc.contact.getHref(), name: "Contact Us" },
   ];
-
-  const [loading, setLoading] = useState(true);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="page-spacing flex items-start space-x-6">
@@ -26,7 +21,7 @@ export const UserProfileLayout = () => {
       >
         <h3 className="bg-theme-blue px-8 py-2 text-white">My Account</h3>
         {menuItems.map((item) => (
-          <Link key={item.link} to={item.link} className="rounded-md px-8 py-2 hover:bg-gray-200">
+          <Link key={item.path} to={item.path} className="rounded-md px-8 py-2 hover:bg-gray-200">
             {item.name}
           </Link>
         ))}

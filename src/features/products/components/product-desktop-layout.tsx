@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { WishlistHeart } from "@/components/ui/wishlist-heart";
+import { paths } from "@/config/paths";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import { RootState } from "@/stores/store";
 import { ProductImage } from "@/types/product";
@@ -85,12 +86,19 @@ export const ProductDesktopLayout = ({
     <div className="flex flex-col">
       <div className="flex flex-col text-center">
         <div className="hidden text-left sm:block">
-          <Link to={`/category/${category?.replace(/-/g, "_")}`} className="hover:underline">
+          <Link
+            to={paths.products.category.getHref({ category: category.replace(/-/g, "_") })}
+            // `/category/${category?.replace(/-/g, "_")}`
+            className="hover:underline"
+          >
             {modifiedCategory}
           </Link>
           <span> &gt; </span>
           <Link
-            to={`/category/${category?.replace(/-/g, "_")}/${subcategory?.replace(/-/g, "_")}`}
+            to={paths.products.category.subcategory.getHref({
+              category: category.replace(/-/g, "_"),
+              subcategory: subcategory.replace(/-/g, "_"),
+            })}
             className="hover:underline"
           >
             {modifiedSubcategory}

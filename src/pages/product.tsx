@@ -2,6 +2,7 @@ import { useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useNavigate, useParams } from "react-router";
 
+import { paths } from "@/config/paths";
 import { useCreateBuyNowCartMutation } from "@/features/cart/api/buy-now-cart/create-buy-now-cart";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
 import { getProductDetailsApi } from "@/features/products/api/get-product-details";
@@ -62,7 +63,7 @@ export const ProductPage = () => {
   const buyNowClick = async () => {
     dispatch(setUserIntent(CheckoutIntent.BUY_NOW));
     await addToBuyNowCart({ productId: productData.id, quantity: 1 }).unwrap();
-    navigate("/checkout");
+    navigate(paths.checkout.root.getHref());
   };
 
   return (
@@ -95,6 +96,8 @@ export const ProductPage = () => {
       ) : (
         <ProductMobileLayout
           productId={productData.id}
+          subcategory={productData.subcategory}
+          category={productData.category}
           price={productData.price}
           productName={productData.productName}
           brand={productData.brand}

@@ -5,6 +5,7 @@ import {
   displayNotification,
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
+import { paths } from "@/config/paths";
 import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
 import { CheckoutLayout } from "@/layouts/checkout-layout";
 import { store } from "@/stores/store";
@@ -79,13 +80,13 @@ export const OrderConfirmationPage = () => {
 
           <div className="flex flex-col gap-4 sm:flex-row justify-between">
             <Link
-              to="/orders"
+              to={paths.app.profile.orders.order.getHref(orderId)}
               className="flex items-center justify-center rounded-md border border-blue-600 bg-white px-6 py-3 text-center font-medium text-blue-600 shadow-sm transition-all duration-200 hover:bg-blue-50"
             >
               View Order Details
             </Link>
             <Link
-              to="/"
+              to={paths.home.getHref()}
               className="flex items-center justify-center rounded-md bg-theme-orange px-6 py-3 text-center font-medium text-white shadow-md transition-all duration-200 hover:bg-orange-500 active:transform active:scale-[0.98]"
             >
               Continue Shopping
