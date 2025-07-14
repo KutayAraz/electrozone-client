@@ -45,7 +45,7 @@ export const OrdersPage = () => {
 
   return (
     <div className="page-spacing">
-      <h2 className="mb-2 text-xl font-semibold">Previous Orders</h2>
+      <h2 className="mb-2 text-xl font-bold">Previous Orders</h2>
       {isLoading ? (
         <p>
           Loading Orders... <Spinner />
@@ -58,16 +58,7 @@ export const OrdersPage = () => {
             // Set the observer ref on the last element
             const isLastElement = index === allResults.length - 1;
             return (
-              <OrderCard
-                ref={isLastElement ? lastOrderRef : null}
-                key={order.orderId}
-                orderId={order.orderId}
-                orderTotal={order.orderTotal}
-                user={order.user}
-                orderQuantity={order.orderQuantity}
-                orderDate={order.orderDate}
-                orderItems={order.orderItems}
-              />
+              <OrderCard ref={isLastElement ? lastOrderRef : null} key={order.orderId} {...order} />
             );
           })}
           {isFetching && !isLoading && (

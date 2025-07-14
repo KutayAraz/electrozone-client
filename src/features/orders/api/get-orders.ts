@@ -8,7 +8,7 @@ export interface GetOrdersParams {
 }
 
 export interface OrderItemSummary {
-  id: number;
+  productId: number;
   productName: string;
   thumbnail: string;
   subcategory: string;

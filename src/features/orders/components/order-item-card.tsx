@@ -26,9 +26,9 @@ export const OrderItemCard = ({
         productSlug: `${createUrlSlug(productName)}-p-${id}`,
       })}
       key={id}
-      className="mr-2 shrink-0 rounded border border-transparent p-4 hover:border-1 hover:border-white sm:mr-4"
+      className="inline-block mr-2 sm:mr-4 p-2 border border-gray-300 hover:border-gray-400 rounded-2xl transition-colors duration-200"
     >
-      <img src={thumbnail} alt={productName} className="h-20 w-auto object-contain" />
+      <img src={thumbnail} alt={productName} className="h-24 w-24 object-contain" loading="lazy" />
     </Link>
   );
 };
