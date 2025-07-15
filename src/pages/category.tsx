@@ -68,7 +68,7 @@ type SubcategoryProps = {
 };
 
 const Subcategory = ({ subcategory, topSelling, topWishlisted }: SubcategoryProps) => (
-  <div className="px-6 md:px-8 xl:px-0">
+  <>
     <ProductSection
       title="Top Selling Products in"
       subcategory={subcategory}
@@ -79,7 +79,7 @@ const Subcategory = ({ subcategory, topSelling, topWishlisted }: SubcategoryProp
       subcategory={subcategory}
       products={topWishlisted.products}
     />
-  </div>
+  </>
 );
 
 type SubcategoryData = {

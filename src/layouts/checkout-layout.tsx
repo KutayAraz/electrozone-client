@@ -1,6 +1,7 @@
 import { ArrowBack, Security, ShoppingCart } from "@mui/icons-material";
 import { Divider } from "@mui/material";
 
+import { paths } from "@/config/paths";
 import BrandIcon from "@assets/brand-images/brand-logo.svg?react";
 
 type CheckoutLayoutProps = {
@@ -26,7 +27,7 @@ export const CheckoutLayout = ({
               <BrandIcon className="h-10 w-auto md:h-12" />
             </div>
 
-            <div className="hidden items-center space-x-1 text-sm text-gray-600 md:flex">
+            <div className="items-center space-x-1 text-sm text-gray-600 flex">
               <Security className="h-4 w-4 text-green-600" />
               <span>Secure Checkout</span>
             </div>
@@ -38,7 +39,7 @@ export const CheckoutLayout = ({
       <main className="flex-grow">
         <div className="mx-auto max-w-screen-xl px-4 py-6">
           <div
-            className={`mb-6 flex items-center ${
+            className={`mb-4 flex items-center ${
               hideBackButton ? "justify-end" : "justify-between"
             }`}
           >
@@ -103,7 +104,7 @@ export const CheckoutLayout = ({
           </div>
 
           {/* Checkout Content */}
-          <div className="mb-10 rounded-lg bg-white p-6 shadow-sm">{children}</div>
+          <div className="mb-10 rounded-lg sm:bg-white sm:p-6 sm:shadow-sm">{children}</div>
         </div>
       </main>
 
@@ -114,10 +115,10 @@ export const CheckoutLayout = ({
             <p className="text-sm text-gray-500">© {new Date().getFullYear()}, electrozone.com</p>
 
             <div className="flex space-x-4 text-xs text-gray-500">
-              <a href="#" className="hover:text-blue-600">
+              <a href={paths.misc.projectDetails.getHref()} className="hover:text-blue-600">
                 Project details
               </a>
-              <a href="#" className="hover:text-blue-600">
+              <a href={paths.misc.contact.getHref()} className="hover:text-blue-600">
                 Contact
               </a>
             </div>

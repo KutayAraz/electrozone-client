@@ -52,7 +52,7 @@ export const CartPage = () => {
 
   return (
     <div className="page-spacing">
-      <h1 className="mb-6 text-2xl font-bold text-gray-800">Your Shopping Cart</h1>
+      <h1 className="mb-2 text-xl font-bold text-gray-800">Your Shopping Cart</h1>
 
       {/* Cart Changes Alert */}
       <CartChangesAlert
@@ -76,9 +76,9 @@ export const CartPage = () => {
           </button>
         </div>
       ) : (
-        <div className="lg:grid lg:grid-cols-3 lg:gap-8">
+        <div className="md:grid md:grid-cols-3 md:gap-8">
           {/* Cart Items Section */}
-          <div className="lg:col-span-2">
+          <div className="md:col-span-2">
             <div className="relative mb-4 rounded-md bg-white p-4 shadow-sm">
               {/* Localized loading overlay - only covers cart items */}
               {(isModifying || isFetchingCartData) && (
@@ -124,12 +124,12 @@ export const CartPage = () => {
 
               <div className="space-y-3">
                 <div className="flex justify-between border-b pb-3">
-                  <p className="text-gray-600">Subtotal</p>
+                  <p>Subtotal</p>
                   <p className="font-medium">${Number(cartData?.cartTotal || 0).toFixed(2)}</p>
                 </div>
 
                 <div className="flex justify-between border-b pb-3">
-                  <p className="text-gray-600">Items</p>
+                  <p>Items</p>
                   <p>{cartData?.totalQuantity || 0}</p>
                 </div>
 
