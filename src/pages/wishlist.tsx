@@ -26,16 +26,7 @@ const WishlistProduct = ({ ...product }: Product) => {
 
   return (
     <ProductCard
-      key={product.id}
-      id={product.id}
-      productName={product.productName}
-      brand={product.brand}
-      price={product.price}
-      averageRating={product.averageRating}
-      stock={product.stock}
-      thumbnail={product.thumbnail}
-      subcategory={product.subcategory}
-      category={product.category}
+      {...product}
       onWishlistToggle={() => handleRemove(product.id)}
       onAddToCart={addToCart}
       isAddingToCart={isAddingToCart}
@@ -54,9 +45,9 @@ export const WishlistPage = () => {
         <h4 className="text-lg italic text-gray-500">There&apos;s nothing in your wishlist.</h4>
       ) : (
         <div className="flex flex-wrap">
-          {wishlistProducts?.data.map((product: Product) => {
-            return <WishlistProduct product={product} key={product.id} />;
-          })}
+          {wishlistProducts?.data.map((product: Product) => (
+            <WishlistProduct {...product} key={product.id} />
+          ))}
         </div>
       )}
     </div>
