@@ -8,7 +8,6 @@ interface PriceRangeFilterProps {
   handlePriceChange: (event: Event | React.SyntheticEvent, newValue: [number, number]) => void;
   handlePriceInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handlePriceBlur: () => void;
-  compact?: boolean;
 }
 
 export const PriceRangeFilter = ({
@@ -17,13 +16,12 @@ export const PriceRangeFilter = ({
   handlePriceChange,
   handlePriceInputChange,
   handlePriceBlur,
-  compact = false,
 }: PriceRangeFilterProps) => {
   // Always use 0 as minimum, get maximum from data
   const minPrice = 0;
   const maxPrice = Number(priceRangeData.max) || 1000;
 
-  const step = Math.floor(maxPrice / (compact ? 10 : 8));
+  const step = Math.floor(maxPrice / 10);
 
   const handleSliderChange = (event: Event, value: number | number[]) => {
     // Ensure to have an array of two numbers
@@ -34,31 +32,39 @@ export const PriceRangeFilter = ({
 
   return (
     <div>
-      <h4 className={`${compact ? "text-base" : "text-lg"} font-semibold mb-2`}>Price Range</h4>
+      <h4 className="text-lg sm:text-[16px] font-semibold text-gray-900 mb-3">Price Range</h4>
+
       <Slider
         getAriaLabel={() => "Price range"}
         value={priceRange}
         onChange={handleSliderChange}
-        valueLabelDisplay="auto"
+        valueLabelDisplay="off"
         step={step}
         min={minPrice}
         max={maxPrice}
-        getAriaValueText={(value) => `$${value}`}
-        valueLabelFormat={(value) => `$${value}`}
+        getAriaValueText={(value) => `${value}`}
         sx={{
           "& .MuiSlider-thumb": {
             color: "#13193F",
+            width: { xs: "24px", sm: "20px" },
+            height: { xs: "24px", sm: "20px" },
           },
           "& .MuiSlider-track": {
             color: "#13193F",
+            height: { xs: "6px", sm: "4px" },
           },
-          maxWidth: compact ? "95%" : "85%",
+          "& .MuiSlider-rail": {
+            color: "#fffff",
+            height: { xs: "6px", sm: "4px" },
+          },
+          maxWidth: "85%",
           mx: "auto",
           display: "flex",
+          mb: { xs: 2, sm: 1 },
         }}
       />
 
-      <div className="mb-2 flex space-x-2">
+      <div className="flex gap-2">
         <div className="flex-1">
           <TextField
             fullWidth
@@ -68,6 +74,20 @@ export const PriceRangeFilter = ({
             onBlur={handlePriceBlur}
             size="small"
             type="number"
+            placeholder="Min"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "8px",
+                backgroundColor: "#f9fafb",
+                minHeight: { xs: "44px", sm: "auto" }, // Touch-friendly height on mobile
+                "&:hover fieldset": {
+                  borderColor: "#13193F",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#13193F",
+                },
+              },
+            }}
             slotProps={{
               htmlInput: {
                 min: 0,
@@ -79,21 +99,24 @@ export const PriceRangeFilter = ({
                     position="start"
                     sx={{
                       mr: "4px",
-                      fontSize: "0.5rem",
+                      fontSize: { xs: "1rem", sm: "0.875rem" },
+                      color: "#6b7280",
                     }}
                   >
                     $
                   </InputAdornment>
                 ),
                 sx: {
-                  ".MuiInputBase-input": {
-                    fontSize: "0.875rem",
+                  "& .MuiInputBase-input": {
+                    fontSize: { xs: "1rem", md: "0.875rem" },
+                    padding: { xs: "12px 6px", md: "6px" },
                   },
                 },
               },
             }}
           />
         </div>
+
         <div className="flex-1">
           <TextField
             fullWidth
@@ -103,6 +126,20 @@ export const PriceRangeFilter = ({
             onBlur={handlePriceBlur}
             size="small"
             type="number"
+            placeholder="Max"
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "8px",
+                backgroundColor: "#f9fafb",
+                minHeight: { xs: "44px", sm: "auto" }, // Touch-friendly height on mobile
+                "&:hover fieldset": {
+                  borderColor: "#13193F",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#13193F",
+                },
+              },
+            }}
             slotProps={{
               htmlInput: {
                 min: priceRange[0], // Prevent max from going below current min
@@ -113,17 +150,18 @@ export const PriceRangeFilter = ({
                   <InputAdornment
                     position="start"
                     sx={{
-                      mr: "2px",
-                      paddingX: "0px",
-                      fontSize: "0.5rem",
+                      mr: "4px",
+                      fontSize: { xs: "1rem", sm: "0.875rem" },
+                      color: "#6b7280",
                     }}
                   >
                     $
                   </InputAdornment>
                 ),
                 sx: {
-                  ".MuiInputBase-input": {
-                    fontSize: "0.875rem",
+                  "& .MuiInputBase-input": {
+                    fontSize: { xs: "1rem", md: "0.875rem" },
+                    padding: { xs: "12px 6px", md: "6px" },
                   },
                 },
               },
