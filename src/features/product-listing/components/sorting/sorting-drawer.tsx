@@ -18,11 +18,14 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
 
   return (
     <Drawer open={isOpen} onClose={onClose} anchor="bottom">
-      <div className="pb-2 [&_li]:px-6 [&_li]:py-3">
+      <div className="pb-2 [&_.MuiMenuItem-root]:px-6 [&_.MuiMenuItem-root]:py-4">
         <div className="flex items-center justify-between px-4 py-2">
           <div className="flex space-x-3">
             <SortIcon style={{ color: "#757575" }} />
-            <Typography variant="body1" sx={{ color: "#373D51" }}>
+            <Typography
+              variant="body1"
+              sx={{ color: "#373D51", fontSize: { xs: "1rem", sm: "0.875rem" } }}
+            >
               Sort By
             </Typography>
           </div>
@@ -31,42 +34,71 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
               onClick={onClose}
               sx={{
                 color: (theme) => theme.palette.grey[500],
+                padding: { xs: "12px", sm: "8px" },
               }}
             >
-              <CloseIcon />
+              <CloseIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
             </IconButton>
           </div>
         </div>
         <Divider />
-        <MenuItem value={"featured"} onClick={() => handleSortChange("featured")}>
+        <MenuItem
+          value={"featured"}
+          onClick={() => handleSortChange("featured")}
+          sx={{ minHeight: { xs: "52px", sm: "auto" } }}
+        >
           <ListItemIcon>
-            <StarBorderIcon />
+            <StarBorderIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
           </ListItemIcon>
-          <Typography variant="body1" sx={{ color: "#373D51" }}>
+          <Typography
+            variant="body1"
+            sx={{ color: "#373D51", fontSize: { xs: "1.125rem", sm: "1rem" } }}
+          >
             Featured
           </Typography>
         </MenuItem>
-        <MenuItem value={"rating"} onClick={() => handleSortChange("rating")}>
+        <MenuItem
+          value={"rating"}
+          onClick={() => handleSortChange("rating")}
+          sx={{ minHeight: { xs: "52px", sm: "auto" } }}
+        >
           <ListItemIcon>
-            <TrendingUpIcon />
+            <TrendingUpIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
           </ListItemIcon>
-          <Typography variant="body1" sx={{ color: "#373D51" }}>
+          <Typography
+            variant="body1"
+            sx={{ color: "#373D51", fontSize: { xs: "1.125rem", sm: "1rem" } }}
+          >
             Ratings
           </Typography>
         </MenuItem>
-        <MenuItem value={"price_ascending"} onClick={() => handleSortChange("price_ascending")}>
+        <MenuItem
+          value={"price_ascending"}
+          onClick={() => handleSortChange("price_ascending")}
+          sx={{ minHeight: { xs: "52px", sm: "auto" } }}
+        >
           <ListItemIcon>
-            <ArrowUpwardIcon />
+            <ArrowUpwardIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
           </ListItemIcon>
-          <Typography variant="body1" sx={{ color: "#373D51" }}>
+          <Typography
+            variant="body1"
+            sx={{ color: "#373D51", fontSize: { xs: "1.125rem", sm: "1rem" } }}
+          >
             Price Ascending
           </Typography>
         </MenuItem>
-        <MenuItem value={"price_descending"} onClick={() => handleSortChange("price_descending")}>
+        <MenuItem
+          value={"price_descending"}
+          onClick={() => handleSortChange("price_descending")}
+          sx={{ minHeight: { xs: "52px", sm: "auto" } }}
+        >
           <ListItemIcon>
-            <ArrowDownwardIcon />
+            <ArrowDownwardIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
           </ListItemIcon>
-          <Typography variant="body1" sx={{ color: "#373D51" }}>
+          <Typography
+            variant="body1"
+            sx={{ color: "#373D51", fontSize: { xs: "1.125rem", sm: "1rem" } }}
+          >
             Price Descending
           </Typography>
         </MenuItem>
