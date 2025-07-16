@@ -16,6 +16,15 @@ const theme = createTheme({
   typography: {
     fontFamily: "Nunito, sans-serif",
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 480,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
+    },
+  },
 });
 
 export const AppProvider = ({ children }: AppProviderProps) => {
