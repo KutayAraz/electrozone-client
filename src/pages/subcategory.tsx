@@ -8,7 +8,7 @@ import { subcategoryPriceRangeApi } from "@/features/product-listing/api/get-sub
 import { useGetSubcategoryProductsInfiniteQuery } from "@/features/product-listing/api/get-subcategory-products";
 import { FilterDrawer } from "@/features/product-listing/components/filters/filter-drawer";
 import { FilterPanel } from "@/features/product-listing/components/filters/filter-panel";
-import { MobileFilterSortButtons } from "@/features/product-listing/components/filters/mobile-filter-sort-buttons";
+import { MobileFilterSortButtons } from "@/features/product-listing/components/mobile-filter-sort-buttons";
 import { ProductList } from "@/features/product-listing/components/product-listing";
 import { SortingDrawer } from "@/features/product-listing/components/sorting/sorting-drawer";
 import { SortingPanel } from "@/features/product-listing/components/sorting/sorting-panel";
