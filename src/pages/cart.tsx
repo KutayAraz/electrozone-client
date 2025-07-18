@@ -1,9 +1,12 @@
+import { Collapse, List } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { TransitionGroup } from "react-transition-group";
 
 import { Spinner } from "@/components/ui/spinner";
 import { paths } from "@/config/paths";
 import { CartChangesAlert } from "@/features/cart/components/cart-changes-alert";
 import { CartItemCard } from "@/features/cart/components/cart-item-card";
+import { CartSummary } from "@/features/cart/components/cart-summary";
 import { useClearCart } from "@/features/cart/hooks/use-clear-cart";
 import { useGetCart } from "@/features/cart/hooks/use-get-cart";
 import { useRemoveFromCart } from "@/features/cart/hooks/use-remove-from-cart";
@@ -13,8 +16,6 @@ import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import { CheckoutIntent } from "@/stores/slices/models";
 import { selectIsAuthenticated, setUserIntent } from "@/stores/slices/user-slice";
-import Bin from "@assets/svgs/bin.svg?react";
-import RightArrow from "@assets/svgs/right-arrow.svg?react";
 
 export const CartPage = () => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -79,88 +80,56 @@ export const CartPage = () => {
         <div className="md:grid md:grid-cols-3 md:gap-8">
           {/* Cart Items Section */}
           <div className="md:col-span-2">
-            <div className="relative mb-4 rounded-md bg-white p-4 shadow-sm">
+            <div className="relative mb-4 rounded-md bg-white">
               {/* Localized loading overlay - only covers cart items */}
               {(isModifying || isFetchingCartData) && (
                 <div className="absolute inset-0 z-10 backdrop-blur-[1px]">
                   <div className="absolute inset-0 bg-white/70"></div>
                   <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
                     <Spinner size={24} />
-                    <p className="mt-2 text-sm font-medium text-gray-700">Updating cart...</p>
+                    <p className="mt-2 text-sm font-medium">Updating cart...</p>
                   </div>
                 </div>
               )}
 
-              <h2 className="mb-4 text-lg font-semibold text-gray-700">
-                Items ({cartData?.totalQuantity || 0})
-              </h2>
+              <h2 className="text-lg font-semibold">Items ({cartData?.totalQuantity || 0})</h2>
 
-              <div className="space-y-4">
-                {cartData?.cartItems.map((cartItem: CartItem) => (
-                  <CartItemCard
-                    key={cartItem.id}
-                    id={cartItem.id}
-                    thumbnail={cartItem.thumbnail}
-                    subcategory={cartItem.subcategory}
-                    category={cartItem.category}
-                    productName={cartItem.productName}
-                    price={cartItem.price}
-                    quantity={cartItem.quantity}
-                    amount={cartItem.amount}
-                    onQuantityChange={(e, productId) => {
-                      handleQuantityChange(Number(productId), parseInt(e.target.value));
-                    }}
-                    onRemoveItem={() => handleRemoveItem(cartItem.id)}
-                  />
-                ))}
-              </div>
+              <List sx={{ mt: 1 }}>
+                <TransitionGroup>
+                  {cartData?.cartItems.map((cartItem: CartItem) => (
+                    <Collapse key={cartItem.id}>
+                      <CartItemCard
+                        key={cartItem.id}
+                        id={cartItem.id}
+                        thumbnail={cartItem.thumbnail}
+                        subcategory={cartItem.subcategory}
+                        category={cartItem.category}
+                        productName={cartItem.productName}
+                        price={cartItem.price}
+                        quantity={cartItem.quantity}
+                        amount={cartItem.amount}
+                        onQuantityChange={(e, productId) => {
+                          handleQuantityChange(Number(productId), parseInt(e.target.value));
+                        }}
+                        onRemoveItem={() => handleRemoveItem(cartItem.id)}
+                      />
+                    </Collapse>
+                  ))}
+                </TransitionGroup>
+              </List>
             </div>
           </div>
 
           {/* Cart Summary Section */}
           <div className="lg:col-span-1">
-            <div className="sticky top-4 rounded-lg bg-white p-6 shadow-md">
-              <h2 className="mb-4 text-lg font-semibold text-gray-700">Cart Summary</h2>
-
-              <div className="space-y-3">
-                <div className="flex justify-between border-b pb-3">
-                  <p>Subtotal</p>
-                  <p className="font-medium">${Number(cartData?.cartTotal || 0).toFixed(2)}</p>
-                </div>
-
-                <div className="flex justify-between border-b pb-3">
-                  <p>Items</p>
-                  <p>{cartData?.totalQuantity || 0}</p>
-                </div>
-
-                <div className="flex justify-between pt-2">
-                  <p className="text-lg font-semibold">Total</p>
-                  <p className="text-lg font-bold text-theme-blue">
-                    ${Number(cartData?.cartTotal || 0).toFixed(2)}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-6 space-y-3">
-                <button
-                  onClick={proceedToCheckout}
-                  disabled={isModifying || isCartEmpty}
-                  className="flex w-full items-center justify-center space-x-2 rounded-md bg-theme-blue py-3 text-white transition duration-200 hover:bg-blue-700 disabled:opacity-70"
-                >
-                  <span>Proceed to Checkout</span>
-                  <RightArrow className="h-auto w-5" />
-                </button>
-
-                <button
-                  onClick={handleClearCart}
-                  disabled={isModifying || isCartEmpty}
-                  className="flex w-full items-center justify-center space-x-2 rounded-md border border-red-700 bg-white py-3 text-red-700 transition duration-200 hover:bg-red-50 disabled:opacity-70"
-                >
-                  <Bin className="h-auto w-5 fill-red-700" />
-                  <span>Clear Cart</span>
-                </button>
-              </div>
-            </div>
+            <CartSummary
+              cartTotal={Number(cartData?.cartTotal || 0)}
+              totalQuantity={cartData?.totalQuantity || 0}
+              isModifying={isModifying}
+              isCartEmpty={isCartEmpty}
+              onProceedToCheckout={proceedToCheckout}
+              onClearCart={handleClearCart}
+            />
           </div>
         </div>
       )}
