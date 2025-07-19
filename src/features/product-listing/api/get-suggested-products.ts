@@ -10,6 +10,8 @@ interface SuggestedProduct {
   stock: number;
   subcategory: string;
   category: string;
+  onWishlistToggle: (id: number) => void;
+  isTogglingWishlist: (id: number) => boolean;
 }
 
 interface SuggestedProducts {
@@ -27,7 +29,7 @@ const suggestedProductsApi = baseApi.injectEndpoints({
       providesTags: (result, error, productId) => [
         { type: "Product", id: `${productId}-suggested` },
       ],
-      keepUnusedDataFor: 300, // 5 minutes
+      keepUnusedDataFor: 600, // 10 minutes
       // This endpoint doesn't require authentication
       extraOptions: { skipAuth: true },
     }),
