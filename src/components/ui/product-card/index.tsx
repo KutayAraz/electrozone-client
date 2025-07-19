@@ -65,7 +65,7 @@ export const ProductCard = forwardRef(
     return (
       <div className={`w-full p-1.5 xs:w-1/2 md:w-1/3 lg:w-1/4 sm:p-3 ${className}`} ref={ref}>
         <div className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform overflow-hidden flex flex-col h-full">
-          <div className="relative w-full h-48 sm:h-56 md:h-64 overflow-hidden bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
+          <div className="relative w-full h-42 sm:h-56 md:h-64 overflow-hidden bg-gradient-to-br from-slate-50 via-gray-50 to-slate-100">
             {/* Stock Badge */}
             {stock <= 5 && stock > 0 && (
               <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-10 bg-orange-100 text-orange-800 text-xs font-medium px-2 py-1 rounded-full">
@@ -189,7 +189,7 @@ export const ProductCard = forwardRef(
             <button
               onClick={handleAddToCart}
               disabled={stock < 1 || isAddingToCart}
-              className={`w-full py-1.5 rounded-lg text-white font-semibold transition-all duration-200 text-sm sm:text-base ${
+              className={`w-full py-2 sm:py-1.5 rounded-lg text-white font-semibold transition-all duration-200 text-sm sm:text-base ${
                 stock > 0 && !isAddingToCart
                   ? "bg-theme-blue hover:bg-blue-700 hover:shadow-md"
                   : "bg-gray-400 cursor-not-allowed"
