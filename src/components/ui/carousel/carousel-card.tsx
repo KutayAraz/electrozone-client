@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { paths } from "@/config/paths";
 import { RootState } from "@/stores/store";
 import { createUrlSlug } from "@/utils/create-url-slug";
 
@@ -10,7 +11,7 @@ export interface CarouselCardProps {
   id: number;
   productName: string;
   brand: string;
-  price: number;
+  price: string;
   thumbnail: string;
   subcategory: string;
   category: string;
@@ -35,11 +36,16 @@ export const CarouselCard = ({
   return (
     <div className="relative mx-[4px] xs:mx-2 sm:mx-3 my-1">
       <Link
-        to={`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`}
-        className="flex flex-col items-center rounded-lg border border-gray-200 bg-white p-3 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-200"
+        to={paths.products.category.subcategory.product.getHref({
+          category,
+          subcategory,
+          productSlug: `${createUrlSlug(productName)}-p-${id}`,
+        })}
+        // `/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`
+        className="flex flex-col items-center rounded-lg border border-gray-200 bg-white pt-6 px-3 pb-3 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-200"
         key={id}
       >
-        <div className="ml-auto h-6 pr-1 text-right">
+        <div className="absolute top-2 right-2 z-10">
           <WishlistHeart
             isWishlisted={isWishlisted}
             onClick={() => onWishlistToggle(id)}
