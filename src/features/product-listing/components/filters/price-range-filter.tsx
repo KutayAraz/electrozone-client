@@ -34,35 +34,35 @@ export const PriceRangeFilter = ({
     <div>
       <h4 className="text-lg sm:text-[16px] font-semibold text-gray-900 mb-3">Price Range</h4>
 
-      <Slider
-        getAriaLabel={() => "Price range"}
-        value={priceRange}
-        onChange={handleSliderChange}
-        valueLabelDisplay="off"
-        step={step}
-        min={minPrice}
-        max={maxPrice}
-        getAriaValueText={(value) => `${value}`}
-        sx={{
-          "& .MuiSlider-thumb": {
-            color: "#13193F",
-            width: { xs: "24px", sm: "20px" },
-            height: { xs: "24px", sm: "20px" },
-          },
-          "& .MuiSlider-track": {
-            color: "#13193F",
-            height: { xs: "6px", sm: "4px" },
-          },
-          "& .MuiSlider-rail": {
-            color: "#fffff",
-            height: { xs: "6px", sm: "4px" },
-          },
-          maxWidth: "85%",
-          mx: "auto",
-          display: "flex",
-          mb: { xs: 2, sm: 1 },
-        }}
-      />
+      <div className="px-6">
+        <Slider
+          getAriaLabel={() => "Price range"}
+          value={priceRange}
+          onChange={handleSliderChange}
+          valueLabelDisplay="off"
+          step={step}
+          min={minPrice}
+          max={maxPrice}
+          getAriaValueText={(value) => `${value}`}
+          sx={{
+            "& .MuiSlider-thumb": {
+              color: "#13193F",
+              width: { xs: "24px", sm: "20px" },
+              height: { xs: "24px", sm: "20px" },
+            },
+            "& .MuiSlider-track": {
+              color: "#13193F",
+              height: { xs: "6px", sm: "4px" },
+            },
+            "& .MuiSlider-rail": {
+              color: "#f3f4f6", // Fixed color value
+              height: { xs: "6px", sm: "4px" },
+            },
+            width: "100%", // Use full width of the padded container
+            mb: { xs: 2, sm: 1 },
+          }}
+        />
+      </div>
 
       <div className="flex gap-2">
         <div className="flex-1">

@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Drawer, IconButton } from "@mui/material";
+import { Drawer, IconButton, Typography } from "@mui/material";
 
 import { PriceRangeData } from "../../types/filters";
 
@@ -24,29 +24,42 @@ export const FilterDrawer = ({
     <Drawer
       anchor="bottom"
       open={isOpen}
-      onClose={() => onClose()}
+      onClose={onClose}
       sx={{
-        "& .MuiDrawer-paper": { maxHeight: "80%", overflow: "auto" },
+        "& .MuiDrawer-paper": {
+          maxHeight: "85vh",
+          borderTopLeftRadius: "16px",
+          borderTopRightRadius: "16px",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+        },
       }}
     >
-      <IconButton
-        onClick={() => onClose()}
-        sx={{
-          position: "absolute",
-          right: 8,
-          top: 8,
-          color: (theme) => theme.palette.grey[500],
-        }}
-      >
-        <CloseIcon />
-      </IconButton>
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <Typography variant="h6" className="font-semibold text-gray-900">
+          Filters
+        </Typography>
+        <IconButton
+          onClick={onClose}
+          size="small"
+          aria-label="Close filters"
+          className="text-gray-500 hover:text-gray-700"
+        >
+          <CloseIcon />
+        </IconButton>
+      </div>
 
-      <FilterPanel
-        priceRangeData={priceRangeData}
-        brandsData={brandsData}
-        subcategoriesData={subcategoriesData}
-        onFilterApply={onClose}
-      />
+      {/* Scrollable content */}
+      <div className="flex-1 overflow-y-auto px-4 py-4">
+        <FilterPanel
+          priceRangeData={priceRangeData}
+          brandsData={brandsData}
+          subcategoriesData={subcategoriesData}
+          onFilterApply={onClose}
+        />
+      </div>
     </Drawer>
   );
 };

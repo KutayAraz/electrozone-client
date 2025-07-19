@@ -43,57 +43,82 @@ export const FilterPanel = ({
   };
 
   return (
-    <>
-      <StockStatusFilter stockStatus={stockStatus} handleStockChange={handleStockChange} />
-
-      {/* Only show subcategories filter if data is provided */}
-      {subcategoriesData && subcategoriesData.length > 0 && (
-        <>
-          <SubcategoriesFilter
-            subcategoriesData={subcategoriesData}
-            selectedSubcategories={selectedSubcategories}
-            handleSubcategoryChange={handleSubcategoryChange}
-          />
+    <div className="flex flex-col h-full">
+      {/* Scrollable content area */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="space-y-1">
+          <StockStatusFilter stockStatus={stockStatus} handleStockChange={handleStockChange} />
           <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
-        </>
-      )}
 
-      <BrandsFilter
-        brandsData={brandsData}
-        selectedBrands={selectedBrands}
-        handleBrandChange={handleBrandChange}
-      />
+          {/* Only show subcategories filter if data is provided */}
+          {subcategoriesData && subcategoriesData.length > 0 && (
+            <>
+              <SubcategoriesFilter
+                subcategoriesData={subcategoriesData}
+                selectedSubcategories={selectedSubcategories}
+                handleSubcategoryChange={handleSubcategoryChange}
+              />
+              <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+            </>
+          )}
 
-      <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+          <BrandsFilter
+            brandsData={brandsData}
+            selectedBrands={selectedBrands}
+            handleBrandChange={handleBrandChange}
+          />
 
-      <PriceRangeFilter
-        priceRange={priceRange}
-        priceRangeData={priceRangeData}
-        handlePriceChange={handlePriceChange}
-        handlePriceInputChange={handlePriceInputChange}
-        handlePriceBlur={handlePriceBlur}
-      />
+          <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
 
-      <div className="mt-2">
-        <Button
-          type="submit"
-          variant="contained"
-          onClick={handleApplyFilters}
-          fullWidth
-          sx={{
-            backgroundColor: "#13193F",
-            "&:hover": {
-              backgroundColor: "#1e40af",
-            },
-          }}
-        >
-          FILTER
-        </Button>
+          <PriceRangeFilter
+            priceRange={priceRange}
+            priceRangeData={priceRangeData}
+            handlePriceChange={handlePriceChange}
+            handlePriceInputChange={handlePriceInputChange}
+            handlePriceBlur={handlePriceBlur}
+          />
+        </div>
 
-        <Button variant="outlined" onClick={resetFilters} fullWidth sx={{ mt: 1 }}>
-          Reset Filters
-        </Button>
+        <div className="h-4 sm:hidden"></div>
       </div>
-    </>
+
+      {/* Fixed bottom button area */}
+      <div className="sticky bottom-0 bg-white pt-3 pb-2 mt-2">
+        <div className="space-y-2">
+          <div>
+            <Button
+              variant="outlined"
+              onClick={resetFilters}
+              fullWidth
+              sx={{
+                minHeight: { xs: "44px", sm: "36px" }, // Touch-friendly height on mobile
+                fontSize: { xs: "1rem", sm: "0.875rem" },
+              }}
+            >
+              Reset Filters
+            </Button>
+          </div>
+          <div>
+            <Button
+              type="submit"
+              variant="contained"
+              onClick={handleApplyFilters}
+              fullWidth
+              sx={{
+                backgroundColor: "#13193F",
+                minHeight: { xs: "48px", sm: "36px" },
+                fontSize: { xs: "1rem", sm: "0.875rem" },
+                fontWeight: { xs: "600", sm: "500" },
+                "&:hover": {
+                  backgroundColor: "#1e40af",
+                },
+              }}
+            >
+              Apply Filters
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
