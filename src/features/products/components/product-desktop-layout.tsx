@@ -88,7 +88,6 @@ export const ProductDesktopLayout = ({
         <div className="hidden text-left sm:block">
           <Link
             to={paths.products.category.getHref({ category: category.replace(/-/g, "_") })}
-            // `/category/${category?.replace(/-/g, "_")}`
             className="hover:underline"
           >
             {modifiedCategory}
@@ -105,7 +104,7 @@ export const ProductDesktopLayout = ({
           </Link>
         </div>
       </div>
-      <div className="my-2 flex h-[700px] w-full">
+      <div className="mb-2 flex h-[700px] w-full">
         {/* First Child Div - Image Thumbnails */}
         <div className="flex shrink-0 flex-col items-center justify-center">
           {/* Scroll Up Button or Spacer */}
