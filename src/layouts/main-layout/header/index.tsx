@@ -12,7 +12,6 @@ import BurgerIcon from "@assets/svgs/burger.svg?react";
 
 import { LocationModal } from "./components/location/location-modal";
 import { LocationSection } from "./components/location/location-section";
-import { MobileLocationSection } from "./components/location/mobile-location-section";
 import { MenuModal } from "./components/navigation/menu-modal";
 import { NavigationStrip } from "./components/navigation/navigation-strip";
 import { SearchBar } from "./components/search/search-bar";
@@ -86,6 +85,7 @@ export const Header = () => {
       {/* Header Container */}
       <div
         ref={headerContainerRef}
+        data-header-container
         className={`${
           isHeaderSticky ? "fixed top-0 left-0 right-0 z-40 shadow-lg" : ""
         } bg-theme-blue transition-all duration-300 ${isHeaderSticky ? "animate-slideDown" : ""}`}
@@ -134,10 +134,10 @@ export const Header = () => {
           <SearchBar className={`my-1 mb-2 h-8 w-full px-2 text-gray-700 md:hidden`} />
         </div>
 
-        {/* Mobile Location Section */}
-        {showHeaderExtras && (
+        {/* Mobile Location Section, currently disabled */}
+        {/* {showHeaderExtras && (
           <MobileLocationSection onLocationClick={() => setLocationModalOpen(true)} />
-        )}
+        )} */}
       </div>
 
       {/* Navigation Strip or Search Controls */}
