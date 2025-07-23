@@ -38,7 +38,7 @@ export type CarouselProduct = {
   id: number;
   productName: string;
   brand: string;
-  price: number;
+  price: string;
   thumbnail: string;
   subcategory: string;
   category: string;
