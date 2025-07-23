@@ -141,7 +141,11 @@ export const SubcategoryPage = () => {
         onClose={() => setFilterDrawerOpen(false)}
       />
       <SortingDrawer isOpen={sortingDrawerOpen} onClose={() => setSortingDrawerOpen(false)} />
-
+      {/* Mobile Filter/Sort Buttons */}
+      <MobileFilterSortButtons
+        onFilterClick={() => setFilterDrawerOpen(true)}
+        onSortClick={() => setSortingDrawerOpen(true)}
+      />
       <div className="page-spacing">
         <div className="flex flex-row items-start sm:space-x-2">
           {/* Desktop Filter Panel */}
@@ -166,25 +170,14 @@ export const SubcategoryPage = () => {
             <>
               {/* Product Content Area */}
               <div className="flex grow flex-wrap sm:mt-4">
-                {/* Mobile View: Category Title */}
-                <h5 className="self-end px-2 text-lg sm:hidden">
-                  Listing {totalProductCount} products for {formatString(subcategory || "", "-")}
-                </h5>
-
-                {/* Desktop View: Header & Sorting */}
-                <div className="mb-4 hidden w-full justify-between px-2 sm:flex">
+                <div className="mb-4 w-full px-2 sm:flex sm:justify-between">
                   <h5 className="self-end text-lg">
                     Listing {totalProductCount} products for {formatString(subcategory || "", "-")}
                   </h5>
-                  <SortingPanel />
+                  <div className="hidden sm:block">
+                    <SortingPanel />
+                  </div>
                 </div>
-
-                {/* Mobile Filter/Sort Buttons */}
-                <MobileFilterSortButtons
-                  onFilterClick={() => setFilterDrawerOpen(true)}
-                  onSortClick={() => setSortingDrawerOpen(true)}
-                />
-
                 {/* Product Grid with Infinite Scroll */}
                 <ProductList
                   products={allProducts}
