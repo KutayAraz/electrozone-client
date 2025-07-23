@@ -161,6 +161,12 @@ export const SearchPage = () => {
         onClose={() => setFilterDrawerOpen(false)}
       />
       <SortingDrawer isOpen={sortingDrawerOpen} onClose={() => setSortingDrawerOpen(false)} />
+      {/* Mobile Filter/Sort Buttons */}
+      <MobileFilterSortButtons
+        onFilterClick={() => setFilterDrawerOpen(true)}
+        onSortClick={() => setSortingDrawerOpen(true)}
+      />
+
       <div className="page-spacing">
         <div className="flex flex-row items-start sm:space-x-2">
           {/* Desktop Filter Panel */}
@@ -199,24 +205,14 @@ export const SearchPage = () => {
             <>
               {/* Product Content Area */}
               <div className="flex grow flex-wrap sm:mt-4">
-                {/* Mobile View: Search Results Title */}
-                <h5 className="self-end px-2 text-lg sm:hidden">
-                  {totalProductCount} results for &quot;{searchQuery}&quot;
-                </h5>
-
-                {/* Desktop View: Header & Sorting */}
-                <div className="mb-4 hidden w-full justify-between px-2 sm:flex">
-                  <h5 className="self-end text-lg">
+                <div className="w-full px-2 sm:mb-4 sm:flex sm:justify-between">
+                  <h5 className="self-end">
                     {totalProductCount} results for &quot;{searchQuery}&quot;
                   </h5>
-                  <SortingPanel />
+                  <div className="hidden sm:block">
+                    <SortingPanel />
+                  </div>
                 </div>
-
-                {/* Mobile Filter/Sort Buttons */}
-                <MobileFilterSortButtons
-                  onFilterClick={() => setFilterDrawerOpen(true)}
-                  onSortClick={() => setSortingDrawerOpen(true)}
-                />
 
                 {/* Product Grid with Infinite Scroll */}
                 <ProductList
