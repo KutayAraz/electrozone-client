@@ -141,9 +141,7 @@ export const Header = () => {
       </div>
 
       {/* Navigation Strip or Search Controls */}
-      {showHeaderExtras && (
-        <NavigationStrip className={`z-[3]`} onMenuClick={() => setMenuModalOpen(true)} />
-      )}
+      {showHeaderExtras && <NavigationStrip onMenuClick={() => setMenuModalOpen(true)} />}
 
       {/* Modals */}
       <LocationModal
