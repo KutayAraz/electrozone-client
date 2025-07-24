@@ -1,10 +1,11 @@
 import { useMediaQuery } from "@mui/material";
 import { useState } from "react";
-import { LoaderFunctionArgs, useLoaderData, useNavigate, useParams } from "react-router";
+import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router";
 
 import { paths } from "@/config/paths";
 import { useCreateBuyNowCartMutation } from "@/features/cart/api/buy-now-cart/create-buy-now-cart";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
+import { SuggestedProducts } from "@/features/product-listing/components/suggested-products";
 import { getProductDetailsApi } from "@/features/products/api/get-product-details";
 import { ProductDesktopLayout } from "@/features/products/components/product-desktop-layout";
 import { ProductMobileLayout } from "@/features/products/components/product-mobile-layout";
@@ -34,14 +35,27 @@ export const ProductPage = () => {
   const navigate = useNavigate();
 
   const productData = useLoaderData();
-  const { productId } = useParams();
 
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState(productData.thumbnail);
 
   const { addToCart, isLoading: isAddingToCart } = useAddToCart();
   const [addToBuyNowCart, { isLoading: isNavigatingToCheckout }] = useCreateBuyNowCartMutation();
+
+  const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
   const { handleToggleWishlist } = useToggleWishlist();
+
+  const handleWishlistToggle = async (id: number) => {
+    setTogglingProductId(id);
+
+    try {
+      await handleToggleWishlist(id);
+    } finally {
+      setTogglingProductId(null);
+    }
+  };
+
+  const isProductToggling = (id: number) => togglingProductId === id;
 
   const isMobile = useMediaQuery("(min-width:768px)");
 
@@ -70,16 +84,9 @@ export const ProductPage = () => {
     <div className="page-spacing">
       {isMobile ? (
         <ProductDesktopLayout
+          {...productData}
           productId={productData.id}
-          subcategory={productData.subcategory}
-          category={productData.category}
-          price={productData.price}
-          productName={productData.productName}
-          brand={productData.brand}
-          averageRating={productData.averageRating}
-          stock={productData.stock}
           images={productData.productImages}
-          thumbnail={productData.thumbnail}
           handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
           addingToCart={isAddingToCart}
           handleQuantityChange={handleQuantityChange}
@@ -95,16 +102,9 @@ export const ProductPage = () => {
         />
       ) : (
         <ProductMobileLayout
+          {...productData}
           productId={productData.id}
-          subcategory={productData.subcategory}
-          category={productData.category}
-          price={productData.price}
-          productName={productData.productName}
-          brand={productData.brand}
-          averageRating={productData.averageRating}
-          stock={productData.stock}
           images={productData.productImages}
-          thumbnail={productData.thumbnail}
           handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
           addingToCart={isAddingToCart || isNavigatingToCheckout}
           handleQuantityChange={handleQuantityChange}
@@ -120,8 +120,13 @@ export const ProductPage = () => {
         />
       )}
       <ProductTabs productDescription={productData.description}>
-        <ReviewsTab productId={Number(productId)} />
+        <ReviewsTab productId={Number(productData.id)} />
       </ProductTabs>
+      <SuggestedProducts
+        id={productData.id}
+        onWishlistToggle={handleWishlistToggle}
+        isTogglingWishlist={isProductToggling}
+      />
     </div>
   );
 };
