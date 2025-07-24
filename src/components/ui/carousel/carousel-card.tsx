@@ -45,7 +45,7 @@ export const CarouselCard = ({
         className="flex flex-col items-center rounded-lg border border-gray-200 bg-white pt-6 px-3 pb-3 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-200"
         key={id}
       >
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-0 right-0 z-10">
           <WishlistHeart
             isWishlisted={isWishlisted}
             onClick={() => onWishlistToggle(id)}

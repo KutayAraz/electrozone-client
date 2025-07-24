@@ -24,11 +24,11 @@ export const Carousel = ({
   const nextRef = useRef<HTMLDivElement>(null);
 
   return (
-    <div className="relative overflow-hidden px-6">
+    <div className="relative overflow-hidden xs:px-6">
       <div className="relative mx-auto">
         <div
           ref={prevRef}
-          className="absolute -left-6 top-1/2 -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full shadow-sm p-2 hover:shadow-lg transition-shadow duration-200"
+          className="hidden xs:block absolute -left-6 top-1/2 -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full shadow-sm p-2 hover:shadow-lg transition-shadow duration-200"
         >
           <NavButton className="size-5 rotate-180 text-gray-600" />
         </div>
@@ -81,7 +81,7 @@ export const Carousel = ({
         </Swiper>
         <div
           ref={nextRef}
-          className="absolute -right-6 top-1/2 -translate-y-1/2 cursor-pointer z-10 bg-white rounded-full shadow-sm p-2 hover:shadow-lg transition-shadow duration-200"
+          className="hidden xs:block absolute -right-6 top-1/2 -translate-y-1/2 cursor-pointer z-3 bg-white rounded-full shadow-sm p-2 hover:shadow-lg transition-shadow duration-200"
         >
           <NavButton className="size-5 text-gray-600" />
         </div>

@@ -2,8 +2,8 @@ import { ProductImage } from "@/types/product";
 
 export type ProductLayoutProps = {
   productId: number;
-  subcategory?: string;
-  category?: string;
+  subcategory: string;
+  category: string;
   productName: string;
   brand: string;
   thumbnail: string;
