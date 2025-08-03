@@ -80,7 +80,7 @@ export const OrderConfirmationPage = () => {
 
           <div className="flex flex-col gap-4 sm:flex-row justify-between">
             <Link
-              to={paths.app.orders.order.getHref(orderId)}
+              to={paths.app.orders.order.getHref({ orderId })}
               className="flex items-center justify-center rounded-md border border-blue-600 bg-white px-6 py-3 text-center font-medium text-blue-600 shadow-sm transition-all duration-200 hover:bg-blue-50"
             >
               View Order Details
