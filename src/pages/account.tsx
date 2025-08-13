@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
 import { paths } from "@/config/paths";
 import AddressCard from "@assets/svgs/address-card.svg?react";
 import Contact from "@assets/svgs/contact.svg?react";
@@ -37,15 +38,21 @@ export const AccountPage = () => {
   ];
 
   return (
-    <div className="page-spacing">
-      <h2 className="mb-3 text-xl font-bold">Your Account Information</h2>
-      <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 lg:grid-cols-3">
-        {accountMenuItems.map(({ path, Icon, label }) => (
-          <InfoCard key={path} to={path} Icon={Icon}>
-            {label}
-          </InfoCard>
-        ))}
+    <>
+      <PageHelmet
+        title="My Account | Electrozone"
+        description="Manage your Electrozone account details, preferences, and settings."
+      />
+      <div className="page-spacing">
+        <h2 className="mb-3 text-xl font-bold">Your Account Information</h2>
+        <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 lg:grid-cols-3">
+          {accountMenuItems.map(({ path, Icon, label }) => (
+            <InfoCard key={path} to={path} Icon={Icon}>
+              {label}
+            </InfoCard>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

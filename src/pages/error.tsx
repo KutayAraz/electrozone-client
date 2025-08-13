@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 import { isRouteErrorResponse, useNavigate, useRouteError } from "react-router-dom";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
+
 export const ErrorPage = () => {
   const error = useRouteError();
   const navigate = useNavigate();
@@ -31,97 +33,103 @@ export const ErrorPage = () => {
   }
 
   return (
-    <Container
-      maxWidth="md"
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        py: 8,
-      }}
-    >
-      <Paper
-        elevation={3}
+    <>
+      <PageHelmet
+        title="404 Not Found | Electrozone"
+        description="The page you are looking for does not exist. Please check the URL or return to the homepage."
+      />
+      <Container
+        maxWidth="md"
         sx={{
-          p: isMobile ? 4 : 6,
-          borderRadius: 2,
-          background:
-            theme.palette.mode === "dark"
-              ? "linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 100%)"
-              : "linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%)",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          py: 8,
         }}
       >
-        <Box
+        <Paper
+          elevation={3}
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
+            p: isMobile ? 4 : 6,
+            borderRadius: 2,
+            background:
+              theme.palette.mode === "dark"
+                ? "linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 100%)"
+                : "linear-gradient(145deg, #ffffff 0%, #f5f5f5 100%)",
           }}
         >
-          <ErrorOutlineIcon
-            sx={{
-              fontSize: isMobile ? 80 : 120,
-              color: theme.palette.error.main,
-              opacity: 0.8,
-              mb: 2,
-            }}
-          />
-
-          <Typography
-            variant={isMobile ? "h3" : "h2"}
-            component="h1"
-            fontWeight="bold"
-            sx={{ mb: 1 }}
-          >
-            {errorStatus}
-          </Typography>
-
-          <Typography variant={isMobile ? "h5" : "h4"} component="h2" sx={{ mb: 3 }}>
-            {errorMessage}
-          </Typography>
-
-          <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: "80%" }}>
-            Sorry, we couldn&apos;t find the page you&apos;re looking for. It might have been
-            removed, renamed, or is temporarily unavailable.
-          </Typography>
-
-          <Divider sx={{ width: "100%", mb: 4 }} />
-
           <Box
             sx={{
               display: "flex",
-              flexDirection: isMobile ? "column" : "row",
-              gap: 2,
-              width: "100%",
-              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
             }}
           >
-            <Button
-              variant="outlined"
-              color="primary"
-              size="large"
-              startIcon={<ArrowBackIcon />}
-              onClick={() => navigate(-1)}
-              sx={{ minWidth: 150 }}
-            >
-              Go Back
-            </Button>
+            <ErrorOutlineIcon
+              sx={{
+                fontSize: isMobile ? 80 : 120,
+                color: theme.palette.error.main,
+                opacity: 0.8,
+                mb: 2,
+              }}
+            />
 
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              startIcon={<HomeIcon />}
-              onClick={() => navigate("/")}
-              sx={{ minWidth: 150 }}
+            <Typography
+              variant={isMobile ? "h3" : "h2"}
+              component="h1"
+              fontWeight="bold"
+              sx={{ mb: 1 }}
             >
-              Home Page
-            </Button>
+              {errorStatus}
+            </Typography>
+
+            <Typography variant={isMobile ? "h5" : "h4"} component="h2" sx={{ mb: 3 }}>
+              {errorMessage}
+            </Typography>
+
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: "80%" }}>
+              Sorry, we couldn&apos;t find the page you&apos;re looking for. It might have been
+              removed, renamed, or is temporarily unavailable.
+            </Typography>
+
+            <Divider sx={{ width: "100%", mb: 4 }} />
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: isMobile ? "column" : "row",
+                gap: 2,
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                startIcon={<ArrowBackIcon />}
+                onClick={() => navigate(-1)}
+                sx={{ minWidth: 150 }}
+              >
+                Go Back
+              </Button>
+
+              <Button
+                variant="contained"
+                color="primary"
+                size="large"
+                startIcon={<HomeIcon />}
+                onClick={() => navigate("/")}
+                sx={{ minWidth: 150 }}
+              >
+                Home Page
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </>
   );
 };

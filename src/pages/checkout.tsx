@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { redirect, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
 import { paths } from "@/config/paths";
 import { useClearSessionCartMutation } from "@/features/cart/api/session-cart/clear-session-cart";
 import { CartChangesAlert } from "@/features/cart/components/cart-changes-alert";
@@ -107,6 +108,10 @@ export const CheckoutPage = () => {
 
   return (
     <>
+      <PageHelmet
+        title="Checkout | Electrozone"
+        description="Secure and streamlined checkout process to finalize your purchases at Electrozone."
+      />
       <CartAdditionModal
         isOpen={showModal}
         onAddToCart={addToCartAndNavigate}
