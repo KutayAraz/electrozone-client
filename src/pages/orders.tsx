@@ -1,5 +1,6 @@
 import { useCallback, useRef } from "react";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
 import { Spinner } from "@/components/ui/spinner";
 import type { OrderSummary } from "@/features/orders/api/get-orders";
 import { getOrdersApi } from "@/features/orders/api/get-orders";
@@ -44,30 +45,40 @@ export const OrdersPage = () => {
   const allResults = data?.pages?.flat() || [];
 
   return (
-    <div className="page-spacing">
-      <h2 className="mb-2 text-xl font-bold">Previous Orders</h2>
-      {isLoading ? (
-        <p>
-          Loading Orders... <Spinner />
-        </p>
-      ) : allResults.length === 0 ? (
-        <p>No orders found.</p>
-      ) : (
-        <>
-          {allResults.map((order: OrderSummary, index: number) => {
-            // Set the observer ref on the last element
-            const isLastElement = index === allResults.length - 1;
-            return (
-              <OrderCard ref={isLastElement ? lastOrderRef : null} key={order.orderId} {...order} />
-            );
-          })}
-          {isFetching && !isLoading && (
-            <div className="flex justify-center py-4">
-              <Spinner />
-            </div>
-          )}
-        </>
-      )}
-    </div>
+    <>
+      <PageHelmet
+        title="Orders | Electrozone"
+        description="View and manage your Electrozone orders, track shipping, and handle returns."
+      />
+      <div className="page-spacing">
+        <h2 className="mb-2 text-xl font-bold">Previous Orders</h2>
+        {isLoading ? (
+          <p>
+            Loading Orders... <Spinner />
+          </p>
+        ) : allResults.length === 0 ? (
+          <p>No orders found.</p>
+        ) : (
+          <>
+            {allResults.map((order: OrderSummary, index: number) => {
+              // Set the observer ref on the last element
+              const isLastElement = index === allResults.length - 1;
+              return (
+                <OrderCard
+                  ref={isLastElement ? lastOrderRef : null}
+                  key={order.orderId}
+                  {...order}
+                />
+              );
+            })}
+            {isFetching && !isLoading && (
+              <div className="flex justify-center py-4">
+                <Spinner />
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 };

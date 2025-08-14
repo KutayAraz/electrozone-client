@@ -2,6 +2,7 @@ import { useMediaQuery } from "@mui/material";
 import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
 import { paths } from "@/config/paths";
 import { useCreateBuyNowCartMutation } from "@/features/cart/api/buy-now-cart/create-buy-now-cart";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
@@ -16,6 +17,7 @@ import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { CheckoutIntent } from "@/stores/slices/models";
 import { setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
+import { createProductDescription, createProductTitle } from "@/utils/seo";
 
 export const productPageLoader = async ({ params }: LoaderFunctionArgs) => {
   const { productSlug } = params;
@@ -35,6 +37,8 @@ export const ProductPage = () => {
   const navigate = useNavigate();
 
   const productData = useLoaderData();
+
+  console.log(productData);
 
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState(productData.thumbnail);
@@ -81,52 +85,62 @@ export const ProductPage = () => {
   };
 
   return (
-    <div className="page-spacing">
-      {isMobile ? (
-        <ProductDesktopLayout
-          {...productData}
-          productId={productData.id}
-          images={productData.productImages}
-          handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
-          addingToCart={isAddingToCart}
-          handleQuantityChange={handleQuantityChange}
-          handleBuyNow={buyNowClick}
-          isNavigatingToCheckout={isNavigatingToCheckout}
-          decrementQuantity={decrementQuantity}
-          selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage}
-          incrementQuantity={incrementQuantity}
-          onRatingClick={() => {}}
-          quantity={quantity}
-          onWishlistToggle={handleToggleWishlist}
-        />
-      ) : (
-        <ProductMobileLayout
-          {...productData}
-          productId={productData.id}
-          images={productData.productImages}
-          handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
-          addingToCart={isAddingToCart || isNavigatingToCheckout}
-          handleQuantityChange={handleQuantityChange}
-          handleBuyNow={buyNowClick}
-          isNavigatingToCheckout={isNavigatingToCheckout}
-          decrementQuantity={decrementQuantity}
-          selectedImage={selectedImage}
-          setSelectedImage={setSelectedImage}
-          incrementQuantity={incrementQuantity}
-          onRatingClick={() => {}}
-          quantity={quantity}
-          onWishlistToggle={handleToggleWishlist}
-        />
-      )}
-      <ProductTabs productDescription={productData.description}>
-        <ReviewsTab productId={Number(productData.id)} />
-      </ProductTabs>
-      <SuggestedProducts
-        id={productData.id}
-        onWishlistToggle={handleWishlistToggle}
-        isTogglingWishlist={isProductToggling}
+    <>
+      <PageHelmet
+        title={createProductTitle(productData.productName, productData.brand)}
+        description={createProductDescription(
+          productData.productName,
+          productData.brand,
+          productData.description,
+        )}
       />
-    </div>
+      <div className="page-spacing">
+        {isMobile ? (
+          <ProductDesktopLayout
+            {...productData}
+            productId={productData.id}
+            images={productData.productImages}
+            handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
+            addingToCart={isAddingToCart}
+            handleQuantityChange={handleQuantityChange}
+            handleBuyNow={buyNowClick}
+            isNavigatingToCheckout={isNavigatingToCheckout}
+            decrementQuantity={decrementQuantity}
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            incrementQuantity={incrementQuantity}
+            onRatingClick={() => {}}
+            quantity={quantity}
+            onWishlistToggle={handleToggleWishlist}
+          />
+        ) : (
+          <ProductMobileLayout
+            {...productData}
+            productId={productData.id}
+            images={productData.productImages}
+            handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
+            addingToCart={isAddingToCart || isNavigatingToCheckout}
+            handleQuantityChange={handleQuantityChange}
+            handleBuyNow={buyNowClick}
+            isNavigatingToCheckout={isNavigatingToCheckout}
+            decrementQuantity={decrementQuantity}
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            incrementQuantity={incrementQuantity}
+            onRatingClick={() => {}}
+            quantity={quantity}
+            onWishlistToggle={handleToggleWishlist}
+          />
+        )}
+        <ProductTabs productDescription={productData.description}>
+          <ReviewsTab productId={Number(productData.id)} />
+        </ProductTabs>
+        <SuggestedProducts
+          id={productData.id}
+          onWishlistToggle={handleWishlistToggle}
+          isTogglingWishlist={isProductToggling}
+        />
+      </div>
+    </>
   );
 };

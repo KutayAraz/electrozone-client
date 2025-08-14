@@ -1,5 +1,6 @@
 import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router-dom";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import {
   displayNotification,
@@ -53,28 +54,34 @@ export const OrderDetails = () => {
   });
 
   return (
-    <div className="page-spacing">
-      {order.state === "loading" ? (
-        <Spinner />
-      ) : (
-        <>
-          <OrderDetailsCard
-            orderId={order.data.id}
-            orderTotal={order.data.orderTotal}
-            orderDate={order.data.orderDate}
-            user={order.data.user}
-            orderItems={order.data.orderItems}
-            isCancellable={order.data.isCancellable}
-            onOrderCancel={handleCancelClick}
-          />
+    <>
+      <PageHelmet
+        title="Order Details | Electrozone"
+        description="Check the status and details of your specific order at Electrozone."
+      />
+      <div className="page-spacing">
+        {order.state === "loading" ? (
+          <Spinner />
+        ) : (
+          <>
+            <OrderDetailsCard
+              orderId={order.data.id}
+              orderTotal={order.data.orderTotal}
+              orderDate={order.data.orderDate}
+              user={order.data.user}
+              orderItems={order.data.orderItems}
+              isCancellable={order.data.isCancellable}
+              onOrderCancel={handleCancelClick}
+            />
 
-          <ConfirmationDialog
-            {...dialogProps}
-            onConfirm={handleConfirmCancel}
-            isProcessing={isLoading}
-          />
-        </>
-      )}
-    </div>
+            <ConfirmationDialog
+              {...dialogProps}
+              onConfirm={handleConfirmCancel}
+              isProcessing={isLoading}
+            />
+          </>
+        )}
+      </div>
+    </>
   );
 };
