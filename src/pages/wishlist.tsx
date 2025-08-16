@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
 import { ProductCard } from "@/components/ui/product-card";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
 import { wishlistApi } from "@/features/wishlist/api/get-wishlist";
@@ -39,17 +40,23 @@ export const WishlistPage = () => {
   const wishlistProducts = useLoaderData();
 
   return (
-    <div className="page-spacing">
-      <h4 className="text-xl font-bold pl-2">My Wishlist</h4>
-      {wishlistProducts?.length === 0 ? (
-        <h4 className="text-lg italic text-gray-500">There&apos;s nothing in your wishlist.</h4>
-      ) : (
-        <div className="flex flex-wrap">
-          {wishlistProducts?.data.map((product: Product) => (
-            <WishlistProduct {...product} key={product.id} />
-          ))}
-        </div>
-      )}
-    </div>
+    <>
+      <PageHelmet
+        title="My Wishlist | Electrozone"
+        description="Keep track of your favorite products and upcoming purchases in your Electrozone wishlist."
+      />
+      <div className="page-spacing">
+        <h4 className="text-xl font-bold pl-2">My Wishlist</h4>
+        {wishlistProducts?.length === 0 ? (
+          <h4 className="text-lg italic text-gray-500">There&apos;s nothing in your wishlist.</h4>
+        ) : (
+          <div className="flex flex-wrap">
+            {wishlistProducts?.data.map((product: Product) => (
+              <WishlistProduct {...product} key={product.id} />
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };

@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
 import { Spinner } from "@/components/ui/spinner";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
 import { subcategoryBrandsApi } from "@/features/product-listing/api/get-subcategory-brands";
@@ -17,6 +18,7 @@ import { useSorting } from "@/features/product-listing/hooks/use-sorting";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { store } from "@/stores/store";
 import { formatString } from "@/utils/format-casing";
+import { createCategoryDescription, createCategoryTitle } from "@/utils/seo";
 
 export const subcategoryPageLoader = async (request: LoaderFunctionArgs) => {
   const subcategory = request?.params?.subcategory;
@@ -38,7 +40,7 @@ export const subcategoryPageLoader = async (request: LoaderFunctionArgs) => {
 
 export const SubcategoryPage = () => {
   const { brands, priceRange } = useLoaderData();
-  const { subcategory } = useParams();
+  const { subcategory, category } = useParams();
 
   // Cart and wishlist functionality
   const [togglingWishlistId, setTogglingWishlistId] = useState<number | null>(null);
@@ -133,6 +135,11 @@ export const SubcategoryPage = () => {
 
   return (
     <>
+      <PageHelmet
+        title={createCategoryTitle(category || "", subcategory)}
+        description={createCategoryDescription(category || "", subcategory)}
+      />
+
       {/* Mobile Filter/Sort Drawers */}
       <FilterDrawer
         priceRangeData={priceRange.data}

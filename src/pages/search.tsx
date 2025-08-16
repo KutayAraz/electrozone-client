@@ -1,6 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useSearchParams } from "react-router-dom";
 
+import { PageHelmet } from "@/components/seo/page-helmet";
 import { Spinner } from "@/components/ui/spinner";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
 import {
@@ -17,6 +18,7 @@ import { useFilters } from "@/features/product-listing/hooks/use-filters";
 import { useSorting } from "@/features/product-listing/hooks/use-sorting";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { store } from "@/stores/store";
+import { createSearchDescription, createSearchTitle } from "@/utils/seo";
 
 export const searchPageLoader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -139,19 +141,31 @@ export const SearchPage = () => {
 
   const allProducts = data?.pages?.flatMap((page) => page.products) || [];
   const totalProductCount = data?.pages?.[0]?.productQuantity || 0;
+  const hasResults = allProducts.length > 0;
 
   if (!searchQuery) {
     return (
-      <div className="page-spacing">
-        <div className="flex justify-center items-center h-64">
-          <p className="text-lg text-gray-500">Please enter a search query</p>
+      <>
+        <PageHelmet
+          title="Search | Electrozone"
+          description="Search for electronics, gadgets, and more at Electrozone."
+        />
+        <div className="page-spacing">
+          <div className="flex justify-center items-center h-64">
+            <p className="text-lg text-gray-500">Please enter a search query</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
     <>
+      <PageHelmet
+        title={createSearchTitle(searchQuery, hasResults)}
+        description={createSearchDescription(searchQuery, totalProductCount, hasResults)}
+      />
+
       {/* Mobile Filter/Sort Drawers */}
       <FilterDrawer
         priceRangeData={priceRange}
