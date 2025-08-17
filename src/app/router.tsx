@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { RouteErrorBoundary } from "@/components/errors/route-error-boundary";
 import { paths } from "@/config/paths";
 import { RedirectAuthenticated } from "@/features/auth/components/redirect-authenticated";
 import { MainLayout, mainLayoutLoader } from "@/layouts/main-layout";
@@ -11,6 +12,7 @@ export const createAppRouter = () =>
     {
       path: paths.home.path,
       element: <MainLayout />,
+      errorElement: <RouteErrorBoundary />,
       loader: mainLayoutLoader,
       children: [
         {
@@ -173,6 +175,7 @@ export const createAppRouter = () =>
     // Protected Checkout Section (Separate from main layout)
     {
       element: <ProtectedRoute />,
+      errorElement: <RouteErrorBoundary />,
       children: [
         {
           path: paths.checkout.root.path,
