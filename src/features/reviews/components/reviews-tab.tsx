@@ -18,8 +18,10 @@ interface ReviewsTabProps {
 }
 
 export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
-  const { data: productReviews, isLoading: isReviewsLoading } = useGetProductReviewsQuery(44);
-  const { data: canReview, isLoading: isCheckingEligibility } = useCheckReviewEligibilityQuery(44);
+  const { data: productReviews, isLoading: isReviewsLoading } =
+    useGetProductReviewsQuery(productId);
+  const { data: canReview, isLoading: isCheckingEligibility } =
+    useCheckReviewEligibilityQuery(productId);
 
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
