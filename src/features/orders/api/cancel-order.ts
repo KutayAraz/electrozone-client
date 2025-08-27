@@ -10,6 +10,7 @@ const cancelOrderApi = baseApi.injectEndpoints({
       invalidatesTags: (_, __, orderId) => [
         { type: "Order", id: orderId },
         { type: "Order", id: "LIST" },
+        { type: "Review", id: "eligibility" },
       ],
     }),
   }),

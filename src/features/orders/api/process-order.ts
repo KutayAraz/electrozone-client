@@ -24,6 +24,7 @@ const processOrderApi = baseApi.injectEndpoints({
         { type: "SessionCartCount", id: "LIST" },
         { type: "BuyNowCart", id: "LIST" },
         { type: "Order", id: "LIST" },
+        { type: "Review", id: "eligibility" },
       ],
     }),
   }),
