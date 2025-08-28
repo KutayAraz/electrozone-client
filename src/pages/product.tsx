@@ -1,5 +1,5 @@
 import { useMediaQuery } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
@@ -38,8 +38,6 @@ export const ProductPage = () => {
 
   const productData = useLoaderData();
 
-  console.log(productData);
-
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState(productData.thumbnail);
 
@@ -48,6 +46,11 @@ export const ProductPage = () => {
 
   const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
   const { handleToggleWishlist } = useToggleWishlist();
+
+  useEffect(() => {
+    setSelectedImage(productData.thumbnail);
+    setQuantity(1);
+  }, [productData.thumbnail]);
 
   const handleWishlistToggle = async (id: number) => {
     setTogglingProductId(id);
