@@ -46,16 +46,46 @@ export const ProductMobileLayout = ({
     <>
       <h2 className="text-center">{productName}</h2>
       <p className="mb-4 text-center font-[400]">Brand: {brand}</p>
-      <Swiper
-        speed={500}
-        slidesPerView={1}
-        pagination={{
-          clickable: true,
-          dynamicBullets: true,
-        }}
-        modules={[Pagination]}
-        className="h-[45vh]"
-      >
+      <div className="relative">
+        <Swiper
+          speed={500}
+          slidesPerView={1}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+          }}
+          modules={[Pagination]}
+          className="h-[45vh]"
+        >
+          {/* Thumbnail slide - now consistent with other slides */}
+          <SwiperSlide className="!flex !items-center !justify-center">
+            <div className="flex h-full w-full items-center justify-center">
+              <img
+                src={thumbnail}
+                alt={`thumbnail for ${productName}`}
+                className="max-h-[40vh] max-w-full object-contain"
+              />
+            </div>
+          </SwiperSlide>
+
+          {/* Other image slides */}
+          {images?.map((image: ProductImage) => (
+            <SwiperSlide key={image.id} className="!flex !items-center !justify-center">
+              <button
+                onClick={() => setSelectedImage(image.productImage)}
+                className="flex h-full w-full items-center justify-center focus:outline-none"
+              >
+                <img
+                  src={image.productImage}
+                  alt={productName}
+                  className="max-h-[40vh] max-w-full object-contain"
+                />
+              </button>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
+        {/* Wishlist heart positioned absolutely over the swiper */}
         <div className="absolute right-2 top-2 z-20">
           <WishlistHeart
             onClick={handleWishlistToggle}
@@ -63,29 +93,7 @@ export const ProductMobileLayout = ({
             className="scale-125 bg-white/80 backdrop-blur-sm rounded-full p-1"
           />
         </div>
-        <SwiperSlide key={thumbnail} className="flex items-center justify-center">
-          <img
-            src={thumbnail}
-            alt={`thumbnail for ${productName}`}
-            className="h-[40vh] w-auto object-contain"
-          />
-        </SwiperSlide>
-
-        {images?.map((image: ProductImage) => (
-          <SwiperSlide key={image.id} className="flex items-center justify-center">
-            <button
-              onClick={() => setSelectedImage(image.productImage)}
-              className="flex items-center justify-center h-full w-full"
-            >
-              <img
-                src={image.productImage}
-                alt={productName}
-                className="h-[40vh] w-auto object-contain"
-              />
-            </button>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+      </div>
 
       <div className="fixed inset-x-0 bottom-0 z-10 flex w-full items-center justify-around bg-gray-100 py-3">
         <p className="ml-2 text-lg font-bold">${price}</p>
