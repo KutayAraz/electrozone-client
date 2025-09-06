@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 
+import { Spinner } from "@/components/ui/spinner";
 import { WishlistHeart } from "@/components/ui/wishlist-heart";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import type { RootState } from "@/stores/store";
@@ -117,14 +118,26 @@ export const ProductMobileLayout = ({
           <button
             onClick={() => handleAddToCart(quantity)}
             disabled={addingToCart}
+            aria-label={addingToCart ? "Adding item to cart" : "Add to cart"}
             className={`${
               addingToCart ? "bg-gray-400" : "bg-theme-blue"
-            } rounded-lg border-1 border-transparent px-4 py-2 text-white`}
+            } min-w-[140px] rounded-lg border-1 border-transparent px-4 py-2 text-white flex items-center justify-center`}
           >
-            {addingToCart ? "Adding To Cart.." : "Add to Cart"}
+            {addingToCart ? (
+              <>
+                <div className="mr-2">
+                  <Spinner size={16} />
+                </div>
+                Adding...
+              </>
+            ) : (
+              "Add to Cart"
+            )}
           </button>
         ) : (
-          <p className="rounded-lg border-1 px-4 py-2 text-red-500 shadow-sm">Out of stock</p>
+          <p className="min-w-[140px] rounded-lg border-1 px-4 py-2 text-red-500 shadow-sm text-center">
+            Out of stock
+          </p>
         )}
       </div>
 
