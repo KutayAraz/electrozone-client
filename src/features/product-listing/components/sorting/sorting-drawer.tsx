@@ -4,9 +4,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import SortIcon from "@mui/icons-material/Sort";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import { Divider, Drawer, IconButton, ListItemIcon, MenuItem, Typography } from "@mui/material";
+import {
+  Divider,
+  Drawer,
+  IconButton,
+  ListItemIcon,
+  MenuItem,
+  SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 
-import { useSorting } from "../../hooks/use-sorting";
+import { SortMethod, useSorting } from "../../hooks/use-sorting";
 
 interface SortingDrawerProps {
   isOpen: boolean;
@@ -15,6 +23,11 @@ interface SortingDrawerProps {
 
 export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
   const { handleSortChange } = useSorting();
+
+  const handleSortSelection = (sortValue: SortMethod | SelectChangeEvent<SortMethod>) => {
+    handleSortChange(sortValue);
+    onClose(); // Close the drawer after selection
+  };
 
   return (
     <Drawer open={isOpen} onClose={onClose} anchor="bottom">
@@ -44,7 +57,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
         <Divider />
         <MenuItem
           value={"featured"}
-          onClick={() => handleSortChange("featured")}
+          onClick={() => handleSortSelection("featured")}
           sx={{ minHeight: { xs: "52px", sm: "auto" } }}
         >
           <ListItemIcon>
@@ -59,7 +72,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
         </MenuItem>
         <MenuItem
           value={"rating"}
-          onClick={() => handleSortChange("rating")}
+          onClick={() => handleSortSelection("rating")}
           sx={{ minHeight: { xs: "52px", sm: "auto" } }}
         >
           <ListItemIcon>
@@ -74,7 +87,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
         </MenuItem>
         <MenuItem
           value={"price_ascending"}
-          onClick={() => handleSortChange("price_ascending")}
+          onClick={() => handleSortSelection("price_ascending")}
           sx={{ minHeight: { xs: "52px", sm: "auto" } }}
         >
           <ListItemIcon>
@@ -89,7 +102,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
         </MenuItem>
         <MenuItem
           value={"price_descending"}
-          onClick={() => handleSortChange("price_descending")}
+          onClick={() => handleSortSelection("price_descending")}
           sx={{ minHeight: { xs: "52px", sm: "auto" } }}
         >
           <ListItemIcon>

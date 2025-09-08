@@ -2,7 +2,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 
-type SortMethod = "featured" | "rating" | "price_ascending" | "price_descending";
+export type SortMethod = "featured" | "rating" | "price_ascending" | "price_descending";
 
 interface UseSortingReturn {
   currentSortMethod: SortMethod;
