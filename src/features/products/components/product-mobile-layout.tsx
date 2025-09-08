@@ -45,8 +45,8 @@ export const ProductMobileLayout = ({
 
   return (
     <>
-      <h2 className="text-center">{productName}</h2>
-      <p className="mb-4 text-center font-[400]">Brand: {brand}</p>
+      <h2 className="text-center font-bold">{productName}</h2>
+      <p className="mb-2 text-center font-semibold">Brand: {brand}</p>
       <div className="relative">
         <Swiper
           speed={500}
