@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
@@ -16,6 +16,7 @@ import { SortingPanel } from "@/features/product-listing/components/sorting/sort
 import { useFilters } from "@/features/product-listing/hooks/use-filters";
 import { useSorting } from "@/features/product-listing/hooks/use-sorting";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
+import { useInfiniteScrollRef } from "@/hooks/use-infinite-scroll-ref";
 import { store } from "@/stores/store";
 import { formatString } from "@/utils/format-casing";
 import { createCategoryDescription, createCategoryTitle } from "@/utils/seo";
@@ -79,34 +80,11 @@ export const SubcategoryPage = () => {
       refetchOnMountOrArgChange: true,
       skip: !subcategory,
     });
-  const observer = useRef<IntersectionObserver | null>(null);
-
-  const lastProductRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      // Skip if we're already fetching or the node is null
-      if (isFetching || !node) return;
-
-      // Disconnect previous observer if it exists
-      if (observer.current) {
-        observer.current.disconnect();
-      }
-
-      // Create new observer
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          // If the target is visible and we have more pages
-          if (entries[0].isIntersecting && hasNextPage) {
-            fetchNextPage();
-          }
-        },
-        { threshold: 0.1 },
-      );
-
-      // Start observing the new node
-      observer.current.observe(node);
-    },
-    [fetchNextPage, hasNextPage, isFetching],
-  );
+  const lastProductRef = useInfiniteScrollRef({
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  });
 
   // Cart and wishlist handlers
   const handleWishlistToggle = async (productId: number) => {
