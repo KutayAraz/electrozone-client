@@ -24,7 +24,7 @@ This e-commerce platform is a modern web application built with React and TypeSc
 ## Features
 
 - **User Management:** Users can create and update their profiles.
-- **Product Interaction:** Users can add products to their basket and wishlist.
+- **Product Interaction:** Users can add products to their basket and wishlist. They can also leave a rating and comment on the products they have purchased.
 - **Order Management:** Users can checkout products, track their orders, and cancel them if they are not older than one day.
 - **Trending Products:** Display trending products on the homepage, including best sellers, top rated items, and most wishlisted products.
 
@@ -59,7 +59,7 @@ Setting Up the Project
 Clone the repository:
 
 ```sh
-git clone https://github.com/your_username_/Project-Name.git
+git clone https://github.com/KutayAraz/electrozone-client.git
 ```
 
 Navigate to the project directory:
