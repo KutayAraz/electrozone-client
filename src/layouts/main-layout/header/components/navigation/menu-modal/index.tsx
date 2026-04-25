@@ -115,7 +115,7 @@ export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
       </CustomModal>
       {isOpen && (
         <button
-          className="absolute left-[340px] top-4 z-40 size-7 xs:left-[452px]"
+          className="absolute left-[340px] top-4 z-50 size-7 xs:left-[452px]"
           onClick={handleClose}
         >
           <CloseButton width={32} height={32} className="text-red-500" />
