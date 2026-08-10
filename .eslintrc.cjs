@@ -72,7 +72,7 @@ module.exports = {
           },
         ],
         "import/no-cycle": "error",
-        "linebreak-style": ["error", "windows"],
+        "linebreak-style": ["error", "unix"],
         "react/prop-types": "off",
         "import/order": [
           "error",
