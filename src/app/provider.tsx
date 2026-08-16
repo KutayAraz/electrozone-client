@@ -7,7 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 
 import { GlobalErrorFallback } from "@/components/errors/global-error-fallback";
 import { Notifications } from "@/components/ui/notifications";
-import { Spinner } from "@/components/ui/spinner";
+import { FullPageSpinner } from "@/components/ui/spinner";
 import { persistor, store } from "@/stores/store";
 
 interface AppProviderProps {
@@ -41,12 +41,12 @@ export const AppProvider = ({ children }: AppProviderProps) => {
       }}
       onReset={() => window.location.reload()}
     >
-      <React.Suspense fallback={<Spinner />}>
+      <React.Suspense fallback={<FullPageSpinner />}>
         <HelmetProvider>
           <ThemeProvider theme={theme}>
             <Provider store={store}>
               <Notifications />
-              <PersistGate loading={<Spinner />} persistor={persistor}>
+              <PersistGate loading={<FullPageSpinner />} persistor={persistor}>
                 {children}
               </PersistGate>
             </Provider>

@@ -1,7 +1,7 @@
 import { Divider } from "@mui/material";
 
 import { Carousel } from "@/components/ui/carousel";
-import { Spinner } from "@/components/ui/spinner";
+import { CenteredSpinner } from "@/components/ui/spinner";
 
 import { useGetSuggestedProductsQuery } from "../api/get-suggested-products";
 
@@ -21,15 +21,15 @@ export const SuggestedProducts = ({
   return (
     <>
       {isSuggestedProductsLoading ? (
-        <div className="my-4">
-          <Spinner />
-        </div>
+        <CenteredSpinner className="my-4" />
       ) : (
         suggestedProducts &&
         suggestedProducts.products.length > 0 && (
           <div className="mb-4">
             <Divider />
+
             <h6 className="my-4 text-center text-lg">{suggestedProducts.suggestionType}</h6>
+
             <Carousel
               products={suggestedProducts.products}
               onWishlistToggle={onWishlistToggle}

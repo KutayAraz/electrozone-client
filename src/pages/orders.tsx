@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
-import { Spinner } from "@/components/ui/spinner";
+import { CenteredSpinner, Spinner } from "@/components/ui/spinner";
 import type { OrderSummary } from "@/features/orders/api/get-orders";
 import { getOrdersApi } from "@/features/orders/api/get-orders";
 import { OrderCard } from "@/features/orders/components/order-card";
@@ -50,11 +50,13 @@ export const OrdersPage = () => {
         title="Orders | Electrozone"
         description="View and manage your Electrozone orders, track shipping, and handle returns."
       />
+
       <div className="page-spacing">
         <h2 className="mb-2 text-xl font-bold">Previous Orders</h2>
+
         {isLoading ? (
           <p>
-            Loading Orders... <Spinner />
+            Loading Orders... <Spinner size={20} />
           </p>
         ) : allResults.length === 0 ? (
           <p>No orders found.</p>
@@ -63,6 +65,7 @@ export const OrdersPage = () => {
             {allResults.map((order: OrderSummary, index: number) => {
               // Set the observer ref on the last element
               const isLastElement = index === allResults.length - 1;
+
               return (
                 <OrderCard
                   ref={isLastElement ? lastOrderRef : null}
@@ -71,11 +74,8 @@ export const OrdersPage = () => {
                 />
               );
             })}
-            {isFetching && !isLoading && (
-              <div className="flex justify-center py-4">
-                <Spinner />
-              </div>
-            )}
+
+            {isFetching && !isLoading && <CenteredSpinner className="py-4" />}
           </>
         )}
       </div>

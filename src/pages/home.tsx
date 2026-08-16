@@ -3,7 +3,7 @@ import { Await, useLoaderData } from "react-router";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
 import { Carousel } from "@/components/ui/carousel";
-import { Spinner } from "@/components/ui/spinner";
+import { CenteredSpinner } from "@/components/ui/spinner";
 import { Categories } from "@/features/product-listing/components/categories";
 import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
@@ -67,19 +67,24 @@ export const HomePage = () => {
         title="Electrozone | Everything Electronics"
         description="Explore a wide variety of electronics from TVs to printers. Discover great deals and the latest technology at Electrozone."
       />
+
       <div className="page-spacing">
         <div className="max-w-screen-xl text-center xl:mx-auto">
           <Categories />
+
           <h2 className="mb-3 mt-6 text-xl font-semibold">Best Selling Products</h2>
-          <Suspense fallback={<Spinner />}>
+
+          <Suspense fallback={<CenteredSpinner />}>
             <Await resolve={bestSellers}>
               {(products: { data: CarouselProduct[] }) => (
                 <ProductsShowcase products={products.data} />
               )}
             </Await>
           </Suspense>
+
           <h2 className="my-3 text-xl font-semibold">Most Wishlisted Products</h2>
-          <Suspense fallback={<Spinner />}>
+
+          <Suspense fallback={<CenteredSpinner />}>
             <Await resolve={mostWishlisted}>
               {(products: { data: CarouselProduct[] }) => (
                 <ProductsShowcase products={products.data} />
@@ -88,7 +93,8 @@ export const HomePage = () => {
           </Suspense>
 
           <h2 className="my-3 text-xl font-semibold">Best Rated Products</h2>
-          <Suspense fallback={<Spinner />}>
+
+          <Suspense fallback={<CenteredSpinner />}>
             <Await resolve={bestRated}>
               {(products: { data: CarouselProduct[] }) => (
                 <ProductsShowcase products={products.data} />

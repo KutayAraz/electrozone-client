@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { TransitionGroup } from "react-transition-group";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
-import { Spinner } from "@/components/ui/spinner";
+import { CenteredSpinner, Spinner } from "@/components/ui/spinner";
 import { paths } from "@/config/paths";
 import { CartChangesAlert } from "@/features/cart/components/cart-changes-alert";
 import { CartItemCard } from "@/features/cart/components/cart-item-card";
@@ -69,12 +69,11 @@ export const CartPage = () => {
         />
 
         {isCartLoading ? (
-          <div className="flex h-40 items-center justify-center">
-            <Spinner size={16} />
-          </div>
+          <CenteredSpinner className="h-40" size={16} />
         ) : isCartEmpty ? (
           <div className="rounded-lg bg-gray-50 p-8 text-center">
             <p className="mb-4 text-lg text-gray-600">Your cart is empty</p>
+
             <button
               onClick={() => navigate("/")}
               className="rounded-md bg-theme-blue px-4 py-2 text-white transition duration-200 hover:bg-blue-700"
@@ -90,9 +89,11 @@ export const CartPage = () => {
                 {/* Localized loading overlay - only covers cart items */}
                 {(isModifying || isFetchingCartData) && (
                   <div className="absolute inset-0 z-10 backdrop-blur-[1px]">
-                    <div className="absolute inset-0 bg-white/70"></div>
+                    <div className="absolute inset-0 bg-white/70" />
+
                     <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center">
                       <Spinner size={24} />
+
                       <p className="mt-2 text-sm font-medium">Updating cart...</p>
                     </div>
                   </div>

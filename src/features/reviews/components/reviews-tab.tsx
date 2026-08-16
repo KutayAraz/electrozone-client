@@ -1,7 +1,7 @@
 import { Rating } from "@mui/material";
 import { useState } from "react";
 
-import { Spinner } from "@/components/ui/spinner";
+import { CenteredSpinner, Spinner } from "@/components/ui/spinner";
 
 import { useCheckReviewEligibilityQuery } from "../api/check-review-eligibility";
 import {
@@ -18,6 +18,8 @@ interface ReviewsTabProps {
 }
 
 export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
+  const reviewsPerPage = 6;
+
   const { data: productReviews, isLoading: isReviewsLoading } =
     useGetProductReviewsQuery(productId);
   const { data: canReview, isLoading: isCheckingEligibility } =
@@ -25,7 +27,6 @@ export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
 
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const reviewsPerPage = 6;
 
   const toggleRating = (rating: number) => {
     const newRatings = selectedRatings.includes(rating)
@@ -50,7 +51,7 @@ export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
   return (
     <>
       {isCheckingEligibility ? (
-        <Spinner size={16} />
+        <CenteredSpinner size={16} />
       ) : (
         <ReviewForm canCurrentUserReview={canReview || false} productId={productId} />
       )}

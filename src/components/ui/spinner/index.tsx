@@ -1,19 +1,22 @@
 import { CircularProgress } from "@mui/material";
 
 interface SpinnerProps {
-  fullScreen?: boolean;
   size?: number;
   color?: "primary" | "secondary" | "inherit";
 }
 
-export const Spinner = ({ fullScreen = true, size = 40, color = "primary" }: SpinnerProps) => {
-  if (fullScreen) {
-    return (
-      <div className="inset-0 flex items-center justify-center">
-        <CircularProgress size={size} color={color} />
-      </div>
-    );
-  }
+export const Spinner = ({ size = 40, color = "primary" }: SpinnerProps) => (
+  <CircularProgress size={size} color={color} />
+);
 
-  return <CircularProgress size={size} color={color} />;
-};
+interface CenteredSpinnerProps extends SpinnerProps {
+  className?: string;
+}
+
+export const CenteredSpinner = ({ className, ...props }: CenteredSpinnerProps) => (
+  <div className={`flex items-center justify-center ${className ?? ""}`}>
+    <Spinner {...props} />
+  </div>
+);
+
+export const FullPageSpinner = () => <CenteredSpinner className="min-h-screen" />;

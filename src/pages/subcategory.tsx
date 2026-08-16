@@ -2,7 +2,7 @@ import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
-import { Spinner } from "@/components/ui/spinner";
+import { CenteredSpinner, Spinner } from "@/components/ui/spinner";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
 import { subcategoryBrandsApi } from "@/features/product-listing/api/get-subcategory-brands";
 import { subcategoryPriceRangeApi } from "@/features/product-listing/api/get-subcategory-price-range";
@@ -27,6 +27,7 @@ export const subcategoryPageLoader = async (request: LoaderFunctionArgs) => {
   if (!subcategory) {
     throw new Error("No subcategory found!");
   }
+
   return {
     brands: await store.dispatch(
       subcategoryBrandsApi.endpoints.getSubcategoryBrands.initiate(subcategory),
@@ -89,6 +90,7 @@ export const SubcategoryPage = () => {
   // Cart and wishlist handlers
   const handleWishlistToggle = async (productId: number) => {
     setTogglingWishlistId(productId);
+
     try {
       await handleToggleWishlist(productId);
     } finally {
@@ -98,6 +100,7 @@ export const SubcategoryPage = () => {
 
   const handleAddToCart = async (productId: number) => {
     setAddingToCartId(productId);
+
     try {
       await addToCart(productId);
     } finally {
@@ -125,12 +128,15 @@ export const SubcategoryPage = () => {
         isOpen={filterDrawerOpen}
         onClose={() => setFilterDrawerOpen(false)}
       />
+
       <SortingDrawer isOpen={sortingDrawerOpen} onClose={() => setSortingDrawerOpen(false)} />
+
       {/* Mobile Filter/Sort Buttons */}
       <MobileFilterSortButtons
         onFilterClick={() => setFilterDrawerOpen(true)}
         onSortClick={() => setSortingDrawerOpen(true)}
       />
+
       <div className="page-spacing">
         <div className="flex flex-row items-start sm:space-x-2">
           {/* Desktop Filter Panel */}
@@ -138,6 +144,7 @@ export const SubcategoryPage = () => {
             <h3 className="text-lg font-bold">
               {subcategory ? subcategory.toUpperCase().replace(/-/g, " ") : "Products"}
             </h3>
+
             <div className="flex flex-col overflow-x-hidden">
               <FilterPanel priceRangeData={priceRange.data} brandsData={brands.data} />
             </div>
@@ -145,7 +152,7 @@ export const SubcategoryPage = () => {
 
           {isLoading ? (
             <div>
-              Loading Products... <Spinner />
+              Loading Products... <Spinner size={20} />
             </div>
           ) : error ? (
             <p>There was an error</p>
@@ -159,10 +166,12 @@ export const SubcategoryPage = () => {
                   <h5 className="self-end text-lg">
                     Listing {totalProductCount} products for {formatString(subcategory || "", "-")}
                   </h5>
+
                   <div className="hidden sm:block">
                     <SortingPanel />
                   </div>
                 </div>
+
                 {/* Product Grid with Infinite Scroll */}
                 <ProductList
                   products={allProducts}
@@ -173,11 +182,7 @@ export const SubcategoryPage = () => {
                   isAddingToCart={isProductAddingToCart}
                   isTogglingWishlist={isProductTogglingWishlist}
                 />
-                {isFetching && !isLoading && (
-                  <div className="flex justify-center py-4">
-                    <Spinner />
-                  </div>
-                )}
+                {isFetching && !isLoading && <CenteredSpinner className="py-4" />}
               </div>
             </>
           )}

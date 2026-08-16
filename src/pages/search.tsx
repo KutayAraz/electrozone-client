@@ -2,7 +2,7 @@ import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useSearchParams } from "react-router-dom";
 
 import { PageHelmet } from "@/components/seo/page-helmet";
-import { Spinner } from "@/components/ui/spinner";
+import { CenteredSpinner } from "@/components/ui/spinner";
 import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
 import {
   searchProductsApi,
@@ -98,6 +98,7 @@ export const SearchPage = () => {
   // Cart and wishlist handlers
   const handleWishlistToggle = async (productId: number) => {
     setTogglingWishlistId(productId);
+
     try {
       await handleToggleWishlist(productId);
     } finally {
@@ -107,6 +108,7 @@ export const SearchPage = () => {
 
   const handleAddToCart = async (productId: number) => {
     setAddingToCartId(productId);
+
     try {
       await addToCart(productId);
     } finally {
@@ -128,6 +130,7 @@ export const SearchPage = () => {
           title="Search | Electrozone"
           description="Search for electronics, gadgets, and more at Electrozone."
         />
+
         <div className="page-spacing">
           <div className="flex justify-center items-center h-64">
             <p className="text-lg text-gray-500">Please enter a search query</p>
@@ -152,7 +155,9 @@ export const SearchPage = () => {
         isOpen={filterDrawerOpen}
         onClose={() => setFilterDrawerOpen(false)}
       />
+
       <SortingDrawer isOpen={sortingDrawerOpen} onClose={() => setSortingDrawerOpen(false)} />
+
       {/* Mobile Filter/Sort Buttons */}
       <MobileFilterSortButtons
         onFilterClick={() => setFilterDrawerOpen(true)}
@@ -164,6 +169,7 @@ export const SearchPage = () => {
           {/* Desktop Filter Panel */}
           <div className="flex-col sticky hidden h-[calc(100vh-135px)] w-48 shrink-0 overflow-y-auto sm:top-30 sm:flex md:top-20 md:w-60">
             <h3 className="mb-2 text-lg font-bold">Search Results</h3>
+
             <div className="flex flex-col overflow-y-auto overflow-x-hidden">
               <FilterPanel
                 priceRangeData={priceRange}
@@ -176,7 +182,8 @@ export const SearchPage = () => {
           {isLoading ? (
             <div className="flex-1 flex justify-center items-center h-64">
               <div className="text-center">
-                <Spinner />
+                <CenteredSpinner />
+
                 <p className="mt-2">Searching for &quot;{searchQuery}&quot;...</p>
               </div>
             </div>
@@ -188,6 +195,7 @@ export const SearchPage = () => {
             <div className="flex-1 flex justify-center items-center h-64">
               <div className="text-center">
                 <p className="text-lg">No products found for &quot;{searchQuery}&quot;</p>
+
                 <p className="text-sm text-gray-500 mt-2">
                   Try adjusting your search terms or filters
                 </p>
@@ -201,6 +209,7 @@ export const SearchPage = () => {
                   <h5 className="self-end">
                     {totalProductCount} results for &quot;{searchQuery}&quot;
                   </h5>
+
                   <div className="hidden sm:block">
                     <SortingPanel />
                   </div>
@@ -217,11 +226,7 @@ export const SearchPage = () => {
                   isTogglingWishlist={isProductTogglingWishlist}
                 />
 
-                {isFetching && !isLoading && (
-                  <div className="flex w-full justify-center py-4">
-                    <Spinner />
-                  </div>
-                )}
+                {isFetching && !isLoading && <CenteredSpinner className="w-full py-4" />}
               </div>
             </>
           )}

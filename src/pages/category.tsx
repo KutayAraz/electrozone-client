@@ -3,7 +3,7 @@ import { Link, LoaderFunctionArgs, useLoaderData, useParams } from "react-router
 
 import { PageHelmet } from "@/components/seo/page-helmet";
 import { Carousel } from "@/components/ui/carousel";
-import { Spinner } from "@/components/ui/spinner";
+import { CenteredSpinner } from "@/components/ui/spinner";
 import { categoryInfoApi } from "@/features/product-listing/api/get-category-info";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { store } from "@/stores/store";
@@ -45,11 +45,13 @@ const ProductSection = ({ title, subcategory, products }: ProductSectionProps) =
   return (
     <>
       <h3 className="mb-3 text-center text-lg font-semibold">
-        {title}{" "}
+        {title}
+
         <Link to={subcategory} className="underline hover:text-blue-800">
           {formatString(subcategory, "_")}
         </Link>
       </h3>
+
       <Carousel
         className="mb-5"
         products={products}
@@ -74,6 +76,7 @@ const Subcategory = ({ subcategory, topSelling, topWishlisted }: SubcategoryProp
       subcategory={subcategory}
       products={topSelling.products}
     />
+
     <ProductSection
       title="Top Wishlisted Products in"
       subcategory={subcategory}
@@ -103,7 +106,7 @@ export const CategoryPage = () => {
       />
       <div className="page-spacing">
         {categoryData.state === "loading" ? (
-          <Spinner />
+          <CenteredSpinner />
         ) : (
           categoryData.data.map((subcategory: SubcategoryData) => (
             <Subcategory

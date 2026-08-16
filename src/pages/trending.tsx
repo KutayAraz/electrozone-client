@@ -29,6 +29,7 @@ export const TrendingProductsPage = () => {
   // Cart and wishlist handlers
   const handleWishlistToggle = async (productId: number) => {
     setTogglingWishlistId(productId);
+
     try {
       await handleToggleWishlist(productId);
     } finally {
@@ -38,6 +39,7 @@ export const TrendingProductsPage = () => {
 
   const handleAddToCart = async (productId: number) => {
     setAddingToCartId(productId);
+
     try {
       await addToCart(productId);
     } finally {
@@ -47,18 +49,20 @@ export const TrendingProductsPage = () => {
 
   const isProductTogglingWishlist = (productId: number) => togglingWishlistId === productId;
   const isProductAddingToCart = (productId: number) => addingToCartId === productId;
+
   return (
     <>
       <PageHelmet
         title={`${formatString(type, "-")} | Electrozone`}
         description="Browse trending electronics and gadgets at Electrozone, updated daily to showcase the latest in tech."
       />
+
       <div className="page-spacing">
         <h4 className="my-3 ml-2 text-xl font-bold">{formatString(type, "-") || ""} Site-Wide</h4>
+
         {products.state === "loading" ? (
           <p>
-            Loading Products..
-            <Spinner />
+            Loading Products.. <Spinner size={20} />
           </p>
         ) : (
           <div className="flex flex-wrap">
