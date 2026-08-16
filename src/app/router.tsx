@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { RouteErrorBoundary } from "@/components/errors/route-error-boundary";
+import { FullPageSpinner } from "@/components/ui/spinner";
 import { paths } from "@/config/paths";
 import { RedirectAuthenticated } from "@/features/auth/components/redirect-authenticated";
 import { MainLayout, mainLayoutLoader } from "@/layouts/main-layout";
@@ -14,6 +15,7 @@ export const createAppRouter = () =>
       element: <MainLayout />,
       errorElement: <RouteErrorBoundary />,
       loader: mainLayoutLoader,
+      HydrateFallback: FullPageSpinner,
       children: [
         {
           index: true,
