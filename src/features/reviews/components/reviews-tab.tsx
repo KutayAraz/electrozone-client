@@ -13,13 +13,13 @@ import {
 import { Review } from "./review";
 import { ReviewForm } from "./review-form";
 
+const REVIEWS_PER_PAGE = 6;
+
 interface ReviewsTabProps {
   productId: number;
 }
 
 export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
-  const reviewsPerPage = 6;
-
   const { data: productReviews, isLoading: isReviewsLoading } =
     useGetProductReviewsQuery(productId);
   const { data: canReview, isLoading: isCheckingEligibility } =
@@ -46,7 +46,7 @@ export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
         selectedRatings.length === 0 || selectedRatings.includes(Number(review.rating)),
     ) || [];
 
-  const pagesCount = Math.ceil(filteredReviews.length / reviewsPerPage);
+  const pagesCount = Math.ceil(filteredReviews.length / REVIEWS_PER_PAGE);
 
   return (
     <>
@@ -88,7 +88,7 @@ export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
             ) : (
               <>
                 {filteredReviews
-                  .slice(currentPage * reviewsPerPage, (currentPage + 1) * reviewsPerPage)
+                  .slice(currentPage * REVIEWS_PER_PAGE, (currentPage + 1) * REVIEWS_PER_PAGE)
                   .map((review: ReviewType) => (
                     <Review
                       key={review.id}
