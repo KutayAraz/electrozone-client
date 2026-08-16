@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 
 import BackArrow from "@assets/svgs/go-back.svg?react";
 
+import { inert } from "./inert";
+
 interface SubMenuProps {
   isVisible: boolean;
   title: string;
@@ -12,8 +14,9 @@ interface SubMenuProps {
 
 export const SubMenu = ({ isVisible, links, onBack }: SubMenuProps) => (
   <div
-    className={`absolute top-0 flex size-full flex-col transition-transform duration-300 ease-in-out
-              ${isVisible ? "" : "translate-x-full overflow-hidden"}`}
+    {...inert(!isVisible)}
+    className={`absolute inset-0 flex flex-col overflow-y-auto transition-transform duration-300 ease-in-out
+              ${isVisible ? "" : "translate-x-full"}`}
   >
     <button
       onClick={onBack}

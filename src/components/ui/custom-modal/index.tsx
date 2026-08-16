@@ -1,117 +1,155 @@
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useLocation } from "react-router-dom";
 
 import { Backdrop } from "./backdrop";
 import { ModalOverlay } from "./modal-overlay";
+import { ModalPlacement } from "./placements";
+
+const FOCUSABLE_SELECTOR = [
+  "a[href]",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
+].join(", ");
 
 interface CustomModalProps {
-  widthClass: string;
-  heightClass: string;
-  topClass?: string;
-  bottomClass?: string;
-  leftClass?: string;
-  rightClass?: string;
-  direction: "top" | "bottom" | "left" | "right" | "center";
-  autoCloseDuration?: number;
-  transitionDuration?: number;
-  transitionType: string;
-  children: React.ReactNode;
   isOpen: boolean;
   onClose: () => void;
-  className?: string;
   ariaLabel: string;
+  placement?: ModalPlacement;
+  className?: string;
+  autoCloseDuration?: number;
+  transitionDuration?: number;
+  children: React.ReactNode;
 }
 
 export const CustomModal = ({
-  onClose,
   isOpen,
-  children,
-  widthClass,
-  heightClass,
-  topClass,
-  bottomClass,
-  leftClass,
-  rightClass,
-  direction,
-  autoCloseDuration,
-  transitionType,
-  transitionDuration = 300,
-  className,
+  onClose,
   ariaLabel,
+  placement = "center",
+  className,
+  autoCloseDuration,
+  transitionDuration = 300,
+  children,
 }: CustomModalProps) => {
   const location = useLocation();
-  const modalRef = useRef<HTMLDivElement>(null);
+
+  const panelRef = useRef<HTMLDivElement>(null);
+  const previouslyFocused = useRef<HTMLElement | null>(null);
+
+  // Lets the effects below leave `onClose` out of their dependencies without
+  // capturing a stale callback.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+
+  const hasMounted = useRef(false);
+  useEffect(() => {
+    if (!hasMounted.current) {
+      hasMounted.current = true;
+
+      return;
+    }
+    onCloseRef.current();
+  }, [location.key]);
 
   useEffect(() => {
-    onClose();
-  }, [location]);
+    if (!isOpen) return;
 
-  useEffect(() => {
-    const handleEscapeKey = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose();
+        onCloseRef.current();
+
+        return;
+      }
+
+      if (event.key !== "Tab" || !panelRef.current) return;
+
+      // Keep Tab inside the dialog - `aria-modal` on its own does not do this.
+      // `inert` subtrees still match the selector but cannot take focus, so a
+      // modal that hides content behind `inert` has to have them filtered out.
+      const focusable = Array.from(
+        panelRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
+      ).filter((element) => !element.closest("[inert]"));
+
+      if (focusable.length === 0) {
+        event.preventDefault();
+
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+
+      // Focus can end up outside the panel entirely - blurred when its subtree
+      // went inert, for one. Pull it back rather than letting Tab escape.
+      if (!panelRef.current.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && (active === first || active === panelRef.current)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
 
-    // Attach the event listener
-    if (isOpen) {
-      window.addEventListener("keydown", handleEscapeKey);
-    }
+    window.addEventListener("keydown", handleKeyDown);
 
-    // Detach the event listener on cleanup
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    panelRef.current?.focus();
+
     return () => {
-      window.removeEventListener("keydown", handleEscapeKey);
+      previouslyFocused.current?.focus();
     };
   }, [isOpen]);
 
   useEffect(() => {
-    // Disable scrolling on the main page when the modal is open
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
 
-    let timer: ReturnType<typeof setTimeout>;
-    if (isOpen && autoCloseDuration) {
-      timer = setTimeout(onClose, autoCloseDuration);
-    }
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     return () => {
-      // Re-enable scrolling when the component unmounts or when the modal closes
-      document.body.style.overflow = "";
-      if (timer) clearTimeout(timer);
+      document.body.style.overflow = previousOverflow;
     };
-  }, [isOpen, autoCloseDuration, onClose]);
-
-  useEffect(() => {
-    // Focus the modal when it opens
-    if (isOpen && modalRef.current) {
-      modalRef.current.focus();
-    }
   }, [isOpen]);
 
-  return (
+  useEffect(() => {
+    if (!isOpen || !autoCloseDuration) return;
+
+    const timer = setTimeout(() => onCloseRef.current(), autoCloseDuration);
+
+    return () => clearTimeout(timer);
+  }, [isOpen, autoCloseDuration]);
+
+  return createPortal(
     <>
-      {isOpen && <Backdrop onClose={onClose} />}
+      <Backdrop isOpen={isOpen} transitionDuration={transitionDuration} onClose={onClose} />
       <ModalOverlay
-        role="dialog"
-        aria-modal="true"
-        aria-label={ariaLabel}
-        tabIndex={-1}
         isOpen={isOpen}
-        widthClass={widthClass}
-        heightClass={heightClass}
-        topClass={topClass}
-        bottomClass={bottomClass}
-        leftClass={leftClass}
-        rightClass={rightClass}
-        direction={direction}
+        panelRef={panelRef}
+        placement={placement}
         transitionDuration={transitionDuration}
-        transitionType={transitionType}
         className={className}
+        ariaLabel={ariaLabel}
       >
         {children}
       </ModalOverlay>
-    </>
+    </>,
+    document.body,
   );
 };

@@ -18,62 +18,60 @@ interface ProfileModalProps {
 export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
   const { submitLogout } = useLogout();
   return (
-    <>
-      <CustomModal
-        heightClass="h-screen"
-        widthClass="w-[85%] sm:w-[60%] md:w-[40%] lg:w-[30%]"
-        rightClass="right-0"
-        topClass="top-0"
-        transitionType="slide"
-        direction="left"
-        isOpen={isOpen}
-        onClose={onClose}
-        ariaLabel="User Profile Modal"
-      >
-        <div className="flex h-full flex-col justify-between">
-          <div className="bg-white">
-            <Link
-              to={paths.app.root.getHref()}
-              className="block bg-theme-blue px-4 py-6 text-xl font-semibold text-white"
-              onClick={onClose}
-            >
-              My Account
-            </Link>
-            <div className="flex flex-col bg-white text-lg ">
-              {navigationLinks.map(({ path, label }) => (
-                <React.Fragment key={path}>
-                  <Divider />
-                  <Link to={path} className="p-4 hover:bg-gray-100">
-                    {label}
-                  </Link>
-                </React.Fragment>
-              ))}
-              <Divider />
-            </div>
-          </div>
-
-          <Divider />
-          {isSignedIn && (
-            <button
-              className="mt-4 p-4 text-lg hover:bg-gray-100"
-              onClick={() => {
-                submitLogout();
-                onClose();
-              }}
-            >
-              Logout <ExitIcon className="inline h-auto w-8" />
-            </button>
-          )}
-        </div>
-      </CustomModal>
-      {isOpen && (
-        <button
-          className="absolute right-[calc(80%+40px)] top-6 z-[35] size-7 sm:right-[calc(60%+30px)] md:right-[calc(40%+30px)] lg:right-[calc(30%+30px)]"
+    <CustomModal
+      placement="right"
+      className="flex w-[85%] flex-col overflow-hidden sm:w-[60%] md:w-[40%] lg:w-[30%]"
+      isOpen={isOpen}
+      onClose={onClose}
+      ariaLabel="User Profile Modal"
+    >
+      <div className="flex shrink-0 items-center justify-between bg-theme-blue">
+        <Link
+          to={paths.app.root.getHref()}
+          className="grow px-4 py-6 text-xl font-semibold text-white"
           onClick={onClose}
+        >
+          My Account
+        </Link>
+
+        <button
+          className="mr-4 size-7 shrink-0 text-white"
+          onClick={onClose}
+          aria-label="Close modal"
         >
           <CloseButton width={32} height={32} />
         </button>
-      )}
-    </>
+      </div>
+
+      <div className="flex grow flex-col justify-between overflow-y-auto">
+        <div className="flex flex-col bg-white text-lg">
+          {navigationLinks.map(({ path, label }) => (
+            <React.Fragment key={path}>
+              <Divider />
+
+              <Link to={path} className="p-4 hover:bg-gray-100">
+                {label}
+              </Link>
+            </React.Fragment>
+          ))}
+
+          <Divider />
+        </div>
+
+        <Divider />
+
+        {isSignedIn && (
+          <button
+            className="mt-4 p-4 text-lg hover:bg-gray-100"
+            onClick={() => {
+              submitLogout();
+              onClose();
+            }}
+          >
+            Logout <ExitIcon className="inline h-auto w-8" />
+          </button>
+        )}
+      </div>
+    </CustomModal>
   );
 };

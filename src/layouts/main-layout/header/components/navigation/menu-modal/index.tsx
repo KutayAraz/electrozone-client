@@ -11,6 +11,7 @@ import ExitIcon from "@assets/svgs/exit.svg?react";
 
 import { MENU_SECTIONS, TRENDING_LINKS } from "../../../constants/menu";
 
+import { inert } from "./inert";
 import { MenuSection } from "./menu-section";
 import { SubMenu } from "./sub-menu";
 import { UserHeader } from "./user-header";
@@ -34,71 +35,83 @@ export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
   return (
     <div className="flex">
       <CustomModal
-        widthClass="w-80 xs:w-[432px]"
-        heightClass={`${
-          activeView === "main" ? "h-full overflow-y-auto" : "min-h-screen h-auto overflow-y-hidden"
-        }`}
-        topClass="top-0"
-        leftClass="left-0"
-        direction="right"
-        transitionType="slide"
-        transitionDuration={300}
+        placement="left"
+        className="flex w-80 flex-col overflow-hidden xs:w-[432px]"
         isOpen={isOpen}
         onClose={handleClose}
-        className="overflow-x-hidden"
         ariaLabel="Main Menu Modal"
       >
         <UserHeader firstName={user.firstName} isSignedIn={user.isAuthenticated} />
 
-        <div className="relative flex h-fit flex-col justify-between text-gray-700">
+        <div className="relative grow overflow-hidden text-gray-700">
           <div
-            className={`transition-transform duration-300 ease-in-out 
+            {...inert(activeView !== "main")}
+            className={`absolute inset-0 overflow-y-auto transition-transform duration-300 ease-in-out
              ${activeView !== "main" ? "-translate-x-full" : ""}`}
           >
-            <div className="flex flex-col">
-              <h2 className="p-4 text-xl font-bold">Trending</h2>
+            <div className="flex min-h-full flex-col">
+              <div className="flex flex-col">
+                <h2 className="p-4 text-xl font-bold">Trending</h2>
+
+                <Divider />
+
+                {TRENDING_LINKS.map((link) => (
+                  <Link
+                    key={link.url}
+                    to={link.url}
+                    className="px-4 py-3 text-lg hover:bg-gray-100"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </div>
+
               <Divider />
-              {TRENDING_LINKS.map((link) => (
-                <Link key={link.url} to={link.url} className="px-4 py-3 text-lg hover:bg-gray-100">
-                  {link.name}
-                </Link>
+
+              <h2 className="p-4 text-xl font-bold">Shop By Department</h2>
+
+              <Divider />
+
+              {MENU_SECTIONS.map((section) => (
+                <MenuSection
+                  key={section.id}
+                  section={section}
+                  onClick={() => setActiveView(section.id)}
+                />
               ))}
-            </div>
 
-            <Divider />
-            <div className="p-4">
-              <h2 className="text-xl font-bold">Shop By Department</h2>
-            </div>
-            <Divider />
-
-            {MENU_SECTIONS.map((section) => (
-              <MenuSection
-                key={section.id}
-                section={section}
-                onClick={() => setActiveView(section.id)}
-              />
-            ))}
-
-            <Divider />
-            <div className="flex flex-col">
-              <h2 className="p-4 text-xl font-bold">Help & Settings</h2>
               <Divider />
-              {user.isAuthenticated && (
-                <Link to={paths.app.root.getHref()} className="p-4 text-lg hover:bg-gray-100">
-                  Your Account
+
+              <div className="flex flex-col">
+                <h2 className="p-4 text-xl font-bold">Help & Settings</h2>
+
+                <Divider />
+
+                {user.isAuthenticated && (
+                  <Link to={paths.app.root.getHref()} className="p-4 text-lg hover:bg-gray-100">
+                    Your Account
+                  </Link>
+                )}
+
+                {user.city && <p className="p-4 text-lg">Delivery Location: {user.city}</p>}
+
+                <Link to={paths.misc.contact.getHref()} className="p-4 text-lg hover:bg-gray-100">
+                  Contact
                 </Link>
-              )}
-              {user.city && <p className="p-4 text-lg">Delivery Location: {user.city}</p>}
-              <Link to={paths.misc.contact.getHref()} className="p-4 text-lg hover:bg-gray-100">
-                Contact
-              </Link>
-              <Link
-                to={user.isAuthenticated ? "/sign-out" : "/sign-in"}
-                className="p-4 text-lg hover:bg-gray-100"
-              >
-                {user.isAuthenticated ? "Sign Out " : "Sign In"}
-                {user.isAuthenticated && <ExitIcon className="mr-4 inline size-6" />}
-              </Link>
+              </div>
+
+              <div className="mt-auto">
+                <Divider />
+
+                <Link
+                  to={user.isAuthenticated ? "/sign-out" : "/sign-in"}
+                  className="block p-4 text-lg hover:bg-gray-100"
+                >
+                  {user.isAuthenticated ? "Sign Out " : "Sign In"}
+
+                  {user.isAuthenticated && <ExitIcon className="mr-4 inline size-6" />}
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -113,6 +126,7 @@ export const MenuModal = ({ children, isOpen, onClose }: MenuModalProps) => {
           ))}
         </div>
       </CustomModal>
+
       {isOpen && (
         <button
           className="absolute left-[340px] top-4 z-50 size-7 xs:left-[452px]"

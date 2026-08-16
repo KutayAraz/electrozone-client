@@ -1,73 +1,52 @@
-import { useRef } from "react";
+import { CSSProperties, RefObject } from "react";
 import { CSSTransition } from "react-transition-group";
 
 import styles from "./custom-modal.module.css";
+import { layerAlignment, ModalPlacement } from "./placements";
 
 interface ModalOverlayProps {
   children: React.ReactNode;
   isOpen: boolean;
-  widthClass: string;
-  heightClass: string;
-  topClass?: string;
-  bottomClass?: string;
-  leftClass?: string;
-  rightClass?: string;
-  direction: string;
+  panelRef: RefObject<HTMLDivElement>;
+  placement: ModalPlacement;
   transitionDuration: number;
-  transitionType: string;
   className?: string;
-  role?: string;
-  "aria-modal"?: string;
-  "aria-label"?: string;
-  tabIndex?: number;
+  ariaLabel: string;
 }
 
 export const ModalOverlay = ({
   children,
   isOpen,
-  widthClass = "",
-  topClass = "",
-  bottomClass = "",
-  leftClass = "",
-  rightClass = "",
-  heightClass = "",
-  direction,
+  panelRef,
+  placement,
   transitionDuration,
-  transitionType,
   className,
-}: ModalOverlayProps) => {
-  const nodeRef = useRef(null);
-
-  const classNames = {
-    enter: styles[`modal-enter-${direction}-${transitionType}`],
-    enterActive: styles[`modal-enter-active-${direction}-${transitionType}`],
-    exit: styles[`modal-exit-${direction}-${transitionType}`],
-    exitActive: styles[`modal-exit-active-${direction}-${transitionType}`],
-  };
-
-  return (
+  ariaLabel,
+}: ModalOverlayProps) => (
+  <div className={`${styles.layer} ${layerAlignment[placement]}`}>
     <CSSTransition
       in={isOpen}
       timeout={transitionDuration}
-      classNames={classNames}
+      classNames={{
+        enter: styles[`enter-${placement}`],
+        enterActive: styles[`enter-active-${placement}`],
+        exit: styles[`exit-${placement}`],
+        exitActive: styles[`exit-active-${placement}`],
+      }}
       unmountOnExit
-      nodeRef={nodeRef}
+      nodeRef={panelRef}
     >
       <div
-        ref={nodeRef}
-        className={` 
-          ${styles.modal} 
-          ${widthClass} 
-          ${topClass} 
-          ${bottomClass} 
-          ${leftClass} 
-          ${rightClass} 
-          ${heightClass}
-          ${className}
-        `}
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={ariaLabel}
+        tabIndex={-1}
+        style={{ "--modal-duration": `${transitionDuration}ms` } as CSSProperties}
+        className={`${styles.panel} ${className ?? ""}`}
       >
         {children}
       </div>
     </CSSTransition>
-  );
-};
+  </div>
+);

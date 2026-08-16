@@ -30,15 +30,8 @@ export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: Locat
     <CustomModal
       isOpen={isOpen}
       onClose={onClose}
-      direction="bottom"
-      transitionType="slide"
-      transitionDuration={300}
-      widthClass="w-full sm:w-[90%] md:w-[50%] lg:w-[30%]"
-      heightClass="auto sm:h-80"
-      bottomClass="bottom-0 sm:bottom-auto"
-      topClass="top-auto sm:top-[35%]"
-      leftClass="left-0 sm:left-[5%] md:left-[25%] lg:left-[35%]"
-      className="sm:rounded-xl"
+      placement="bottom"
+      className="w-full overflow-y-auto sm:h-80 sm:w-[90%] sm:self-center sm:rounded-xl md:w-[50%] lg:w-[30%]"
       ariaLabel="User Location Modal"
     >
       <form onSubmit={handleSubmit} className="mx-auto my-6 flex w-4/5 flex-col text-center">
@@ -48,6 +41,7 @@ export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: Locat
           aria-label="Close modal"
         >
           <CloseButton className="size-6 cursor-pointer stroke-gray-500 sm:hidden" />
+
           <span className="hidden sm:inline">X</span>
         </button>
 

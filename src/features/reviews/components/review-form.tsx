@@ -37,8 +37,10 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
           message: "Please select a rating",
         }),
       );
+
       return;
     }
+
     await submitReview(productId, ratingValue, review.current?.value);
 
     setRatingValue(null);
@@ -55,23 +57,19 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
           Leave a review
         </button>
       )}
+
       <CustomModal
-        direction="center"
-        transitionType="slide"
-        transitionDuration={300}
-        widthClass="w-[90%] md:w-[50%] lg:w-[30%]"
-        heightClass="h-[72]"
-        topClass="top-[35%]"
-        leftClass="left-[5%] md:left-[25%] lg:left-[35%]"
+        placement="center"
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
-        className="noScrollbar rounded-xl"
+        className="noScrollbar w-[90%] overflow-y-auto rounded-xl md:w-[50%] lg:w-[30%]"
         ariaLabel="Review Form Modal"
       >
         <CloseButton
           className="absolute right-4 top-4 size-6 cursor-pointer stroke-gray-500"
           onClick={() => setIsFormOpen(false)}
         />
+
         <div className="p-4">
           <Rating
             name="user-rating"
@@ -85,6 +83,7 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
             }}
             emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
           />
+
           {ratingValue !== null && (
             <Box
               sx={{
@@ -106,6 +105,7 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
             placeholder="Leave your review here"
             className="mx-auto mt-6 block h-32 w-full resize-none rounded-lg border-1 border-theme-blue p-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+
           <button
             type="button"
             className={`mt-4 ${
