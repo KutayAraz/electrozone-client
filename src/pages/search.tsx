@@ -131,10 +131,8 @@ export const SearchPage = () => {
           description="Search for electronics, gadgets, and more at Electrozone."
         />
 
-        <div className="page-spacing">
-          <div className="flex justify-center items-center h-64">
-            <p className="text-lg text-gray-500">Please enter a search query</p>
-          </div>
+        <div className="page-spacing flex h-64 items-center justify-center">
+          <p className="text-lg text-gray-500">Please enter a search query</p>
         </div>
       </>
     );
