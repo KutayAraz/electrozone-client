@@ -4,6 +4,7 @@ import {
 } from "@/components/ui/notifications/notification-slice";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { updateUserInfo } from "@/stores/slices/user-slice";
+
 import { useGetUserProfileQuery } from "../api/get-user-profile";
 import { useUpdateUserProfileMutation } from "../api/update-user-profile";
 import { UpdateUser } from "../types";

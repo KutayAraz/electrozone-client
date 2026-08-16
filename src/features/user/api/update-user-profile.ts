@@ -1,4 +1,5 @@
 import { baseApi } from "@/lib/api/base-api";
+
 import { ProfileSchema } from "../schemas/profile-schema";
 
 interface UpdateUserResponse {
