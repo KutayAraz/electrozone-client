@@ -18,6 +18,7 @@ import { useSorting } from "@/features/product-listing/hooks/use-sorting";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { useInfiniteScrollRef } from "@/hooks/use-infinite-scroll-ref";
 import { store } from "@/stores/store";
+import { dedupeById } from "@/utils/dedupe-by-id";
 import { formatString } from "@/utils/format-casing";
 import { createCategoryDescription, createCategoryTitle } from "@/utils/seo";
 
@@ -72,7 +73,6 @@ export const SubcategoryPage = () => {
     min_price: filterParams.min_price,
     max_price: filterParams.max_price,
     brandString: filterParams.brandString,
-    subcategoriesString: filterParams.subcategoriesString,
   };
 
   // Pass filter params to the query
@@ -111,7 +111,7 @@ export const SubcategoryPage = () => {
   const isProductTogglingWishlist = (productId: number) => togglingWishlistId === productId;
   const isProductAddingToCart = (productId: number) => addingToCartId === productId;
 
-  const allProducts = data?.pages?.flatMap((page) => page.products) || [];
+  const allProducts = dedupeById(data?.pages?.flatMap((page) => page.products) || []);
   const totalProductCount = data?.pages?.[0]?.productQuantity || 0;
 
   return (
