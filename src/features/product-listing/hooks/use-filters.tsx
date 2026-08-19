@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { PriceRangeData } from "../types/filters";
@@ -7,13 +7,14 @@ interface UseFiltersProps {
   priceRangeData: PriceRangeData;
 }
 
-interface UseFiltersReturn {
-  // State
+interface AppliedFilters {
   priceRange: [number, number];
   selectedBrands: string[];
   selectedSubcategories: string[];
   stockStatus: string;
+}
 
+interface UseFiltersReturn extends AppliedFilters {
   // Handlers
   handlePriceChange: (event: Event | React.SyntheticEvent, newValue: [number, number]) => void;
   handlePriceInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -36,265 +37,184 @@ interface UseFiltersReturn {
   };
 }
 
+const parseList = (value: string | null) => (value ? value.split(" ").map(decodeURIComponent) : []);
+
 export const useFilters = ({ priceRangeData }: UseFiltersProps): UseFiltersReturn => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Parse initial values from URL params
-  const getInitialPriceMin = () => {
-    const minParam = searchParams.get("min_price");
-    return minParam ? parseFloat(minParam) : 0;
-  };
+  const maxPrice = Number(priceRangeData.max) || 1000;
 
-  const getInitialPriceMax = () => {
-    const maxParam = searchParams.get("max_price");
-    const maxValue = parseFloat(priceRangeData.max);
-    return maxParam ? parseFloat(maxParam) : maxValue;
-  };
+  /**
+   * The filters actually in effect. Derived from the URL during render rather
+   * than mirrored into state, so they change atomically with navigation - a
+   * copy held in state lags one render behind and briefly pairs the new
+   * subcategory with the previous one's filters, which produces a bogus extra
+   * request and cache entry.
+   */
+  const applied = useMemo<AppliedFilters>(() => {
+    const min = searchParams.get("min_price");
+    const max = searchParams.get("max_price");
 
-  const getInitialBrands = () => {
-    const brandsParam = searchParams.get("brands");
-    return brandsParam ? brandsParam.split(" ").map(decodeURIComponent) : [];
-  };
+    return {
+      priceRange: [min ? parseFloat(min) : 0, max ? parseFloat(max) : maxPrice],
+      selectedBrands: parseList(searchParams.get("brands")),
+      selectedSubcategories: parseList(searchParams.get("subcategories")),
+      stockStatus: searchParams.get("stock_status") || "",
+    };
+  }, [searchParams, maxPrice]);
 
-  const getInitialSubcategories = () => {
-    const subcategoriesParam = searchParams.get("subcategories");
-    return subcategoriesParam ? subcategoriesParam.split(" ").map(decodeURIComponent) : [];
-  };
+  // What the filter panel shows while the user edits, before they hit Apply.
+  const [draft, setDraft] = useState<AppliedFilters>(applied);
+  const [appliedSeed, setAppliedSeed] = useState(applied);
 
-  const getInitialStockStatus = () => {
-    return searchParams.get("stock_status") || "";
-  };
-
-  const [priceRange, setPriceRange] = useState<[number, number]>([
-    getInitialPriceMin(),
-    getInitialPriceMax(),
-  ]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>(getInitialBrands());
-  const [selectedSubcategories, setSelectedSubcategories] = useState<string[]>(
-    getInitialSubcategories(),
-  );
-  const [stockStatus, setStockStatus] = useState<string>(getInitialStockStatus());
-
-  // Update state when URL params change (e.g., browser back/forward)
-  useEffect(() => {
-    setPriceRange([getInitialPriceMin(), getInitialPriceMax()]);
-    setSelectedBrands(getInitialBrands());
-    setSelectedSubcategories(getInitialSubcategories());
-    setStockStatus(getInitialStockStatus());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, priceRangeData]);
+  // Re-seed the draft whenever the applied filters change - navigation,
+  // back/forward, or a reset.
+  if (appliedSeed !== applied) {
+    setAppliedSeed(applied);
+    setDraft(applied);
+  }
 
   // Price handlers
   const handlePriceChange = useCallback(
     (event: Event | React.SyntheticEvent, newValue: [number, number]) => {
-      // Ensure max is never less than min
       const [newMin, newMax] = newValue;
-      if (newMax < newMin) {
-        setPriceRange([newMin, newMin]);
-      } else {
-        setPriceRange(newValue);
-      }
+
+      setDraft((prev) => ({
+        ...prev,
+        priceRange: newMax < newMin ? [newMin, newMin] : newValue,
+      }));
     },
     [],
   );
 
-  const handlePriceInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target;
-      const numValue = value === "" ? 0 : Number(value);
+  const handlePriceInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const numValue = value === "" ? 0 : Number(value);
 
-      if (name === "minPrice") {
-        setPriceRange([numValue, priceRange[1]]);
-      } else if (name === "maxPrice") {
-        setPriceRange([priceRange[0], numValue]);
-      }
-    },
-    [priceRange],
-  );
+    setDraft((prev) => ({
+      ...prev,
+      priceRange:
+        name === "minPrice"
+          ? [numValue, prev.priceRange[1]]
+          : name === "maxPrice"
+          ? [prev.priceRange[0], numValue]
+          : prev.priceRange,
+    }));
+  }, []);
 
   const handlePriceBlur = useCallback(() => {
-    const maxPrice = Number(priceRangeData.max) || 1000;
+    setDraft((prev) => {
+      let [min, max] = prev.priceRange;
 
-    setPriceRange((prev) => {
-      let [min, max] = prev;
-
-      // Ensure min is at least 0
       if (min < 0) min = 0;
-
-      // Ensure max doesn't exceed the maximum possible price
       if (max > maxPrice) max = maxPrice;
+      if (min > max) max = min; // Set max to min instead of swapping
 
-      // Ensure min is less than or equal to max
-      if (min > max) {
-        max = min; // Set max to min instead of swapping
-      }
-
-      return [min, max];
+      return { ...prev, priceRange: [min, max] };
     });
-  }, [priceRangeData]);
+  }, [maxPrice]);
 
   // Stock status handler
-  const handleStockChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { name } = event.target;
+  const handleStockChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = event.target;
 
-      if (name === "all") {
-        setStockStatus(stockStatus === "all" ? "" : "all");
-      } else if (name === "in_stock") {
-        setStockStatus(stockStatus === "in_stock" ? "" : "in_stock");
-      }
-    },
-    [stockStatus],
-  );
+    setDraft((prev) => ({
+      ...prev,
+      stockStatus: prev.stockStatus === name ? "" : name,
+    }));
+  }, []);
 
   // Brand handler
   const handleBrandChange = useCallback((brand: string) => {
-    setSelectedBrands((prev) => {
-      if (prev.includes(brand)) {
-        return prev.filter((b) => b !== brand);
-      }
-      return [...prev, brand];
-    });
+    setDraft((prev) => ({
+      ...prev,
+      selectedBrands: prev.selectedBrands.includes(brand)
+        ? prev.selectedBrands.filter((b) => b !== brand)
+        : [...prev.selectedBrands, brand],
+    }));
   }, []);
 
   // Subcategory handler
   const handleSubcategoryChange = useCallback((subcategory: string) => {
-    setSelectedSubcategories((prev) => {
-      if (prev.includes(subcategory)) {
-        return prev.filter((s) => s !== subcategory);
-      }
-      return [...prev, subcategory];
-    });
+    setDraft((prev) => ({
+      ...prev,
+      selectedSubcategories: prev.selectedSubcategories.includes(subcategory)
+        ? prev.selectedSubcategories.filter((s) => s !== subcategory)
+        : [...prev.selectedSubcategories, subcategory],
+    }));
   }, []);
 
-  // Get filter params for API query
+  /**
+   * Query params for the API. Built from the applied filters, never the draft,
+   * so moving a slider does not refetch until Apply is pressed.
+   */
   const getFilterParams = useCallback(() => {
-    const params: {
-      stockStatus?: string;
-      min_price?: string;
-      max_price?: string;
-      brandString?: string;
-      subcategoriesString?: string;
-    } = {};
+    const params: ReturnType<UseFiltersReturn["getFilterParams"]> = {};
 
-    // Only include params that differ from defaults
-    if (stockStatus) {
-      params.stockStatus = stockStatus;
+    if (applied.stockStatus) params.stockStatus = applied.stockStatus;
+
+    // Only include bounds that actually narrow the range
+    if (applied.priceRange[0] > 0) params.min_price = String(applied.priceRange[0]);
+    if (applied.priceRange[1] < maxPrice) params.max_price = String(applied.priceRange[1]);
+
+    if (applied.selectedBrands.length > 0) {
+      params.brandString = applied.selectedBrands.map(encodeURIComponent).join(" ");
     }
 
-    const maxPrice = Number(priceRangeData.max) || 1000;
-
-    // Only include min_price if it's greater than 0
-    if (priceRange[0] > 0) {
-      params.min_price = String(priceRange[0]);
-    }
-
-    // Only include max_price if it's less than the maximum
-    if (priceRange[1] < maxPrice) {
-      params.max_price = String(priceRange[1]);
-    }
-
-    if (selectedBrands.length > 0) {
-      params.brandString = selectedBrands.map(encodeURIComponent).join(" ");
-    }
-
-    if (selectedSubcategories.length > 0) {
-      params.subcategoriesString = selectedSubcategories.map(encodeURIComponent).join(" ");
+    if (applied.selectedSubcategories.length > 0) {
+      params.subcategoriesString = applied.selectedSubcategories.map(encodeURIComponent).join(" ");
     }
 
     return params;
-  }, [stockStatus, priceRange, selectedBrands, selectedSubcategories, priceRangeData]);
+  }, [applied, maxPrice]);
 
-  // Apply filters - updates URL params which should trigger query refetch
+  // Commit the draft to the URL, which is what drives the query
   const applyFilters = useCallback(() => {
     const newSearchParams = new URLSearchParams(searchParams);
 
-    // Preserve existing sort param
-    const currentSort = searchParams.get("sort") || "featured";
-    newSearchParams.set("sort", currentSort);
+    newSearchParams.set("sort", searchParams.get("sort") || "featured");
 
-    // Preserve search query if it exists
-    const searchQuery = searchParams.get("query");
-    if (searchQuery) {
-      newSearchParams.set("query", searchQuery);
+    // Rewrite the filter params from scratch
+    for (const key of ["brands", "min_price", "max_price", "stock_status", "subcategories"]) {
+      newSearchParams.delete(key);
     }
 
-    // Remove all filter params first
-    newSearchParams.delete("brands");
-    newSearchParams.delete("min_price");
-    newSearchParams.delete("max_price");
-    newSearchParams.delete("stock_status");
-    newSearchParams.delete("subcategories");
-
-    // Add filter params
-    const maxPrice = Number(priceRangeData.max) || 1000;
-
-    if (selectedBrands.length > 0) {
-      const brandsString = selectedBrands.map(encodeURIComponent).join(" ");
-      newSearchParams.set("brands", brandsString);
+    if (draft.selectedBrands.length > 0) {
+      newSearchParams.set("brands", draft.selectedBrands.map(encodeURIComponent).join(" "));
     }
 
-    // Only include min_price if it's greater than 0
-    if (priceRange[0] > 0) {
-      newSearchParams.set("min_price", String(priceRange[0]));
+    if (draft.priceRange[0] > 0) newSearchParams.set("min_price", String(draft.priceRange[0]));
+    if (draft.priceRange[1] < maxPrice) {
+      newSearchParams.set("max_price", String(draft.priceRange[1]));
     }
 
-    // Only include max_price if it's less than the maximum
-    if (priceRange[1] < maxPrice) {
-      newSearchParams.set("max_price", String(priceRange[1]));
+    if (draft.stockStatus) newSearchParams.set("stock_status", draft.stockStatus);
+
+    if (draft.selectedSubcategories.length > 0) {
+      newSearchParams.set(
+        "subcategories",
+        draft.selectedSubcategories.map(encodeURIComponent).join(" "),
+      );
     }
 
-    if (stockStatus) {
-      newSearchParams.set("stock_status", stockStatus);
-    }
-
-    if (selectedSubcategories.length > 0) {
-      const subcategoriesString = selectedSubcategories.map(encodeURIComponent).join(" ");
-      newSearchParams.set("subcategories", subcategoriesString);
-    }
-
-    // Update URL - this will trigger a refetch in the component using this hook
     setSearchParams(newSearchParams);
-  }, [
-    searchParams,
-    selectedBrands,
-    selectedSubcategories,
-    priceRange,
-    stockStatus,
-    priceRangeData,
-    setSearchParams,
-  ]);
+  }, [searchParams, draft, maxPrice, setSearchParams]);
 
-  // Reset all filters
+  // Clear every filter, keeping sort and any search query
   const resetFilters = useCallback(() => {
-    const maxPrice = Number(priceRangeData.max) || 1000;
-
-    setPriceRange([0, maxPrice]); // Always reset min to 0
-    setSelectedBrands([]);
-    setSelectedSubcategories([]);
-    setStockStatus("");
-
-    // Clear URL params except sort and search query
     const newSearchParams = new URLSearchParams();
-    const currentSort = searchParams.get("sort") || "featured";
-    newSearchParams.set("sort", currentSort);
+
+    newSearchParams.set("sort", searchParams.get("sort") || "featured");
 
     const searchQuery = searchParams.get("query");
-    if (searchQuery) {
-      newSearchParams.set("query", searchQuery);
-    }
+    if (searchQuery) newSearchParams.set("query", searchQuery);
 
     setSearchParams(newSearchParams);
-  }, [priceRangeData, searchParams, setSearchParams]);
+  }, [searchParams, setSearchParams]);
 
   return {
-    // State
-    priceRange,
-    selectedBrands,
-    selectedSubcategories,
-    stockStatus,
+    ...draft,
 
-    // Handlers
     handlePriceChange,
     handlePriceInputChange,
     handlePriceBlur,
@@ -302,11 +222,9 @@ export const useFilters = ({ priceRangeData }: UseFiltersProps): UseFiltersRetur
     handleBrandChange,
     handleSubcategoryChange,
 
-    // Actions
     applyFilters,
     resetFilters,
 
-    // Utility
     getFilterParams,
   };
 };
