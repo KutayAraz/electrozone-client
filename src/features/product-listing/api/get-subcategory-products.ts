@@ -13,7 +13,7 @@ export type GetProductsPageParam = {
 
 export type GetProductsQueryArg = {
   subcategory: string;
-  sort_by?: string;
+  sort?: string;
   stockStatus?: string;
   min_price?: string;
   max_price?: string;
@@ -54,7 +54,7 @@ export const getSubcategoryProductsApi = baseApi.injectEndpoints({
           queryParams.append("limit", params.pageParam.limit.toString());
 
         // Add sorting param
-        if (params.queryArg.sort_by) queryParams.append("sort", params.queryArg.sort_by);
+        if (params.queryArg.sort) queryParams.append("sort", params.queryArg.sort);
 
         // Add filtering params
         if (params.queryArg.stockStatus) {
@@ -83,13 +83,10 @@ export const getSubcategoryProductsApi = baseApi.injectEndpoints({
         return baseTags;
       },
 
-      // FIXED: Create cache keys that separate different filter combinations
-      serializeQueryArgs: ({ endpointName, queryArgs }) => {
-        const { subcategory, sort_by, stockStatus, min_price, max_price, brandString } = queryArgs;
-        return `${endpointName}-${subcategory}-${sort_by || "featured"}-${stockStatus || ""}-${
-          min_price || ""
-        }-${max_price || ""}-${brandString || ""}`;
-      },
+      // No custom serializeQueryArgs on purpose: the default hashes the whole
+      // arg object, so any arg that reaches the URL also reaches the cache key.
+      // A hand-written key can silently drift from the URL - that is how a
+      // `sort_by`/`sort` typo made sorting a no-op and kept it out of the key.
       extraOptions: { skipAuth: true },
     }),
   }),
