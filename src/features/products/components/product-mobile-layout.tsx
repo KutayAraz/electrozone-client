@@ -46,7 +46,9 @@ export const ProductMobileLayout = ({
   return (
     <>
       <h2 className="text-center font-bold">{productName}</h2>
+
       <p className="mb-2 text-center font-semibold">Brand: {brand}</p>
+
       <div className="relative">
         <Swiper
           speed={500}
@@ -96,7 +98,8 @@ export const ProductMobileLayout = ({
         </div>
       </div>
 
-      <div className="fixed inset-x-0 bottom-0 z-10 flex w-full items-center justify-around bg-gray-100 py-3">
+      {/* The height lives in index.css - the page reserves it via :has(). */}
+      <div className="product-action-bar fixed inset-x-0 bottom-0 z-10 flex w-full items-center justify-around bg-gray-100">
         <p className="ml-2 text-lg font-bold">${price}</p>
         <div className="flex">
           <button onClick={decrementQuantity} className="rounded border border-gray-300 px-2 py-1">

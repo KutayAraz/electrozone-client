@@ -49,6 +49,17 @@
   margin: 8px auto;
 }
 
+.product-action-bar {
+  height: var(--product-action-bar-height);
+}
+
+/* The action bar is fixed, so it sits outside the document flow and would
+   otherwise cover the end of the page - the footer. Reserve its height at the
+   bottom of the document for as long as the bar is on the page. */
+body:has(.product-action-bar) {
+  padding-bottom: var(--product-action-bar-height);
+}
+
 @media (max-width: 1296px) {
   .page-spacing {
     padding: 0 8px;
@@ -67,6 +78,7 @@ input[type='number'] {
 
 :root {
   --swiper-theme-color: #13193F;
+  --product-action-bar-height: 4rem;
 }
 
 @keyframes slideDown {
