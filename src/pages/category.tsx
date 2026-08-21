@@ -27,8 +27,9 @@ type ProductSectionProps = {
 };
 
 const ProductSection = ({ title, subcategory, products }: ProductSectionProps) => {
-  const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
   const { handleToggleWishlist } = useToggleWishlist();
+
+  const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
 
   const handleWishlistToggle = async (id: number) => {
     setTogglingProductId(id);
@@ -45,8 +46,7 @@ const ProductSection = ({ title, subcategory, products }: ProductSectionProps) =
   return (
     <>
       <h3 className="mb-3 text-center text-lg font-semibold">
-        {title}
-
+        {title}{" "}
         <Link to={subcategory} className="underline hover:text-blue-800">
           {formatString(subcategory, "_")}
         </Link>
@@ -104,6 +104,7 @@ export const CategoryPage = () => {
         title={`${formattedCategory} | Electrozone`}
         description="Browse products by category to find exactly what you're looking for at Electrozone."
       />
+
       <div className="page-spacing">
         {categoryData.state === "loading" ? (
           <CenteredSpinner />

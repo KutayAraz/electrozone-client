@@ -37,6 +37,7 @@ export const Categories = () => {
     <section className="py-4 md:py-8 px-4 max-w-7xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">Shop by Category</h2>
+
         <p className="text-gray-600">Discover our wide range of electronics and accessories</p>
       </div>
 
