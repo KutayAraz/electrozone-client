@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import { paths } from "@/config/paths";
 import { useCartCount } from "@/features/cart/hooks/use-cart-count";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { selectUser, userSlice } from "@/stores/slices/user-slice";
 import BrandLogo from "@assets/brand-images/brand-logo.svg?react";
 import Brand from "@assets/brand-images/brand.svg?react";
@@ -31,7 +32,7 @@ export const Header = () => {
 
   const headerContainerRef = useRef<HTMLDivElement>(null);
 
-  const isMobile = useMediaQuery("(max-width: 768px)");
+  const isMobile = useIsMobile();
   const smallScreenDevice = useMediaQuery("(max-width: 400px)");
   const path = location.pathname;
 

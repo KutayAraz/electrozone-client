@@ -1,4 +1,3 @@
-import { useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router";
 
@@ -14,6 +13,7 @@ import { ProductTabs } from "@/features/products/components/product-page-tabs";
 import { ReviewsTab } from "@/features/reviews/components/reviews-tab";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { useIsMobile } from "@/hooks/use-is-mobile";
 import { setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
 import { CheckoutType } from "@/types/checkout";
@@ -64,7 +64,7 @@ export const ProductPage = () => {
 
   const isProductToggling = (id: number) => togglingProductId === id;
 
-  const isMobile = useMediaQuery("(min-width:768px)");
+  const isMobile = useIsMobile();
 
   const incrementQuantity = () => {
     setQuantity((prev) => (prev < 10 ? ++prev : prev));
@@ -76,6 +76,7 @@ export const ProductPage = () => {
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
+
     if (!isNaN(value)) {
       setQuantity(value > 10 ? 10 : value);
     }
@@ -97,26 +98,9 @@ export const ProductPage = () => {
           productData.description,
         )}
       />
+
       <div className="page-spacing">
         {isMobile ? (
-          <ProductDesktopLayout
-            {...productData}
-            productId={productData.id}
-            images={productData.productImages}
-            handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
-            addingToCart={isAddingToCart}
-            handleQuantityChange={handleQuantityChange}
-            handleBuyNow={buyNowClick}
-            isNavigatingToCheckout={isNavigatingToCheckout}
-            decrementQuantity={decrementQuantity}
-            selectedImage={selectedImage}
-            setSelectedImage={setSelectedImage}
-            incrementQuantity={incrementQuantity}
-            onRatingClick={() => {}}
-            quantity={quantity}
-            onWishlistToggle={handleToggleWishlist}
-          />
-        ) : (
           <ProductMobileLayout
             {...productData}
             productId={productData.id}
@@ -134,10 +118,30 @@ export const ProductPage = () => {
             quantity={quantity}
             onWishlistToggle={handleToggleWishlist}
           />
+        ) : (
+          <ProductDesktopLayout
+            {...productData}
+            productId={productData.id}
+            images={productData.productImages}
+            handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
+            addingToCart={isAddingToCart}
+            handleQuantityChange={handleQuantityChange}
+            handleBuyNow={buyNowClick}
+            isNavigatingToCheckout={isNavigatingToCheckout}
+            decrementQuantity={decrementQuantity}
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            incrementQuantity={incrementQuantity}
+            onRatingClick={() => {}}
+            quantity={quantity}
+            onWishlistToggle={handleToggleWishlist}
+          />
         )}
+
         <ProductTabs productDescription={productData.description}>
           <ReviewsTab productId={Number(productData.id)} />
         </ProductTabs>
+
         <SuggestedProducts
           id={productData.id}
           onWishlistToggle={handleWishlistToggle}
