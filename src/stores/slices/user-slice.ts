@@ -38,7 +38,7 @@ export const userSlice = createSlice({
     updateUserInfo(state, action: PayloadAction<{ city: string }>) {
       state.city = action.payload.city;
     },
-    setUserIntent(state, action) {
+    setUserIntent(state, action: PayloadAction<CheckoutType>) {
       state.checkoutIntent = action.payload;
     },
     setGuestLocation(state, action) {

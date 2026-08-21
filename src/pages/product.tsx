@@ -14,9 +14,9 @@ import { ProductTabs } from "@/features/products/components/product-page-tabs";
 import { ReviewsTab } from "@/features/reviews/components/reviews-tab";
 import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
-import { CheckoutIntent } from "@/stores/slices/models";
 import { setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
+import { CheckoutType } from "@/types/checkout";
 import { createProductDescription, createProductTitle } from "@/utils/seo";
 
 export const productPageLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -82,7 +82,7 @@ export const ProductPage = () => {
   };
 
   const buyNowClick = async () => {
-    dispatch(setUserIntent(CheckoutIntent.BUY_NOW));
+    dispatch(setUserIntent(CheckoutType.BUY_NOW));
     await addToBuyNowCart({ productId: productData.id, quantity: 1 }).unwrap();
     navigate(paths.checkout.root.getHref());
   };

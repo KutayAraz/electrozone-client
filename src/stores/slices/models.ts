@@ -1,11 +1,3 @@
-export interface User {
-  firstName: string | null;
-  city: string | null;
-  isSignedIn: boolean;
-  userIntent: CheckoutIntent;
-  cartItemCount: number;
-}
-
 export interface UserProtected {
   id: string | null;
   email: string | null;
@@ -38,10 +30,4 @@ export interface BuyNowCartState {
 
 export interface WishlistState {
   items: Array<number>;
-}
-
-export enum CheckoutIntent {
-  NORMAL = "normal",
-  SESSION = "session",
-  BUY_NOW = "buyNow",
 }

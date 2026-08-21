@@ -15,8 +15,8 @@ import { useUpdateQuantity } from "@/features/cart/hooks/use-update-quantity";
 import { CartItem } from "@/features/cart/types/response";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
-import { CheckoutIntent } from "@/stores/slices/models";
 import { selectIsAuthenticated, setUserIntent } from "@/stores/slices/user-slice";
+import { CheckoutType } from "@/types/checkout";
 
 export const CartPage = () => {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
@@ -46,7 +46,7 @@ export const CartPage = () => {
   };
 
   const proceedToCheckout = () => {
-    if (!isAuthenticated) dispatch(setUserIntent(CheckoutIntent.SESSION));
+    if (!isAuthenticated) dispatch(setUserIntent(CheckoutType.SESSION));
     navigate(paths.checkout.root.getHref());
   };
 

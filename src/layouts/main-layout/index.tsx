@@ -3,7 +3,6 @@ import { LoaderFunctionArgs, Outlet, ScrollRestoration } from "react-router-dom"
 import { LoadingIndicator } from "@/components/ui/loading-bar";
 import { paths } from "@/config/paths";
 import { mergeCartsApi } from "@/features/cart/api/user-cart/merge-carts";
-import { CheckoutIntent } from "@/stores/slices/models";
 import { setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
 import { CheckoutType } from "@/types/checkout";
@@ -23,7 +22,7 @@ export const mainLayoutLoader = async ({ request }: LoaderFunctionArgs) => {
   ) {
     if (checkoutIntent === CheckoutType.SESSION)
       await store.dispatch(mergeCartsApi.endpoints.mergeCarts.initiate());
-    store.dispatch(setUserIntent(CheckoutIntent.NORMAL));
+    store.dispatch(setUserIntent(CheckoutType.NORMAL));
   }
   return null;
 };

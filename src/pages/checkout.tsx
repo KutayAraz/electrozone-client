@@ -16,7 +16,6 @@ import { getUserProfileApi } from "@/features/user/api/get-user-profile";
 import { useAppDispatch } from "@/hooks/use-app-dispatch";
 import { useAppSelector } from "@/hooks/use-app-selector";
 import { CheckoutLayout } from "@/layouts/checkout-layout";
-import { CheckoutIntent } from "@/stores/slices/models";
 import { selectCheckoutIntent, setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
 import { CheckoutItem, CheckoutType } from "@/types/checkout";
@@ -102,7 +101,7 @@ export const CheckoutPage = () => {
 
   const cancelAndNavigate = async () => {
     await clearSessionCart();
-    dispatch(setUserIntent(CheckoutIntent.NORMAL));
+    dispatch(setUserIntent(CheckoutType.NORMAL));
     navigateToCart();
   };
 
