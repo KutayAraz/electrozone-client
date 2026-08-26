@@ -1,6 +1,6 @@
-import { PageHelmet } from "@/components/seo/page-helmet";
-import { RegisterForm } from "@/features/auth/components/register-form";
-import { useRegister } from "@/features/auth/hooks/use-register";
+import { PageHelmet } from "@/components/seo/PageHelmet";
+import { RegisterForm } from "@/features/auth/components/RegisterForm";
+import { useRegister } from "@/features/auth/hooks/useRegister";
 
 export const RegisterPage = () => {
   const { submitRegister, serverError, clearServerError, isLoading } = useRegister();

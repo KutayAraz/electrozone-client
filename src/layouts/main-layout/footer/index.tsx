@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import BrandSlogan from "@assets/brand-images/brand-slogan.svg?react";
 
-import { FooterMenu } from "./components/footer-menu";
+import { FooterMenu } from "./components/FooterMenu";
 
 export const Footer = memo(() => {
   return (

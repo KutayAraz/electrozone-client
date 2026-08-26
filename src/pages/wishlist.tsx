@@ -1,11 +1,11 @@
 import { useLoaderData } from "react-router-dom";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import { ProductCard } from "@/components/ui/product-card";
-import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
+import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { wishlistApi } from "@/features/wishlist/api/get-wishlist";
-import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
-import { useAppDispatch } from "@/hooks/use-app-dispatch";
+import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { removeFromWishlist } from "@/stores/slices/wishlist-slice";
 import { store } from "@/stores/store";
 import { Product } from "@/types/product";

@@ -2,8 +2,8 @@ import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useLocation } from "react-router-dom";
 
-import { Backdrop } from "./backdrop";
-import { ModalOverlay } from "./modal-overlay";
+import { Backdrop } from "./Backdrop";
+import { ModalOverlay } from "./ModalOverlay";
 import { ModalPlacement } from "./placements";
 
 const FOCUSABLE_SELECTOR = [

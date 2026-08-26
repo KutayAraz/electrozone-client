@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import { paths } from "@/config/paths";
 
 export const ProjectDetailsPage = () => {

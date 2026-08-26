@@ -1,10 +1,10 @@
 import { useCallback, useRef } from "react";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import { CenteredSpinner, Spinner } from "@/components/ui/spinner";
 import type { OrderSummary } from "@/features/orders/api/get-orders";
 import { getOrdersApi } from "@/features/orders/api/get-orders";
-import { OrderCard } from "@/features/orders/components/order-card";
+import { OrderCard } from "@/features/orders/components/OrderCard";
 
 export const OrdersPage = () => {
   const { data, isFetching, isLoading, fetchNextPage, hasNextPage } =

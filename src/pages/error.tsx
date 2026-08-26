@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { isRouteErrorResponse, useNavigate, useRouteError } from "react-router-dom";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 
 export const ErrorPage = () => {
   const error = useRouteError();

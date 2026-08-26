@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Link, LoaderFunctionArgs, useLoaderData, useParams } from "react-router";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import { Carousel } from "@/components/ui/carousel";
 import { CenteredSpinner } from "@/components/ui/spinner";
 import { categoryInfoApi } from "@/features/product-listing/api/get-category-info";
-import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
+import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
 import { store } from "@/stores/store";
 import { CarouselProduct } from "@/types/product";
 import { formatString } from "@/utils/format-casing";

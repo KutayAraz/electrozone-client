@@ -12,9 +12,9 @@ import ExitIcon from "@assets/svgs/exit.svg?react";
 import { MENU_SECTIONS, TRENDING_LINKS } from "../../../constants/menu";
 
 import { inert } from "./inert";
-import { MenuSection } from "./menu-section";
-import { SubMenu } from "./sub-menu";
-import { UserHeader } from "./user-header";
+import { MenuSection } from "./MenuSection";
+import { SubMenu } from "./SubMenu";
+import { UserHeader } from "./UserHeader";
 
 interface MenuModalProps {
   children?: React.ReactNode;

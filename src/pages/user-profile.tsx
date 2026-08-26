@@ -1,6 +1,6 @@
-import { PageHelmet } from "@/components/seo/page-helmet";
-import { ProfileForm } from "@/features/user/components/profile-form";
-import { useUpdateProfile } from "@/features/user/hooks/use-update-profile";
+import { PageHelmet } from "@/components/seo/PageHelmet";
+import { ProfileForm } from "@/features/user/components/ProfileForm";
+import { useUpdateProfile } from "@/features/user/hooks/useUpdateProfile";
 
 export const UserProfilePage = () => {
   const { userInfo, submitProfile, isProfileLoading } = useUpdateProfile();

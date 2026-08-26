@@ -1,14 +1,14 @@
 import { ArrowForward, CheckCircle, LocalShipping, ShoppingBag } from "@mui/icons-material";
 import { Link, LoaderFunctionArgs, redirect, useLoaderData } from "react-router-dom";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import {
   displayNotification,
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
 import { paths } from "@/config/paths";
 import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
-import { CheckoutLayout } from "@/layouts/checkout-layout";
+import { CheckoutLayout } from "@/layouts/CheckoutLayout";
 import { store } from "@/stores/store";
 
 export const orderConfirmationLoader = async ({ params }: LoaderFunctionArgs) => {

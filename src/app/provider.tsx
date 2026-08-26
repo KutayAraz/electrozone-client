@@ -5,7 +5,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { GlobalErrorFallback } from "@/components/errors/global-error-fallback";
+import { GlobalErrorFallback } from "@/components/errors/GlobalErrorFallback";
 import { Notifications } from "@/components/ui/notifications";
 import { FullPageSpinner } from "@/components/ui/spinner";
 import { persistor, store } from "@/stores/store";

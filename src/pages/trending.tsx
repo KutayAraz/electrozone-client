@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router-dom";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import { Spinner } from "@/components/ui/spinner";
-import { useAddToCart } from "@/features/cart/hooks/use-add-to-cart";
-import { ProductList } from "@/features/product-listing/components/product-listing";
+import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
+import { ProductList } from "@/features/product-listing/components/ProductListing";
 import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
-import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
+import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
 import { store } from "@/stores/store";
 import { formatString } from "@/utils/format-casing";
 

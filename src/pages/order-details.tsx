@@ -1,6 +1,6 @@
 import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router-dom";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import {
   displayNotification,
@@ -10,9 +10,9 @@ import { CenteredSpinner } from "@/components/ui/spinner";
 import { paths } from "@/config/paths";
 import { useCancelOrderMutation } from "@/features/orders/api/cancel-order";
 import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
-import { OrderDetailsCard } from "@/features/orders/components/order-details-card";
-import { useAppDispatch } from "@/hooks/use-app-dispatch";
-import { useConfirmationDialog } from "@/hooks/use-confirmation-dialog";
+import { OrderDetailsCard } from "@/features/orders/components/OrderDetailsCard";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
+import { useConfirmationDialog } from "@/hooks/useConfirmationDialog";
 import { store } from "@/stores/store";
 
 export const orderDetailsLoader = async (request: LoaderFunctionArgs) => {

@@ -1,6 +1,6 @@
-import { PageHelmet } from "@/components/seo/page-helmet";
-import { PasswordForm } from "@/features/user/components/password-form";
-import { useChangePassword } from "@/features/user/hooks/use-change-password";
+import { PageHelmet } from "@/components/seo/PageHelmet";
+import { PasswordForm } from "@/features/user/components/PasswordForm";
+import { useChangePassword } from "@/features/user/hooks/useChangePassword";
 
 export const AccountSecurityPage = () => {
   const { submitPassword, isLoading } = useChangePassword();

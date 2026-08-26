@@ -3,7 +3,7 @@ import { forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { paths } from "@/config/paths";
-import { useAppSelector } from "@/hooks/use-app-selector";
+import { useAppSelector } from "@/hooks/useAppSelector";
 import { RootState } from "@/stores/store";
 import { createUrlSlug } from "@/utils/create-url-slug";
 

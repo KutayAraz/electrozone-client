@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import NavButton from "@assets/svgs/carousel-nav-button.svg?react";
 
-import { CarouselCard, CarouselCardProps } from "./carousel-card";
+import { CarouselCard, CarouselCardProps } from "./CarouselCard";
 
 interface CarouselProps {
   products: CarouselCardProps[];

@@ -1,12 +1,12 @@
 import { Suspense, useEffect, useState } from "react";
 import { Await, useLoaderData } from "react-router";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import { Carousel } from "@/components/ui/carousel";
 import { CenteredSpinner } from "@/components/ui/spinner";
-import { Categories } from "@/features/product-listing/components/categories";
+import { Categories } from "@/features/product-listing/components/Categories";
 import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
-import { useToggleWishlist } from "@/features/wishlist/hooks/use-toggle-wishlist";
+import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
 import { store } from "@/stores/store";
 import { CarouselProduct } from "@/types/product";
 

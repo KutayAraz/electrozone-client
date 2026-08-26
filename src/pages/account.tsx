@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 
-import { PageHelmet } from "@/components/seo/page-helmet";
+import { PageHelmet } from "@/components/seo/PageHelmet";
 import { paths } from "@/config/paths";
 import AddressCard from "@assets/svgs/address-card.svg?react";
 import Contact from "@assets/svgs/contact.svg?react";

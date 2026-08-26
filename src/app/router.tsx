@@ -1,12 +1,12 @@
 import { useMemo } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { RouteErrorBoundary } from "@/components/errors/route-error-boundary";
+import { RouteErrorBoundary } from "@/components/errors/RouteErrorBoundary";
 import { FullPageSpinner } from "@/components/ui/spinner";
 import { paths } from "@/config/paths";
-import { RedirectAuthenticated } from "@/features/auth/components/redirect-authenticated";
+import { RedirectAuthenticated } from "@/features/auth/components/RedirectAuthenticated";
 import { MainLayout, mainLayoutLoader } from "@/layouts/main-layout";
-import { ProtectedRoute } from "@/lib/auth";
+import { ProtectedRoute } from "@/lib/Auth";
 
 export const createAppRouter = () =>
   createBrowserRouter([

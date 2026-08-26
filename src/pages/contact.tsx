@@ -1,6 +1,6 @@
-import { PageHelmet } from "@/components/seo/page-helmet";
-import { ContactForm } from "@/features/contact/components/contact-form";
-import { useSendMessage } from "@/features/contact/hooks/use-send-message";
+import { PageHelmet } from "@/components/seo/PageHelmet";
+import { ContactForm } from "@/features/contact/components/ContactForm";
+import { useSendMessage } from "@/features/contact/hooks/useSendMessage";
 
 export const ContactPage = () => {
   const { sendMessage, isSending } = useSendMessage();

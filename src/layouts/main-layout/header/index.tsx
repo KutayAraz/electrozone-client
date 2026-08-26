@@ -4,20 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { paths } from "@/config/paths";
-import { useCartCount } from "@/features/cart/hooks/use-cart-count";
-import { useIsMobile } from "@/hooks/use-is-mobile";
+import { useCartCount } from "@/features/cart/hooks/useCartCount";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import { selectUser, userSlice } from "@/stores/slices/user-slice";
 import BrandLogo from "@assets/brand-images/brand-logo.svg?react";
 import Brand from "@assets/brand-images/brand.svg?react";
 import BurgerIcon from "@assets/svgs/burger.svg?react";
 
-import { LocationModal } from "./components/location/location-modal";
-import { LocationSection } from "./components/location/location-section";
+import { LocationModal } from "./components/location/LocationModal";
+import { LocationSection } from "./components/location/LocationSection";
 import { MenuModal } from "./components/navigation/menu-modal";
-import { NavigationStrip } from "./components/navigation/navigation-strip";
-import { SearchBar } from "./components/search/search-bar";
-import { ProfileModal } from "./components/user/profile-modal";
-import { UserSection } from "./components/user/user-section";
+import { NavigationStrip } from "./components/navigation/NavigationStrip";
+import { SearchBar } from "./components/search/SearchBar";
+import { ProfileModal } from "./components/user/ProfileModal";
+import { UserSection } from "./components/user/UserSection";
 
 export const Header = () => {
   const dispatch = useDispatch();

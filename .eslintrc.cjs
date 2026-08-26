@@ -93,14 +93,23 @@ module.exports = {
         "@typescript-eslint/no-empty-function": ["off"],
         "@typescript-eslint/no-explicit-any": ["off"],
         "prettier/prettier": ["error", { endOfLine: "auto" }, { usePrettierrc: true }],
+        // Every matching pattern below is applied, so the globs must stay mutually
+        // exclusive. `index` files, `src/main.tsx` and `*.d.ts` are matched by
+        // nothing and are therefore exempt.
         "check-file/filename-naming-convention": [
           "error",
           {
-            "**/*.{ts,tsx}": "KEBAB_CASE",
+            // Route modules stay kebab-case (they mirror URL segments).
+            "src/app/**/*.{ts,tsx}": "KEBAB_CASE",
+            "src/pages/**/*.{ts,tsx}": "KEBAB_CASE",
+            // Hooks are camelCase, matching the hook name they export.
+            "src/**/hooks/*.ts": "CAMEL_CASE",
+            // Components are PascalCase, matching the component they export.
+            "src/!(app|pages)/**/!(index).tsx": "PASCAL_CASE",
+            // All other modules (api, utils, types, schemas, slices, …) stay kebab-case.
+            "src/**/!(hooks)/*.ts": "KEBAB_CASE",
           },
-          {
-            ignoreMiddleExtensions: true,
-          },
+          { ignoreMiddleExtensions: true },
         ],
       },
     },

@@ -1,6 +1,6 @@
-import { PageHelmet } from "@/components/seo/page-helmet";
-import { LoginForm } from "@/features/auth/components/login-form";
-import { useLogin } from "@/features/auth/hooks/use-login";
+import { PageHelmet } from "@/components/seo/PageHelmet";
+import { LoginForm } from "@/features/auth/components/LoginForm";
+import { useLogin } from "@/features/auth/hooks/useLogin";
 
 export const LoginPage = () => {
   const { submitLogin, isLoading, serverError, clearServerError } = useLogin();
