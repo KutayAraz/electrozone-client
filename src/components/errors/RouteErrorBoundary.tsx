@@ -6,7 +6,9 @@ export const RouteErrorBoundary = () => {
   const error = useRouteError();
   const navigate = useNavigate();
 
-  console.log("Route error:", error);
+  if (import.meta.env.DEV) {
+    console.log("Route error:", error);
+  }
 
   // Handle different error types
   let errorMessage = "An unexpected error occurred";

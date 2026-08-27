@@ -13,7 +13,6 @@ const useRestoreScroll = () => {
       if (savedPosition) {
         setTimeout(() => {
           window.scrollTo(0, parseFloat(savedPosition));
-          console.log("I ran");
         }, 100); // Adjust delay as necessary
       }
     };
