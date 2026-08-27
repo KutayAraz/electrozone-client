@@ -65,6 +65,7 @@ export const CartItemCard = ({
             >
               <h3 className="text-sm sm:text-base line-clamp-2">{productName}</h3>
             </Link>
+
             <p className="text-xs sm:text-sm text-gray-500">
               Unit Price: <span className="font-medium">${price}</span>
             </p>
@@ -80,6 +81,7 @@ export const CartItemCard = ({
                 >
                   Qty:
                 </label>
+
                 <select
                   id={`quantity-${id}`}
                   value={quantity}
@@ -93,6 +95,7 @@ export const CartItemCard = ({
                     </option>
                   ))}
                 </select>
+
                 <span id={`quantity-help-${id}`} className="sr-only">
                   Select quantity for {productName}
                 </span>
@@ -104,6 +107,7 @@ export const CartItemCard = ({
                 aria-label={`Remove ${productName} from cart`}
               >
                 <Bin className="h-3 w-3 sm:h-4 sm:w-4 mr-1" aria-hidden="true" />
+
                 <span className="hidden sm:inline">Remove</span>
               </button>
             </div>

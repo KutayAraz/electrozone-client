@@ -25,7 +25,9 @@ export const SubMenu = ({ isVisible, links, onBack }: SubMenuProps) => (
       <BackArrow className="mr-2 size-6" />
       Main Menu
     </button>
+
     <Divider />
+
     {links.map((link) => (
       <Link key={link.url} to={link.url} className="p-4 text-lg hover:bg-gray-100">
         {link.name}

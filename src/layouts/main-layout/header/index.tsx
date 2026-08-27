@@ -105,22 +105,27 @@ export const Header = () => {
               height={32}
               onClick={() => setMenuModalOpen(true)}
             />
+
             <Link
               to={paths.home.getHref()}
               className="mb-1 flex min-w-[136px] max-w-[60%] items-center sm:hidden"
             >
               <Brand className="" />
             </Link>
+
             <Link to={paths.home.getHref()} className="hidden max-w-[256px] sm:block">
               <BrandLogo />
             </Link>
+
             <LocationSection
               city={user.city}
               isSignedIn={user.isAuthenticated}
               onLocationClick={() => setLocationModalOpen(true)}
             />
           </div>
+
           <SearchBar className="mx-[3%] hidden h-10 max-w-[50%] text-gray-700 md:flex md:grow" />
+
           <UserSection
             firstName={user.firstName}
             isSignedIn={user.isAuthenticated}

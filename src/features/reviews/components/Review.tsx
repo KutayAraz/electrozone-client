@@ -21,13 +21,17 @@ export const Review = ({ id, rating, comment, reviewDate, reviewerInitials }: Re
         className="mb-1"
         size="small"
       />
+
       <div className="mb-2 flex items-center space-x-2 text-sm text-gray-600">
         <p>
           {reviewerInitials.firstName.toLowerCase()}.. {reviewerInitials.lastName.toLowerCase()}..
         </p>
+
         <p className="font-bold">&middot;</p>
+
         <p className="">{date}</p>
       </div>
+
       <p className="text-gray-800">{comment}</p>
     </div>
   );

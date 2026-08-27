@@ -45,6 +45,7 @@ export const LoginForm = ({ onSubmit, isLoading, serverError, onFieldChange }: L
       changeFormButton={
         <>
           <p className="mb-1 mt-2 text-center text-gray-600">Don&apos;t have an account yet?</p>
+
           <button
             type="button"
             onClick={() => navigate(paths.auth.register.getHref())}

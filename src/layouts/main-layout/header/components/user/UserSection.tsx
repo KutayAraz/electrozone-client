@@ -30,12 +30,16 @@ export const UserSection = ({
     ) : (
       <LoginLink className="login-button">Login</LoginLink>
     )}
+
     <Arrow width={20} height={20} />
+
     <button onClick={onProfileClick}>
       <UserIcon width={32} height={32} />
     </button>
+
     <Link to={paths.cart.getHref()} className="ml-2 mt-auto flex p-1">
       {!smallScreenDevice && <p className="self-center">Basket</p>}
+
       <Basket itemCount={itemCount} />
     </Link>
   </div>

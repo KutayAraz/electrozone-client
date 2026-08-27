@@ -34,6 +34,7 @@ export const checkoutLoader = async () => {
         initiateCheckoutApi.endpoints.initiateCheckout.initiate({ checkoutType: userIntent }),
       )
       .unwrap();
+
     return {
       user: userInfo,
       checkoutData,
@@ -42,6 +43,7 @@ export const checkoutLoader = async () => {
     if (isStandardApiError(error) && error.data?.type === "EMPTY_CART") {
       return redirect("/cart");
     }
+
     throw error;
   }
 };
@@ -76,6 +78,7 @@ export const CheckoutPage = () => {
     const result = await placeOrder(checkoutSnapshotId, async () => {
       // Simply revalidate the route data using the loader
       revalidator.revalidate();
+
       return null; // No need to return cart data as revalidation will handle it
     });
 
@@ -111,6 +114,7 @@ export const CheckoutPage = () => {
         title="Checkout | Electrozone"
         description="Secure and streamlined checkout process to finalize your purchases at Electrozone."
       />
+
       <CartAdditionModal
         isOpen={showModal}
         onAddToCart={addToCartAndNavigate}
@@ -127,6 +131,7 @@ export const CheckoutPage = () => {
               quantityChanges={cartData.quantityChanges}
               removedCartItems={cartData.removedCartItems}
             />
+
             <UserCard
               firstName={user.firstName}
               lastName={user.lastName}
@@ -134,6 +139,7 @@ export const CheckoutPage = () => {
               address={user.address}
               city={user.city}
             />
+
             <div className="mt-6 max-w-screen-md grow space-y-4">
               {cartData.cartItems.map((product: CheckoutItem) => {
                 return (
@@ -150,6 +156,7 @@ export const CheckoutPage = () => {
               })}
             </div>
           </div>
+
           <CheckoutSummary
             totalQuantity={cartData.totalQuantity}
             cartTotal={cartData.cartTotal}

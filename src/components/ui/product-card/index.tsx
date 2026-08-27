@@ -103,6 +103,7 @@ export const ProductCard = forwardRef(
                   loading="lazy"
                   onLoad={() => setImageLoaded(true)}
                 />
+
                 {!imageLoaded && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>

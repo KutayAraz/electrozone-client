@@ -48,6 +48,7 @@ export const FilterPanel = ({
       <div className="flex-1 overflow-y-auto">
         <div className="space-y-1">
           <StockStatusFilter stockStatus={stockStatus} handleStockChange={handleStockChange} />
+
           <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
 
           {/* Only show subcategories filter if data is provided */}
@@ -98,6 +99,7 @@ export const FilterPanel = ({
               Reset Filters
             </Button>
           </div>
+
           <div>
             <Button
               type="submit"

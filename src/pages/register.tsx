@@ -11,6 +11,7 @@ export const RegisterPage = () => {
         title="Sign Up | Electrozone"
         description="Create a new account at Electrozone to enjoy personalized services, faster checkout, and special offers."
       />
+
       <div className="container mx-auto px-4 py-8">
         <RegisterForm
           onSubmit={submitRegister}

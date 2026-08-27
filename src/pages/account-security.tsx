@@ -11,7 +11,8 @@ export const AccountSecurityPage = () => {
         title="Account Security | Electrozone"
         description="Change your password to ensure your Electrozone account remains secure."
       />
-      <PasswordForm onChangePassword={submitPassword} isUpdating={isLoading} />{" "}
+
+      <PasswordForm onChangePassword={submitPassword} isUpdating={isLoading} />
     </>
   );
 };

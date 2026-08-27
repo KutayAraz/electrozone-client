@@ -6,6 +6,7 @@ export const LoadingIndicator = () => {
   const isLoading = navigation.state === "loading";
 
   if (!isLoading) return null;
+
   return (
     <div
       className={`fixed left-0 top-0 h-1 w-full`}

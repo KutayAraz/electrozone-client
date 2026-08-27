@@ -16,6 +16,7 @@ export const UserHeader = ({ firstName, isSignedIn }: UserHeaderProps) => (
     <span className={`${isSignedIn ? "text-2xl" : "text-xl"}`}>
       {isSignedIn && firstName ? `Hello, ${firstName}` : "Hello, Sign In"}
     </span>
+
     <UserIcon className="size-8" />
   </Link>
 );

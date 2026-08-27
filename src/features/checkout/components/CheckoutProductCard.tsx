@@ -42,8 +42,10 @@ export const CheckoutItemCard = ({
         <div className="flex items-start justify-between">
           <div>
             <h3 className="font-medium leading-tight text-gray-800">{productName}</h3>
+
             <p className="text-sm text-gray-500">{brand}</p>
           </div>
+
           <span className="whitespace-nowrap font-semibold text-gray-900">
             ${totalPrice.toFixed(2)}
           </span>
@@ -52,6 +54,7 @@ export const CheckoutItemCard = ({
         <div className="flex items-center justify-between pt-2">
           <div className="flex items-center text-sm text-gray-600">
             <span>Qty: {quantity}</span>
+
             {quantity > 1 && <span className="ml-2 text-xs text-gray-500">({price} each)</span>}
           </div>
         </div>

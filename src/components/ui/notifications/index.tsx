@@ -57,6 +57,7 @@ export const Notifications = () => {
             >
               <div className="flex flex-col gap-1">
                 <div className="font-medium">{notification.message}</div>
+
                 {notification.details && (
                   <div className="text-sm opacity-85">{notification.details}</div>
                 )}

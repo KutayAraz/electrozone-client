@@ -11,6 +11,7 @@ export const LoginPage = () => {
         title="Login | Electrozone"
         description="Access your Electrozone account to manage your purchases, track orders, and update your preferences."
       />
+
       <div className="max-w-md flex flex-col mx-auto px-4 py-8">
         <LoginForm
           isLoading={isLoading}

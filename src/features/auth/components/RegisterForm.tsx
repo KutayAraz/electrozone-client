@@ -50,6 +50,7 @@ export const RegisterForm = ({
       changeFormButton={
         <>
           <p className="mb-1 mt-2 text-center text-gray-600">Already have an account?</p>
+
           <button
             type="button"
             onClick={() => navigate(paths.auth.login.getHref())}

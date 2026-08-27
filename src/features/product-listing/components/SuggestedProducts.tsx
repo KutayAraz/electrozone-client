@@ -18,6 +18,7 @@ export const SuggestedProducts = ({
 }: SuggestedProductsProps) => {
   const { data: suggestedProducts, isLoading: isSuggestedProductsLoading } =
     useGetSuggestedProductsQuery(id);
+
   return (
     <>
       {isSuggestedProductsLoading ? (

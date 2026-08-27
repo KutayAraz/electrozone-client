@@ -51,8 +51,10 @@ export const CartChangesAlert = ({
               <div className="flex-shrink-0">
                 <Info className="h-5 w-5 text-blue-600" />
               </div>
+
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-blue-800">Price Updates</h3>
+
                 <div className="mt-2 text-sm text-blue-700">
                   <ul className="list-inside space-y-1">
                     {priceChanges.map((change, index) => (
@@ -65,12 +67,14 @@ export const CartChangesAlert = ({
                 </div>
               </div>
             </div>
+
             <button
               type="button"
               className="ml-auto flex-shrink-0 rounded-md p-1.5 text-blue-500 hover:bg-blue-100"
               onClick={() => setShowPriceAlert(false)}
             >
               <span className="sr-only">Close</span>
+
               <Close className="h-4 w-4" />
             </button>
           </div>
@@ -85,8 +89,10 @@ export const CartChangesAlert = ({
               <div className="flex-shrink-0">
                 <ErrorOutline className="h-5 w-5 text-amber-600" />
               </div>
+
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-amber-800">Quantity Adjustments</h3>
+
                 <div className="mt-2 text-sm text-amber-700">
                   <ul className="list-inside space-y-1">
                     {quantityChanges.map((change, index) => (
@@ -102,12 +108,14 @@ export const CartChangesAlert = ({
                 </div>
               </div>
             </div>
+
             <button
               type="button"
               className="ml-auto flex-shrink-0 rounded-md p-1.5 text-amber-500 hover:bg-amber-100"
               onClick={() => setShowQuantityAlert(false)}
             >
               <span className="sr-only">Close</span>
+
               <Close className="h-4 w-4" />
             </button>
           </div>
@@ -122,10 +130,13 @@ export const CartChangesAlert = ({
               <div className="flex-shrink-0">
                 <RemoveCircleOutline className="h-5 w-5 text-red-600" />
               </div>
+
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-red-800">Removed Items</h3>
+
                 <div className="mt-2 text-sm text-red-700">
                   <p>The following items have been removed from your cart:</p>
+
                   <ul className="mt-1 list-inside space-y-1">
                     {removedCartItems.map((itemName, index) => (
                       <li key={index}>
@@ -139,12 +150,14 @@ export const CartChangesAlert = ({
                 </div>
               </div>
             </div>
+
             <button
               type="button"
               className="ml-auto flex-shrink-0 rounded-md p-1.5 text-red-500 hover:bg-red-100"
               onClick={() => setShowRemovedAlert(false)}
             >
               <span className="sr-only">Close</span>
+
               <Close className="h-4 w-4" />
             </button>
           </div>

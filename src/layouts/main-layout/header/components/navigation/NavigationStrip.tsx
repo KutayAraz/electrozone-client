@@ -30,6 +30,7 @@ const StaticNavigationContent = ({ onMenuClick }: NavigationContentProps) => {
         <BurgerIcon width={32} height={32} />
         <p className="my-auto hidden px-2 sm:flex">All</p>
       </button>
+
       <Link
         to={paths.home.getHref()}
         className="flex rounded border border-transparent px-1 hover:border-1 hover:border-white sm:my-auto sm:hidden"
@@ -67,8 +68,10 @@ const FixedNavigationContent = ({
         aria-label="Open menu"
       >
         <BurgerIcon width={32} height={32} />
+
         <p className="my-auto hidden px-2 sm:flex">All</p>
       </button>
+
       <Link
         to={paths.home.getHref()}
         className="flex rounded border border-transparent px-1 hover:border-1 hover:border-white sm:my-auto sm:hidden"

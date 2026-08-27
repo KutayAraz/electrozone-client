@@ -46,6 +46,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
           <ThemeProvider theme={theme}>
             <Provider store={store}>
               <Notifications />
+
               <PersistGate loading={<FullPageSpinner />} persistor={persistor}>
                 {children}
               </PersistGate>

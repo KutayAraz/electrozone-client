@@ -78,6 +78,7 @@ export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
               ))
             )}
           </div>
+
           <div className="flex grow flex-col space-y-2">
             {isReviewsLoading ? (
               <Spinner size={16} />
@@ -102,6 +103,7 @@ export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
                       }}
                     />
                   ))}
+
                 {/* Conditionally render pagination if more than one page is needed */}
                 {pagesCount > 1 && (
                   <div className="flex justify-center space-x-2">

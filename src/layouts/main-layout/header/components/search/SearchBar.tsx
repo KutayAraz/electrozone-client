@@ -56,6 +56,7 @@ export const SearchBar = ({
         className="size-full bg-white rounded-md pl-3 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-theme-orange focus:ring-offset-2"
         autoComplete="off"
       />
+
       <button
         onClick={handleSearch}
         className="absolute inset-y-0 right-0 flex items-center"

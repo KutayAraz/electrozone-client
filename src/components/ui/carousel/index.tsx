@@ -32,6 +32,7 @@ export const Carousel = ({
         >
           <NavButton className="size-5 rotate-180 text-gray-600" />
         </div>
+
         <Swiper
           modules={[Navigation, Scrollbar, A11y]}
           onBeforeInit={(swiper: any) => {

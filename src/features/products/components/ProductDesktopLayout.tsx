@@ -92,7 +92,9 @@ export const ProductDesktopLayout = ({
           >
             {modifiedCategory}
           </Link>
+
           <span> &gt; </span>
+
           <Link
             to={paths.products.category.subcategory.getHref({
               category: category.replace(/-/g, "_"),
@@ -104,6 +106,7 @@ export const ProductDesktopLayout = ({
           </Link>
         </div>
       </div>
+
       <div className="mb-2 flex h-[700px] w-full">
         {/* First Child Div - Image Thumbnails */}
         <div className="flex shrink-0 flex-col items-center justify-center">
@@ -146,6 +149,7 @@ export const ProductDesktopLayout = ({
           <button onClick={prevImage}>
             <NavigationButton className="m-2 h-16 w-6 rotate-180" />
           </button>
+
           <button
             onClick={handleModalOpen}
             className="flex relative h-[640px] max-w-[640px] grow items-center justify-center rounded-md border-1 border-gray-300 hover:cursor-pointer"
@@ -156,9 +160,11 @@ export const ProductDesktopLayout = ({
               className="size-auto max-h-[640px] rounded-[6px] object-contain p-2 lg:p-4"
             />
           </button>
+
           <button onClick={nextImage}>
             <NavigationButton className="m-2 h-16 w-6" />
           </button>
+
           <Modal
             open={isModalOpen}
             onClose={handleModalClose}
@@ -174,14 +180,17 @@ export const ProductDesktopLayout = ({
               >
                 <CloseButton className="h-auto w-8" />
               </button>
+
               <div className="absolute inset-0 z-10 flex items-center justify-between">
                 <button onClick={prevImage} className="m-2">
                   <NavigationArrow className="size-14" />
                 </button>
+
                 <button onClick={nextImage} className="m-2">
                   <NavigationArrow className="size-14 rotate-180" />
                 </button>
               </div>
+
               <img
                 src={selectedImage}
                 alt={productName}
@@ -200,8 +209,11 @@ export const ProductDesktopLayout = ({
               className="scale-125"
             />
           </div>
+
           <h2 className="text-lg">{productName}</h2>
+
           <p className="font-[500]">Brand: {brand}</p>
+
           <button onClick={onRatingClick} className="mx-auto hover:cursor-pointer">
             <Rating
               name="half-rating-read"
@@ -211,11 +223,14 @@ export const ProductDesktopLayout = ({
               className="mt-4"
             />
           </button>
+
           <p className="text-lg font-bold">${price}</p>
+
           <div className="mb-4 flex items-center justify-center">
             <button onClick={decrementQuantity} className="rounded border px-2 py-1">
               -
             </button>
+
             <input
               type="text"
               value={quantity}
@@ -224,10 +239,12 @@ export const ProductDesktopLayout = ({
               max={25}
               className="mx-2 py-1 w-16 rounded border text-center"
             />
+
             <button onClick={incrementQuantity} className="rounded border px-2 py-1">
               +
             </button>
           </div>
+
           {stock > 0 ? (
             <div className="mx-auto flex w-4/5 flex-col">
               <button
@@ -239,6 +256,7 @@ export const ProductDesktopLayout = ({
               >
                 {addingToCart ? "Adding To Cart.." : "Add to Cart"}
               </button>
+
               <button
                 onClick={handleBuyNow}
                 className="w-full rounded-xl bg-orange-300 px-4 py-2 hover:bg-orange-400"

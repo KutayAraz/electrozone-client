@@ -49,12 +49,14 @@ export const CheckoutLayout = ({
                 className="flex items-center rounded-md px-3 py-2 text-gray-700 transition-colors hover:bg-gray-200"
               >
                 <ArrowBack className="mr-1 h-4 w-4" />
+
                 <span>Back to Cart</span>
               </button>
             )}
 
             <div className="hidden items-center md:flex">
               <ShoppingCart className="mr-2 text-blue-600" />
+
               <span className="font-medium text-gray-800">Checkout</span>
             </div>
           </div>
@@ -69,6 +71,7 @@ export const CheckoutLayout = ({
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
                     1
                   </div>
+
                   <span className="mt-1 text-xs text-blue-600">Cart</span>
                 </div>
 
@@ -78,6 +81,7 @@ export const CheckoutLayout = ({
                   <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white">
                     2
                   </div>
+
                   <span className="mt-1 text-xs text-blue-600">Checkout</span>
                 </div>
 

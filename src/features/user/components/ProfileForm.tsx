@@ -61,6 +61,7 @@ export const ProfileForm = ({ userInfo, onUpdateProfile, isUpdating }: ProfileFo
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex max-w-md flex-col rounded-xl bg-white p-6 shadow-md xs:mx-auto">
         <h2 className="text-lg font-semibold text-gray-800">My Profile:</h2>
+
         <label htmlFor="email" className={labelClasses}>
           Email
         </label>

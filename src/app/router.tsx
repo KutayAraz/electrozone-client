@@ -210,5 +210,6 @@ export const createAppRouter = () =>
 
 export const AppRouter = () => {
   const router = useMemo(() => createAppRouter(), []);
+
   return <RouterProvider router={router} />;
 };

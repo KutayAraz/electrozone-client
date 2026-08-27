@@ -11,6 +11,7 @@ export const UserProfilePage = () => {
         title="Profile | Electrozone"
         description="Update your personal information and contact details to keep your Electrozone profile up-to-date."
       />
+
       <div className="page-spacing">
         <ProfileForm
           onUpdateProfile={submitProfile}

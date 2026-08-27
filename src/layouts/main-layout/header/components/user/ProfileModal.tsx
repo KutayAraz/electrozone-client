@@ -17,6 +17,7 @@ interface ProfileModalProps {
 
 export const ProfileModal = ({ isOpen, onClose, isSignedIn }: ProfileModalProps) => {
   const { submitLogout } = useLogout();
+
   return (
     <CustomModal
       placement="right"

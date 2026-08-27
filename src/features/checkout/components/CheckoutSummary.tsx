@@ -20,6 +20,7 @@ export const CheckoutSummary = ({
     <div className="mt-4 mb-2 flex min-w-[300px] flex-1 flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-md md:ml-5 sm:mt-0 md:max-w-sm">
       <div className="mb-4 flex items-center">
         <Receipt className="mr-2 text-blue-600" />
+
         <h4 className="text-xl font-semibold text-gray-800">Order Summary</h4>
       </div>
 
@@ -27,16 +28,20 @@ export const CheckoutSummary = ({
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center text-gray-600">
             <ShoppingBag fontSize="small" className="mr-2" />
+
             <span>Items ({totalQuantity})</span>
           </div>
+
           <span className="font-medium text-gray-800">${cartTotal}</span>
         </div>
 
         <div className="flex items-center justify-between py-2">
           <div className="flex items-center text-gray-600">
             <LocalShipping fontSize="small" className="mr-2" />
+
             <span>Shipping</span>
           </div>
+
           <span className="font-medium italic text-green-800">Free</span>
         </div>
       </div>
@@ -45,6 +50,7 @@ export const CheckoutSummary = ({
 
       <div className="mb-6 flex items-center justify-between">
         <span className="text-lg font-semibold text-gray-800">Total</span>
+
         <span className="text-xl font-bold text-theme-blue">${cartTotal}</span>
       </div>
 

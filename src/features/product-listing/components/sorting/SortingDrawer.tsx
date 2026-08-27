@@ -35,6 +35,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
         <div className="flex items-center justify-between px-4 py-2">
           <div className="flex space-x-3">
             <SortIcon style={{ color: "#757575" }} />
+
             <Typography
               variant="body1"
               sx={{ color: "#373D51", fontSize: { xs: "1rem", sm: "0.875rem" } }}
@@ -42,6 +43,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
               Sort By
             </Typography>
           </div>
+
           <div>
             <IconButton
               onClick={onClose}
@@ -54,7 +56,9 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
             </IconButton>
           </div>
         </div>
+
         <Divider />
+
         <MenuItem
           value={"featured"}
           onClick={() => handleSortSelection("featured")}
@@ -63,6 +67,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
           <ListItemIcon>
             <StarBorderIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
           </ListItemIcon>
+
           <Typography
             variant="body1"
             sx={{ color: "#373D51", fontSize: { xs: "1.125rem", sm: "1rem" } }}
@@ -70,6 +75,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
             Featured
           </Typography>
         </MenuItem>
+
         <MenuItem
           value={"rating"}
           onClick={() => handleSortSelection("rating")}
@@ -78,6 +84,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
           <ListItemIcon>
             <TrendingUpIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
           </ListItemIcon>
+
           <Typography
             variant="body1"
             sx={{ color: "#373D51", fontSize: { xs: "1.125rem", sm: "1rem" } }}
@@ -85,6 +92,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
             Ratings
           </Typography>
         </MenuItem>
+
         <MenuItem
           value={"price_ascending"}
           onClick={() => handleSortSelection("price_ascending")}
@@ -93,6 +101,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
           <ListItemIcon>
             <ArrowUpwardIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
           </ListItemIcon>
+
           <Typography
             variant="body1"
             sx={{ color: "#373D51", fontSize: { xs: "1.125rem", sm: "1rem" } }}
@@ -100,6 +109,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
             Price Ascending
           </Typography>
         </MenuItem>
+
         <MenuItem
           value={"price_descending"}
           onClick={() => handleSortSelection("price_descending")}
@@ -108,6 +118,7 @@ export const SortingDrawer = ({ isOpen, onClose }: SortingDrawerProps) => {
           <ListItemIcon>
             <ArrowDownwardIcon sx={{ fontSize: { xs: "1.5rem", sm: "1.25rem" } }} />
           </ListItemIcon>
+
           <Typography
             variant="body1"
             sx={{ color: "#373D51", fontSize: { xs: "1.125rem", sm: "1rem" } }}

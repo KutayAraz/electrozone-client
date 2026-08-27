@@ -57,6 +57,7 @@ export const WishlistHeart = ({
       {isAnimating && isWishlisted && (
         <span className="absolute inset-0 animate-ping rounded-full bg-[var(--color-theme-orange)] opacity-50"></span>
       )}
+
       <div className="flex items-center justify-center w-6 h-6">
         {disabled ? (
           <span className="w-full h-full animate-spin rounded-full border-2 border-gray-300 border-t-gray-600"></span>

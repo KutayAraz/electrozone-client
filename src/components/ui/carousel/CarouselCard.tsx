@@ -52,6 +52,7 @@ export const CarouselCard = ({
             disabled={isTogglingWishlist(id)}
           />
         </div>
+
         <div className="h-[100px] rounded-md pt-2 sm:h-[160px] bg-gray-50 flex items-center justify-center">
           <img
             src={thumbnail}
@@ -60,10 +61,13 @@ export const CarouselCard = ({
             loading="lazy"
           />
         </div>
+
         <p className="mt-3 line-clamp-3 h-[3em] text-center text-sm font-medium text-gray-800">
           {productName}
         </p>
+
         <p className="mt-1 text-center text-xs text-gray-500 uppercase tracking-wide">{brand}</p>
+
         <p className="mt-2 text-center text-base font-semibold text-gray-900">${price}</p>
       </Link>
     </div>

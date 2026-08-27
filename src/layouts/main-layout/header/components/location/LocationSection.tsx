@@ -18,6 +18,7 @@ interface LocationSectionProps {
 export const LocationSection = ({ city, isSignedIn, onLocationClick }: LocationSectionProps) => (
   <div className="hidden items-center px-6 sm:flex">
     <LocationPin width={28} height={28} className="mr-1 stroke-white" />
+
     {isSignedIn && city ? (
       <CityDisplay city={city} />
     ) : (

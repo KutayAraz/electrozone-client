@@ -51,9 +51,12 @@ export const ProductTabs = ({
         scrollButtons={false}
       >
         <Tab label="Product Description" {...a11yProps(0)} />
+
         <Tab label="Reviews" {...a11yProps(1)} />
+
         <Tab label="Payment Options" {...a11yProps(2)} />
       </Tabs>
+
       <TabPanel
         value={selectedTab}
         index={0}
@@ -62,9 +65,11 @@ export const ProductTabs = ({
       >
         <ProductDescriptionTab productDescription={productDescription} />
       </TabPanel>
+
       <TabPanel value={selectedTab} index={1} id={"reviews"} className="sm:mt-2">
         {children}
       </TabPanel>
+
       <TabPanel value={selectedTab} index={2} id={"paymentOptions"} className="mt-4">
         <p className="pl-4 italic">None of the products on this website are for sale.</p>
       </TabPanel>

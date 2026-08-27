@@ -43,8 +43,10 @@ export const AccountPage = () => {
         title="My Account | Electrozone"
         description="Manage your Electrozone account details, preferences, and settings."
       />
+
       <div className="page-spacing">
         <h2 className="mb-3 text-xl font-bold">Your Account Information</h2>
+
         <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 lg:grid-cols-3">
           {accountMenuItems.map(({ path, Icon, label }) => (
             <InfoCard key={path} to={path} Icon={Icon}>

@@ -65,6 +65,7 @@ export const RouteErrorBoundary = () => {
         {errorDetails && (
           <div className="mb-6 rounded bg-gray-100 p-4 text-left">
             <p className="text-sm font-semibold text-gray-700 mb-2">Error Details:</p>
+
             <pre className="overflow-auto text-xs text-gray-600 whitespace-pre-wrap break-words">
               {errorDetails}
             </pre>

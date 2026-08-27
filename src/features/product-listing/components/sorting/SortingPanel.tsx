@@ -14,6 +14,7 @@ export const SortingPanel = ({ className = "" }: SortingPanelProps) => {
       <InputLabel id="sort-by" sx={{ fontSize: "1rem" }}>
         Sort By
       </InputLabel>
+
       <Select
         id="sort-by"
         labelId="sort-by"
@@ -25,12 +26,15 @@ export const SortingPanel = ({ className = "" }: SortingPanelProps) => {
         <MenuItem value={"featured"}>
           <Typography variant="body2">Featured</Typography>
         </MenuItem>
+
         <MenuItem value={"rating"}>
           <Typography variant="body2">Rating</Typography>
         </MenuItem>
+
         <MenuItem value={"price_ascending"}>
           <Typography variant="body2">Price Ascending</Typography>
         </MenuItem>
+
         <MenuItem value={"price_descending"}>
           <Typography variant="body2">Price Descending</Typography>
         </MenuItem>

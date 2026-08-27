@@ -22,6 +22,7 @@ export const mainLayoutLoader = async ({ request }: LoaderFunctionArgs) => {
   ) {
     if (checkoutIntent === CheckoutType.SESSION)
       await store.dispatch(mergeCartsApi.endpoints.mergeCarts.initiate());
+
     store.dispatch(setUserIntent(CheckoutType.NORMAL));
   }
   return null;
@@ -31,11 +32,15 @@ export const MainLayout = () => {
   return (
     <div className="mx-auto flex min-h-screen flex-col">
       <Header />
+
       <LoadingIndicator />
+
       <div className="grow">
         <Outlet />
       </div>
+
       <Footer />
+
       <ScrollRestoration />
     </div>
   );

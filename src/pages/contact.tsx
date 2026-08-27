@@ -11,6 +11,7 @@ export const ContactPage = () => {
         title="Contact Us | Electrozone"
         description="Have questions or suggestions? Send an e-mail."
       />
+
       <div className="page-spacing">
         <ContactForm onSendMessage={sendMessage} isSending={isSending} />
       </div>

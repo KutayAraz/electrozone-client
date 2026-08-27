@@ -25,6 +25,7 @@ export const GlobalErrorFallback = ({
             <summary className="cursor-pointer text-sm font-semibold text-red-800">
               Error Details (Development Only)
             </summary>
+
             <pre className="mt-2 overflow-auto text-xs text-red-700">
               {error.message}
               {error.stack && "\n\n" + error.stack}

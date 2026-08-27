@@ -101,10 +101,12 @@ export const ProductMobileLayout = ({
       {/* The height lives in index.css - the page reserves it via :has(). */}
       <div className="product-action-bar fixed inset-x-0 bottom-0 z-10 flex w-full items-center justify-around bg-gray-100">
         <p className="ml-2 text-lg font-bold">${price}</p>
+
         <div className="flex">
           <button onClick={decrementQuantity} className="rounded border border-gray-300 px-2 py-1">
             -
           </button>
+
           <input
             type="text"
             value={quantity}
@@ -117,6 +119,7 @@ export const ProductMobileLayout = ({
             +
           </button>
         </div>
+
         {stock > 0 ? (
           <button
             onClick={() => handleAddToCart(quantity)}
@@ -154,6 +157,7 @@ export const ProductMobileLayout = ({
             className="mt-4"
           />
         </button>
+
         {stock > 0 && (
           <button
             onClick={handleBuyNow}

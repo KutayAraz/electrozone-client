@@ -41,6 +41,7 @@ export const FilterDrawer = ({
         <Typography variant="h6" className="font-semibold text-gray-900">
           Filters
         </Typography>
+
         <IconButton
           onClick={onClose}
           size="small"

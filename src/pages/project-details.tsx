@@ -14,6 +14,7 @@ export const ProjectDetailsPage = () => {
         {/* Header Section */}
         <div className="mb-8 text-center">
           <h1 className="mb-3 text-3xl font-bold text-gray-800">Electrozone E-Commerce Platform</h1>
+
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             A modern, full-stack e-commerce platform built with React and TypeScript, designed to
             provide a seamless shopping experience with comprehensive user and order management
@@ -24,39 +25,51 @@ export const ProjectDetailsPage = () => {
         {/* Key Features Section */}
         <div className="mb-8">
           <h2 className="mb-4 text-2xl font-semibold text-gray-800">Key Features</h2>
+
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <div className="rounded-lg bg-blue-50 p-4 border border-blue-100">
               <h3 className="mb-2 font-semibold text-blue-800">User Management</h3>
+
               <p className="text-sm text-blue-700">
                 Create and update user profiles with secure authentication
               </p>
             </div>
+
             <div className="rounded-lg bg-green-50 p-4 border border-green-100">
               <h3 className="mb-2 font-semibold text-green-800">Product Interaction</h3>
+
               <p className="text-sm text-green-700">
                 Add products to basket and wishlist with real-time updates
               </p>
             </div>
+
             <div className="rounded-lg bg-purple-50 p-4 border border-purple-100">
               <h3 className="mb-2 font-semibold text-purple-800">Order Management</h3>
+
               <p className="text-sm text-purple-700">
                 Checkout, track orders, and cancel within 24 hours
               </p>
             </div>
+
             <div className="rounded-lg bg-orange-50 p-4 border border-orange-100">
               <h3 className="mb-2 font-semibold text-orange-800">Trending Products</h3>
+
               <p className="text-sm text-orange-700">
                 Display best sellers, top rated, and most wishlisted items
               </p>
             </div>
+
             <div className="rounded-lg bg-indigo-50 p-4 border border-indigo-100">
               <h3 className="mb-2 font-semibold text-indigo-800">Responsive Design</h3>
+
               <p className="text-sm text-indigo-700">
                 Optimized for desktop and mobile experiences
               </p>
             </div>
+
             <div className="rounded-lg bg-teal-50 p-4 border border-teal-100">
               <h3 className="mb-2 font-semibold text-teal-800">Product Search & Filtering</h3>
+
               <p className="text-sm text-teal-700">
                 Search functionality with brand & price & subcategory filtering
               </p>
@@ -67,35 +80,43 @@ export const ProjectDetailsPage = () => {
         {/* Technology Stack Section */}
         <div className="mb-8">
           <h2 className="mb-4 text-2xl font-semibold text-gray-800">Technology Stack</h2>
+
           <div className="grid gap-6 md:grid-cols-2">
             {/* Frontend */}
             <div className="rounded-lg bg-gray-50 p-6 border border-gray-200">
               <h3 className="mb-3 text-xl font-semibold text-gray-800">Frontend</h3>
+
               <ul className="space-y-2">
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                   <strong>Vite.js</strong> - Fast build tool and development server
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                   <strong>TypeScript</strong> - Type-safe JavaScript development
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                   <strong>Redux Toolkit</strong> - Predictable state management
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                   <strong>RTK Query</strong> - Efficient data fetching and caching
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                   <strong>React Hook Form</strong> - Performant form management
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                   <strong>Tailwind CSS & Material UI</strong> - Modern styling
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
                   <strong>React Router Dom</strong> - Client-side routing
@@ -106,23 +127,28 @@ export const ProjectDetailsPage = () => {
             {/* Backend */}
             <div className="rounded-lg bg-gray-50 p-6 border border-gray-200">
               <h3 className="mb-3 text-xl font-semibold text-gray-800">Backend & Database</h3>
+
               <ul className="space-y-2">
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
                   <strong>NestJS</strong> - Scalable Node.js framework
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
                   <strong>MySQL</strong> - Relational database
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
                   <strong>TypeORM</strong> - Database abstraction layer
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
                   <strong>Passport</strong> - Authentication middleware
                 </li>
+
                 <li className="flex items-center text-gray-700">
                   <span className="w-2 h-2 bg-green-500 rounded-full mr-3"></span>
                   <strong>Redis</strong> - Advanced caching with smart invalidation
@@ -135,6 +161,7 @@ export const ProjectDetailsPage = () => {
         {/* Repository Links Section */}
         <div className="mb-8">
           <h2 className="mb-4 text-2xl font-semibold text-gray-800">Source Code</h2>
+
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="https://github.com/KutayAraz/electrozone-client"
@@ -151,6 +178,7 @@ export const ProjectDetailsPage = () => {
               </svg>
               Frontend Repository
             </a>
+
             <a
               href="https://github.com/KutayAraz/electrozone-server"
               target="_blank"
@@ -172,15 +200,18 @@ export const ProjectDetailsPage = () => {
         {/* Contact Section */}
         <div className="rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border border-blue-100">
           <h2 className="mb-3 text-2xl font-semibold text-gray-800">Get In Touch</h2>
+
           <p className="text-gray-600 mb-4">
             Thank you for exploring Electrozone! If you have any questions about the project or
             would like to connect, feel free to reach out.
           </p>
+
           <div className="flex items-center text-blue-700">
             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
               <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
             </svg>
+
             <Link to={paths.misc.contact.getHref()} className="hover:underline font-medium">
               Contact page
             </Link>

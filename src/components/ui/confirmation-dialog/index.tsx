@@ -36,13 +36,16 @@ export const ConfirmationDialog = ({
       aria-describedby="confirmation-dialog-description"
     >
       <DialogTitle id="confirmation-dialog-title">{title}</DialogTitle>
+
       <DialogContent>
         <DialogContentText id="confirmation-dialog-description">{message}</DialogContentText>
       </DialogContent>
+
       <DialogActions>
         <Button onClick={onClose} color="primary" disabled={isProcessing}>
           {cancelButtonText}
         </Button>
+
         <Button onClick={onConfirm} color="error" variant="contained" disabled={isProcessing}>
           {isProcessing ? "Processing..." : confirmButtonText}
         </Button>

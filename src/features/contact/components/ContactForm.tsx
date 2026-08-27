@@ -32,9 +32,11 @@ export const ContactForm = ({ onSendMessage, isSending }: ContactFormProps) => {
   return (
     <div className="container mx-auto max-w-2xl p-4">
       <h2 className="mb-4 text-2xl font-semibold text-gray-700">Contact Us</h2>
+
       <p className="mb-4">
         Any feedback or suggestions on the project would be greatly appreciated!
       </p>
+
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <input
@@ -42,6 +44,7 @@ export const ContactForm = ({ onSendMessage, isSending }: ContactFormProps) => {
             {...register("access_key")}
             value={`${import.meta.env.VITE_WEB3FORMS_ACCESS_KEY}`}
           />
+
           <label htmlFor="name" className="block text-sm">
             Name (Optional)
           </label>

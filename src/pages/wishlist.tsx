@@ -45,8 +45,10 @@ export const WishlistPage = () => {
         title="My Wishlist | Electrozone"
         description="Keep track of your favorite products and upcoming purchases in your Electrozone wishlist."
       />
+
       <div className="page-spacing">
         <h4 className="text-xl font-bold pl-2">My Wishlist</h4>
+
         {wishlistProducts?.length === 0 ? (
           <h4 className="text-lg italic text-gray-500">There&apos;s nothing in your wishlist.</h4>
         ) : (
