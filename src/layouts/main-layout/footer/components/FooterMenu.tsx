@@ -14,17 +14,13 @@ const FOOTER_LINKS: FooterLink[] = [
 ];
 
 export const FooterMenu = memo(() => {
-  const elementClasses = "hover:underline block focus:underline";
-
   return (
-    <div className="m-2 flex items-center justify-center text-center">
-      <div>
-        {FOOTER_LINKS.map((link) => (
-          <Link key={link.path} to={link.path} className={elementClasses}>
-            {link.label}
-          </Link>
-        ))}
-      </div>
+    <div className="m-2 flex flex-col items-center text-center">
+      {FOOTER_LINKS.map((link) => (
+        <Link key={link.path} to={link.path} className="hover:underline focus:underline">
+          {link.label}
+        </Link>
+      ))}
     </div>
   );
 });
