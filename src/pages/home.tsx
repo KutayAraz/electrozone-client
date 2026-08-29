@@ -1,9 +1,8 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import { Await, useLoaderData } from "react-router";
 
 import { PageHelmet } from "@/components/seo/PageHelmet";
-import { Carousel } from "@/components/ui/carousel";
-import { CenteredSpinner } from "@/components/ui/spinner";
+import { Carousel, CarouselSkeleton } from "@/components/ui/carousel";
 import { Categories } from "@/features/product-listing/components/Categories";
 import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
 import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
@@ -53,12 +52,6 @@ const ProductsShowcase = ({ products }: { products: CarouselProduct[] }) => {
 };
 
 export const HomePage = () => {
-  useEffect(() => {
-    // Uncomment to test
-    setTimeout(() => {
-      throw new Error("Async error after 2 seconds!");
-    }, 2000);
-  }, []);
   const { bestRated, mostWishlisted, bestSellers } = useLoaderData();
 
   return (
@@ -74,7 +67,7 @@ export const HomePage = () => {
 
           <h2 className="mb-3 mt-6 text-xl font-semibold">Best Selling Products</h2>
 
-          <Suspense fallback={<CenteredSpinner />}>
+          <Suspense fallback={<CarouselSkeleton />}>
             <Await resolve={bestSellers}>
               {(products: { data: CarouselProduct[] }) => (
                 <ProductsShowcase products={products.data} />
@@ -84,7 +77,7 @@ export const HomePage = () => {
 
           <h2 className="my-3 text-xl font-semibold">Most Wishlisted Products</h2>
 
-          <Suspense fallback={<CenteredSpinner />}>
+          <Suspense fallback={<CarouselSkeleton />}>
             <Await resolve={mostWishlisted}>
               {(products: { data: CarouselProduct[] }) => (
                 <ProductsShowcase products={products.data} />
@@ -94,7 +87,7 @@ export const HomePage = () => {
 
           <h2 className="my-3 text-xl font-semibold">Best Rated Products</h2>
 
-          <Suspense fallback={<CenteredSpinner />}>
+          <Suspense fallback={<CarouselSkeleton />}>
             <Await resolve={bestRated}>
               {(products: { data: CarouselProduct[] }) => (
                 <ProductsShowcase products={products.data} />

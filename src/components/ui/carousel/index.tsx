@@ -7,6 +7,8 @@ import NavButton from "@assets/svgs/carousel-nav-button.svg?react";
 
 import { CarouselCard, CarouselCardProps } from "./CarouselCard";
 
+export { CarouselSkeleton } from "./CarouselSkeleton";
+
 interface CarouselProps {
   products: CarouselCardProps[];
   onWishlistToggle: (id: number) => void;
@@ -80,6 +82,7 @@ export const Carousel = ({
             </SwiperSlide>
           ))}
         </Swiper>
+
         <div
           ref={nextRef}
           className="hidden xs:block absolute -right-6 top-1/2 -translate-y-1/2 cursor-pointer z-3 bg-white rounded-full shadow-sm p-2 hover:shadow-lg transition-shadow duration-200"
