@@ -10,8 +10,8 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import sessionStorage from "redux-persist/lib/storage/session";
+import storage from "redux-persist/es/storage";
+import sessionStorage from "redux-persist/es/storage/session";
 
 import { notificationSlice } from "@/components/ui/notifications/notification-slice";
 import { wishlistSyncListenerMiddleware } from "@/features/wishlist/listeners/sync-wishlist-listener";
@@ -71,7 +71,7 @@ export const store = configureStore({
       .concat(baseApi.middleware)
       .concat(wishlistSyncListenerMiddleware.middleware)
       .concat(errorMiddleware),
-  devTools: process.env.NODE_ENV !== "production",
+  devTools: !import.meta.env.PROD,
 });
 
 export const persistor = persistStore(store, null, () => {
