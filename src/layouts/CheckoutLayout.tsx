@@ -4,6 +4,8 @@ import { Divider } from "@mui/material";
 import { paths } from "@/config/paths";
 import BrandIcon from "@assets/brand-images/brand-logo.svg?react";
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 type CheckoutLayoutProps = {
   children: React.ReactNode;
   hideBackButton?: boolean;
@@ -116,7 +118,7 @@ export const CheckoutLayout = ({
       <footer className="mt-auto border-t border-gray-200 bg-white py-4">
         <div className="mx-auto max-w-screen-xl px-4">
           <div className="flex flex-col items-center justify-between space-y-2 md:flex-row md:space-y-0">
-            <p className="text-sm text-gray-500">© {new Date().getFullYear()}, electrozone.com</p>
+            <p className="text-sm text-gray-500">© {CURRENT_YEAR}, electrozone.com</p>
 
             <div className="flex space-x-4 text-xs text-gray-500">
               <a href={paths.misc.projectDetails.getHref()} className="hover:text-blue-600">
