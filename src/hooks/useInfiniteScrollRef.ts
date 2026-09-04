@@ -13,20 +13,20 @@ export const useInfiniteScrollRef = ({
   isFetching,
   threshold = 0.1,
 }: UseInfiniteScrollRefOptions) => {
-  const observer = useRef<IntersectionObserver | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const lastElementRef = useCallback(
     (node: HTMLDivElement | null) => {
       // Always drop the previous observer first. Bailing out early used to
       // leave it attached, still holding the previous page's fetchNextPage.
-      if (observer.current) {
-        observer.current.disconnect();
-        observer.current = null;
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
       }
 
       if (isFetching || !node) return;
 
-      observer.current = new IntersectionObserver(
+      observerRef.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasNextPage) {
             fetchNextPage();
@@ -35,7 +35,7 @@ export const useInfiniteScrollRef = ({
         { threshold },
       );
 
-      observer.current.observe(node);
+      observerRef.current.observe(node);
     },
     [fetchNextPage, hasNextPage, isFetching, threshold],
   );

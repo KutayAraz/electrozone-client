@@ -39,7 +39,7 @@ export const CustomModal = ({
   const location = useLocation();
 
   const panelRef = useRef<HTMLDivElement>(null);
-  const previouslyFocused = useRef<HTMLElement | null>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
 
   // Lets the effects below leave `onClose` out of their dependencies without
   // capturing a stale callback.
@@ -48,10 +48,10 @@ export const CustomModal = ({
     onCloseRef.current = onClose;
   });
 
-  const hasMounted = useRef(false);
+  const hasMountedRef = useRef(false);
   useEffect(() => {
-    if (!hasMounted.current) {
-      hasMounted.current = true;
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
 
       return;
     }
@@ -109,11 +109,11 @@ export const CustomModal = ({
   useEffect(() => {
     if (!isOpen) return;
 
-    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
     panelRef.current?.focus();
 
     return () => {
-      previouslyFocused.current?.focus();
+      previouslyFocusedRef.current?.focus();
     };
   }, [isOpen]);
 

@@ -13,11 +13,11 @@ interface LocationModalProps {
 }
 
 export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: LocationModalProps) => {
-  const locationInput = useRef<HTMLInputElement>(null);
+  const locationInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    const value = locationInput.current?.value.trim();
+    const value = locationInputRef.current?.value.trim();
 
     if (!value || value.length < 2) {
       return;
@@ -64,7 +64,7 @@ export const LocationModal = ({ isOpen, onClose, onLocationSubmit, city }: Locat
           id="city-input"
           type="text"
           className="rounded-lg border-2 border-[#3a4791] py-1"
-          ref={locationInput}
+          ref={locationInputRef}
           minLength={2}
           required
           aria-required="true"

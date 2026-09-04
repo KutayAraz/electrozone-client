@@ -27,7 +27,7 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
   const [ratingValue, setRatingValue] = useState<number | null>(null);
   const [hover, setHover] = useState(-1);
 
-  const review = useRef<HTMLTextAreaElement>(null);
+  const reviewRef = useRef<HTMLTextAreaElement>(null);
 
   const handleSubmitReview = async () => {
     if (!ratingValue) {
@@ -41,7 +41,7 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
       return;
     }
 
-    await submitReview(productId, ratingValue, review.current?.value);
+    await submitReview(productId, ratingValue, reviewRef.current?.value);
 
     setRatingValue(null);
     setIsFormOpen(false);
@@ -99,7 +99,7 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
           )}
 
           <textarea
-            ref={review}
+            ref={reviewRef}
             minLength={15}
             maxLength={250}
             placeholder="Leave your review here"
