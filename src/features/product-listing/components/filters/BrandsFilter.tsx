@@ -107,12 +107,12 @@ export const BrandsFilter = ({
           },
         }}
       >
-        {filteredBrands.map((brand: string, index: number) => {
+        {filteredBrands.map((brand: string) => {
           const isSelected = selectedBrands.includes(brand);
 
           return (
             <FormControlLabel
-              key={index}
+              key={brand}
               control={
                 <Checkbox
                   size="small"

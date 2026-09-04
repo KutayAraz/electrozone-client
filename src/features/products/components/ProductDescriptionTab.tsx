@@ -5,8 +5,8 @@ interface ProductDescriptionTabProps {
 export const ProductDescriptionTab = ({ productDescription }: ProductDescriptionTabProps) => {
   return (
     <ul>
-      {productDescription.map((bulletPoint: string, index: number) => (
-        <li className="mb-2" key={index}>
+      {productDescription.map((bulletPoint: string) => (
+        <li className="mb-2" key={bulletPoint}>
           - {bulletPoint}
         </li>
       ))}

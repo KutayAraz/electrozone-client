@@ -38,8 +38,8 @@ const StaticNavigationContent = ({ onMenuClick }: NavigationContentProps) => {
         Home
       </Link>
 
-      {MENU_ITEMS.map((item, index) => (
-        <Link to={item.url} key={index} className={navStripElementClass}>
+      {MENU_ITEMS.map((item) => (
+        <Link to={item.url} key={item.url} className={navStripElementClass}>
           {item.name}
         </Link>
       ))}
@@ -79,8 +79,8 @@ const FixedNavigationContent = ({
         Home
       </Link>
 
-      {MENU_ITEMS.map((item, index) => (
-        <Link to={item.url} key={index} className={navStripElementClass}>
+      {MENU_ITEMS.map((item) => (
+        <Link to={item.url} key={item.url} className={navStripElementClass}>
           {item.name}
         </Link>
       ))}

@@ -44,12 +44,12 @@ export const SubcategoriesFilter = ({
           },
         }}
       >
-        {subcategoriesData.map((subcategory: string, index: number) => {
+        {subcategoriesData.map((subcategory: string) => {
           const isSelected = selectedSubcategories.includes(subcategory);
 
           return (
             <FormControlLabel
-              key={index}
+              key={subcategory}
               control={
                 <Checkbox
                   size="small"

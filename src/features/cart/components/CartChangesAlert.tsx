@@ -57,8 +57,8 @@ export const CartChangesAlert = ({
 
                 <div className="mt-2 text-sm text-blue-700">
                   <ul className="list-inside space-y-1">
-                    {priceChanges.map((change, index) => (
-                      <li key={index}>
+                    {priceChanges.map((change) => (
+                      <li key={change.productName}>
                         <span className="font-medium">{change.productName}</span>: Price updated
                         from ${change.oldPrice} to ${change.newPrice}
                       </li>
@@ -95,8 +95,8 @@ export const CartChangesAlert = ({
 
                 <div className="mt-2 text-sm text-amber-700">
                   <ul className="list-inside space-y-1">
-                    {quantityChanges.map((change, index) => (
-                      <li key={index}>
+                    {quantityChanges.map((change) => (
+                      <li key={change.productName}>
                         <span className="font-medium">{change.productName}</span>: Quantity adjusted
                         from {change.oldQuantity} to {change.newQuantity}
                         {change.reason === ErrorType.QUANTITY_LIMIT_EXCEEDED
@@ -138,8 +138,8 @@ export const CartChangesAlert = ({
                   <p>The following items have been removed from your cart:</p>
 
                   <ul className="mt-1 list-inside space-y-1">
-                    {removedCartItems.map((itemName, index) => (
-                      <li key={index}>
+                    {removedCartItems.map((itemName) => (
+                      <li key={itemName}>
                         <span className="font-medium">{itemName}</span>
                       </li>
                     ))}

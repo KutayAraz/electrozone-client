@@ -54,7 +54,7 @@ export const WishlistPage = () => {
         ) : (
           <div className="flex flex-wrap">
             {wishlistProducts?.data.map((product: Product) => (
-              <WishlistProduct {...product} key={product.id} />
+              <WishlistProduct key={product.id} {...product} />
             ))}
           </div>
         )}

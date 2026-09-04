@@ -42,9 +42,9 @@ export const Categories = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6">
-        {categories.map((category, index) => (
+        {categories.map((category) => (
           <Link
-            key={index}
+            key={category.link}
             to={category.link}
             className="group relative overflow-hidden rounded-2xl bg-white shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-1"
           >

@@ -97,7 +97,7 @@ export const OrderDetailsCard = ({
 
           <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {orderItems.map((product: OrderItem) => (
-              <OrderItemDetailsCard {...product} key={product.id} />
+              <OrderItemDetailsCard key={product.id} {...product} />
             ))}
           </div>
         </section>
