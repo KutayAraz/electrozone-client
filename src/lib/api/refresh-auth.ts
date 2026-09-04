@@ -43,7 +43,7 @@ export const refreshAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQuer
           // If refresh token is invalid, clear credentials
           api.dispatch(clearCredentials());
         }
-      } catch (error) {
+      } catch {
         // Handle any errors during refresh
         api.dispatch(clearCredentials());
       } finally {

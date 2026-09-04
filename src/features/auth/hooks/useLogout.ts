@@ -26,7 +26,7 @@ export const useLogout = () => {
           message: "You have successfully logged out",
         }),
       );
-    } catch (error) {
+    } catch {
       dispatch(
         displayNotification({
           type: NotificationType.ERROR,

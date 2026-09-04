@@ -36,7 +36,7 @@ export const orderConfirmationLoader = async ({ params }: LoaderFunctionArgs) =>
     }
 
     return { orderId, orderData: result };
-  } catch (error) {
+  } catch {
     store.dispatch(
       displayNotification({
         type: NotificationType.ERROR,
