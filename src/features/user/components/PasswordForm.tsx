@@ -17,7 +17,7 @@ export const PasswordForm = ({ onChangePassword, isUpdating }: PasswordFormProps
     formState: { errors, isValid, isSubmitting },
     reset,
   } = useForm<PasswordSchema>({
-    resolver: zodResolver<PasswordSchema>(passwordSchema),
+    resolver: zodResolver(passwordSchema),
     mode: "onTouched",
   });
 

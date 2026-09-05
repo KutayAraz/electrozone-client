@@ -16,11 +16,11 @@ export const passwordSchema = z
     newPasswordRetyped: z.string(),
   })
   .refine((data) => data.newPassword !== data.oldPassword, {
-    message: "New password can't be the same as the current password",
+    error: "New password can't be the same as the current password",
     path: ["newPassword"],
   })
   .refine((data) => data.newPasswordRetyped === data.newPassword, {
-    message: "Passwords must match",
+    error: "Passwords must match",
     path: ["newPasswordRetyped"],
   });
 

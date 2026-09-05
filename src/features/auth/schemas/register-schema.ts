@@ -2,7 +2,10 @@ import { z } from "zod";
 
 export const registerSchema = z
   .object({
-    email: z.string().email("Please enter a valid email address").min(1, "Email is required"),
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .pipe(z.email("Please enter a valid email address")),
     password: z
       .string()
       .min(8, "Password must be at least 8 characters long")
@@ -21,7 +24,7 @@ export const registerSchema = z
     city: z.string().min(1, "City is required").max(50, "City is too long"),
   })
   .refine((data) => data.password === data.retypedPassword, {
-    message: "Passwords don't match",
+    error: "Passwords don't match",
     path: ["retypedPassword"],
   });
 
