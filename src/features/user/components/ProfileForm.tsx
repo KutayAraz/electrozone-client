@@ -13,7 +13,7 @@ import { UpdateUser, User } from "../types";
 
 type ProfileFormProps = {
   userInfo: Partial<User>;
-  onUpdateProfile: (data: UpdateUser) => void;
+  onUpdateProfile: (data: UpdateUser) => Promise<boolean>;
   isUpdating: boolean;
 };
 
@@ -48,8 +48,7 @@ export const ProfileForm = ({ userInfo, onUpdateProfile, isUpdating }: ProfileFo
       return;
     }
 
-    onUpdateProfile(filteredData);
-    reset();
+    if (await onUpdateProfile(filteredData)) reset();
   };
 
   const inputClasses =

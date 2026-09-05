@@ -13,7 +13,11 @@ export const useChangePassword = () => {
   const [changePassword, { isLoading }] = useChangePasswordMutation();
 
   const submitPassword = async (data: PasswordSchema) => {
-    await changePassword(data).unwrap();
+    try {
+      await changePassword(data).unwrap();
+    } catch {
+      return false;
+    }
 
     dispatch(
       displayNotification({
@@ -21,6 +25,8 @@ export const useChangePassword = () => {
         message: "Your password has changed successfully",
       }),
     );
+
+    return true;
   };
   return { submitPassword, isLoading };
 };

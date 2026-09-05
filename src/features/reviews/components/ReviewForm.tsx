@@ -41,7 +41,8 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
       return;
     }
 
-    await submitReview(productId, ratingValue, reviewRef.current?.value);
+    // Keep the form open with the user's text if the request fails
+    if (!(await submitReview(productId, ratingValue, reviewRef.current?.value))) return;
 
     setRatingValue(null);
     setIsFormOpen(false);

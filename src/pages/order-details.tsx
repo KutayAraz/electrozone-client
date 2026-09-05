@@ -28,7 +28,11 @@ export const OrderDetails = () => {
   const [cancelOrder, { isLoading }] = useCancelOrderMutation();
 
   const submitCancellation = async () => {
-    await cancelOrder(order.data.id).unwrap();
+    try {
+      await cancelOrder(order.data.id).unwrap();
+    } catch {
+      return;
+    }
 
     dispatch(
       displayNotification({

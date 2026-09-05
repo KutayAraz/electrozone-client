@@ -18,7 +18,12 @@ export const useCreateReview = () => {
       ...(comment?.trim() ? { comment: comment.trim() } : {}),
     };
 
-    const response = await createReview({ productId, review: reviewData }).unwrap();
+    let response;
+    try {
+      response = await createReview({ productId, review: reviewData }).unwrap();
+    } catch {
+      return false;
+    }
 
     dispatch(
       displayNotification({
@@ -27,6 +32,8 @@ export const useCreateReview = () => {
         details: `New rating after you review: ${response}`,
       }),
     );
+
+    return true;
   };
 
   return { submitReview, isLoading };

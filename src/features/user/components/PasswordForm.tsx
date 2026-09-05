@@ -6,7 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { passwordSchema, PasswordSchema } from "../schemas/change-password-schema";
 
 type PasswordFormProps = {
-  onChangePassword: (data: PasswordSchema) => void;
+  onChangePassword: (data: PasswordSchema) => Promise<boolean>;
   isUpdating: boolean;
 };
 
@@ -22,8 +22,7 @@ export const PasswordForm = ({ onChangePassword, isUpdating }: PasswordFormProps
   });
 
   const onSubmit = async (data: PasswordSchema) => {
-    onChangePassword(data);
-    reset();
+    if (await onChangePassword(data)) reset();
   };
 
   const inputClasses =

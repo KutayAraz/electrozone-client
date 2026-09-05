@@ -13,7 +13,12 @@ export const useMergeCarts = () => {
   const [mergeCarts, { isLoading }] = useMergeCartsMutation();
 
   const submitMergeCarts = async () => {
-    const result = await mergeCarts().unwrap();
+    let result;
+    try {
+      result = await mergeCarts().unwrap();
+    } catch {
+      return false;
+    }
 
     let message = "Products in your cart before logging in, are added to your cart.";
 
@@ -35,6 +40,8 @@ export const useMergeCarts = () => {
         duration: 5000,
       }),
     );
+
+    return true;
   };
 
   return { submitMergeCarts, isLoading };

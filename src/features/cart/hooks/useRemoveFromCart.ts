@@ -20,10 +20,14 @@ export const useRemoveFromCart = () => {
   const isLoading = isUserCartLoading || isSessionCartLoading;
 
   const removeFromCart = async (productId: number) => {
-    if (isAuthenticated) {
-      await removeUserCartItem(productId).unwrap();
-    } else {
-      await removeSessionCartItem(productId).unwrap();
+    try {
+      if (isAuthenticated) {
+        await removeUserCartItem(productId).unwrap();
+      } else {
+        await removeSessionCartItem(productId).unwrap();
+      }
+    } catch {
+      return false;
     }
 
     dispatch(
@@ -32,6 +36,8 @@ export const useRemoveFromCart = () => {
         message: "Product has been removed from your cart",
       }),
     );
+
+    return true;
   };
 
   return { removeFromCart, isLoading };

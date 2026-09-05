@@ -16,7 +16,12 @@ export const useUpdateProfile = () => {
   const [updatedUser, { isLoading: isProfileLoading }] = useUpdateUserProfileMutation();
 
   const submitProfile = async (data: UpdateUser) => {
-    const result = await updatedUser(data).unwrap();
+    let result;
+    try {
+      result = await updatedUser(data).unwrap();
+    } catch {
+      return false;
+    }
 
     dispatch(updateUserInfo({ city: result.city }));
     dispatch(
@@ -25,6 +30,8 @@ export const useUpdateProfile = () => {
         message: "Your profile has been successfully updated",
       }),
     );
+
+    return true;
   };
 
   return {

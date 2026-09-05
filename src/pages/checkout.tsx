@@ -70,8 +70,8 @@ export const CheckoutPage = () => {
   };
 
   const addToCartAndNavigate = async () => {
-    await submitMergeCarts();
-    navigateToCart();
+    // On failure the modal stays open so the user can retry or cancel
+    if (await submitMergeCarts()) navigateToCart();
   };
 
   const handleSubmitOrder = async () => {

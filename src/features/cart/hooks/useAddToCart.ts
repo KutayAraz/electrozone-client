@@ -21,10 +21,14 @@ export const useAddToCart = () => {
 
   const addToCart = async (productId: number, quantity = 1) => {
     let response;
-    if (isAuthenticated) {
-      response = await addToUserCart({ productId, quantity }).unwrap();
-    } else {
-      response = await addToSessionCart({ productId, quantity }).unwrap();
+    try {
+      if (isAuthenticated) {
+        response = await addToUserCart({ productId, quantity }).unwrap();
+      } else {
+        response = await addToSessionCart({ productId, quantity }).unwrap();
+      }
+    } catch {
+      return false;
     }
 
     const quantityChange = response.quantityChanges?.[0];
@@ -46,6 +50,8 @@ export const useAddToCart = () => {
           : undefined,
       }),
     );
+
+    return true;
   };
 
   return { addToCart, isLoading };

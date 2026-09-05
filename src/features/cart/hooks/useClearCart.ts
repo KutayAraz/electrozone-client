@@ -19,10 +19,14 @@ export const useClearCart = () => {
   const isLoading = isUserCartLoading || isSessionCartLoading;
 
   const clearCart = async () => {
-    if (isAuthenticated) {
-      await clearUserCart();
-    } else {
-      await clearSessionCart();
+    try {
+      if (isAuthenticated) {
+        await clearUserCart().unwrap();
+      } else {
+        await clearSessionCart().unwrap();
+      }
+    } catch {
+      return false;
     }
 
     dispatch(
@@ -31,6 +35,8 @@ export const useClearCart = () => {
         message: "Your cart has been cleared",
       }),
     );
+
+    return true;
   };
 
   return { clearCart, isLoading };

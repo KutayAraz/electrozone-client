@@ -22,10 +22,14 @@ export const useUpdateQuantity = () => {
 
   const updateQuantity = async (productId: number, quantity: number) => {
     let response;
-    if (isAuthenticated) {
-      response = await updateUserCartItem({ productId, quantity }).unwrap();
-    } else {
-      response = await updateSessionCartItem({ productId, quantity }).unwrap();
+    try {
+      if (isAuthenticated) {
+        response = await updateUserCartItem({ productId, quantity }).unwrap();
+      } else {
+        response = await updateSessionCartItem({ productId, quantity }).unwrap();
+      }
+    } catch {
+      return false;
     }
 
     const quantityChange = response.quantityChanges?.[0];
@@ -54,6 +58,8 @@ export const useUpdateQuantity = () => {
         }),
       );
     }
+
+    return true;
   };
 
   return { updateQuantity, isLoading };
