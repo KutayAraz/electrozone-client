@@ -97,8 +97,8 @@ export const useFilters = ({ priceRangeData }: UseFiltersProps): UseFiltersRetur
         name === "minPrice"
           ? [numValue, prev.priceRange[1]]
           : name === "maxPrice"
-          ? [prev.priceRange[0], numValue]
-          : prev.priceRange,
+            ? [prev.priceRange[0], numValue]
+            : prev.priceRange,
     }));
   }, []);
 

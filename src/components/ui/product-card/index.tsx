@@ -173,10 +173,10 @@ export const ProductCard = forwardRef(
                       stock > 10
                         ? "bg-green-400"
                         : stock > 5
-                        ? "bg-yellow-400"
-                        : stock > 0
-                        ? "bg-orange-400"
-                        : "bg-red-400"
+                          ? "bg-yellow-400"
+                          : stock > 0
+                            ? "bg-orange-400"
+                            : "bg-red-400"
                     }`}
                   />
                   <span className="text-xs text-gray-500">

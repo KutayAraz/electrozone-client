@@ -53,9 +53,8 @@ export const createAppRouter = () =>
         {
           path: paths.products.trending.path,
           lazy: async () => {
-            const { TrendingProductsPage, trendingProductsLoader } = await import(
-              "@/pages/trending"
-            );
+            const { TrendingProductsPage, trendingProductsLoader } =
+              await import("@/pages/trending");
             return { Component: TrendingProductsPage, loader: trendingProductsLoader };
           },
         },
@@ -82,9 +81,8 @@ export const createAppRouter = () =>
                 {
                   index: true,
                   lazy: async () => {
-                    const { SubcategoryPage, subcategoryPageLoader } = await import(
-                      "@/pages/subcategory"
-                    );
+                    const { SubcategoryPage, subcategoryPageLoader } =
+                      await import("@/pages/subcategory");
                     return { Component: SubcategoryPage, loader: subcategoryPageLoader };
                   },
                 },
@@ -154,9 +152,8 @@ export const createAppRouter = () =>
                 {
                   path: paths.app.orders.order.path,
                   lazy: async () => {
-                    const { OrderDetails, orderDetailsLoader } = await import(
-                      "@/pages/order-details"
-                    );
+                    const { OrderDetails, orderDetailsLoader } =
+                      await import("@/pages/order-details");
                     return { Component: OrderDetails, loader: orderDetailsLoader };
                   },
                 },
@@ -189,9 +186,8 @@ export const createAppRouter = () =>
         {
           path: paths.checkout.success.path,
           lazy: async () => {
-            const { OrderConfirmationPage, orderConfirmationLoader } = await import(
-              "@/pages/order-confirmation"
-            );
+            const { OrderConfirmationPage, orderConfirmationLoader } =
+              await import("@/pages/order-confirmation");
             return { Component: OrderConfirmationPage, loader: orderConfirmationLoader };
           },
         },
