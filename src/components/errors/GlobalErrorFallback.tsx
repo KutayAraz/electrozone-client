@@ -1,13 +1,13 @@
 import ErrorIcon from "@mui/icons-material/Error";
 import { Button } from "@mui/material";
+import type { FallbackProps } from "react-error-boundary";
 
-export const GlobalErrorFallback = ({
-  error,
-  resetErrorBoundary,
-}: {
-  error: Error;
-  resetErrorBoundary: () => void;
-}) => {
+export const GlobalErrorFallback = ({ error, resetErrorBoundary }: FallbackProps) => {
+  const errorDetails =
+    error instanceof Error
+      ? error.message + (error.stack ? "\n\n" + error.stack : "")
+      : String(error);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
       <div className="max-w-md rounded-lg bg-white p-8 text-center shadow-lg">
@@ -26,10 +26,7 @@ export const GlobalErrorFallback = ({
               Error Details (Development Only)
             </summary>
 
-            <pre className="mt-2 overflow-auto text-xs text-red-700">
-              {error.message}
-              {error.stack && "\n\n" + error.stack}
-            </pre>
+            <pre className="mt-2 overflow-auto text-xs text-red-700">{errorDetails}</pre>
           </details>
         )}
 
