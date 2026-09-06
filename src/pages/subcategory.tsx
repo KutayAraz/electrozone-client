@@ -17,6 +17,7 @@ import { useFilters } from "@/features/product-listing/hooks/useFilters";
 import { useSorting } from "@/features/product-listing/hooks/useSorting";
 import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
 import { useInfiniteScrollRef } from "@/hooks/useInfiniteScrollRef";
+import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 import { dedupeById } from "@/utils/dedupe-by-id";
 import { formatString } from "@/utils/format-casing";
@@ -29,16 +30,20 @@ export const subcategoryPageLoader = async (request: LoaderFunctionArgs) => {
     throw new Error("No subcategory found!");
   }
 
-  return {
-    brands: await store.dispatch(
-      subcategoryBrandsApi.endpoints.getSubcategoryBrands.initiate(subcategory),
+  const [brands, priceRange] = await Promise.all([
+    loadQuery(
+      store.dispatch(subcategoryBrandsApi.endpoints.getSubcategoryBrands.initiate(subcategory)),
     ),
-    priceRange: await store.dispatch(
-      subcategoryPriceRangeApi.endpoints.getSubcategoryPriceRange.initiate({
-        subcategoryName: subcategory,
-      }),
+    loadQuery(
+      store.dispatch(
+        subcategoryPriceRangeApi.endpoints.getSubcategoryPriceRange.initiate({
+          subcategoryName: subcategory,
+        }),
+      ),
     ),
-  };
+  ]);
+
+  return { brands, priceRange };
 };
 
 export const SubcategoryPage = () => {
@@ -57,7 +62,7 @@ export const SubcategoryPage = () => {
 
   // Use custom hooks for filters and sorting
   const { getFilterParams } = useFilters({
-    priceRangeData: priceRange.data,
+    priceRangeData: priceRange,
   });
 
   const { currentSortMethod } = useSorting();
@@ -123,8 +128,8 @@ export const SubcategoryPage = () => {
 
       {/* Mobile Filter/Sort Drawers */}
       <FilterDrawer
-        priceRangeData={priceRange.data}
-        brandsData={brands.data}
+        priceRangeData={priceRange}
+        brandsData={brands}
         isOpen={filterDrawerOpen}
         onClose={() => setFilterDrawerOpen(false)}
       />
@@ -146,7 +151,7 @@ export const SubcategoryPage = () => {
             </h3>
 
             <div className="flex flex-col overflow-x-hidden">
-              <FilterPanel priceRangeData={priceRange.data} brandsData={brands.data} />
+              <FilterPanel priceRangeData={priceRange} brandsData={brands} />
             </div>
           </div>
 
