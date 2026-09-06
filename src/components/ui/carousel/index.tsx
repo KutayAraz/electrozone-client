@@ -7,6 +7,7 @@ import NavButton from "@assets/svgs/carousel-nav-button.svg?react";
 
 import { CarouselCard, CarouselCardProps } from "./CarouselCard";
 
+export { CarouselError } from "./CarouselError";
 export { CarouselSkeleton } from "./CarouselSkeleton";
 
 interface CarouselProps {

@@ -2,34 +2,29 @@ import { Suspense, useState } from "react";
 import { Await, useLoaderData } from "react-router";
 
 import { PageHelmet } from "@/components/seo/PageHelmet";
-import { Carousel, CarouselSkeleton } from "@/components/ui/carousel";
+import { Carousel, CarouselError, CarouselSkeleton } from "@/components/ui/carousel";
 import { Categories } from "@/features/product-listing/components/Categories";
 import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
 import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
+import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 import { CarouselProduct } from "@/types/product";
 
-export const homePageLoader = async () => {
-  const bestRatedResult = store.dispatch(
-    getTopProductsApi.endpoints.getTopProducts.initiate(ProductTrend.BEST_RATED),
-  );
-  const mostWishlistedResult = store.dispatch(
-    getTopProductsApi.endpoints.getTopProducts.initiate(ProductTrend.MOST_WISHLISTED),
-  );
-  const bestSellersResult = store.dispatch(
-    getTopProductsApi.endpoints.getTopProducts.initiate(ProductTrend.BEST_SELLERS),
-  );
+const loadTopProducts = (trend: ProductTrend) =>
+  loadQuery(store.dispatch(getTopProductsApi.endpoints.getTopProducts.initiate(trend)));
 
+export const homePageLoader = async () => {
   return {
-    bestRated: bestRatedResult,
-    mostWishlisted: mostWishlistedResult,
-    bestSellers: bestSellersResult,
+    bestRated: loadTopProducts(ProductTrend.BEST_RATED),
+    mostWishlisted: loadTopProducts(ProductTrend.MOST_WISHLISTED),
+    bestSellers: loadTopProducts(ProductTrend.BEST_SELLERS),
   };
 };
 
 const ProductsShowcase = ({ products }: { products: CarouselProduct[] }) => {
-  const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
   const { handleToggleWishlist } = useToggleWishlist();
+
+  const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
 
   const handleWishlistToggle = async (id: number) => {
     setTogglingProductId(id);
@@ -40,6 +35,7 @@ const ProductsShowcase = ({ products }: { products: CarouselProduct[] }) => {
       setTogglingProductId(null);
     }
   };
+
   const isProductToggling = (id: number) => togglingProductId === id;
 
   return (
@@ -68,30 +64,24 @@ export const HomePage = () => {
           <h2 className="mb-3 mt-6 text-xl font-semibold">Best Selling Products</h2>
 
           <Suspense fallback={<CarouselSkeleton />}>
-            <Await resolve={bestSellers}>
-              {(products: { data: CarouselProduct[] }) => (
-                <ProductsShowcase products={products.data} />
-              )}
+            <Await resolve={bestSellers} errorElement={<CarouselError />}>
+              {(products: CarouselProduct[]) => <ProductsShowcase products={products} />}
             </Await>
           </Suspense>
 
           <h2 className="my-3 text-xl font-semibold">Most Wishlisted Products</h2>
 
           <Suspense fallback={<CarouselSkeleton />}>
-            <Await resolve={mostWishlisted}>
-              {(products: { data: CarouselProduct[] }) => (
-                <ProductsShowcase products={products.data} />
-              )}
+            <Await resolve={mostWishlisted} errorElement={<CarouselError />}>
+              {(products: CarouselProduct[]) => <ProductsShowcase products={products} />}
             </Await>
           </Suspense>
 
           <h2 className="my-3 text-xl font-semibold">Best Rated Products</h2>
 
           <Suspense fallback={<CarouselSkeleton />}>
-            <Await resolve={bestRated}>
-              {(products: { data: CarouselProduct[] }) => (
-                <ProductsShowcase products={products.data} />
-              )}
+            <Await resolve={bestRated} errorElement={<CarouselError />}>
+              {(products: CarouselProduct[]) => <ProductsShowcase products={products} />}
             </Await>
           </Suspense>
         </div>
