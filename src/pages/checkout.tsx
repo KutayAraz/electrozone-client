@@ -16,6 +16,7 @@ import { getUserProfileApi } from "@/features/user/api/get-user-profile";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { CheckoutLayout } from "@/layouts/CheckoutLayout";
+import { loadQuery } from "@/lib/api/load-query";
 import { selectCheckoutIntent, setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
 import { CheckoutItem, CheckoutType } from "@/types/checkout";
@@ -26,9 +27,9 @@ export const checkoutLoader = async () => {
   const userIntent: CheckoutType = state.user.checkoutIntent;
 
   try {
-    const userInfo = await store
-      .dispatch(getUserProfileApi.endpoints.getUserProfile.initiate())
-      .unwrap();
+    const userInfo = await loadQuery(
+      store.dispatch(getUserProfileApi.endpoints.getUserProfile.initiate()),
+    );
     const checkoutData = await store
       .dispatch(
         initiateCheckoutApi.endpoints.initiateCheckout.initiate({ checkoutType: userIntent }),

@@ -3,9 +3,9 @@ import { Link, LoaderFunctionArgs, useLoaderData, useParams } from "react-router
 
 import { PageHelmet } from "@/components/seo/PageHelmet";
 import { Carousel } from "@/components/ui/carousel";
-import { CenteredSpinner } from "@/components/ui/spinner";
 import { categoryInfoApi } from "@/features/product-listing/api/get-category-info";
 import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
+import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 import { CarouselProduct } from "@/types/product";
 import { formatString } from "@/utils/format-casing";
@@ -17,7 +17,9 @@ export const categoryLoader = async ({ params }: LoaderFunctionArgs) => {
     throw new Error("Category parameter is required");
   }
 
-  return store.dispatch(categoryInfoApi.endpoints.getCategoryInfo.initiate(categoryName));
+  return loadQuery(
+    store.dispatch(categoryInfoApi.endpoints.getCategoryInfo.initiate(categoryName)),
+  );
 };
 
 type ProductSectionProps = {
@@ -106,19 +108,15 @@ export const CategoryPage = () => {
       />
 
       <div className="page-spacing">
-        {categoryData.state === "loading" ? (
-          <CenteredSpinner />
-        ) : (
-          categoryData.data.map((subcategory: SubcategoryData) => (
-            <Subcategory
-              key={subcategory.id}
-              id={subcategory.id}
-              subcategory={subcategory.subcategory}
-              topSelling={subcategory.topSelling}
-              topWishlisted={subcategory.topWishlisted}
-            />
-          ))
-        )}
+        {categoryData.map((subcategory: SubcategoryData) => (
+          <Subcategory
+            key={subcategory.id}
+            id={subcategory.id}
+            subcategory={subcategory.subcategory}
+            topSelling={subcategory.topSelling}
+            topWishlisted={subcategory.topWishlisted}
+          />
+        ))}
       </div>
     </>
   );

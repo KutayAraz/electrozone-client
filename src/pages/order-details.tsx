@@ -6,19 +6,19 @@ import {
   displayNotification,
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
-import { CenteredSpinner } from "@/components/ui/spinner";
 import { paths } from "@/config/paths";
 import { useCancelOrderMutation } from "@/features/orders/api/cancel-order";
 import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
 import { OrderDetailsCard } from "@/features/orders/components/OrderDetailsCard";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useConfirmationDialog } from "@/hooks/useConfirmationDialog";
+import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 
 export const orderDetailsLoader = async (request: LoaderFunctionArgs) => {
   const orderId = Number(request.params.orderId);
 
-  return store.dispatch(getOrderByIdApi.endpoints.getOrderById.initiate(orderId));
+  return loadQuery(store.dispatch(getOrderByIdApi.endpoints.getOrderById.initiate(orderId)));
 };
 
 export const OrderDetails = () => {
@@ -29,7 +29,7 @@ export const OrderDetails = () => {
 
   const submitCancellation = async () => {
     try {
-      await cancelOrder(order.data.id).unwrap();
+      await cancelOrder(order.id).unwrap();
     } catch {
       return;
     }
@@ -65,27 +65,21 @@ export const OrderDetails = () => {
       />
 
       <div className="page-spacing">
-        {order.state === "loading" ? (
-          <CenteredSpinner />
-        ) : (
-          <>
-            <OrderDetailsCard
-              orderId={order.data.id}
-              orderTotal={order.data.orderTotal}
-              orderDate={order.data.orderDate}
-              user={order.data.user}
-              orderItems={order.data.orderItems}
-              isCancellable={order.data.isCancellable}
-              onOrderCancel={handleCancelClick}
-            />
+        <OrderDetailsCard
+          orderId={order.id}
+          orderTotal={order.orderTotal}
+          orderDate={order.orderDate}
+          user={order.user}
+          orderItems={order.orderItems}
+          isCancellable={order.isCancellable}
+          onOrderCancel={handleCancelClick}
+        />
 
-            <ConfirmationDialog
-              {...dialogProps}
-              onConfirm={handleConfirmCancel}
-              isProcessing={isLoading}
-            />
-          </>
-        )}
+        <ConfirmationDialog
+          {...dialogProps}
+          onConfirm={handleConfirmCancel}
+          isProcessing={isLoading}
+        />
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit";
 
+import { loadQuery } from "@/lib/api/load-query";
 import { setCredentials } from "@/stores/slices/user-slice";
 import { setWishlist } from "@/stores/slices/wishlist-slice";
 
@@ -12,16 +13,14 @@ wishlistSyncListenerMiddleware.startListening({
   matcher: isAnyOf(setCredentials),
   effect: async (action, listenerApi) => {
     try {
-      const wishlistResult = await listenerApi.dispatch(
-        wishlistApi.endpoints.getUserWishlist.initiate(),
+      const wishlist = await loadQuery(
+        listenerApi.dispatch(
+          wishlistApi.endpoints.getUserWishlist.initiate(undefined, { forceRefetch: true }),
+        ),
       );
 
-      if (wishlistResult.data) {
-        const productIds = wishlistResult.data.map((item) => item.id);
-
-        // Update the wishlist slice with the server data
-        listenerApi.dispatch(setWishlist(productIds));
-      }
+      // Update the wishlist slice with the server data
+      listenerApi.dispatch(setWishlist(wishlist.map((item) => item.id)));
     } catch (error) {
       console.error("Failed to sync wishlist after login:", error);
     }

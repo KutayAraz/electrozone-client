@@ -9,6 +9,7 @@ import {
 import { paths } from "@/config/paths";
 import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
 import { CheckoutLayout } from "@/layouts/CheckoutLayout";
+import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 
 export const orderConfirmationLoader = async ({ params }: LoaderFunctionArgs) => {
@@ -20,9 +21,9 @@ export const orderConfirmationLoader = async ({ params }: LoaderFunctionArgs) =>
 
   try {
     // Validate the order belongs to the current user
-    const result = await store
-      .dispatch(getOrderByIdApi.endpoints.getOrderById.initiate(Number(orderId)))
-      .unwrap();
+    const result = await loadQuery(
+      store.dispatch(getOrderByIdApi.endpoints.getOrderById.initiate(Number(orderId))),
+    );
 
     if (!result) {
       // Order doesn't belong to this user or doesn't exist

@@ -14,6 +14,7 @@ import { ReviewsTab } from "@/features/reviews/components/ReviewsTab";
 import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { loadQuery } from "@/lib/api/load-query";
 import { setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
 import { CheckoutType } from "@/types/checkout";
@@ -27,9 +28,9 @@ export const productPageLoader = async ({ params }: LoaderFunctionArgs) => {
   }
   const [, productId] = productSlug.split("-p-");
 
-  return await store
-    .dispatch(getProductDetailsApi.endpoints.getProductDetails.initiate(Number(productId)))
-    .unwrap();
+  return loadQuery(
+    store.dispatch(getProductDetailsApi.endpoints.getProductDetails.initiate(Number(productId))),
+  );
 };
 
 export const ProductPage = () => {

@@ -2,17 +2,17 @@ import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useParams } from "react-router-dom";
 
 import { PageHelmet } from "@/components/seo/PageHelmet";
-import { Spinner } from "@/components/ui/spinner";
 import { useAddToCart } from "@/features/cart/hooks/useAddToCart";
 import { ProductList } from "@/features/product-listing/components/ProductListing";
 import { getTopProductsApi, ProductTrend } from "@/features/products/api/get-top-products";
 import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
+import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 import { formatString } from "@/utils/format-casing";
 
 export const trendingProductsLoader = (request: LoaderFunctionArgs) => {
   const trend = request.params.type as ProductTrend;
-  return store.dispatch(getTopProductsApi.endpoints.getTopProducts.initiate(trend));
+  return loadQuery(store.dispatch(getTopProductsApi.endpoints.getTopProducts.initiate(trend)));
 };
 
 export const TrendingProductsPage = () => {
@@ -60,21 +60,15 @@ export const TrendingProductsPage = () => {
       <div className="page-spacing">
         <h4 className="my-3 ml-2 text-xl font-bold">{formatString(type, "-") || ""} Site-Wide</h4>
 
-        {products.state === "loading" ? (
-          <p>
-            Loading Products.. <Spinner size={20} />
-          </p>
-        ) : (
-          <div className="flex flex-wrap">
-            <ProductList
-              products={products.data}
-              onAddToCart={handleAddToCart}
-              onWishlistToggle={handleWishlistToggle}
-              isAddingToCart={isProductAddingToCart}
-              isTogglingWishlist={isProductTogglingWishlist}
-            />
-          </div>
-        )}
+        <div className="flex flex-wrap">
+          <ProductList
+            products={products}
+            onAddToCart={handleAddToCart}
+            onWishlistToggle={handleWishlistToggle}
+            isAddingToCart={isProductAddingToCart}
+            isTogglingWishlist={isProductTogglingWishlist}
+          />
+        </div>
       </div>
     </>
   );
