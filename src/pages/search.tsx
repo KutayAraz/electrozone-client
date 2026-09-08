@@ -18,6 +18,7 @@ import { useFilters } from "@/features/product-listing/hooks/useFilters";
 import { useSorting } from "@/features/product-listing/hooks/useSorting";
 import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
 import { useInfiniteScrollRef } from "@/hooks/useInfiniteScrollRef";
+import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 import { dedupeById } from "@/utils/dedupe-by-id";
 import { createSearchDescription, createSearchTitle } from "@/utils/seo";
@@ -35,16 +36,22 @@ export const searchPageLoader = async ({ request }: LoaderFunctionArgs) => {
 
   if (!query) return defaultData;
 
-  // Fetch initial data without filters
-  const response = await store.dispatch(
-    searchProductsApi.endpoints.searchProducts.initiate({ query }),
-  );
+  // Fetch initial data without filters. These only seed the filter panel, so a failure
+  // falls back to the defaults - the page's own query shows the error for the results.
+  try {
+    const response = await loadQuery(
+      store.dispatch(searchProductsApi.endpoints.searchProducts.initiate({ query })),
+    );
+    const [firstPage] = response.pages;
 
-  return {
-    priceRange: response.data?.pages[0].priceRange,
-    brands: response.data?.pages[0].brands,
-    subcategories: response.data?.pages[0].subcategories,
-  };
+    return {
+      priceRange: firstPage.priceRange,
+      brands: firstPage.brands,
+      subcategories: firstPage.subcategories,
+    };
+  } catch {
+    return defaultData;
+  }
 };
 
 export const SearchPage = () => {
