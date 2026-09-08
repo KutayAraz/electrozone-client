@@ -80,6 +80,7 @@ export default defineConfig([
       ],
       "import-x/no-cycle": "error",
       "linebreak-style": ["error", "unix"],
+      "require-await": "error",
       "import-x/order": [
         "error",
         {

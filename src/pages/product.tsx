@@ -20,7 +20,7 @@ import { store } from "@/stores/store";
 import { CheckoutType } from "@/types/checkout";
 import { createProductDescription, createProductTitle } from "@/utils/seo";
 
-export const productPageLoader = async ({ params }: LoaderFunctionArgs) => {
+export const productPageLoader = ({ params }: LoaderFunctionArgs) => {
   const { productSlug } = params;
 
   if (!productSlug) {

@@ -76,12 +76,8 @@ export const CheckoutPage = () => {
   };
 
   const handleSubmitOrder = async () => {
-    const result = await placeOrder(checkoutSnapshotId, async () => {
-      // Simply revalidate the route data using the loader
-      revalidator.revalidate();
-
-      return null; // No need to return cart data as revalidation will handle it
-    });
+    // On a cart conflict, re-run this route's loader to show the updated cart
+    const result = await placeOrder(checkoutSnapshotId, () => revalidator.revalidate());
 
     if (typeof result === "number") {
       dispatch(setUserIntent(CheckoutType.NORMAL));

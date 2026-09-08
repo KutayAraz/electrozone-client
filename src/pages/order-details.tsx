@@ -15,7 +15,7 @@ import { useConfirmationDialog } from "@/hooks/useConfirmationDialog";
 import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 
-export const orderDetailsLoader = async (request: LoaderFunctionArgs) => {
+export const orderDetailsLoader = (request: LoaderFunctionArgs) => {
   const orderId = Number(request.params.orderId);
 
   return loadQuery(store.dispatch(getOrderByIdApi.endpoints.getOrderById.initiate(orderId)));

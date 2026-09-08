@@ -45,7 +45,7 @@ const getNextId = () => nextNotificationId++;
 
 export const displayNotification = createAsyncThunk<void, AddNotificationPayload>(
   "notification/display",
-  async (payload, { dispatch }) => {
+  (payload, { dispatch }) => {
     const notification: Notification = {
       id: getNextId(),
       type: payload.type,

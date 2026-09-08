@@ -10,7 +10,7 @@ import { store } from "@/stores/store";
 import { CarouselProduct } from "@/types/product";
 import { formatString } from "@/utils/format-casing";
 
-export const categoryLoader = async ({ params }: LoaderFunctionArgs) => {
+export const categoryLoader = ({ params }: LoaderFunctionArgs) => {
   const categoryName = params?.category?.replace(/-/g, "_");
 
   if (!categoryName) {

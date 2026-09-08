@@ -13,13 +13,11 @@ import { CarouselProduct } from "@/types/product";
 const loadTopProducts = (trend: ProductTrend) =>
   loadQuery(store.dispatch(getTopProductsApi.endpoints.getTopProducts.initiate(trend)));
 
-export const homePageLoader = async () => {
-  return {
-    bestRated: loadTopProducts(ProductTrend.BEST_RATED),
-    mostWishlisted: loadTopProducts(ProductTrend.MOST_WISHLISTED),
-    bestSellers: loadTopProducts(ProductTrend.BEST_SELLERS),
-  };
-};
+export const homePageLoader = () => ({
+  bestRated: loadTopProducts(ProductTrend.BEST_RATED),
+  mostWishlisted: loadTopProducts(ProductTrend.MOST_WISHLISTED),
+  bestSellers: loadTopProducts(ProductTrend.BEST_SELLERS),
+});
 
 const ProductsShowcase = ({ products }: { products: CarouselProduct[] }) => {
   const { handleToggleWishlist } = useToggleWishlist();
