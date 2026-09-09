@@ -50,7 +50,7 @@ export const orderConfirmationLoader = async ({ params }: LoaderFunctionArgs) =>
 };
 
 export const OrderConfirmationPage = () => {
-  const { orderId, orderData } = useLoaderData();
+  const { orderId, orderData } = useLoaderData<typeof orderConfirmationLoader>();
 
   return (
     <>

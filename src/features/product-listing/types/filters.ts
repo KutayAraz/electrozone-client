@@ -1,4 +1,4 @@
 export type PriceRangeData = {
-  min: string;
-  max: string;
+  min: string | number;
+  max: string | number;
 };

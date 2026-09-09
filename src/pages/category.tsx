@@ -95,7 +95,7 @@ type SubcategoryData = {
 };
 
 export const CategoryPage = () => {
-  const categoryData = useLoaderData();
+  const categoryData = useLoaderData<SubcategoryData[]>();
 
   const { category: categoryParam } = useParams<{ category: string }>();
   const formattedCategory = categoryParam ? formatString(categoryParam, "-") : "Category";
@@ -108,7 +108,7 @@ export const CategoryPage = () => {
       />
 
       <div className="page-spacing">
-        {categoryData.map((subcategory: SubcategoryData) => (
+        {categoryData.map((subcategory) => (
           <Subcategory
             key={subcategory.id}
             id={subcategory.id}

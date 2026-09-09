@@ -47,7 +47,7 @@ export const subcategoryPageLoader = async (request: LoaderFunctionArgs) => {
 };
 
 export const SubcategoryPage = () => {
-  const { brands, priceRange } = useLoaderData();
+  const { brands, priceRange } = useLoaderData<typeof subcategoryPageLoader>();
   const { subcategory, category } = useParams();
 
   // Cart and wishlist functionality

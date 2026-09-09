@@ -57,7 +57,7 @@ export const CheckoutPage = () => {
   const checkoutIntent = useAppSelector(selectCheckoutIntent);
   const [showModal, setShowModal] = useState(false);
 
-  const { user, checkoutData } = useLoaderData();
+  const { user, checkoutData } = useLoaderData<typeof checkoutLoader>();
 
   const { checkoutSnapshotId, cartData } = checkoutData;
 

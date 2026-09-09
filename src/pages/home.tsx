@@ -46,7 +46,7 @@ const ProductsShowcase = ({ products }: { products: CarouselProduct[] }) => {
 };
 
 export const HomePage = () => {
-  const { bestRated, mostWishlisted, bestSellers } = useLoaderData();
+  const { bestRated, mostWishlisted, bestSellers } = useLoaderData<typeof homePageLoader>();
 
   return (
     <>

@@ -16,8 +16,9 @@ export const trendingProductsLoader = (request: LoaderFunctionArgs) => {
 };
 
 export const TrendingProductsPage = () => {
-  const products = useLoaderData();
-  const { type }: any = useParams();
+  const products = useLoaderData<typeof trendingProductsLoader>();
+
+  const { type = "" } = useParams<{ type: string }>();
 
   // Cart and wishlist functionality
   const [togglingWishlistId, setTogglingWishlistId] = useState<number | null>(null);
@@ -58,7 +59,7 @@ export const TrendingProductsPage = () => {
       />
 
       <div className="page-spacing">
-        <h4 className="my-3 ml-2 text-xl font-bold">{formatString(type, "-") || ""} Site-Wide</h4>
+        <h4 className="my-3 ml-2 text-xl font-bold">{formatString(type, "-")} Site-Wide</h4>
 
         <div className="flex flex-wrap">
           <ProductList

@@ -37,7 +37,7 @@ export const ProductPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const productData = useLoaderData();
+  const productData = useLoaderData<typeof productPageLoader>();
 
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedImage, setSelectedImage] = useState(productData.thumbnail);

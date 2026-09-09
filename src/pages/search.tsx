@@ -55,7 +55,7 @@ export const searchPageLoader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export const SearchPage = () => {
-  const { brands, priceRange, subcategories } = useLoaderData();
+  const { brands, priceRange, subcategories } = useLoaderData<typeof searchPageLoader>();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("query") || "";
 

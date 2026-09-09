@@ -22,7 +22,7 @@ export const orderDetailsLoader = (request: LoaderFunctionArgs) => {
 };
 
 export const OrderDetails = () => {
-  const order = useLoaderData();
+  const order = useLoaderData<typeof orderDetailsLoader>();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [cancelOrder, { isLoading }] = useCancelOrderMutation();
