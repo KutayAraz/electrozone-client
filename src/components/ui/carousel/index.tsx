@@ -3,15 +3,16 @@ import "swiper/css";
 import { A11y, Navigation, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { CarouselProduct } from "@/types/product";
 import NavButton from "@assets/svgs/carousel-nav-button.svg?react";
 
-import { CarouselCard, CarouselCardProps } from "./CarouselCard";
+import { CarouselCard } from "./CarouselCard";
 
 export { CarouselError } from "./CarouselError";
 export { CarouselSkeleton } from "./CarouselSkeleton";
 
 interface CarouselProps {
-  products: CarouselCardProps[];
+  products: CarouselProduct[];
   onWishlistToggle: (id: number) => void;
   isTogglingWishlist: (id: number) => boolean;
   className?: string;
@@ -73,7 +74,7 @@ export const Carousel = ({
           }}
           className={`${className}`}
         >
-          {products.map((product: CarouselCardProps) => (
+          {products.map((product) => (
             <SwiperSlide key={product.id}>
               <CarouselCard
                 {...product}

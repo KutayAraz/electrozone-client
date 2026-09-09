@@ -5,7 +5,7 @@ import { OrderItemDetailsCard } from "./OrderItemDetailsCard";
 
 interface OrderDetailsCardProps {
   orderId: number;
-  orderTotal: number;
+  orderTotal: string;
   orderDate: string;
   user: {
     firstName: string;

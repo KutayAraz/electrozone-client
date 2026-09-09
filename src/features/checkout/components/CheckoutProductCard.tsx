@@ -4,7 +4,7 @@ interface CheckoutItemCardProps {
   brand: string;
   thumbnail: string;
   quantity: number;
-  price: number;
+  price: string;
 }
 
 export const CheckoutItemCard = ({
@@ -15,7 +15,7 @@ export const CheckoutItemCard = ({
   quantity,
   price,
 }: CheckoutItemCardProps) => {
-  const totalPrice = price * quantity;
+  const totalPrice = Number(price) * quantity;
 
   return (
     <div

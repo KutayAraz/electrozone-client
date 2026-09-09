@@ -42,8 +42,6 @@ export type CarouselProduct = {
   thumbnail: string;
   subcategory: string;
   category: string;
-  onWishlistToggle: (id: number) => void;
-  isTogglingWishlist: (id: number) => boolean;
 };
 
 export type ProductDetails = {

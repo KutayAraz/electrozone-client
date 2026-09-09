@@ -105,6 +105,7 @@ export const ProductPage = () => {
           <ProductMobileLayout
             {...productData}
             productId={productData.id}
+            averageRating={Number(productData.averageRating)}
             images={productData.productImages}
             handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
             addingToCart={isAddingToCart || isNavigatingToCheckout}
@@ -123,6 +124,7 @@ export const ProductPage = () => {
           <ProductDesktopLayout
             {...productData}
             productId={productData.id}
+            averageRating={Number(productData.averageRating)}
             images={productData.productImages}
             handleAddToCart={(quantity: number) => addToCart(productData.id, quantity)}
             addingToCart={isAddingToCart}

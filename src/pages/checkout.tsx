@@ -19,7 +19,7 @@ import { CheckoutLayout } from "@/layouts/CheckoutLayout";
 import { loadQuery } from "@/lib/api/load-query";
 import { selectCheckoutIntent, setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
-import { CheckoutItem, CheckoutType } from "@/types/checkout";
+import { CheckoutType } from "@/types/checkout";
 import { isStandardApiError } from "@/utils/error-guard";
 
 export const checkoutLoader = async () => {
@@ -138,7 +138,7 @@ export const CheckoutPage = () => {
             />
 
             <div className="mt-6 max-w-screen-md grow space-y-4">
-              {cartData.cartItems.map((product: CheckoutItem) => {
+              {cartData.cartItems.map((product) => {
                 return (
                   <CheckoutItemCard
                     key={product.id}

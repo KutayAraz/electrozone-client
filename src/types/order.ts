@@ -3,7 +3,7 @@ export type OrderItem = {
   productName: string;
   thumbnail: string;
   quantity: number;
-  price: number;
+  price: string;
   brand: string;
   subcategory: string;
   category: string;

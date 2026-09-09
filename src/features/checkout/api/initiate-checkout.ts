@@ -1,14 +1,10 @@
+import type { CartResponse } from "@/features/cart/types/response";
 import { baseApi } from "@/lib/api/base-api";
 import { CheckoutType } from "@/types/checkout";
-import { CartItem } from "@/types/product";
 
 interface CheckoutResponse {
   checkoutSnapshotId: string;
-  cartData: {
-    cartItems: CartItem[];
-    cartTotal: number;
-    totalQuantity: number;
-  };
+  cartData: CartResponse;
 }
 
 export interface InitiateCheckoutRequest {
