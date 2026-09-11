@@ -6,6 +6,7 @@ export interface FormattedCartItem {
   amount: string;
   id: number;
   productName: string;
+  brand: string;
   avgRating: string;
   thumbnail: string;
   price: string;
