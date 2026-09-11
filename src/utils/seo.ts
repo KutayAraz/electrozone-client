@@ -24,10 +24,11 @@ export const createProductTitle = (productName: string, brand: string): string =
 export const createProductDescription = (
   productName: string,
   brand: string,
-  description: string,
+  descriptionBullets: string[],
 ): string => {
   const baseText = `${productName} by ${brand}. `;
   const remainingLength = 155 - baseText.length - 3; // 3 for "..."
+  const description = descriptionBullets.join(" ");
 
   if (description.length <= remainingLength) {
     return baseText + description;

@@ -10,7 +10,7 @@ export interface ProductDetails {
   productName: string;
   brand: string;
   thumbnail: string;
-  description: string;
+  description: string[] | null;
   productImages: ProductImage[];
   averageRating: string;
   price: string;

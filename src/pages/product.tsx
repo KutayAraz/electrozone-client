@@ -96,7 +96,7 @@ export const ProductPage = () => {
         description={createProductDescription(
           productData.productName,
           productData.brand,
-          productData.description,
+          productData.description ?? [],
         )}
       />
 
@@ -141,7 +141,7 @@ export const ProductPage = () => {
           />
         )}
 
-        <ProductTabs productDescription={productData.description}>
+        <ProductTabs productDescription={productData.description ?? []}>
           <ReviewsTab productId={Number(productData.id)} />
         </ProductTabs>
 
