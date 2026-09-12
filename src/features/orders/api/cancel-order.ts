@@ -11,6 +11,8 @@ const cancelOrderApi = baseApi.injectEndpoints({
         { type: "Order", id: orderId },
         { type: "Order", id: "LIST" },
         { type: "Review", id: "eligibility" },
+        // Cancelling returns the items to stock
+        "Product",
       ],
     }),
   }),

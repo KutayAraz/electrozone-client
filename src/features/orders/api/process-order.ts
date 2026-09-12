@@ -25,6 +25,8 @@ const processOrderApi = baseApi.injectEndpoints({
         { type: "BuyNowCart", id: "LIST" },
         { type: "Order", id: "LIST" },
         { type: "Review", id: "eligibility" },
+        // Stock and the best-seller lists change with every order
+        "Product",
       ],
     }),
   }),
