@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/notifications/notification-slice";
 import { paths } from "@/config/paths";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { ErrorType } from "@/types/api-error";
+import { ErrorType, HttpStatus } from "@/types/api-error";
 import { isStandardApiError } from "@/utils/error-guard";
 
 import { useRegisterMutation } from "../api/register";
@@ -35,37 +35,25 @@ export const useRegister = () => {
       );
       navigate(paths.auth.login.getHref());
     } catch (error) {
-      // Using type guard to ensure type safety
+      // The error middleware already shows the server message as a notification,
+      // so this only attaches it to the field it belongs to.
       if (isStandardApiError(error)) {
-        if (error.status === 409) {
+        if (error.status === HttpStatus.CONFLICT) {
           setServerError({
             field: "email",
             message: "This email is already taken",
           });
-        }
-
-        if ((error.type = ErrorType.INVALID_NEW_PASSWORD)) {
+        } else if (error.data.type === ErrorType.INVALID_NEW_PASSWORD) {
           setServerError({
             field: "password",
-            message: "This email is already taken",
+            message: error.data.message,
           });
-        }
-
-        if ((error.type = ErrorType.PASSWORD_MISMATCH)) {
+        } else if (error.data.type === ErrorType.PASSWORD_MISMATCH) {
           setServerError({
             field: "retypedPassword",
-            message: "This email is already taken",
+            message: error.data.message,
           });
         }
-
-        dispatch(
-          displayNotification({
-            type: NotificationType.ERROR,
-            message: error.data.message,
-            autoHide: true,
-            duration: 5000,
-          }),
-        );
       }
     }
   };

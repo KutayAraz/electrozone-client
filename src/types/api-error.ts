@@ -14,7 +14,6 @@ export enum ErrorType {
 }
 
 export interface ApiErrorPayload {
-  type: ErrorType;
   data: StandardErrorResponse;
   status: number;
 }
