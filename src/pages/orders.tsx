@@ -1,45 +1,16 @@
-import { useCallback, useRef } from "react";
-
 import { PageHelmet } from "@/components/seo/PageHelmet";
 import { CenteredSpinner, Spinner } from "@/components/ui/spinner";
 import type { OrderSummary } from "@/features/orders/api/get-orders";
 import { getOrdersApi } from "@/features/orders/api/get-orders";
 import { OrderCard } from "@/features/orders/components/OrderCard";
+import { useInfiniteScrollRef } from "@/hooks/useInfiniteScrollRef";
 
 export const OrdersPage = () => {
   const { data, isFetching, isLoading, fetchNextPage, hasNextPage } =
     getOrdersApi.useGetOrdersInfiniteQuery();
 
-  //   Set up the intersection observer with useCallback to avoid unnecessary recreations
-  const observer = useRef<IntersectionObserver | null>(null);
-
-  // Create a callback ref for the last element
-  const lastOrderRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      // Skip if we're already fetching or the node is null
-      if (isFetching || !node) return;
-
-      // Disconnect previous observer if it exists
-      if (observer.current) {
-        observer.current.disconnect();
-      }
-
-      // Create new observer
-      observer.current = new IntersectionObserver(
-        (entries) => {
-          // If the target is visible and we have more pages
-          if (entries[0].isIntersecting && hasNextPage) {
-            fetchNextPage();
-          }
-        },
-        { threshold: 0.1 },
-      );
-
-      // Start observing the new node
-      observer.current.observe(node);
-    },
-    [fetchNextPage, hasNextPage, isFetching],
-  );
+  // Callback ref for the last order - loads the next page when it scrolls into view
+  const lastOrderRef = useInfiniteScrollRef({ fetchNextPage, hasNextPage, isFetching });
 
   // Flatten the pages array to get all orders
   const allResults = data?.pages?.flat() || [];
