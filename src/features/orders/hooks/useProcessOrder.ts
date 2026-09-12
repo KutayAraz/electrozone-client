@@ -23,29 +23,38 @@ export const useProcessOrder = () => {
 
       return result.orderId;
     } catch (error: unknown) {
-      // Parse the error response and handle validation errors
+      // processOrder is excluded from the error middleware, so every path below has
+      // to tell the user something - otherwise the button just stops spinning.
       if (isStandardApiError(error)) {
-        if (error.status === 400 || error.status === 409) {
-          // Check for specific validation error types
-          const errorType = error.data?.type;
-          if (
-            errorType === ErrorType.STOCK_LIMIT_EXCEEDED ||
-            errorType === ErrorType.QUANTITY_LIMIT_EXCEEDED ||
-            errorType === ErrorType.PRODUCT_PRICE_CHANGED
-          ) {
-            dispatch(
-              displayNotification({
-                type: NotificationType.ERROR,
-                message:
-                  "There has been a change in your cart while processing your order. Please review the changes and proceed to checkout again",
-                duration: 5000,
-              }),
-            );
+        const errorType = error.data.type;
 
-            // Refresh checkout to get updated cart information
-            return refetchCartFunction();
-          }
+        if (
+          (error.status === 400 || error.status === 409) &&
+          (errorType === ErrorType.STOCK_LIMIT_EXCEEDED ||
+            errorType === ErrorType.QUANTITY_LIMIT_EXCEEDED ||
+            errorType === ErrorType.PRODUCT_PRICE_CHANGED)
+        ) {
+          dispatch(
+            displayNotification({
+              type: NotificationType.ERROR,
+              message:
+                "There has been a change in your cart while processing your order. Please review the changes and proceed to checkout again",
+              duration: 5000,
+            }),
+          );
+
+          // Refresh checkout to get updated cart information
+          return refetchCartFunction();
         }
+
+        // Any other API error: show what the server said
+        dispatch(
+          displayNotification({
+            type: NotificationType.ERROR,
+            message: error.data.message,
+            details: error.data.details,
+          }),
+        );
       } else {
         // Generic error handling for other errors
         dispatch(
