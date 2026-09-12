@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { ContactSchema, contactSchema } from "../schemas/contact-schema";
 
 type ContactFormProps = {
-  onSendMessage: (data: ContactSchema) => void;
+  onSendMessage: (data: ContactSchema) => Promise<boolean>;
   isSending: boolean;
 };
 
@@ -21,8 +21,7 @@ export const ContactForm = ({ onSendMessage, isSending }: ContactFormProps) => {
   });
 
   const onSubmit = async (data: ContactSchema) => {
-    onSendMessage(data);
-    setValue("message", "");
+    if (await onSendMessage(data)) setValue("message", "");
   };
 
   const inputClasses =

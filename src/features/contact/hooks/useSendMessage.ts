@@ -13,6 +13,14 @@ export const useSendMessage = () => {
 
   const [isSending, setIsSending] = useState<boolean>(false);
 
+  const notifyFailure = () =>
+    dispatch(
+      displayNotification({
+        type: NotificationType.ERROR,
+        message: "Your message couldn't be sent. Please try again later.",
+      }),
+    );
+
   const sendMessage = async (data: ContactSchema) => {
     try {
       setIsSending(true);
@@ -24,21 +32,24 @@ export const useSendMessage = () => {
         body: JSON.stringify(data),
       });
 
-      if (result.ok) {
-        dispatch(
-          displayNotification({
-            type: NotificationType.SUCCESS,
-            message: "Your message was sent successfuly. Thank you!",
-          }),
-        );
+      if (!result.ok) {
+        notifyFailure();
+
+        return false;
       }
-    } catch (error) {
+
       dispatch(
         displayNotification({
-          type: NotificationType.ERROR,
-          message: "Your message was sent successfuly. Thank you!",
+          type: NotificationType.SUCCESS,
+          message: "Your message was sent successfully. Thank you!",
         }),
       );
+
+      return true;
+    } catch {
+      notifyFailure();
+
+      return false;
     } finally {
       setIsSending(false);
     }
