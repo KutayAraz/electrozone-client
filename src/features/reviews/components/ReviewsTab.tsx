@@ -2,6 +2,8 @@ import { Rating } from "@mui/material";
 import { useState } from "react";
 
 import { CenteredSpinner, Spinner } from "@/components/ui/spinner";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { selectIsAuthenticated } from "@/stores/slices/user-slice";
 
 import { useCheckReviewEligibilityQuery } from "../api/check-review-eligibility";
 import {
@@ -20,10 +22,15 @@ interface ReviewsTabProps {
 }
 
 export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
+
   const { data: productReviews, isLoading: isReviewsLoading } =
     useGetProductReviewsQuery(productId);
-  const { data: canReview, isLoading: isCheckingEligibility } =
-    useCheckReviewEligibilityQuery(productId);
+
+  const { data: canReview, isLoading: isCheckingEligibility } = useCheckReviewEligibilityQuery(
+    productId,
+    { skip: !isAuthenticated },
+  );
 
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
