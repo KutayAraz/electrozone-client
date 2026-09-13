@@ -40,6 +40,9 @@ export const ReviewsTab = ({ productId }: ReviewsTabProps) => {
       ? selectedRatings.filter((r: number) => r !== rating)
       : [...selectedRatings, rating];
     setSelectedRatings(newRatings);
+
+    // The filtered list can have fewer pages than the one being viewed
+    setCurrentPage(0);
   };
 
   const handlePageChange = (newPage: number) => {
