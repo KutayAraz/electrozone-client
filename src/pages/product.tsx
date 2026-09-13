@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { LoaderFunctionArgs, useLoaderData, useNavigate } from "react-router";
 
 import { PageHelmet } from "@/components/seo/PageHelmet";
@@ -38,6 +38,14 @@ export const productPageLoader = ({ params }: LoaderFunctionArgs) => {
 };
 
 export const ProductPage = () => {
+  const productData = useLoaderData<typeof productPageLoader>();
+
+  // Navigating between products reuses this route's component, so key the view
+  // to start each product with fresh image and quantity state.
+  return <ProductView key={productData.id} />;
+};
+
+const ProductView = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -51,11 +59,6 @@ export const ProductPage = () => {
 
   const [togglingProductId, setTogglingProductId] = useState<number | null>(null);
   const { handleToggleWishlist } = useToggleWishlist();
-
-  useEffect(() => {
-    setSelectedImage(productData.thumbnail);
-    setQuantity(1);
-  }, [productData.thumbnail]);
 
   const handleWishlistToggle = async (id: number) => {
     setTogglingProductId(id);
