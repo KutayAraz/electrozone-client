@@ -161,7 +161,8 @@ export const ProductMobileLayout = ({
         {stock > 0 && (
           <button
             onClick={handleBuyNow}
-            className="mx-auto my-2 w-4/5 rounded-md bg-theme-orange px-4 py-2 text-white"
+            disabled={isNavigatingToCheckout}
+            className="mx-auto my-2 w-4/5 rounded-md bg-theme-orange px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isNavigatingToCheckout ? "Navigating to checkout" : "Buy now"}
           </button>

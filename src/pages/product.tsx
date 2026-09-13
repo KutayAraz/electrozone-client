@@ -75,24 +75,30 @@ const ProductView = () => {
   const isMobile = useIsMobile();
 
   const incrementQuantity = () => {
-    setQuantity((prev) => (prev < 10 ? ++prev : prev));
+    setQuantity((prev) => (prev < 10 ? prev + 1 : prev));
   };
 
   const decrementQuantity = () => {
-    setQuantity((prev) => (prev > 1 ? --prev : prev));
+    setQuantity((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
   const handleQuantityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
 
     if (!isNaN(value)) {
-      setQuantity(value > 10 ? 10 : value);
+      setQuantity(Math.min(Math.max(value, 1), 10));
     }
   };
 
   const buyNowClick = async () => {
+    try {
+      await addToBuyNowCart({ productId: productData.id, quantity }).unwrap();
+    } catch {
+      // The error middleware already reported it
+      return;
+    }
+
     dispatch(setUserIntent(CheckoutType.BUY_NOW));
-    await addToBuyNowCart({ productId: productData.id, quantity: 1 }).unwrap();
     navigate(paths.checkout.root.getHref());
   };
 

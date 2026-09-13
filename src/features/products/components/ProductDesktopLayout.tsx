@@ -259,7 +259,8 @@ export const ProductDesktopLayout = ({
 
               <button
                 onClick={handleBuyNow}
-                className="w-full rounded-xl bg-orange-300 px-4 py-2 hover:bg-orange-400"
+                disabled={isNavigatingToCheckout}
+                className="w-full rounded-xl bg-orange-300 px-4 py-2 hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {isNavigatingToCheckout ? "Navigating to checkout" : "Buy now"}
               </button>
