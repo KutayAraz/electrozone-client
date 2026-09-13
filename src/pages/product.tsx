@@ -26,10 +26,14 @@ export const productPageLoader = ({ params }: LoaderFunctionArgs) => {
   if (!productSlug) {
     throw new Response("Product not found", { status: 404 });
   }
-  const [, productId] = productSlug.split("-p-");
+  const productId = Number(productSlug.split("-p-")[1]);
+
+  if (!Number.isInteger(productId)) {
+    throw new Response("Product not found", { status: 404 });
+  }
 
   return loadQuery(
-    store.dispatch(getProductDetailsApi.endpoints.getProductDetails.initiate(Number(productId))),
+    store.dispatch(getProductDetailsApi.endpoints.getProductDetails.initiate(productId)),
   );
 };
 

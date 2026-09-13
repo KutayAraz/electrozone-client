@@ -12,6 +12,11 @@ import { formatString } from "@/utils/format-casing";
 
 export const trendingProductsLoader = (request: LoaderFunctionArgs) => {
   const trend = request.params.type as ProductTrend;
+
+  if (!Object.values(ProductTrend).includes(trend)) {
+    throw new Response("Unknown trend", { status: 404 });
+  }
+
   return loadQuery(store.dispatch(getTopProductsApi.endpoints.getTopProducts.initiate(trend)));
 };
 

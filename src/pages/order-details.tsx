@@ -18,6 +18,10 @@ import { store } from "@/stores/store";
 export const orderDetailsLoader = (request: LoaderFunctionArgs) => {
   const orderId = Number(request.params.orderId);
 
+  if (!Number.isInteger(orderId)) {
+    throw new Response("Order not found", { status: 404 });
+  }
+
   return loadQuery(store.dispatch(getOrderByIdApi.endpoints.getOrderById.initiate(orderId)));
 };
 
