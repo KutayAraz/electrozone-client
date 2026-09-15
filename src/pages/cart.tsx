@@ -46,7 +46,9 @@ export const CartPage = () => {
   };
 
   const proceedToCheckout = () => {
-    if (!isAuthenticated) dispatch(setUserIntent(CheckoutType.SESSION));
+    // Always set it: an intent left over from an abandoned flow (a failed Buy now, a
+    // guest checkout that never logged in) would otherwise check out the wrong cart.
+    dispatch(setUserIntent(isAuthenticated ? CheckoutType.NORMAL : CheckoutType.SESSION));
     navigate(paths.checkout.root.getHref());
   };
 
