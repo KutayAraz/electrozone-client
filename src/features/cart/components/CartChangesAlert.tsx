@@ -1,5 +1,5 @@
 import { Close, ErrorOutline, Info, RemoveCircleOutline } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { ErrorType } from "@/types/api-error";
 
@@ -23,28 +23,28 @@ export const CartChangesAlert = ({
   quantityChanges,
   removedCartItems,
 }: CartChangesAlertProps) => {
-  const [showPriceAlert, setShowPriceAlert] = useState(Boolean(priceChanges?.length));
-  const [showQuantityAlert, setShowQuantityAlert] = useState(Boolean(quantityChanges?.length));
-  const [showRemovedAlert, setShowRemovedAlert] = useState(Boolean(removedCartItems?.length));
+  // Remember what was dismissed
+  const priceKey = JSON.stringify(priceChanges ?? []);
+  const quantityKey = JSON.stringify(quantityChanges ?? []);
+  const removedKey = JSON.stringify(removedCartItems ?? []);
 
-  useEffect(() => {
-    setShowPriceAlert(Boolean(priceChanges?.length));
-    setShowQuantityAlert(Boolean(quantityChanges?.length));
-    setShowRemovedAlert(Boolean(removedCartItems?.length));
-  }, [priceChanges, quantityChanges, removedCartItems]);
+  const [dismissedPriceKey, setDismissedPriceKey] = useState<string | null>(null);
+  const [dismissedQuantityKey, setDismissedQuantityKey] = useState<string | null>(null);
+  const [dismissedRemovedKey, setDismissedRemovedKey] = useState<string | null>(null);
 
-  // If there are no changes or both alerts are closed, don't render anything
-  if (
-    (!priceChanges?.length && !quantityChanges?.length && !removedCartItems?.length) ||
-    (!showPriceAlert && !showQuantityAlert && !showRemovedAlert)
-  ) {
+  const showPriceAlert = Boolean(priceChanges?.length) && dismissedPriceKey !== priceKey;
+  const showQuantityAlert =
+    Boolean(quantityChanges?.length) && dismissedQuantityKey !== quantityKey;
+  const showRemovedAlert = Boolean(removedCartItems?.length) && dismissedRemovedKey !== removedKey;
+
+  if (!showPriceAlert && !showQuantityAlert && !showRemovedAlert) {
     return null;
   }
 
   return (
     <div className="mb-6 space-y-3">
       {/* Price Changes Alert */}
-      {priceChanges && priceChanges?.length > 0 && showPriceAlert && (
+      {priceChanges && showPriceAlert && (
         <div className="rounded-lg border-l-4 border-blue-500 bg-blue-50 p-4 shadow-sm">
           <div className="flex items-start justify-between">
             <div className="flex">
@@ -71,7 +71,7 @@ export const CartChangesAlert = ({
             <button
               type="button"
               className="ml-auto flex-shrink-0 rounded-md p-1.5 text-blue-500 hover:bg-blue-100"
-              onClick={() => setShowPriceAlert(false)}
+              onClick={() => setDismissedPriceKey(priceKey)}
             >
               <span className="sr-only">Close</span>
 
@@ -82,7 +82,7 @@ export const CartChangesAlert = ({
       )}
 
       {/* Quantity Changes Alert */}
-      {quantityChanges && quantityChanges?.length > 0 && showQuantityAlert && (
+      {quantityChanges && showQuantityAlert && (
         <div className="rounded-lg border-l-4 border-amber-500 bg-amber-50 p-4 shadow-sm">
           <div className="flex items-start justify-between">
             <div className="flex">
@@ -112,7 +112,7 @@ export const CartChangesAlert = ({
             <button
               type="button"
               className="ml-auto flex-shrink-0 rounded-md p-1.5 text-amber-500 hover:bg-amber-100"
-              onClick={() => setShowQuantityAlert(false)}
+              onClick={() => setDismissedQuantityKey(quantityKey)}
             >
               <span className="sr-only">Close</span>
 
@@ -123,7 +123,7 @@ export const CartChangesAlert = ({
       )}
 
       {/* Removed Items Alert */}
-      {removedCartItems && removedCartItems?.length > 0 && showRemovedAlert && (
+      {removedCartItems && showRemovedAlert && (
         <div className="rounded-lg border-l-4 border-red-500 bg-red-50 p-4 shadow-sm">
           <div className="flex items-start justify-between">
             <div className="flex">
@@ -154,7 +154,7 @@ export const CartChangesAlert = ({
             <button
               type="button"
               className="ml-auto flex-shrink-0 rounded-md p-1.5 text-red-500 hover:bg-red-100"
-              onClick={() => setShowRemovedAlert(false)}
+              onClick={() => setDismissedRemovedKey(removedKey)}
             >
               <span className="sr-only">Close</span>
 
