@@ -13,14 +13,16 @@ import { Header } from "./header";
 export const mainLayoutLoader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const currentPath = url.pathname;
-  const checkoutIntent = store.getState().user.checkoutIntent;
+  const { checkoutIntent, isAuthenticated } = store.getState().user;
 
   if (
     currentPath !== paths.checkout.root.getHref() &&
     currentPath !== paths.auth.login.getHref() &&
     (checkoutIntent === CheckoutType.SESSION || checkoutIntent === CheckoutType.BUY_NOW)
   ) {
-    if (checkoutIntent === CheckoutType.SESSION)
+    // Merging moves the guest cart into the user's cart, so it needs a signed-in user.
+    // A guest who abandoned the login step keeps their session cart as it is.
+    if (checkoutIntent === CheckoutType.SESSION && isAuthenticated)
       await store.dispatch(mergeCartsApi.endpoints.mergeCarts.initiate());
 
     store.dispatch(setUserIntent(CheckoutType.NORMAL));
