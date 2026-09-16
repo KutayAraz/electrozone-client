@@ -30,7 +30,7 @@ export const SearchBar = ({
 
   const handleSearch = () => {
     if (query) {
-      navigate(`/search?query=${query}`);
+      navigate(`/search?query=${encodeURIComponent(query)}`);
     }
   };
 
