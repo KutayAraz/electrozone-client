@@ -1,7 +1,7 @@
 import { useMediaQuery } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { paths } from "@/config/paths";
 import { useCartCount } from "@/features/cart/hooks/useCartCount";
@@ -34,15 +34,16 @@ export const Header = () => {
 
   const isMobile = useIsMobile();
   const smallScreenDevice = useMediaQuery("(max-width: 400px)");
-  const path = location.pathname;
 
-  const handleLocationSubmit = (location: string) => {
-    dispatch(userSlice.actions.setGuestLocation({ city: location }));
+  const { pathname: path } = useLocation();
+
+  const handleLocationSubmit = (city: string) => {
+    dispatch(userSlice.actions.setGuestLocation({ city }));
     setLocationModalOpen(false);
   };
 
   // Check if the path starts with '/category' and has more segments following it
-  const pathSegments = location.pathname.split("/").filter(Boolean);
+  const pathSegments = path.split("/").filter(Boolean);
 
   // Determine if navstrip should be shown
   const showHeaderExtras =
