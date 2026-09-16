@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import HeartIcon from "@assets/svgs/wishlist-heart.svg?react";
 
@@ -18,19 +18,6 @@ export const WishlistHeart = ({
   disabled = false,
 }: WishlistHeartProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
-  const [prevWishlisted, setPrevWishlisted] = useState(isWishlisted);
-
-  useEffect(() => {
-    // Trigger animation when wishlist state changes
-    if (prevWishlisted !== isWishlisted) {
-      setIsAnimating(true);
-      const timeout = setTimeout(() => {
-        setIsAnimating(false);
-      }, 600);
-      return () => clearTimeout(timeout);
-    }
-    setPrevWishlisted(isWishlisted);
-  }, [isWishlisted, prevWishlisted]);
 
   const handleClick = (e: React.MouseEvent) => {
     if (disabled) return;
@@ -38,7 +25,7 @@ export const WishlistHeart = ({
     e.preventDefault();
     e.stopPropagation();
 
-    // Add initial animation on click
+    // Cleared by `onAnimationEnd`, so it also settles when the toggle fails
     setIsAnimating(true);
 
     // Trigger the parent's onClick handler
@@ -66,6 +53,7 @@ export const WishlistHeart = ({
             className={`w-full h-full transition-all duration-300 ${
               isAnimating ? (isWishlisted ? styles.animateHeartbeat : styles.animateHeartbreak) : ""
             }`}
+            onAnimationEnd={() => setIsAnimating(false)}
             fill={isWishlisted ? "var(--color-theme-orange)" : "#ffffff"}
             stroke={isWishlisted ? "var(--color-theme-orange)" : "#e5e7eb"}
             strokeWidth="2"
