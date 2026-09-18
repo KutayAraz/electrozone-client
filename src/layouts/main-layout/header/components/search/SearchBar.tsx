@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import SearchIcon from "@assets/svgs/search.svg?react";
@@ -17,16 +17,16 @@ export const SearchBar = ({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const getQueryFromLocation = useCallback(() => {
-    return new URLSearchParams(location.search).get("query") || "";
-  }, [location]);
+  const urlQuery = new URLSearchParams(location.search).get("query") || "";
 
-  const [query, setQuery] = useState(getQueryFromLocation());
+  const [query, setQuery] = useState(urlQuery);
+  const [lastLocationKey, setLastLocationKey] = useState(location.key);
 
-  // Update the query state when the location changes
-  useEffect(() => {
-    setQuery(getQueryFromLocation());
-  }, [location, getQueryFromLocation]);
+  // Reset the input on every navigation
+  if (location.key !== lastLocationKey) {
+    setLastLocationKey(location.key);
+    setQuery(urlQuery);
+  }
 
   const handleSearch = () => {
     if (query) {
