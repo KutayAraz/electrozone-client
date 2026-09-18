@@ -95,7 +95,9 @@ export const RegisterForm = ({
         aria-required="true"
         required
       />
-      <p className="text-sm text-gray-600">Passwords must be at least 6 characters long.</p>
+      {!errors.password && (
+        <p className="text-sm text-gray-600">Passwords must be at least 8 characters long.</p>
+      )}
       {errors.password && <p className={errorMessageClasses}>{errors.password.message}</p>}
 
       <label htmlFor="retypedPassword" className={labelClasses}>
