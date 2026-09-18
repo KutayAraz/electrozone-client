@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface UseFixedElementVisibility {
   showFixedElement: boolean;
@@ -17,64 +17,58 @@ export const useFixedElementVisibility = ({
   const [showFixedElement, setShowFixedElement] = useState(false);
   const [elementHeight, setElementHeight] = useState(0);
 
-  // Use refs for values that don't need to trigger re-renders
+  // Doesn't need to trigger re-renders
   const lastScrollYRef = useRef(0);
-  const thresholdRef = useRef(threshold);
-
-  // Update refs when props change
-  thresholdRef.current = threshold;
 
   useEffect(() => {
-    const calculateElementHeight = () => {
-      const element = document.querySelector(elementSelector) as HTMLElement;
-      if (element) {
-        setElementHeight(element.offsetHeight);
-      }
-    };
+    const element = document.querySelector<HTMLElement>(elementSelector);
+    if (!element) return;
 
-    calculateElementHeight();
-    window.addEventListener("resize", calculateElementHeight);
+    // Reports the initial height as soon as observing starts, then every change.
+    const resizeObserver = new ResizeObserver(() => {
+      setElementHeight(element.offsetHeight);
+    });
+    resizeObserver.observe(element);
 
     return () => {
-      window.removeEventListener("resize", calculateElementHeight);
+      resizeObserver.disconnect();
     };
   }, [elementSelector]);
 
-  // Memoized scroll handler
-  const handleScroll = useCallback(() => {
-    const currentScrollY = window.scrollY;
-    const lastScrollY = lastScrollYRef.current;
-
-    const scrollingUp = currentScrollY < lastScrollY;
-    const scrollingDown = currentScrollY > lastScrollY;
-    const pastThreshold = currentScrollY > thresholdRef.current;
-
-    // Hide element if below threshold
-    if (!pastThreshold) {
-      setShowFixedElement(false);
-    }
-
-    // Hide element when scrolling down
-    if (scrollingDown) {
-      setShowFixedElement(false);
-    }
-
-    // Show fixed element when scrolling up and past threshold (but not at very top)
-    if (pastThreshold && scrollingUp && currentScrollY > 50) {
-      setShowFixedElement(true);
-    }
-
-    lastScrollYRef.current = currentScrollY;
-  }, []);
-
   useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const lastScrollY = lastScrollYRef.current;
+
+      const scrollingUp = currentScrollY < lastScrollY;
+      const scrollingDown = currentScrollY > lastScrollY;
+      const pastThreshold = currentScrollY > threshold;
+
+      // Hide element if below threshold
+      if (!pastThreshold) {
+        setShowFixedElement(false);
+      }
+
+      // Hide element when scrolling down
+      if (scrollingDown) {
+        setShowFixedElement(false);
+      }
+
+      // Show fixed element when scrolling up and past threshold (but not at very top)
+      if (pastThreshold && scrollingUp && currentScrollY > 50) {
+        setShowFixedElement(true);
+      }
+
+      lastScrollYRef.current = currentScrollY;
+    };
+
     // Add scroll listener with passive option for better performance
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [handleScroll]);
+  }, [threshold]);
 
   return { showFixedElement, elementHeight };
 };
