@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   displayNotification,
@@ -7,6 +7,7 @@ import {
 import { paths } from "@/config/paths";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
+import { setRedirectPath } from "@/stores/slices/redirect-slice";
 import { selectIsAuthenticated } from "@/stores/slices/user-slice";
 import { addToWishlist, removeFromWishlist } from "@/stores/slices/wishlist-slice";
 
@@ -15,14 +16,25 @@ import { useToggleWishlistMutation } from "../api/toggle-wishlist";
 export const useToggleWishlist = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const location = useLocation();
+
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   const [toggleWishlist, { isLoading }] = useToggleWishlistMutation();
 
   const handleToggleWishlist = async (productId: number) => {
     if (!isAuthenticated) {
-      // Redirect to login page
-      navigate(paths.auth.login.path);
+      // Remember this page so logging in brings the user back to the product
+      dispatch(
+        setRedirectPath({
+          path: paths.auth.login.getHref(),
+          source: "voluntary-login",
+          previousPath: location.pathname + location.search,
+        }),
+      );
+      navigate(paths.auth.login.getHref());
+
       return;
     }
 
@@ -34,6 +46,7 @@ export const useToggleWishlist = () => {
       } else if (result.action === "removed") {
         dispatch(removeFromWishlist(productId));
       }
+
       dispatch(
         displayNotification({
           type: NotificationType.SUCCESS,
