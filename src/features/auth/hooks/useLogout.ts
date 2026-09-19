@@ -3,9 +3,7 @@ import {
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { clearCredentials, setUserIntent } from "@/stores/slices/user-slice";
-import { clearWishlist } from "@/stores/slices/wishlist-slice";
-import { CheckoutType } from "@/types/checkout";
+import { clearCredentials } from "@/stores/slices/user-slice";
 
 import { useLogoutMutation } from "../api/logout";
 
@@ -17,9 +15,10 @@ export const useLogout = () => {
   const submitLogout = async () => {
     try {
       await logout();
+
+      // Also resets the checkout intent to NORMAL. The end-session listener clears
+      // the wishlist and the cached API data.
       dispatch(clearCredentials());
-      dispatch(clearWishlist());
-      dispatch(setUserIntent(CheckoutType.SESSION));
       dispatch(
         displayNotification({
           type: NotificationType.SUCCESS,

@@ -14,6 +14,7 @@ import storage from "redux-persist/es/storage";
 import sessionStorage from "redux-persist/es/storage/session";
 
 import { notificationSlice } from "@/components/ui/notifications/notification-slice";
+import { endSessionListenerMiddleware } from "@/features/auth/listeners/end-session-listener";
 import { wishlistSyncListenerMiddleware } from "@/features/wishlist/listeners/sync-wishlist-listener";
 import { baseApi } from "@/lib/api/base-api";
 import { errorMiddleware } from "@/lib/api/error-middleware";
@@ -70,6 +71,7 @@ export const store = configureStore({
     })
       .concat(baseApi.middleware)
       .concat(wishlistSyncListenerMiddleware.middleware)
+      .concat(endSessionListenerMiddleware.middleware)
       .concat(errorMiddleware),
   devTools: !import.meta.env.PROD,
 });
