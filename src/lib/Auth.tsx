@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 
@@ -10,15 +11,16 @@ export const ProtectedRoute = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  if (!isAuthenticated) {
-    // Store the protected route they were trying to access
-    dispatch(
-      setRedirectPath({
-        path: location.pathname + location.search,
-        source: "protected-route",
-      }),
-    );
+  const requestedPath = location.pathname + location.search;
 
+  // Store the protected route they were trying to access.
+  useEffect(() => {
+    if (!isAuthenticated) {
+      dispatch(setRedirectPath({ path: requestedPath, source: "protected-route" }));
+    }
+  }, [isAuthenticated, requestedPath, dispatch]);
+
+  if (!isAuthenticated) {
     return <Navigate to={paths.auth.login.getHref()} replace />;
   }
 
