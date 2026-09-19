@@ -24,22 +24,24 @@ export const createAppRouter = () =>
             return { Component: HomePage, loader: homePageLoader };
           },
         },
-        // Auth Section
         {
-          path: paths.auth.login.path,
           element: <RedirectAuthenticated />,
-          lazy: async () => {
-            const { LoginPage } = await import("@/pages/login");
-            return { Component: LoginPage };
-          },
-        },
-        {
-          path: paths.auth.register.path,
-          element: <RedirectAuthenticated />,
-          lazy: async () => {
-            const { RegisterPage } = await import("@/pages/register");
-            return { Component: RegisterPage };
-          },
+          children: [
+            {
+              path: paths.auth.login.path,
+              lazy: async () => {
+                const { LoginPage } = await import("@/pages/login");
+                return { Component: LoginPage };
+              },
+            },
+            {
+              path: paths.auth.register.path,
+              lazy: async () => {
+                const { RegisterPage } = await import("@/pages/register");
+                return { Component: RegisterPage };
+              },
+            },
+          ],
         },
         {
           path: paths.cart.path,
