@@ -13,160 +13,167 @@ export const createAppRouter = () =>
     {
       path: paths.home.path,
       element: <MainLayout />,
+      // Only reached when the layout itself fails - page errors are caught below
       errorElement: <RouteErrorBoundary />,
       loader: mainLayoutLoader,
       HydrateFallback: FullPageSpinner,
       children: [
         {
-          index: true,
-          lazy: async () => {
-            const { HomePage, homePageLoader } = await import("@/pages/home");
-            return { Component: HomePage, loader: homePageLoader };
-          },
-        },
-        {
-          element: <RedirectAuthenticated />,
-          children: [
-            {
-              path: paths.auth.login.path,
-              lazy: async () => {
-                const { LoginPage } = await import("@/pages/login");
-                return { Component: LoginPage };
-              },
-            },
-            {
-              path: paths.auth.register.path,
-              lazy: async () => {
-                const { RegisterPage } = await import("@/pages/register");
-                return { Component: RegisterPage };
-              },
-            },
-          ],
-        },
-        {
-          path: paths.cart.path,
-          lazy: async () => {
-            const { CartPage } = await import("@/pages/cart");
-            return { Component: CartPage };
-          },
-        },
-
-        // Products Section
-        {
-          path: paths.products.trending.path,
-          lazy: async () => {
-            const { TrendingProductsPage, trendingProductsLoader } =
-              await import("@/pages/trending");
-            return { Component: TrendingProductsPage, loader: trendingProductsLoader };
-          },
-        },
-        {
-          path: paths.products.search.path,
-          lazy: async () => {
-            const { SearchPage, searchPageLoader } = await import("@/pages/search");
-            return { Component: SearchPage, loader: searchPageLoader };
-          },
-        },
-        {
-          path: paths.products.category.path,
+          // Catches page errors inside the layout, so the header and footer stay usable
+          errorElement: <RouteErrorBoundary />,
           children: [
             {
               index: true,
               lazy: async () => {
-                const { CategoryPage, categoryLoader } = await import("@/pages/category");
-                return { Component: CategoryPage, loader: categoryLoader };
+                const { HomePage, homePageLoader } = await import("@/pages/home");
+                return { Component: HomePage, loader: homePageLoader };
               },
             },
             {
-              path: paths.products.category.subcategory.path,
+              element: <RedirectAuthenticated />,
               children: [
                 {
-                  index: true,
+                  path: paths.auth.login.path,
                   lazy: async () => {
-                    const { SubcategoryPage, subcategoryPageLoader } =
-                      await import("@/pages/subcategory");
-                    return { Component: SubcategoryPage, loader: subcategoryPageLoader };
+                    const { LoginPage } = await import("@/pages/login");
+                    return { Component: LoginPage };
                   },
                 },
                 {
-                  path: paths.products.category.subcategory.product.path,
+                  path: paths.auth.register.path,
                   lazy: async () => {
-                    const { ProductPage, productPageLoader } = await import("@/pages/product");
-                    return { Component: ProductPage, loader: productPageLoader };
-                  },
-                },
-              ],
-            },
-          ],
-        },
-        // Misc Section
-        {
-          path: paths.misc.contact.path,
-          lazy: async () => {
-            const { ContactPage } = await import("@pages/contact");
-            return { Component: ContactPage };
-          },
-        },
-        {
-          path: paths.misc.projectDetails.path,
-          lazy: async () => {
-            const { ProjectDetailsPage } = await import("@pages/project-details");
-            return { Component: ProjectDetailsPage };
-          },
-        },
-
-        // Protected Account Section
-        {
-          path: paths.app.root.path,
-          element: <ProtectedRoute />,
-          children: [
-            {
-              index: true,
-              lazy: async () => {
-                const { AccountPage } = await import("@/pages/account");
-                return { Component: AccountPage };
-              },
-            },
-            {
-              path: paths.app.profile.path,
-              lazy: async () => {
-                const { UserProfilePage } = await import("@/pages/user-profile");
-                return { Component: UserProfilePage };
-              },
-            },
-            {
-              path: paths.app.security.path,
-              lazy: async () => {
-                const { AccountSecurityPage } = await import("@/pages/account-security");
-                return { Component: AccountSecurityPage };
-              },
-            },
-            {
-              path: paths.app.orders.path,
-              children: [
-                {
-                  index: true,
-                  lazy: async () => {
-                    const { OrdersPage } = await import("@/pages/orders");
-                    return { Component: OrdersPage };
-                  },
-                },
-                {
-                  path: paths.app.orders.order.path,
-                  lazy: async () => {
-                    const { OrderDetails, orderDetailsLoader } =
-                      await import("@/pages/order-details");
-                    return { Component: OrderDetails, loader: orderDetailsLoader };
+                    const { RegisterPage } = await import("@/pages/register");
+                    return { Component: RegisterPage };
                   },
                 },
               ],
             },
             {
-              path: paths.app.wishlist.path,
+              path: paths.cart.path,
               lazy: async () => {
-                const { WishlistPage, wishlistPageLoader } = await import("@pages/wishlist");
-                return { Component: WishlistPage, loader: wishlistPageLoader };
+                const { CartPage } = await import("@/pages/cart");
+                return { Component: CartPage };
               },
+            },
+
+            // Products Section
+            {
+              path: paths.products.trending.path,
+              lazy: async () => {
+                const { TrendingProductsPage, trendingProductsLoader } =
+                  await import("@/pages/trending");
+                return { Component: TrendingProductsPage, loader: trendingProductsLoader };
+              },
+            },
+            {
+              path: paths.products.search.path,
+              lazy: async () => {
+                const { SearchPage, searchPageLoader } = await import("@/pages/search");
+                return { Component: SearchPage, loader: searchPageLoader };
+              },
+            },
+            {
+              path: paths.products.category.path,
+              children: [
+                {
+                  index: true,
+                  lazy: async () => {
+                    const { CategoryPage, categoryLoader } = await import("@/pages/category");
+                    return { Component: CategoryPage, loader: categoryLoader };
+                  },
+                },
+                {
+                  path: paths.products.category.subcategory.path,
+                  children: [
+                    {
+                      index: true,
+                      lazy: async () => {
+                        const { SubcategoryPage, subcategoryPageLoader } =
+                          await import("@/pages/subcategory");
+                        return { Component: SubcategoryPage, loader: subcategoryPageLoader };
+                      },
+                    },
+                    {
+                      path: paths.products.category.subcategory.product.path,
+                      lazy: async () => {
+                        const { ProductPage, productPageLoader } = await import("@/pages/product");
+                        return { Component: ProductPage, loader: productPageLoader };
+                      },
+                    },
+                  ],
+                },
+              ],
+            },
+            // Misc Section
+            {
+              path: paths.misc.contact.path,
+              lazy: async () => {
+                const { ContactPage } = await import("@pages/contact");
+                return { Component: ContactPage };
+              },
+            },
+            {
+              path: paths.misc.projectDetails.path,
+              lazy: async () => {
+                const { ProjectDetailsPage } = await import("@pages/project-details");
+                return { Component: ProjectDetailsPage };
+              },
+            },
+
+            // Protected Account Section
+            {
+              path: paths.app.root.path,
+              element: <ProtectedRoute />,
+              children: [
+                {
+                  index: true,
+                  lazy: async () => {
+                    const { AccountPage } = await import("@/pages/account");
+                    return { Component: AccountPage };
+                  },
+                },
+                {
+                  path: paths.app.profile.path,
+                  lazy: async () => {
+                    const { UserProfilePage } = await import("@/pages/user-profile");
+                    return { Component: UserProfilePage };
+                  },
+                },
+                {
+                  path: paths.app.security.path,
+                  lazy: async () => {
+                    const { AccountSecurityPage } = await import("@/pages/account-security");
+                    return { Component: AccountSecurityPage };
+                  },
+                },
+                {
+                  path: paths.app.orders.path,
+                  children: [
+                    {
+                      index: true,
+                      lazy: async () => {
+                        const { OrdersPage } = await import("@/pages/orders");
+                        return { Component: OrdersPage };
+                      },
+                    },
+                    {
+                      path: paths.app.orders.order.path,
+                      lazy: async () => {
+                        const { OrderDetails, orderDetailsLoader } =
+                          await import("@/pages/order-details");
+                        return { Component: OrderDetails, loader: orderDetailsLoader };
+                      },
+                    },
+                  ],
+                },
+                {
+                  path: paths.app.wishlist.path,
+                  lazy: async () => {
+                    const { WishlistPage, wishlistPageLoader } = await import("@pages/wishlist");
+                    return { Component: WishlistPage, loader: wishlistPageLoader };
+                  },
+                },
+              ],
             },
           ],
         },
