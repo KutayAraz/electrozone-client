@@ -5,7 +5,7 @@ import { RouteErrorBoundary } from "@/components/errors/RouteErrorBoundary";
 import { FullPageSpinner } from "@/components/ui/spinner";
 import { paths } from "@/config/paths";
 import { RedirectAuthenticated } from "@/features/auth/components/RedirectAuthenticated";
-import { MainLayout, mainLayoutLoader } from "@/layouts/main-layout";
+import { MainLayout, mainLayoutLoader, shouldRevalidateMainLayout } from "@/layouts/main-layout";
 import { RootLayout } from "@/layouts/RootLayout";
 import { ProtectedRoute } from "@/lib/Auth";
 
@@ -20,6 +20,7 @@ export const createAppRouter = () =>
           // Only reached when the layout itself fails - page errors are caught below
           errorElement: <RouteErrorBoundary />,
           loader: mainLayoutLoader,
+          shouldRevalidate: shouldRevalidateMainLayout,
           HydrateFallback: FullPageSpinner,
           children: [
             {
