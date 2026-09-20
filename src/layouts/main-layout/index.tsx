@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, Outlet, ScrollRestoration } from "react-router-dom";
+import { LoaderFunctionArgs, Outlet } from "react-router-dom";
 
 import { LoadingIndicator } from "@/components/ui/loading-bar";
 import { paths } from "@/config/paths";
@@ -42,8 +42,6 @@ export const MainLayout = () => {
       </div>
 
       <Footer />
-
-      <ScrollRestoration />
     </div>
   );
 };
