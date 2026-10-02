@@ -53,6 +53,7 @@ export const CartPage = () => {
   };
 
   const isCartEmpty = !cartData?.cartItems || cartData.cartItems.length === 0;
+  const totalQuantity = cartData?.totalQuantity || 0;
 
   return (
     <>
@@ -61,7 +62,15 @@ export const CartPage = () => {
         description="Review and manage the items in your shopping cart at Electrozone."
       />
       <div className="page-spacing">
-        <h1 className="mb-2 text-xl font-bold text-gray-800">Your Shopping Cart</h1>
+        <div className="mb-2 flex items-baseline gap-2">
+          <h1 className="text-xl font-bold text-gray-800">Your Shopping Cart</h1>
+
+          {!isCartLoading && !isCartEmpty && (
+            <p className="text-gray-600">
+              ({totalQuantity} {totalQuantity === 1 ? "item" : "items"})
+            </p>
+          )}
+        </div>
 
         {/* Cart Changes Alert */}
         <CartChangesAlert
@@ -101,9 +110,7 @@ export const CartPage = () => {
                   </div>
                 )}
 
-                <h2 className="text-lg font-semibold">Items ({cartData?.totalQuantity || 0})</h2>
-
-                <List sx={{ mt: 1 }}>
+                <List disablePadding>
                   <TransitionGroup>
                     {cartData?.cartItems.map((cartItem: CartItem) => (
                       <Collapse key={cartItem.id}>
@@ -129,11 +136,11 @@ export const CartPage = () => {
               </div>
             </div>
 
-            {/* Cart Summary Section */}
-            <div className="lg:col-span-1">
+            {/* Cart Summary Section, offset to line up with the first card's my-2 */}
+            <div className="md:mt-2 lg:col-span-1">
               <CartSummary
                 cartTotal={Number(cartData?.cartTotal || 0)}
-                totalQuantity={cartData?.totalQuantity || 0}
+                totalQuantity={totalQuantity}
                 isModifying={isModifying}
                 isCartEmpty={isCartEmpty}
                 onProceedToCheckout={proceedToCheckout}
