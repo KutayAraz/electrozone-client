@@ -114,13 +114,13 @@ export const useFilters = ({ priceRangeData }: UseFiltersProps): UseFiltersRetur
     });
   }, [maxPrice]);
 
-  // Stock status handler
+  // Stock status handler. "All products" maps to no param, which the API treats as "all".
   const handleStockChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name } = event.target;
+    const { value } = event.target;
 
     setDraft((prev) => ({
       ...prev,
-      stockStatus: prev.stockStatus === name ? "" : name,
+      stockStatus: value === "in_stock" ? "in_stock" : "",
     }));
   }, []);
 

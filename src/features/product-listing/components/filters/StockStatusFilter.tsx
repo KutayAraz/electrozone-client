@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import React from "react";
 
 interface StockStatusFilterProps {
@@ -6,9 +6,17 @@ interface StockStatusFilterProps {
   handleStockChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
+const STOCK_OPTIONS = [
+  { value: "all", label: "All products" },
+  { value: "in_stock", label: "In stock only" },
+];
+
 export const StockStatusFilter = ({ stockStatus, handleStockChange }: StockStatusFilterProps) => {
+  // Older URLs may carry stock_status=all, which means the same as no filter
+  const selectedValue = stockStatus === "in_stock" ? "in_stock" : "all";
+
   return (
-    <div role="group" aria-labelledby="stock-status-label">
+    <div>
       <h4
         id="stock-status-label"
         className="text-lg sm:text-[16px] font-semibold text-gray-900 mb-1"
@@ -16,149 +24,68 @@ export const StockStatusFilter = ({ stockStatus, handleStockChange }: StockStatu
         Stock Status
       </h4>
 
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column" },
-          gap: { xs: "8px", sm: "0" },
-          maxHeight: "300px",
-          overflowY: "auto",
-          overflowX: "hidden",
-          padding: "0",
-          "&::-webkit-scrollbar": {
-            width: "6px",
-          },
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: "#f1f1f1",
-            borderRadius: "3px",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "#c1c1c1",
-            borderRadius: "3px",
-            "&:hover": {
-              backgroundColor: "#a8a8a8",
-            },
-          },
-        }}
+      <RadioGroup
+        aria-labelledby="stock-status-label"
+        name="stock-status"
+        value={selectedValue}
+        onChange={handleStockChange}
+        sx={{ gap: { xs: "8px", sm: "0" } }}
       >
-        <FormControlLabel
-          control={
-            <Checkbox
-              sx={{
-                padding: { xs: "8px", sm: "4px" },
-                color: "#9ca3af",
-                "&.Mui-checked": {
-                  color: "#13193F",
-                },
-                "&:hover .MuiSvgIcon-root": {
-                  backgroundColor: "rgba(19, 25, 63, 0.04)",
-                  borderRadius: "4px",
-                },
-                "& .MuiSvgIcon-root": {
-                  fontSize: { xs: "1.3rem", sm: "1.1rem" },
-                  transition: "background-color 0.2s ease",
-                },
-              }}
-              checked={stockStatus === "in_stock"}
-              onChange={handleStockChange}
-              name="in_stock"
-              slotProps={{
-                input: {
-                  "aria-label": "Only show in stock products",
-                },
-              }}
-            />
-          }
-          label={
-            <span
-              className={`
-                text-base sm:text-sm select-none
-                ${
-                  stockStatus === "in_stock"
-                    ? "font-semibold text-gray-900"
-                    : "font-medium text-gray-700"
-                }
-                transition-all duration-200
-              `}
-            >
-              Only In Stock
-            </span>
-          }
-          sx={{
-            margin: 0,
-            paddingY: { xs: "8px", sm: "2px" },
-            paddingX: { xs: "12px", sm: "0" },
-            borderRadius: "8px",
-            backgroundColor: stockStatus === "in_stock" ? "#f0f1f7" : "white",
-            transition: "all 0.2s",
-            width: { xs: "100%", sm: "auto" },
-            minHeight: { xs: "48px", sm: "auto" },
-            border: { xs: "1px solid #e5e7eb", sm: "none" },
-            "&:hover": {
-              backgroundColor: stockStatus === "in_stock" ? "#f0f1f7" : "#f9fafb",
-            },
-          }}
-        />
+        {STOCK_OPTIONS.map(({ value, label }) => {
+          const isSelected = selectedValue === value;
 
-        <FormControlLabel
-          control={
-            <Checkbox
+          return (
+            <FormControlLabel
+              key={value}
+              value={value}
+              control={
+                <Radio
+                  sx={{
+                    padding: { xs: "8px", sm: "4px" },
+                    color: "#9ca3af",
+                    "&.Mui-checked": {
+                      color: "#13193F",
+                    },
+                    "&:hover .MuiSvgIcon-root": {
+                      backgroundColor: "rgba(19, 25, 63, 0.04)",
+                      borderRadius: "50%",
+                    },
+                    "& .MuiSvgIcon-root": {
+                      fontSize: { xs: "1.3rem", sm: "1.1rem" },
+                      transition: "background-color 0.2s ease",
+                    },
+                  }}
+                />
+              }
+              label={
+                <span
+                  className={`
+                    text-base sm:text-sm select-none
+                    ${isSelected ? "font-semibold text-gray-900" : "font-medium text-gray-700"}
+                    transition-all duration-200
+                  `}
+                >
+                  {label}
+                </span>
+              }
               sx={{
-                padding: { xs: "8px", sm: "4px" },
-                color: "#9ca3af",
-                "&.Mui-checked": {
-                  color: "#13193F",
-                },
-                "&:hover .MuiSvgIcon-root": {
-                  backgroundColor: "rgba(19, 25, 63, 0.04)",
-                  borderRadius: "4px",
-                },
-                "& .MuiSvgIcon-root": {
-                  fontSize: { xs: "1.3rem", sm: "1.1rem" },
-                  transition: "background-color 0.2s ease",
-                },
-              }}
-              checked={stockStatus === "all"}
-              onChange={handleStockChange}
-              name="all"
-              slotProps={{
-                input: {
-                  "aria-label": "Include all products",
+                margin: 0,
+                paddingY: { xs: "8px", sm: "2px" },
+                paddingX: { xs: "12px", sm: "0" },
+                borderRadius: "8px",
+                backgroundColor: isSelected ? "#f0f1f7" : "white",
+                transition: "all 0.2s",
+                width: { xs: "100%", sm: "auto" },
+                minHeight: { xs: "48px", sm: "auto" }, // Touch-friendly height on mobile
+                border: { xs: "1px solid #e5e7eb", sm: "none" }, // Better visual separation on mobile
+                "&:hover": {
+                  backgroundColor: isSelected ? "#f0f1f7" : "#f9fafb",
                 },
               }}
             />
-          }
-          label={
-            <span
-              className={`
-                text-base sm:text-sm select-none
-                ${
-                  stockStatus === "all"
-                    ? "font-semibold text-gray-900"
-                    : "font-medium text-gray-700"
-                }
-                transition-all duration-200
-              `}
-            >
-              Include All
-            </span>
-          }
-          sx={{
-            margin: 0,
-            paddingY: { xs: "8px", sm: "2px" },
-            paddingX: { xs: "12px", sm: "0" },
-            borderRadius: "8px",
-            backgroundColor: stockStatus === "all" ? "#f0f1f7" : "white",
-            transition: "all 0.2s",
-            width: { xs: "100%", sm: "auto" },
-            minHeight: { xs: "48px", sm: "auto" }, // Touch-friendly height on mobile
-            border: { xs: "1px solid #e5e7eb", sm: "none" }, // Better visual separation on mobile
-            "&:hover": {
-              backgroundColor: stockStatus === "all" ? "#f0f1f7" : "#f9fafb",
-            },
-          }}
-        />
-      </Box>
+          );
+        })}
+      </RadioGroup>
     </div>
   );
 };
