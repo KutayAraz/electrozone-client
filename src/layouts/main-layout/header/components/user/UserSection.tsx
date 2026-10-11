@@ -31,10 +31,10 @@ export const UserSection = ({
       <LoginLink className="login-button">Login</LoginLink>
     )}
 
-    <Arrow width={20} height={20} />
+    <Arrow width={20} height={20} aria-hidden="true" />
 
-    <button onClick={onProfileClick}>
-      <UserIcon width={32} height={32} />
+    <button onClick={onProfileClick} aria-label="Open account menu">
+      <UserIcon width={32} height={32} aria-hidden="true" />
     </button>
 
     <Link to={paths.cart.getHref()} className="ml-2 mt-auto flex p-1">
