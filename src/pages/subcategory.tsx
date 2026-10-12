@@ -20,7 +20,7 @@ import { useInfiniteScrollRef } from "@/hooks/useInfiniteScrollRef";
 import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 import { dedupeById } from "@/utils/dedupe-by-id";
-import { formatString } from "@/utils/format-casing";
+import { formatCategoryName } from "@/utils/format-casing";
 import { createCategoryDescription, createCategoryTitle } from "@/utils/seo";
 
 export const subcategoryPageLoader = async (request: LoaderFunctionArgs) => {
@@ -147,7 +147,7 @@ export const SubcategoryPage = () => {
           {/* Desktop Filter Panel */}
           <div className="flex-col sticky hidden h-[calc(100vh-135px)] w-48 shrink-0 overflow-y-auto sm:top-30 sm:flex md:top-20 md:w-60">
             <h3 className="text-lg font-bold">
-              {subcategory ? subcategory.toUpperCase().replace(/-/g, " ") : "Products"}
+              {subcategory ? formatCategoryName(subcategory) : "Products"}
             </h3>
 
             <div className="flex flex-col overflow-x-hidden">
@@ -169,7 +169,7 @@ export const SubcategoryPage = () => {
               <div className="flex grow flex-wrap sm:mt-4">
                 <div className="mb-4 w-full px-2 sm:flex sm:justify-between">
                   <h5 className="self-end text-lg">
-                    Listing {totalProductCount} products for {formatString(subcategory || "", "-")}
+                    Listing {totalProductCount} products for {formatCategoryName(subcategory || "")}
                   </h5>
 
                   <div className="hidden sm:block">

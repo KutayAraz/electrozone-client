@@ -1,13 +1,4 @@
-/**
- * Format category/subcategory names from URL format to display format
- * Example: "smart-phones" -> "Smart Phones"
- */
-export const formatCategoryName = (str: string, separator = "-"): string => {
-  return str
-    .split(separator)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
+import { formatCategoryName } from "./format-casing";
 
 /**
  * Create product title for SEO

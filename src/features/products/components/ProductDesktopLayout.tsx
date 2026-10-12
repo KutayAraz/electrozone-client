@@ -7,7 +7,7 @@ import { paths } from "@/config/paths";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { RootState } from "@/stores/store";
 import { ProductImage } from "@/types/product";
-import { capitalizeWords } from "@/utils/capitalize-words";
+import { formatCategoryName } from "@/utils/format-casing";
 import NavigationButton from "@assets/svgs/arrow-black.svg?react";
 import CloseButton from "@assets/svgs/modal-close.svg?react";
 import NavigationArrow from "@assets/svgs/previous-arrow.svg?react";
@@ -49,8 +49,8 @@ export const ProductDesktopLayout = ({
   const handleModalOpen = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
 
-  const modifiedCategory = category ? capitalizeWords(category.replace(/_/g, " ")) : "";
-  const modifiedSubcategory = subcategory ? capitalizeWords(subcategory.replace(/_/g, " ")) : "";
+  const modifiedCategory = category ? formatCategoryName(category) : "";
+  const modifiedSubcategory = subcategory ? formatCategoryName(subcategory) : "";
 
   const nextImage = () => {
     const nextIndex = (selectedIndex + 1) % allImages.length;

@@ -8,7 +8,7 @@ import { useToggleWishlist } from "@/features/wishlist/hooks/useToggleWishlist";
 import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
 import { CarouselProduct } from "@/types/product";
-import { formatString } from "@/utils/format-casing";
+import { formatCategoryName } from "@/utils/format-casing";
 
 export const categoryLoader = ({ params }: LoaderFunctionArgs) => {
   const categoryName = params?.category?.replace(/-/g, "_");
@@ -50,7 +50,7 @@ const ProductSection = ({ title, subcategory, products }: ProductSectionProps) =
       <h3 className="mb-3 text-center text-lg font-semibold">
         {title}{" "}
         <Link to={subcategory} className="underline hover:text-blue-800">
-          {formatString(subcategory, "_")}
+          {formatCategoryName(subcategory)}
         </Link>
       </h3>
 
@@ -98,7 +98,7 @@ export const CategoryPage = () => {
   const categoryData = useLoaderData<SubcategoryData[]>();
 
   const { category: categoryParam } = useParams<{ category: string }>();
-  const formattedCategory = categoryParam ? formatString(categoryParam, "-") : "Category";
+  const formattedCategory = categoryParam ? formatCategoryName(categoryParam) : "Category";
 
   return (
     <>

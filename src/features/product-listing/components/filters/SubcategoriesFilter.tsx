@@ -1,6 +1,6 @@
 import { Box, Checkbox, FormControlLabel } from "@mui/material";
 
-import { formatString } from "@/utils/format-casing";
+import { formatCategoryName } from "@/utils/format-casing";
 
 interface SubcategoriesFilterProps {
   subcategoriesData: string[];
@@ -86,7 +86,7 @@ export const SubcategoriesFilter = ({
                     transition-all duration-200
                   `}
                 >
-                  {formatString(subcategory, "_")}
+                  {formatCategoryName(subcategory)}
                 </span>
               }
               sx={{
