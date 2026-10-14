@@ -78,24 +78,37 @@ export const CartItemCard = ({
               <div className="flex items-center">
                 <label
                   htmlFor={`quantity-${id}`}
-                  className="mr-1 text-xs sm:text-sm font-medium text-gray-600"
+                  className="mr-2 text-sm font-medium text-gray-600"
                 >
                   Qty:
                 </label>
 
-                <select
-                  id={`quantity-${id}`}
-                  value={quantity}
-                  onChange={(e) => onQuantityChange(e, id)}
-                  className="rounded-md border border-gray-300 p-1 sm:p-1.5 text-xs sm:text-sm shadow-sm transition-colors duration-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 hover:border-gray-400"
-                  aria-describedby={`quantity-help-${id}`}
-                >
-                  {Array.from({ length: 10 }, (_, index) => (
-                    <option key={index + 1} value={index + 1}>
-                      {index + 1}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    id={`quantity-${id}`}
+                    value={quantity}
+                    onChange={(e) => onQuantityChange(e, id)}
+                    className="appearance-none rounded-md border border-gray-300 bg-white py-2 pl-2.5 pr-8 sm:py-1.5 text-base sm:text-sm shadow-sm transition-colors duration-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 hover:border-gray-400"
+                    aria-describedby={`quantity-help-${id}`}
+                  >
+                    {Array.from({ length: 10 }, (_, index) => (
+                      <option key={index + 1} value={index + 1}>
+                        {index + 1}
+                      </option>
+                    ))}
+                  </select>
+
+                  <svg
+                    className="pointer-events-none absolute right-2.5 top-1/2 size-4 -translate-y-1/2 text-gray-600"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    aria-hidden="true"
+                  >
+                    <path d="m5 7.5 5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
 
                 <span id={`quantity-help-${id}`} className="sr-only">
                   Select quantity for {productName}
@@ -104,10 +117,10 @@ export const CartItemCard = ({
 
               <button
                 onClick={onRemoveItem}
-                className="inline-flex items-center px-1 sm:px-2 py-1 text-xs sm:text-sm font-medium text-red-600 transition-colors duration-200 hover:text-red-700 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-1 rounded-md"
+                className="inline-flex items-center p-2.5 sm:px-2 sm:py-1 text-sm font-medium text-red-600 transition-colors duration-200 hover:text-red-700 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-200 focus:ring-offset-1 rounded-md"
                 aria-label={`Remove ${productName} from cart`}
               >
-                <Bin className="h-3 w-3 sm:h-4 sm:w-4 mr-1" aria-hidden="true" />
+                <Bin className="size-5 sm:size-4 sm:mr-1" aria-hidden="true" />
 
                 <span className="hidden sm:inline">Remove</span>
               </button>
