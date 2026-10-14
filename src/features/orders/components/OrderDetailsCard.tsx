@@ -1,4 +1,5 @@
 import { OrderItem } from "@/types/order";
+import { formatPrice } from "@/utils/format-price";
 import { formatDateTime } from "@/utils/format-time";
 
 import { OrderItemDetailsCard } from "./OrderItemDetailsCard";
@@ -54,7 +55,7 @@ export const OrderDetailsCard = ({
 
             <div className="space-y-1">
               <dt className="text-sm font-medium text-gray-500">Order Total</dt>
-              <dd className="text-sm font-semibold text-gray-900">${orderTotal}</dd>
+              <dd className="text-sm font-semibold text-gray-900">{formatPrice(orderTotal)}</dd>
             </div>
 
             <div className="space-y-1">
@@ -111,7 +112,7 @@ export const OrderDetailsCard = ({
             <h2 id={`order-${orderId}-summary`} className="text-lg font-bold text-gray-900">
               Order Total
             </h2>
-            <span className="text-xl font-bold text-gray-900">${orderTotal}</span>
+            <span className="text-xl font-bold text-gray-900">{formatPrice(orderTotal)}</span>
           </div>
 
           {/* Cancel Order Button */}
@@ -125,7 +126,7 @@ export const OrderDetailsCard = ({
                 Cancel Order
               </button>
               <span id={`cancel-order-${orderId}-description`} className="sr-only">
-                Cancel order #{orderId} for ${orderTotal}
+                Cancel order #{orderId} for {formatPrice(orderTotal)}
               </span>
             </div>
           )}

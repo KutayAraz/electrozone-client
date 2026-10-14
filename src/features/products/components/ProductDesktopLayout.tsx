@@ -8,6 +8,7 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 import { RootState } from "@/stores/store";
 import { ProductImage } from "@/types/product";
 import { formatCategoryName } from "@/utils/format-casing";
+import { formatPrice } from "@/utils/format-price";
 import NavigationButton from "@assets/svgs/arrow-black.svg?react";
 import CloseButton from "@assets/svgs/modal-close.svg?react";
 import NavigationArrow from "@assets/svgs/previous-arrow.svg?react";
@@ -224,7 +225,7 @@ export const ProductDesktopLayout = ({
             />
           </button>
 
-          <p className="text-lg font-bold">${price}</p>
+          <p className="text-lg font-bold">{formatPrice(price)}</p>
 
           <div className="mb-4 flex items-center justify-center">
             <button onClick={decrementQuantity} className="rounded border px-2 py-1">

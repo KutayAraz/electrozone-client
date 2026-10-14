@@ -6,6 +6,7 @@ import { paths } from "@/config/paths";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { RootState } from "@/stores/store";
 import { createUrlSlug } from "@/utils/create-url-slug";
+import { formatPrice } from "@/utils/format-price";
 
 import { WishlistHeart } from "../wishlist-heart";
 
@@ -163,7 +164,7 @@ export const ProductCard = forwardRef(
               {/* Price and Stock Row */}
               <div className="flex items-center justify-between mb-3 sm:mb-4">
                 <div className="flex items-baseline space-x-1">
-                  <span className="text-lg font-bold text-gray-900">${price}</span>
+                  <span className="text-lg font-bold text-gray-900">{formatPrice(price)}</span>
                 </div>
 
                 {/* Stock indicator */}

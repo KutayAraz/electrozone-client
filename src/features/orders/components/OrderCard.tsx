@@ -2,6 +2,7 @@ import { Divider } from "@mui/material";
 import { forwardRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { formatPrice } from "@/utils/format-price";
 import { formatDateTime } from "@/utils/format-time";
 
 import { OrderItemSummary } from "../api/get-orders";
@@ -64,7 +65,9 @@ export const OrderCard = forwardRef(
           <div className="grid grid-cols-2 xs:grid-cols-3 gap-x-4 gap-y-3">
             <div>
               <p className="text-xs uppercase tracking-wider text-gray-500 mb-1">Total Amount</p>
-              <p className="text-lg xs:text-xl font-semibold text-gray-900">${orderTotal}</p>
+              <p className="text-lg xs:text-xl font-semibold text-gray-900">
+                {formatPrice(orderTotal)}
+              </p>
             </div>
 
             <div>

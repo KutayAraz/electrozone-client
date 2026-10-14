@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { paths } from "@/config/paths";
 import { createUrlSlug } from "@/utils/create-url-slug";
+import { formatPrice } from "@/utils/format-price";
 import Bin from "@assets/svgs/bin.svg?react";
 
 type CartItemCardProps = {
@@ -67,7 +68,7 @@ export const CartItemCard = ({
             </Link>
 
             <p className="text-xs sm:text-sm text-gray-500">
-              Unit Price: <span className="font-medium">${price}</span>
+              Unit Price: <span className="font-medium">{formatPrice(price)}</span>
             </p>
           </div>
 
@@ -114,7 +115,8 @@ export const CartItemCard = ({
 
             <div className="text-right">
               <p className="text-base sm:text-lg font-semibold text-gray-800">
-                <span className="sr-only">Total price: </span>${amount}
+                <span className="sr-only">Total price: </span>
+                {formatPrice(amount)}
               </p>
             </div>
           </div>

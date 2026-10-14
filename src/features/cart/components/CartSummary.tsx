@@ -1,3 +1,4 @@
+import { formatPrice } from "@/utils/format-price";
 import Bin from "@assets/svgs/bin.svg?react";
 import RightArrow from "@assets/svgs/right-arrow.svg?react";
 
@@ -27,7 +28,7 @@ export const CartSummary = ({
       <div className="space-y-2 sm:space-y-3 text-sm sm:text-base">
         <div className="flex justify-between border-b pb-2 sm:pb-3">
           <p>Subtotal</p>
-          <p className="font-medium">${cartTotal.toFixed(2)}</p>
+          <p className="font-medium">{formatPrice(cartTotal)}</p>
         </div>
 
         <div className="flex justify-between border-b pb-2 sm:pb-3">
@@ -37,7 +38,7 @@ export const CartSummary = ({
 
         <div className="flex justify-between pt-2">
           <p className="text-base sm:text-lg font-semibold">Total</p>
-          <p className="text-base sm:text-lg font-bold text-theme-blue">${cartTotal.toFixed(2)}</p>
+          <p className="text-base sm:text-lg font-bold text-theme-blue">{formatPrice(cartTotal)}</p>
         </div>
       </div>
 

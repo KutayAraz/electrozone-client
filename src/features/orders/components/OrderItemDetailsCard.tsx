@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import { paths } from "@/config/paths";
 import { createUrlSlug } from "@/utils/create-url-slug";
+import { formatPrice } from "@/utils/format-price";
 
 interface OrderItemDetailsCardProps {
   id: number;
@@ -71,7 +72,7 @@ export const OrderItemDetailsCard = ({
           <div className="flex items-center justify-between">
             <span className="text-xs text-gray-500">Total:</span>
             <span className="text-sm font-bold text-gray-900 transition-colors duration-200">
-              ${price}
+              {formatPrice(price)}
             </span>
           </div>
         </div>

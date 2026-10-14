@@ -2,6 +2,7 @@ import { Close, ErrorOutline, Info, RemoveCircleOutline } from "@mui/icons-mater
 import { useState } from "react";
 
 import { ErrorType } from "@/types/api-error";
+import { formatPrice } from "@/utils/format-price";
 
 interface CartChangesAlertProps {
   priceChanges?: {
@@ -60,7 +61,7 @@ export const CartChangesAlert = ({
                     {priceChanges.map((change) => (
                       <li key={change.productName}>
                         <span className="font-medium">{change.productName}</span>: Price updated
-                        from ${change.oldPrice} to ${change.newPrice}
+                        from {formatPrice(change.oldPrice)} to {formatPrice(change.newPrice)}
                       </li>
                     ))}
                   </ul>

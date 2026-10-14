@@ -10,6 +10,7 @@ import { WishlistHeart } from "@/components/ui/wishlist-heart";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import type { RootState } from "@/stores/store";
 import { ProductImage } from "@/types/product";
+import { formatPrice } from "@/utils/format-price";
 
 import { ProductLayoutProps } from "../types";
 
@@ -100,7 +101,7 @@ export const ProductMobileLayout = ({
 
       {/* The height lives in index.css - the page reserves it via :has(). */}
       <div className="product-action-bar fixed inset-x-0 bottom-0 z-10 flex w-full items-center justify-around bg-gray-100">
-        <p className="ml-2 text-lg font-bold">${price}</p>
+        <p className="ml-2 text-lg font-bold">{formatPrice(price)}</p>
 
         <div className="flex">
           <button onClick={decrementQuantity} className="rounded border border-gray-300 px-2 py-1">

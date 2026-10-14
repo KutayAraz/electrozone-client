@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { paths } from "@/config/paths";
 import { RootState } from "@/stores/store";
 import { createUrlSlug } from "@/utils/create-url-slug";
+import { formatPrice } from "@/utils/format-price";
 
 import { WishlistHeart } from "../wishlist-heart";
 
@@ -68,7 +69,9 @@ export const CarouselCard = ({
 
         <p className="mt-1 text-center text-xs text-gray-500 uppercase tracking-wide">{brand}</p>
 
-        <p className="mt-2 text-center text-base font-semibold text-gray-900">${price}</p>
+        <p className="mt-2 text-center text-base font-semibold text-gray-900">
+          {formatPrice(price)}
+        </p>
       </Link>
     </div>
   );

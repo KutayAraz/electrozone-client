@@ -2,6 +2,7 @@ import { LocalShipping, Receipt, ShoppingBag } from "@mui/icons-material";
 import { Divider } from "@mui/material";
 
 import { Spinner } from "@/components/ui/spinner";
+import { formatPrice } from "@/utils/format-price";
 
 type CheckoutSummaryProps = {
   totalQuantity: number;
@@ -32,7 +33,7 @@ export const CheckoutSummary = ({
             <span>Items ({totalQuantity})</span>
           </div>
 
-          <span className="font-medium text-gray-800">${cartTotal}</span>
+          <span className="font-medium text-gray-800">{formatPrice(cartTotal)}</span>
         </div>
 
         <div className="flex items-center justify-between py-2">
@@ -51,7 +52,7 @@ export const CheckoutSummary = ({
       <div className="mb-6 flex items-center justify-between">
         <span className="text-lg font-semibold text-gray-800">Total</span>
 
-        <span className="text-xl font-bold text-theme-blue">${cartTotal}</span>
+        <span className="text-xl font-bold text-theme-blue">{formatPrice(cartTotal)}</span>
       </div>
 
       <div className="">

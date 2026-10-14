@@ -11,6 +11,7 @@ import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
 import { CheckoutLayout } from "@/layouts/CheckoutLayout";
 import { loadQuery } from "@/lib/api/load-query";
 import { store } from "@/stores/store";
+import { formatPrice } from "@/utils/format-price";
 
 export const orderConfirmationLoader = async ({ params }: LoaderFunctionArgs) => {
   const { orderId } = params;
@@ -77,7 +78,7 @@ export const OrderConfirmationPage = () => {
                 Order ID: #{orderId}
               </div>
 
-              <p className="text-sm text-gray-600">Total: ${orderData.orderTotal}</p>
+              <p className="text-sm text-gray-600">Total: {formatPrice(orderData.orderTotal)}</p>
             </div>
 
             <div className="mb-8 space-y-4 rounded-lg bg-gray-50 p-6">
