@@ -140,25 +140,32 @@ export const ProductCard = forwardRef(
               </h3>
 
               {/* Rating */}
-              <div className="flex items-center mb-2 sm:mb-3">
-                <Rating
-                  value={Number(averageRating)}
-                  precision={0.1}
-                  readOnly
-                  size="small"
-                  sx={{
-                    fontSize: { xs: "1rem", sm: "1.25rem" },
-                    "& .MuiRating-iconFilled": {
-                      color: "#fbbf24",
-                    },
-                    "& .MuiRating-iconEmpty": {
-                      color: "#e5e7eb",
-                    },
-                  }}
-                />
-                <span className="text-xs text-gray-500 ml-1 sm:ml-2">
-                  ({Number(averageRating).toFixed(1)})
-                </span>
+              {/* Fixed height keeps cards aligned whether or not the product has reviews */}
+              <div className="flex items-center h-5 mb-2 sm:mb-3">
+                {Number(averageRating) > 0 ? (
+                  <>
+                    <Rating
+                      value={Number(averageRating)}
+                      precision={0.1}
+                      readOnly
+                      size="small"
+                      sx={{
+                        fontSize: { xs: "1rem", sm: "1.25rem" },
+                        "& .MuiRating-iconFilled": {
+                          color: "#fbbf24",
+                        },
+                        "& .MuiRating-iconEmpty": {
+                          color: "#e5e7eb",
+                        },
+                      }}
+                    />
+                    <span className="text-xs text-gray-500 ml-1 sm:ml-2">
+                      ({Number(averageRating).toFixed(1)})
+                    </span>
+                  </>
+                ) : (
+                  <span className="text-xs text-gray-500">No reviews yet</span>
+                )}
               </div>
 
               {/* Price and Stock Row */}

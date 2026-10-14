@@ -216,13 +216,17 @@ export const ProductDesktopLayout = ({
           <p className="font-[500]">Brand: {brand}</p>
 
           <button onClick={onRatingClick} className="mx-auto hover:cursor-pointer">
-            <Rating
-              name="half-rating-read"
-              value={averageRating}
-              precision={0.1}
-              readOnly
-              className="mt-4"
-            />
+            {averageRating > 0 ? (
+              <Rating
+                name="half-rating-read"
+                value={averageRating}
+                precision={0.1}
+                readOnly
+                className="mt-4"
+              />
+            ) : (
+              <span className="mt-4 block text-sm text-gray-500 underline">No reviews yet</span>
+            )}
           </button>
 
           <p className="text-lg font-bold">{formatPrice(price)}</p>

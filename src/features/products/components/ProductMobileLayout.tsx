@@ -150,13 +150,17 @@ export const ProductMobileLayout = ({
 
       <div className="flex w-full flex-col text-left ">
         <button onClick={onRatingClick} className="mx-auto">
-          <Rating
-            name="half-rating-read"
-            value={averageRating}
-            precision={0.1}
-            readOnly
-            className="mt-4"
-          />
+          {averageRating > 0 ? (
+            <Rating
+              name="half-rating-read"
+              value={averageRating}
+              precision={0.1}
+              readOnly
+              className="mt-4"
+            />
+          ) : (
+            <span className="mt-4 block text-sm text-gray-500 underline">No reviews yet</span>
+          )}
         </button>
 
         {stock > 0 && (
