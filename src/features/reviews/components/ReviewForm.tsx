@@ -53,7 +53,7 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
       {canCurrentUserReview && (
         <button
           onClick={() => setIsFormOpen(true)}
-          className="mx-auto my-2 rounded-md bg-theme-blue p-2 text-center text-white hover:bg-blue-900"
+          className="mx-auto my-2 rounded-md bg-theme-blue p-2 text-center text-white hover:bg-theme-blue-light"
         >
           Leave a review
         </button>
@@ -111,7 +111,7 @@ export const ReviewForm = ({ canCurrentUserReview, productId }: ReviewFormProps)
             type="button"
             className={`mt-4 ${
               isCreatingReview ? "bg-gray-600" : "bg-theme-blue"
-            } rounded-lg px-4 py-2 text-white hover:bg-blue-700 focus:outline-none`}
+            } rounded-lg px-4 py-2 text-white hover:bg-theme-blue-light focus:outline-none`}
             onClick={handleSubmitReview}
             disabled={isCreatingReview}
           >

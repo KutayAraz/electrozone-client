@@ -71,7 +71,7 @@ export const Categories = () => {
             </div>
 
             {/* Hover Effect Border */}
-            <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-blue-500 transition-colors duration-300" />
+            <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-theme-orange transition-colors duration-300" />
           </Link>
         ))}
       </div>

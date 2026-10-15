@@ -211,9 +211,11 @@ export const ProductDesktopLayout = ({
             />
           </div>
 
-          <h2 className="text-lg">{productName}</h2>
+          <h2 className="px-4 text-xl font-bold leading-snug text-gray-900">{productName}</h2>
 
-          <p className="font-[500]">Brand: {brand}</p>
+          <p className="text-sm text-gray-500">
+            Brand: <span className="font-semibold text-gray-700">{brand}</span>
+          </p>
 
           <button onClick={onRatingClick} className="mx-auto hover:cursor-pointer">
             {averageRating > 0 ? (
@@ -229,10 +231,14 @@ export const ProductDesktopLayout = ({
             )}
           </button>
 
-          <p className="text-lg font-bold">{formatPrice(price)}</p>
+          <p className="text-3xl font-bold text-gray-900">{formatPrice(price)}</p>
 
           <div className="mb-4 flex items-center justify-center">
-            <button onClick={decrementQuantity} className="rounded border px-2 py-1">
+            <button
+              onClick={decrementQuantity}
+              aria-label="Decrease quantity"
+              className="size-9 rounded-lg border border-gray-300 text-lg transition-colors hover:bg-gray-100"
+            >
               -
             </button>
 
@@ -242,10 +248,15 @@ export const ProductDesktopLayout = ({
               onChange={handleQuantityChange}
               min={1}
               max={25}
-              className="mx-2 py-1 w-16 rounded border text-center"
+              aria-label="Quantity"
+              className="mx-2 h-9 w-14 rounded-lg border border-gray-300 text-center"
             />
 
-            <button onClick={incrementQuantity} className="rounded border px-2 py-1">
+            <button
+              onClick={incrementQuantity}
+              aria-label="Increase quantity"
+              className="size-9 rounded-lg border border-gray-300 text-lg transition-colors hover:bg-gray-100"
+            >
               +
             </button>
           </div>
@@ -256,8 +267,8 @@ export const ProductDesktopLayout = ({
                 onClick={() => handleAddToCart(quantity)}
                 disabled={addingToCart}
                 className={`${
-                  addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-blue-900"
-                } my-4 w-full rounded-xl px-4 py-2 text-white`}
+                  addingToCart ? "bg-gray-300" : "bg-theme-blue hover:bg-theme-blue-light"
+                } my-4 w-full rounded-xl px-4 py-3 font-semibold text-white transition-colors`}
               >
                 {addingToCart ? "Adding To Cart.." : "Add to Cart"}
               </button>
@@ -265,7 +276,7 @@ export const ProductDesktopLayout = ({
               <button
                 onClick={handleBuyNow}
                 disabled={isNavigatingToCheckout}
-                className="w-full rounded-xl bg-orange-300 px-4 py-2 hover:bg-orange-400 disabled:cursor-not-allowed disabled:opacity-70"
+                className="w-full rounded-xl bg-theme-orange px-4 py-3 font-semibold text-theme-blue transition-colors hover:bg-theme-orange-dark disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {isNavigatingToCheckout ? "Navigating to checkout" : "Buy now"}
               </button>

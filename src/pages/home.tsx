@@ -19,6 +19,8 @@ export const homePageLoader = () => ({
   bestSellers: loadTopProducts(ProductTrend.BEST_SELLERS),
 });
 
+const sectionHeadingClass = "mb-4 mt-10 text-xl font-bold text-gray-800 md:text-2xl";
+
 const ProductsShowcase = ({ products }: { products: CarouselProduct[] }) => {
   const { handleToggleWishlist } = useToggleWishlist();
 
@@ -56,10 +58,10 @@ export const HomePage = () => {
       />
 
       <div className="page-spacing">
-        <div className="max-w-screen-xl text-center xl:mx-auto">
+        <div className="max-w-screen-xl pb-10 text-center xl:mx-auto">
           <Categories />
 
-          <h2 className="mb-3 mt-6 text-xl font-semibold">Best Selling Products</h2>
+          <h2 className={sectionHeadingClass}>Best Selling Products</h2>
 
           <Suspense fallback={<CarouselSkeleton />}>
             <Await resolve={bestSellers} errorElement={<CarouselError />}>
@@ -67,7 +69,7 @@ export const HomePage = () => {
             </Await>
           </Suspense>
 
-          <h2 className="my-3 text-xl font-semibold">Most Wishlisted Products</h2>
+          <h2 className={sectionHeadingClass}>Most Wishlisted Products</h2>
 
           <Suspense fallback={<CarouselSkeleton />}>
             <Await resolve={mostWishlisted} errorElement={<CarouselError />}>
@@ -75,7 +77,7 @@ export const HomePage = () => {
             </Await>
           </Suspense>
 
-          <h2 className="my-3 text-xl font-semibold">Best Rated Products</h2>
+          <h2 className={sectionHeadingClass}>Best Rated Products</h2>
 
           <Suspense fallback={<CarouselSkeleton />}>
             <Await resolve={bestRated} errorElement={<CarouselError />}>

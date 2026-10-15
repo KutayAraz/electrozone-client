@@ -63,7 +63,7 @@ export const CarouselCard = ({
           />
         </div>
 
-        <p className="mt-3 line-clamp-3 h-[3em] text-center text-sm font-medium text-gray-800">
+        <p className="mt-3 line-clamp-2 h-10 text-center text-sm leading-5 font-medium text-gray-800">
           {productName}
         </p>
 

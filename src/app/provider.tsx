@@ -14,9 +14,26 @@ interface AppProviderProps {
   children: React.ReactNode;
 }
 
+// Keep in sync with the theme colors in index.css so MUI components match the
+// Tailwind-styled ones instead of falling back to MUI's default blue.
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#13193F",
+      light: "#283174",
+    },
+    secondary: {
+      main: "#febd69",
+      dark: "#f3a847",
+      contrastText: "#13193F",
+    },
+  },
   typography: {
     fontFamily: "Nunito, sans-serif",
+    button: {
+      textTransform: "none",
+      fontWeight: 600,
+    },
   },
   breakpoints: {
     values: {

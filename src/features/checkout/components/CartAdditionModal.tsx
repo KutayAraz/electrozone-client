@@ -30,7 +30,7 @@ export const CartAdditionModal = ({
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
             <button
               onClick={onAddToCart}
-              className="rounded-md bg-blue-600 px-6 py-3 text-white font-medium transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-md bg-theme-blue px-6 py-3 text-white font-medium transition-colors hover:bg-theme-blue-light focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isMerging || isCancelling}
             >
               {isMerging ? (

@@ -87,7 +87,7 @@ export const CartPage = () => {
 
             <button
               onClick={() => navigate("/")}
-              className="rounded-md bg-theme-blue px-4 py-2 text-white transition duration-200 hover:bg-blue-700"
+              className="rounded-md bg-theme-blue px-4 py-2 text-white transition duration-200 hover:bg-theme-blue-light"
             >
               Continue Shopping
             </button>

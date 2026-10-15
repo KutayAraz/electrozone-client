@@ -54,7 +54,7 @@ export const RegisterForm = ({
           <button
             type="button"
             onClick={() => navigate(paths.auth.login.getHref())}
-            className="w-full rounded-lg bg-theme-orange py-2 font-semibold text-white transition duration-300 ease-in-out hover:bg-blue-700"
+            className="w-full rounded-lg bg-theme-orange py-2 font-semibold text-theme-blue transition duration-300 ease-in-out hover:bg-theme-orange-dark"
           >
             Login to your electrozone account!
           </button>

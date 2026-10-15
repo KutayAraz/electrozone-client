@@ -107,7 +107,7 @@ export const ProductCard = forwardRef(
 
                 {!imageLoaded && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 border-2 border-gray-300 border-t-theme-blue rounded-full animate-spin"></div>
                   </div>
                 )}
               </div>
@@ -135,7 +135,8 @@ export const ProductCard = forwardRef(
               </div>
 
               {/* Product Name */}
-              <h3 className="text-gray-900 font-semibold text-sm leading-tight line-clamp-2 h-10 sm:h-12 mb-2 sm:mb-3 group-hover:text-blue-600 transition-colors duration-200">
+              {/* Height must equal exactly two lines, or the clamped text bleeds into a third */}
+              <h3 className="text-gray-900 font-semibold text-sm leading-5 line-clamp-2 h-10 mb-2 sm:mb-3 group-hover:text-theme-purple transition-colors duration-200">
                 {productName}
               </h3>
 
@@ -200,7 +201,7 @@ export const ProductCard = forwardRef(
               disabled={stock < 1 || isAddingToCart}
               className={`w-full py-2 sm:py-1.5 rounded-lg text-white font-semibold transition-all duration-200 text-sm sm:text-base ${
                 stock > 0 && !isAddingToCart
-                  ? "bg-theme-blue hover:bg-blue-700 hover:shadow-md"
+                  ? "bg-theme-blue hover:bg-theme-blue-light hover:shadow-md"
                   : "bg-gray-400 cursor-not-allowed"
               }`}
             >
@@ -218,7 +219,7 @@ export const ProductCard = forwardRef(
           </div>
 
           {/* Hover border effect */}
-          <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-blue-200 transition-colors duration-300 pointer-events-none" />
+          <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-theme-orange/60 transition-colors duration-300 pointer-events-none" />
         </div>
       </div>
     );

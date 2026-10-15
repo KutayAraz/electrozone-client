@@ -26,7 +26,7 @@ export const AuthForm = ({
         <button
           type="submit"
           className={`mt-4 w-full rounded-lg py-2 font-semibold text-white ${
-            isValid ? "bg-theme-blue hover:bg-blue-700" : "bg-gray-400"
+            isValid ? "bg-theme-blue hover:bg-theme-blue-light" : "bg-gray-400"
           } transition duration-300 ease-in-out`}
           disabled={!isValid || isLoading}
         >
