@@ -2,8 +2,8 @@ import path from "path";
 
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
 import svgr from "vite-plugin-svgr";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   plugins: [react(), svgr(), tailwindcss()],
@@ -16,5 +16,11 @@ export default defineConfig({
       "@pages": path.resolve(import.meta.dirname, "./src/pages"),
       "@features": path.resolve(import.meta.dirname, "./src/features"),
     },
+  },
+  test: {
+    environment: "jsdom",
+    // Lets Testing Library register its automatic DOM cleanup after each test.
+    globals: true,
+    setupFiles: "./src/testing/setup-tests.ts",
   },
 });
