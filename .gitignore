@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+coverage
 *.local
 
 # Editor directories and files
@@ -27,7 +28,7 @@ dist-ssr
 .netlify
 
 # Environment variables
-.env.development
-.env.production
+.env*
+!.env.example
 
 notes.txt
