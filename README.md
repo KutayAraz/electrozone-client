@@ -1,90 +1,94 @@
-# Electrozone E-Commerce Platform
+# Electrozone
 
-This e-commerce platform is a modern web application built with React and TypeScript, designed to provide a seamless shopping experience. Users can manage their profiles, add products to their basket or wishlist, checkout, track orders, and even cancel them if they are not older than one day.
+A full-stack electronics store built with React and TypeScript. Shoppers can browse and filter products, check out as a guest or with an account, track and cancel orders, keep a wishlist and review products they have bought.
 
-## Technologies Used
-
-- **Frontend**
-  - **Framework:** Vite.js
-  - **Programming Language:** TypeScript
-  - **State Management:** Redux
-  - **Routing:** react-router-dom
-  - **Form Management:** react-hook-form
-  - **Styling:** Tailwind CSS and Material UI
-
-- **Backend**
-  - The backend API is built with NestJS and is hosted separately. For details on the backend, please refer to the backend [repository](https://github.com/KutayAraz/electrozone-server).
-
-- **Database**
-  - **Type:** MySQL
-  - **ORM:** TypeORM
-  - **Authentication Middleware:** Passport
-  - **Hosting:** Azure
+**Live demo:** [electrozone.netlify.app](https://electrozone.netlify.app) · **Backend:** [electrozone-server](https://github.com/KutayAraz/electrozone-server) (NestJS, MySQL, Redis)
 
 ## Features
 
-- **User Management:** Users can create and update their profiles.
-- **Product Interaction:** Users can add products to their basket and wishlist. They can also leave a rating and comment on the products they have purchased.
-- **Order Management:** Users can checkout products, track their orders, and cancel them if they are not older than one day.
-- **Trending Products:** Display trending products on the homepage, including best sellers, top rated items, and most wishlisted products.
+- **Browsing and search:** category and subcategory pages, product search, and filters for brand, price range and stock status.
+- **Carts:** a guest cart that carries over when the shopper signs in, an account cart, and a separate "Buy now" flow for a single product. Price and stock changes are flagged before checkout.
+- **Orders:** checkout, an order history with infinite scroll, and cancellation within 24 hours of ordering.
+- **Wishlist and reviews:** a wishlist synced to the account, and ratings and reviews limited to customers who bought the product.
+- **Trending products:** best sellers, most wishlisted and best rated products on the home page.
+- **Accounts:** registration, login, profile and password management.
 
-## Installation
+## Technical highlights
 
-To get this project running on your local machine, follow these steps:
+- **Data fetching with RTK Query.** Endpoints are injected per feature into one base API, and cache tags keep the cart, wishlist, stock and review data in sync after every mutation.
+- **Silent session renewal.** Authentication uses HTTP-only cookies. When a request fails with a 401, the base query refreshes the token and retries the request. A mutex makes sure only one refresh runs at a time, and other requests wait for it ([refresh-auth.ts](src/lib/api/refresh-auth.ts)).
+- **Route-level code splitting.** Every page is lazy-loaded through React Router data loaders, and slower sections such as the home page carousels stream in with `Suspense` and `Await`.
+- **Central error handling.** One Redux middleware turns failed API calls into user-facing notifications ([error-middleware.ts](src/lib/api/error-middleware.ts)), and route error boundaries keep the header and footer usable when a page fails.
+- **Feature-based structure.** Code is grouped by feature under `src/features`, and ESLint enforces the import boundaries between layers and blocks circular dependencies.
+- **Forms.** react-hook-form with Zod schemas for validation.
+- **Persistence.** redux-persist keeps the session, wishlist and "Buy now" state across reloads.
+- **SEO.** Per-page titles and descriptions with react-helmet-async, plus Open Graph tags, a sitemap and robots.txt.
+
+## Tech stack
+
+| Area          | Tools                                                  |
+| ------------- | ------------------------------------------------------ |
+| Framework     | React 18, TypeScript, Vite                             |
+| State & data  | Redux Toolkit, RTK Query, redux-persist                |
+| Routing       | React Router (data routers, lazy routes)               |
+| Forms         | react-hook-form, Zod                                   |
+| Styling       | Tailwind CSS, Material UI                              |
+| Testing       | Vitest, Testing Library                                |
+| Tooling       | ESLint, Prettier                                       |
+| Hosting       | Netlify (frontend), Render (backend)                   |
+
+## Project structure
+
+```text
+src/
+├── app/         # Router and app-wide providers
+├── components/  # Shared UI components
+├── config/      # Route paths
+├── features/    # Feature modules (auth, cart, checkout, orders, products, wishlist, ...)
+├── hooks/       # Shared hooks
+├── layouts/     # Page layouts (header, footer)
+├── lib/         # API client, auth refresh and error middleware
+├── pages/       # Route components
+├── stores/      # Redux store and global slices
+├── types/       # Shared types
+└── utils/       # Shared helpers
+```
+
+## Getting started
 
 ### Prerequisites
 
-Before running the project, you must configure environment variables critical for both development and production environments:
+- Node.js 22.13 or later (see `.nvmrc`)
+- A running instance of the [backend](https://github.com/KutayAraz/electrozone-server)
 
-1. **Create Environment Files:**
-   - Create a `.env.development` file for development environment settings.
-   - Create a `.env.production` file for production environment settings.
-
-2. **Environment Variables:**
-   - `VITE_API_URL`: Specify the base URL of your API.
-   - `VITE_WEB3FORMS_ACCESS_KEY`: Provide the access key for Web3Forms if you're using it.
-
-   Example `.env.development` content:
-   ```plaintext
-   VITE_API_URL=http://localhost:3000/api
-   VITE_WEB3FORMS_ACCESS_KEY=your_development_access_key
-
-Ensure you have npm installed:
-
-```sh
-npm install npm@latest -g
-```
-
-Setting Up the Project
-Clone the repository:
+### Setup
 
 ```sh
 git clone https://github.com/KutayAraz/electrozone-client.git
-```
-
-Navigate to the project directory:
-
-```sh
 cd electrozone-client
-```
-
-Install required packages:
-
-```sh
 npm install
-```
-
-### Running the Project
-After installation, you can start the project locally by running:
-
-```sh
+cp .env.example .env.development
 npm run dev
 ```
 
-#### Additional Setup
-Please note, this project requires a backend and a MySQL database to function properly. Ensure you have set up both and configured them according to the project requirements. Refer to the backend repository for setup instructions and details.
+### Environment variables
 
-### Contact
-Kutay Araz - kutayaraz7@gmail.com
+| Variable                    | Description                                          |
+| --------------------------- | ---------------------------------------------------- |
+| `VITE_API_URL`              | Base URL of the backend API, e.g. `http://localhost:3000/api` |
+| `VITE_WEB3FORMS_ACCESS_KEY` | Web3Forms access key for the contact form            |
 
-Project Link: https://github.com/KutayAraz/electrozone-client
+### Scripts
+
+| Command            | Description                          |
+| ------------------ | ------------------------------------ |
+| `npm run dev`      | Start the development server         |
+| `npm run build`    | Type-check and build for production  |
+| `npm run preview`  | Preview the production build         |
+| `npm run lint`     | Run ESLint                           |
+| `npm test`         | Run tests in watch mode              |
+| `npm run test:run` | Run tests once                       |
+
+## Contact
+
+Kutay Araz · [kutayaraz@gmail.com](mailto:kutayaraz@gmail.com) · [GitHub](https://github.com/KutayAraz)
