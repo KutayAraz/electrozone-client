@@ -1,9 +1,25 @@
 import { PageHelmet } from "@/components/seo/PageHelmet";
 import { LoginForm } from "@/features/auth/components/LoginForm";
 import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useCartCount } from "@/features/cart/hooks/useCartCount";
+import { useMergeCarts } from "@/features/cart/hooks/useMergeCarts";
+import { shouldMergeGuestCartOnLogin } from "@/features/cart/utils/should-merge-guest-cart";
+import { useAppSelector } from "@/hooks/useAppSelector";
+import { selectCheckoutIntent } from "@/stores/slices/user-slice";
 
 export const LoginPage = () => {
-  const { submitLogin, isLoading, serverError, clearServerError } = useLogin();
+  // Read while still a guest, so this is the guest cart's item count
+  const guestCartCount = useCartCount();
+  const checkoutIntent = useAppSelector(selectCheckoutIntent);
+  const { submitMergeCarts } = useMergeCarts();
+
+  const { submitLogin, isLoading, serverError, clearServerError } = useLogin({
+    onLoggedIn: async () => {
+      if (shouldMergeGuestCartOnLogin(guestCartCount, checkoutIntent)) {
+        await submitMergeCarts();
+      }
+    },
+  });
 
   return (
     <>

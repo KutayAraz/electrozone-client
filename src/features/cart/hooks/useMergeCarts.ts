@@ -3,8 +3,6 @@ import {
   NotificationType,
 } from "@/components/ui/notifications/notification-slice";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
-import { setUserIntent } from "@/stores/slices/user-slice";
-import { CheckoutType } from "@/types/checkout";
 
 import { useMergeCartsMutation } from "../api/user-cart/merge-carts";
 
@@ -29,8 +27,6 @@ export const useMergeCarts = () => {
     ) {
       message += " Some items have changed, so please review your cart before proceeding.";
     }
-
-    dispatch(setUserIntent(CheckoutType.NORMAL));
 
     dispatch(
       displayNotification({

@@ -14,7 +14,12 @@ import { LoginSchema } from "../schemas/login-schema";
 
 import { useFormError } from "./useFormError";
 
-export const useLogin = () => {
+interface UseLoginOptions {
+  // Runs after a successful login, before redirecting the user
+  onLoggedIn?: () => Promise<unknown>;
+}
+
+export const useLogin = ({ onLoggedIn }: UseLoginOptions = {}) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const redirectInfo = useAppSelector((state: RootState) => state.redirect);
@@ -34,6 +39,8 @@ export const useLogin = () => {
           email: response.email,
         }),
       );
+
+      await onLoggedIn?.();
 
       // Handle redirect based on source
       if (redirectInfo.source === "protected-route" && redirectInfo.path) {

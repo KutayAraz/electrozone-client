@@ -82,7 +82,10 @@ export const CheckoutPage = () => {
 
   const addToCartAndNavigate = async () => {
     // On failure the modal stays open so the user can retry or cancel
-    if (await submitMergeCarts()) navigateToCart();
+    if (await submitMergeCarts()) {
+      dispatch(setUserIntent(CheckoutType.NORMAL));
+      navigateToCart();
+    }
   };
 
   const handleSubmitOrder = async () => {
