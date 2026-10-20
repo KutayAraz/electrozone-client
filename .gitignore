@@ -30,5 +30,12 @@ coverage
 # Environment variables
 .env*
 !.env.example
+!.env.e2e.example
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
 notes.txt

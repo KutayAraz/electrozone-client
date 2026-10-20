@@ -33,7 +33,7 @@ A full-stack electronics store built with React and TypeScript. Shoppers can bro
 | Routing       | React Router (data routers, lazy routes)               |
 | Forms         | react-hook-form, Zod                                   |
 | Styling       | Tailwind CSS, Material UI                              |
-| Testing       | Vitest, Testing Library                                |
+| Testing       | Vitest, Testing Library, Playwright                    |
 | Tooling       | ESLint, Prettier                                       |
 | Hosting       | Netlify (frontend), Render (backend)                   |
 
@@ -88,6 +88,9 @@ npm run dev
 | `npm run lint`     | Run ESLint                           |
 | `npm test`         | Run tests in watch mode              |
 | `npm run test:run` | Run tests once                       |
+| `npm run test:e2e` | Run the Playwright end-to-end tests  |
+
+The end-to-end tests need the backend running and a test account on it. Copy `.env.e2e.example` to `.env.e2e` and fill in that account's email and password. Run `npx playwright install chromium` once to download the browser.
 
 ## Contact
 

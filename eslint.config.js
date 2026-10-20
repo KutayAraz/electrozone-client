@@ -33,9 +33,6 @@ export default defineConfig([
       eslintReact.configs["recommended-typescript"],
       jsxA11y.configs.recommended,
       prettierRecommended,
-      testingLibrary.configs["flat/react"],
-      jestDom.configs["flat/recommended"],
-      vitest.configs.recommended,
     ],
     plugins: { "check-file": checkFile },
     languageOptions: {
@@ -122,6 +119,16 @@ export default defineConfig([
         { ignoreMiddleExtensions: true },
       ],
     },
+  },
+  // Rules for the Vitest + Testing Library tests only. The Playwright tests in e2e/ use a
+  // different API that these rules misread (`page.getByRole` is not a `render` query).
+  {
+    files: ["src/**/*.test.{ts,tsx}"],
+    extends: [
+      testingLibrary.configs["flat/react"],
+      jestDom.configs["flat/recommended"],
+      vitest.configs.recommended,
+    ],
   },
   {
     files: ["src/**/!(__tests__)/*.{ts,tsx}"],

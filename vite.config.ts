@@ -19,6 +19,8 @@ export default defineConfig({
   },
   test: {
     environment: "jsdom",
+    // e2e/ holds the Playwright tests, which Vitest can't run
+    include: ["src/**/*.test.{ts,tsx}"],
     // Lets Testing Library register its automatic DOM cleanup after each test.
     globals: true,
     setupFiles: "./src/testing/setup-tests.ts",
