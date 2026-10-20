@@ -18,17 +18,15 @@ import { loadQuery } from "@/lib/api/load-query";
 import { setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
 import { CheckoutType } from "@/types/checkout";
+import { getProductIdFromSlug } from "@/utils/create-url-slug";
 import { createProductDescription, createProductTitle } from "@/utils/seo";
 
 export const productPageLoader = ({ params }: LoaderFunctionArgs) => {
   const { productSlug } = params;
 
-  if (!productSlug) {
-    throw new Response("Product not found", { status: 404 });
-  }
-  const productId = Number(productSlug.split("-p-")[1]);
+  const productId = productSlug ? getProductIdFromSlug(productSlug) : null;
 
-  if (!Number.isInteger(productId)) {
+  if (productId === null) {
     throw new Response("Product not found", { status: 404 });
   }
 

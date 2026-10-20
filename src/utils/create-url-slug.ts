@@ -17,3 +17,13 @@ export function createUrlSlug(productName: string): string {
       .replace(/--+/g, "-")
   );
 }
+
+/**
+ * Read the product id back out of a `<name>-p-<id>` slug. The id is taken from
+ * the end, because the name part can contain "-p-" itself ("Lenovo P 15").
+ */
+export function getProductIdFromSlug(productSlug: string): number | null {
+  const match = /-p-(\d+)$/.exec(productSlug);
+
+  return match ? Number(match[1]) : null;
+}
