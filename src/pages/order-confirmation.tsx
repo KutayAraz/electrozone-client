@@ -10,10 +10,14 @@ import { paths } from "@/config/paths";
 import { getOrderByIdApi } from "@/features/orders/api/get-order-by-id";
 import { CheckoutLayout } from "@/layouts/CheckoutLayout";
 import { loadQuery } from "@/lib/api/load-query";
+import { redirectGuestToLogin } from "@/lib/redirect-guest-to-login";
 import { store } from "@/stores/store";
 import { formatPrice } from "@/utils/format-price";
 
-export const orderConfirmationLoader = async ({ params }: LoaderFunctionArgs) => {
+export const orderConfirmationLoader = async ({ params, request }: LoaderFunctionArgs) => {
+  const guestRedirect = redirectGuestToLogin(request);
+  if (guestRedirect) return guestRedirect;
+
   const { orderId } = params;
 
   if (!orderId) {

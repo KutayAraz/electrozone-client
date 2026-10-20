@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { redirect, useLoaderData, useNavigate, useRevalidator } from "react-router-dom";
+import {
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useRevalidator,
+} from "react-router-dom";
 
 import { PageHelmet } from "@/components/seo/PageHelmet";
 import { paths } from "@/config/paths";
@@ -17,12 +23,16 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { CheckoutLayout } from "@/layouts/CheckoutLayout";
 import { loadQuery } from "@/lib/api/load-query";
+import { redirectGuestToLogin } from "@/lib/redirect-guest-to-login";
 import { selectCheckoutIntent, setUserIntent } from "@/stores/slices/user-slice";
 import { store } from "@/stores/store";
 import { CheckoutType } from "@/types/checkout";
 import { isStandardApiError } from "@/utils/error-guard";
 
-export const checkoutLoader = async () => {
+export const checkoutLoader = async ({ request }: LoaderFunctionArgs) => {
+  const guestRedirect = redirectGuestToLogin(request);
+  if (guestRedirect) return guestRedirect;
+
   const state = store.getState();
   const userIntent: CheckoutType = state.user.checkoutIntent;
 
