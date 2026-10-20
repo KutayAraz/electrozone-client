@@ -40,10 +40,11 @@ const wishlistPersistConfig = {
   storage,
 };
 
+// Keeps the whole redirect across a reload of the login page: useLogin ignores a `path`
+// whose `source` is missing.
 const redirectPersistConfig = {
   key: "redirect",
   storage: sessionStorage,
-  whitelist: ["path"],
 };
 
 const persistedUserReducer = persistReducer(userPersistConfig, userSlice.reducer);
