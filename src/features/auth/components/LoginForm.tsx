@@ -7,6 +7,7 @@ import { paths } from "@/config/paths";
 import { LoginSchema, loginSchema } from "../schemas/login-schema";
 
 import { AuthForm } from "./AuthForm";
+import { DemoAccountNote } from "./DemoAccountNote";
 
 interface LoginFormProps {
   onSubmit: (data: LoginSchema) => void;
@@ -56,6 +57,10 @@ export const LoginForm = ({ onSubmit, isLoading, serverError, onFieldChange }: L
         </>
       }
     >
+      <DemoAccountNote>
+        No account yet? You can register with any email address, no confirmation needed.
+      </DemoAccountNote>
+
       <h4 className="text-lg font-semibold text-gray-800">Welcome,</h4>
 
       <label htmlFor="email" className={labelClasses}>

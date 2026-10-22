@@ -7,6 +7,7 @@ import { paths } from "@/config/paths";
 import { RegisterSchema, registerSchema } from "../schemas/register-schema";
 
 import { AuthForm } from "./AuthForm";
+import { DemoAccountNote } from "./DemoAccountNote";
 
 interface RegisterFormProps {
   onSubmit: (data: RegisterSchema) => void;
@@ -61,6 +62,11 @@ export const RegisterForm = ({
         </>
       }
     >
+      <DemoAccountNote>
+        This is a demo store: you can register with any email address. It doesn&apos;t need to be
+        real and you won&apos;t be asked to confirm it.
+      </DemoAccountNote>
+
       <h4 className="text-lg font-bold text-gray-800">Account Information:</h4>
 
       <label htmlFor="email" className={labelClasses}>
