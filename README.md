@@ -4,6 +4,21 @@ A full-stack electronics store built with React and TypeScript. Shoppers can bro
 
 **Live demo:** [electrozone.netlify.app](https://electrozone.netlify.app) · **Backend:** [electrozone-server](https://github.com/KutayAraz/electrozone-server) (NestJS, MySQL, Redis)
 
+![Electrozone home page](docs/screenshots/home.jpg)
+
+<table>
+  <tr>
+    <td><img src="docs/screenshots/product-listing.jpg" alt="Product listing with filters"><br><sub>Product listing with filters</sub></td>
+    <td><img src="docs/screenshots/product-page.jpg" alt="Product page"><br><sub>Product page</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/cart.jpg" alt="Guest shopping cart"><br><sub>Guest shopping cart</sub></td>
+    <td align="center"><img src="docs/screenshots/mobile-product-page.jpg" alt="Product page on mobile" width="200"><br><sub>Mobile layout</sub></td>
+  </tr>
+</table>
+
+![Guest shopping flow: filtering TVs, adding one to the cart and checking out, which asks the guest to log in](docs/screenshots/guest-flow.gif)
+
 ## Features
 
 - **Browsing and search:** category and subcategory pages, product search, and filters for brand, price range and stock status.
