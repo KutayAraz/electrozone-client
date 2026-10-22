@@ -48,13 +48,14 @@ export const CustomModal = ({
     onCloseRef.current = onClose;
   });
 
-  const hasMountedRef = useRef(false);
+  // Close on navigation. Compares against the last location rather than skipping the
+  // first run: StrictMode runs effects twice on mount, and a "first run" flag would read
+  // that second run as a navigation and close a modal that starts open.
+  const lastLocationKeyRef = useRef(location.key);
   useEffect(() => {
-    if (!hasMountedRef.current) {
-      hasMountedRef.current = true;
+    if (location.key === lastLocationKeyRef.current) return;
 
-      return;
-    }
+    lastLocationKeyRef.current = location.key;
     onCloseRef.current();
   }, [location.key]);
 
