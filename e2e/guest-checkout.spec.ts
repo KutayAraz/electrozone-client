@@ -55,6 +55,11 @@ test("a guest who logs in at checkout checks out only their guest cart", async (
 
   // As a guest, add a product to the cart from its page
   await page.goto(`/category/${category}/${subcategory}/${createUrlSlug(productName)}-p-${id}`);
+
+  // A first-time visitor is told the store is a demo
+  await page.getByRole("button", { name: "Got it, start browsing" }).click();
+  await expect(page.getByRole("dialog", { name: "Demo store notice" })).toBeHidden();
+
   await page.getByRole("button", { name: "Add to Cart" }).first().click();
   await expect(page.getByText("Product has been added to your cart")).toBeVisible();
 

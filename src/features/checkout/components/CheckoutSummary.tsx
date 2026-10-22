@@ -74,6 +74,10 @@ export const CheckoutSummary = ({
             "Confirm Order"
           )}
         </button>
+
+        <p className="mt-3 text-center text-xs text-gray-500">
+          This is a demo store: no payment is taken and orders are not shipped.
+        </p>
       </div>
     </div>
   );
