@@ -146,7 +146,7 @@ export const SubcategoryPage = () => {
         <div className="flex flex-row items-start sm:space-x-2">
           {/* Desktop Filter Panel */}
           <div className="flex-col sticky hidden h-[calc(100vh-135px)] w-48 shrink-0 overflow-y-auto sm:top-30 sm:flex md:top-20 md:w-60">
-            <h3 className="text-lg font-bold">
+            <h3 className="mb-3 mt-4 text-xl font-bold">
               {subcategory ? formatCategoryName(subcategory) : "Products"}
             </h3>
 

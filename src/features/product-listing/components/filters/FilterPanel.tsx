@@ -49,7 +49,7 @@ export const FilterPanel = ({
         <div className="space-y-1">
           <StockStatusFilter stockStatus={stockStatus} handleStockChange={handleStockChange} />
 
-          <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+          <Divider sx={{ marginY: "8px" }} />
 
           {/* Only show subcategories filter if data is provided */}
           {subcategoriesData && subcategoriesData.length > 0 && (
@@ -59,7 +59,7 @@ export const FilterPanel = ({
                 selectedSubcategories={selectedSubcategories}
                 handleSubcategoryChange={handleSubcategoryChange}
               />
-              <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+              <Divider sx={{ marginY: "8px" }} />
             </>
           )}
 
@@ -69,7 +69,7 @@ export const FilterPanel = ({
             handleBrandChange={handleBrandChange}
           />
 
-          <Divider sx={{ marginY: "5px", marginRight: "8px" }} />
+          <Divider sx={{ marginY: "8px" }} />
 
           <PriceRangeFilter
             priceRange={priceRange}
@@ -84,42 +84,37 @@ export const FilterPanel = ({
       </div>
 
       {/* Fixed bottom button area */}
-      <div className="sticky bottom-0 bg-white pt-3 pb-2 mt-2">
-        <div className="space-y-2">
-          <div>
-            <Button
-              variant="outlined"
-              onClick={resetFilters}
-              fullWidth
-              sx={{
-                minHeight: { xs: "44px", sm: "36px" }, // Touch-friendly height on mobile
-                fontSize: { xs: "1rem", sm: "0.875rem" },
-              }}
-            >
-              Reset Filters
-            </Button>
-          </div>
+      {/* Side by side in the mobile drawer to leave more room for the filters; stacked in the narrow sidebar */}
+      <div className="sticky bottom-0 mt-2 flex gap-2 bg-white pb-2 pt-3 sm:flex-col">
+        <Button
+          variant="outlined"
+          onClick={resetFilters}
+          fullWidth
+          sx={{
+            minHeight: { xs: "44px", sm: "36px" }, // Touch-friendly height on mobile
+            fontSize: { xs: "1rem", sm: "0.875rem" },
+          }}
+        >
+          Reset Filters
+        </Button>
 
-          <div>
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={handleApplyFilters}
-              fullWidth
-              sx={{
-                backgroundColor: "#13193F",
-                minHeight: { xs: "48px", sm: "36px" },
-                fontSize: { xs: "1rem", sm: "0.875rem" },
-                fontWeight: { xs: "600", sm: "500" },
-                "&:hover": {
-                  backgroundColor: "#1e40af",
-                },
-              }}
-            >
-              Apply Filters
-            </Button>
-          </div>
-        </div>
+        <Button
+          type="submit"
+          variant="contained"
+          onClick={handleApplyFilters}
+          fullWidth
+          sx={{
+            backgroundColor: "#13193F",
+            minHeight: { xs: "44px", sm: "36px" },
+            fontSize: { xs: "1rem", sm: "0.875rem" },
+            fontWeight: { xs: "600", sm: "500" },
+            "&:hover": {
+              backgroundColor: "#283174",
+            },
+          }}
+        >
+          Apply Filters
+        </Button>
       </div>
     </div>
   );

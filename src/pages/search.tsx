@@ -174,7 +174,7 @@ export const SearchPage = () => {
         <div className="flex flex-row items-start sm:space-x-2">
           {/* Desktop Filter Panel */}
           <div className="flex-col sticky hidden h-[calc(100vh-135px)] w-48 shrink-0 overflow-y-auto sm:top-30 sm:flex md:top-20 md:w-60">
-            <h3 className="mb-2 text-lg font-bold">Search Results</h3>
+            <h3 className="mb-3 mt-4 text-xl font-bold">Search Results</h3>
 
             <div className="flex flex-col overflow-y-auto overflow-x-hidden">
               <FilterPanel
