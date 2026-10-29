@@ -10,6 +10,7 @@ import {
 } from "@/features/product-listing/api/search-products";
 import { FilterDrawer } from "@/features/product-listing/components/filters/FilterDrawer";
 import { FilterPanel } from "@/features/product-listing/components/filters/FilterPanel";
+import { FilterSidebar } from "@/features/product-listing/components/FilterSidebar";
 import { MobileFilterSortButtons } from "@/features/product-listing/components/MobileFilterSortButtons";
 import { ProductList } from "@/features/product-listing/components/ProductListing";
 import { SortingDrawer } from "@/features/product-listing/components/sorting/SortingDrawer";
@@ -173,9 +174,7 @@ export const SearchPage = () => {
       <div className="page-spacing">
         <div className="flex flex-row items-start sm:space-x-2">
           {/* Desktop Filter Panel */}
-          <div className="flex-col sticky hidden h-[calc(100vh-135px)] w-48 shrink-0 overflow-y-auto sm:top-30 sm:flex md:top-20 md:w-60">
-            <h3 className="mb-3 mt-4 text-xl font-bold">Search Results</h3>
-
+          <FilterSidebar title="Search Results">
             <div className="flex flex-col overflow-y-auto overflow-x-hidden">
               <FilterPanel
                 priceRangeData={priceRange}
@@ -183,7 +182,7 @@ export const SearchPage = () => {
                 subcategoriesData={subcategories}
               />
             </div>
-          </div>
+          </FilterSidebar>
 
           {isLoading ? (
             <div className="flex-1 flex justify-center items-center h-64">
